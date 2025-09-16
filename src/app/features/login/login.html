@@ -1,0 +1,15 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onSubmit()">
+    <label for="token">Token:</label>
+    <input
+      type="text"
+      id="token"
+      [(ngModel)]="token"
+      name="token"
+      placeholder="Inserisci il tuo token"
+      required
+    />
+    <button type="submit">Login</button>
+  </form>
+</div>

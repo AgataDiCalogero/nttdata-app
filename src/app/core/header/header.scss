@@ -1,0 +1,18 @@
+.app-header {
+  padding: 1rem 2rem;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-left: 0.5rem;
+
+  &:hover {
+    color: var(--color-on-accent);
+  }
+}

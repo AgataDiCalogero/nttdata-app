@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* Dark theme (default) */
+:root {
+  --color-primary: #151821;
+  --color-on-primary: #e8eaf0;
+
+  --color-accent: #c7a869;
+  --color-on-accent: #0a0c10;
+
+  --color-muted: #8b90a0;
+  --color-bg: #0f1115;
+}
+
+/* Light theme */
+.light-theme {
+  --color-primary: #f7f5ef;
+  --color-on-primary: #1c212b;
+
+  --color-accent: #d9c7a3;
+  --color-on-accent: #1c212b;
+
+  --color-muted: #5e6472;
+  --color-bg: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-on-primary);
+}
