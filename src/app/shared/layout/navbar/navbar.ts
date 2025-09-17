@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ThemeToggle } from '../theme-toggle/theme-toggle';
-import { AuthService } from '../auth/auth-service';
+import { AuthService } from '../../../core/auth/auth-service/auth-service';
 
-// Main application header with navigation and authentication
+// Main application navbar with navigation and authentication
 @Component({
-  selector: 'app-header',
+  selector: 'app-navbar',
   imports: [RouterModule, ThemeToggle],
-  templateUrl: './header.html',
-  styleUrl: './header.scss',
+  templateUrl: './navbar.html',
+  styleUrl: './navbar.scss',
 })
-export class Header {
+export class Navbar {
   private router = inject(Router);
   private auth = inject(AuthService);
 

@@ -1,6 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
+
+/***
+ * TODO: fare cartella model + file interfacce user in users
+ */
 
 export interface User {
   id: number;
@@ -16,7 +21,7 @@ export interface User {
 })
 export class UsersApiService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://gorest.co.in/public/v2'; // GoRest API base URL
+  private baseUrl = environment.baseUrl; // GoRest API base URL
 
   // Fetch all users
   list(): Observable<User[]> {

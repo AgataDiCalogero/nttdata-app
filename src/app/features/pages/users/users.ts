@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { UsersApiService, User } from './data-access/users-api-service';
+import { UsersApiService, User } from './services/users-api-service';
 import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
-import { DeleteDialog } from '../../shared/delete-dialog';
+import { DeleteDialog } from '../../../shared/dialog/delete-dialog/delete-dialog';
 
 // Users management page component
 @Component({

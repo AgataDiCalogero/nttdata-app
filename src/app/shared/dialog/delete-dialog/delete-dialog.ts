@@ -7,6 +7,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './delete-dialog.scss',
 })
 export class DeleteDialog {
+  /***
+   * TODO: usare signal
+   */
   // Entity name to show in the dialog (e.g. user name)
   @Input() entityName: string = '';
 
