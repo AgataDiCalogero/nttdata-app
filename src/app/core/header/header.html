@@ -6,7 +6,7 @@
     <a routerLink="/posts">Posts</a>
   </nav>
   <app-theme-toggle></app-theme-toggle>
-  <!-- show logout only when logged in (browser-only) -->
+  <!-- Show logout when user is authenticated -->
   @if (isLogged) {
   <button class="logout" (click)="logout()" aria-label="Logout">Logout</button>
   }

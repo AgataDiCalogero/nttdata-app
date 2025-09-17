@@ -8,7 +8,7 @@ import { LucideAngularModule, Sun, Moon } from 'lucide-angular';
   imports: [LucideAngularModule],
 })
 export class ThemeToggle {
-  // Icone disponibili
+  // Available theme icons
   readonly Sun = Sun;
   readonly Moon = Moon;
 

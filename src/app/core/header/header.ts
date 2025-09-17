@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ThemeToggle } from '../theme-toggle/theme-toggle';
 import { AuthService } from '../auth/auth-service';
 
+// Main application header with navigation and authentication
 @Component({
   selector: 'app-header',
   imports: [RouterModule, ThemeToggle],

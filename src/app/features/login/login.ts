@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth-service';
+
+// Login page component for token-based authentication
 @Component({
   selector: 'app-login',
   imports: [FormsModule],

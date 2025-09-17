@@ -4,13 +4,14 @@ import { AuthService } from '../auth/auth-service';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
+// HTTP interceptor for automatic token attachment and 401 handling
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
   const token = auth.token();
 
-  // Senza token procede senza modifiche
+  // Skip if no token available
   if (!token) return next(req);
 
   const authReq = req.clone({
