@@ -19,7 +19,7 @@
       <td>{{ user.email }}</td>
       <td>{{ user.status }}</td>
       <td>
-        <button aria-label="Delete {{ user.name }}">
+        <button (click)="openDeleteDialog(user)" aria-label="Delete {{ user.name }}">
           <lucide-icon [img]="Trash2"></lucide-icon>
         </button>
       </td>
@@ -31,4 +31,7 @@
 <p>No users found.</p>
 } } @else {
 <p>Loading...</p>
+} @if (showDialog && selectedUser) {
+<app-delete-dialog [entityName]="selectedUser.name" (confirmDelete)="onDialogClose($event)">
+</app-delete-dialog>
 }

@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { UsersApiService, User } from './data-access/users-api-service';
 import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
+import { DeleteDialog } from '../../shared/delete-dialog';
 
 // Users management page component
 @Component({
   selector: 'app-users',
-  imports: [AsyncPipe, LucideAngularModule],
+  imports: [AsyncPipe, LucideAngularModule, DeleteDialog],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
@@ -19,18 +20,27 @@ export class Users {
   // Lucide delete icon
   readonly Trash2 = Trash2;
 
-  // Delete user with confirmation and refresh
+  // State for selected user and dialog visibility
+  selectedUser: User | null = null;
+  showDialog = false;
 
-  onDelete(user: User) {
-    if (confirm(`Are you sure you want to delete $user.name?`)) {
-      this.api.delete(user.id).subscribe({
+  // Open dialog with selected user
+  openDeleteDialog(user: User) {
+    this.selectedUser = user;
+    this.showDialog = true;
+  }
+
+  // Handle dialog result
+  onDialogClose(confirm: boolean) {
+    this.showDialog = false;
+    if (confirm && this.selectedUser) {
+      this.api.delete(this.selectedUser.id).subscribe({
         next: () => {
-          this.$users = this.api.list(); // Refresh list after delete
+          this.$users = this.api.list();
         },
-        error: (err) => {
-          console.error('Delete failed:', err); // Log error
-        },
+        error: (err) => console.error('Delete failed:', err),
       });
     }
+    this.selectedUser = null;
   }
 }
