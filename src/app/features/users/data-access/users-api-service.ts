@@ -18,7 +18,14 @@ export class UsersApiService {
   private http = inject(HttpClient);
   private baseUrl = 'https://gorest.co.in/public/v2'; // GoRest API base URL
 
+  // Fetch all users
   list(): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/users`);
+  }
+
+  // Delete a user by ID
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/users/${id}`);
   }
 }
