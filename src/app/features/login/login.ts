@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { AuthService } from '../../core/auth/auth-service';
 @Component({
   selector: 'app-login',
   imports: [FormsModule],
@@ -10,11 +10,14 @@ import { Router } from '@angular/router';
 })
 export class Login {
   token: string = '';
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private auth = inject(AuthService);
+
+  constructor() {}
 
   onSubmit() {
     if (this.token.trim()) {
-      localStorage.setItem('auth_token', this.token);
+      this.auth.setToken(this.token);
       this.router.navigate(['/users']);
     }
   }
