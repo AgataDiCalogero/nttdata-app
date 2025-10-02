@@ -1,0 +1,38 @@
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: var(--space-sm);
+  width: 40px;
+  height: 40px;
+  /* Enhanced focus visibility - WCAG 2.4.7 */
+}
+.theme-toggle:hover {
+  background: var(--color-muted);
+  transform: scale(1.05);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  background: var(--color-muted);
+}
+.theme-toggle lucide-icon {
+  color: var(--color-on-primary);
+  transition: all 0.3s ease;
+}
+
+/* Dark theme - light icons */
+:root .theme-toggle lucide-icon {
+  color: var(--color-on-primary);
+}
+
+/* Light theme - dark icons */
+.light-theme .theme-toggle lucide-icon {
+  color: var(--color-on-primary);
+}/*# sourceMappingURL=theme-toggle.css.map */
