@@ -1,36 +1,30 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
+import type { User, CreateUser, UpdateUser } from '@app/models';
 
-/***
- * TODO: fare cartella model + file interfacce user in users
- */
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  gender: string;
-  status: string;
-}
-
-// Service for GoRest API user operations
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class UsersApiService {
-  private http = inject(HttpClient);
-  private baseUrl = environment.baseUrl; // GoRest API base URL
+  private readonly http = inject(HttpClient);
+  private readonly base = '/users'; // apiPrefixInterceptor aggiunge baseUrl
 
-  // Fetch all users
   list(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/users`);
+    return this.http.get<User[]>(this.base);
   }
 
-  // Delete a user by ID
+  getById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.base}/${id}`);
+  }
+
+  create(payload: CreateUser): Observable<User> {
+    return this.http.post<User>(this.base, payload);
+  }
+
+  update(id: number, payload: UpdateUser): Observable<User> {
+    return this.http.patch<User>(`${this.base}/${id}`, payload);
+  }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/users/${id}`);
+    return this.http.delete<void>(`${this.base}/${id}`);
   }
 }

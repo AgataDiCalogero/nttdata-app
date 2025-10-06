@@ -12,6 +12,18 @@ export const routes: Routes = [
     loadComponent: () => import('./features/pages/users/users').then((m) => m.Users),
   },
   {
+    path: 'users/new',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/pages/users/user-form/user-form').then((m) => m.UserForm),
+  },
+  {
+    path: 'users/:id/edit',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/pages/users/user-form/user-form').then((m) => m.UserForm),
+  },
+  {
     path: 'posts',
     canActivate: [authGuard],
     loadComponent: () => import('./features/pages/posts/posts').then((m) => m.Posts),

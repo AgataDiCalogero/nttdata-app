@@ -1,7 +1,10 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-export const apiPrefixInterceptor: HttpInterceptorFn = (req, next) => {
+export const apiPrefixInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+) => {
   const apiBase = environment?.baseUrl ?? '';
   const url = req.url ?? '';
 

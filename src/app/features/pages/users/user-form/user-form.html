@@ -1,0 +1,63 @@
+<h2>
+  @if (isEdit()) {
+    Modifica utente
+  } @else {
+    Nuovo utente
+  }
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <div>
+    <label for="name">Nome</label>
+    <input id="name" type="text" formControlName="name" />
+    @if (form.controls.name.touched && form.controls.name.invalid) {
+      <small>Inserisci almeno 2 caratteri.</small>
+    }
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" />
+    @if (form.controls.email.touched && form.controls.email.invalid) {
+      <small>Email non valida.</small>
+    }
+  </div>
+
+  <div>
+    <label for="gender">Genere</label>
+    <select id="gender" formControlName="gender">
+      @for (opt of ['male', 'female']; track opt) {
+        <option [value]="opt">{{ opt }}</option>
+      }
+    </select>
+    @if (form.controls.gender.touched && form.controls.gender.invalid) {
+      <small>Seleziona il genere (male o female).</small>
+    }
+  </div>
+
+  <div>
+    <label for="status">Stato</label>
+    <select id="status" formControlName="status">
+      @for (option of ['active', 'inactive']; track option) {
+        <option [value]="option">{{ option }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="form.invalid || isLoading() || submitting()">
+      @if (submitting()) {
+        Salvataggio…
+      } @else if (isEdit()) {
+        Aggiorna
+      } @else {
+        Crea
+      }
+    </button>
+    <button type="button" (click)="cancel()">Annulla</button>
+  </div>
+
+  @if (loadError()) {
+    <p class="form-error">{{ loadError() }}</p>
+  }
+</form>

@@ -1,0 +1,16 @@
+form {
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
+}
+input,
+select {
+  width: 100%;
+  padding: 6px 8px;
+}
+small {
+  color: #b00020;
+}
+button {
+  margin-right: 8px;
+}

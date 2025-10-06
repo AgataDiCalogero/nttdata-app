@@ -1,11 +1,19 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {
+  HttpInterceptorFn,
+  HttpRequest,
+  HttpHandlerFn,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../auth/auth-service/auth-service';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
 // HTTP interceptor for automatic token attachment and 401 handling
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const authInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
@@ -19,7 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   });
 
   return next(authReq).pipe(
-    catchError((err) => {
+    catchError((err: HttpErrorResponse) => {
       if (err.status === 401) {
         auth.clearToken();
         router.navigate(['/login']);

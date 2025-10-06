@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "build:ci": "ng build --configuration production"
   },
   "prettier": {
     "printWidth": 100,
