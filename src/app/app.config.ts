@@ -4,11 +4,13 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+import { apiPrefixInterceptor } from './core/interceptors/api-prefix.interceptor';
+import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +18,12 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(
+      withInterceptors([
+        apiPrefixInterceptor, // URL base prima
+        authInterceptor, // header Auth poi
+        errorInterceptor, // gestione errori per ultimo
+      ]),
+    ),
   ],
 };
