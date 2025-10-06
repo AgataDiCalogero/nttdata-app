@@ -8,14 +8,15 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:nttdata-app": "node dist/nttdata-app/server/server.mjs",
-    "lint": "eslint \"src/**/*.{ts,html}\" --ext .ts,.html",
-    "lint:fix": "eslint \"src/**/*.{ts,html}\" --ext .ts,.html --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
+    "endOfLine": "auto",
     "overrides": [
       {
         "files": "*.html",
@@ -49,16 +50,19 @@
     "@angular/compiler-cli": "^20.3.0",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
+    "@eslint/js": "^9.37.0",
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
-    "eslint": "^9.36.0",
+    "angular-eslint": "^20.3.0",
+    "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.4.0",
     "husky": "^9.1.7",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
@@ -68,6 +72,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "lint-staged": "^16.2.3",
     "prettier": "^3.6.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.45.0"
   }
 }
