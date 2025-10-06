@@ -1,10 +1,20 @@
-import { Component, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  DestroyRef,
+  inject,
+  signal,
+  input,
+  output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '../services/users-api-service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
+import { ToastService } from '../../../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-user-form',
@@ -20,6 +30,13 @@ export class UserForm {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private toast = inject(ToastService);
+  private dialogRef = inject(DialogRef<'success' | 'cancel'>, { optional: true });
+  private dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
+
+  // Modal mode: optional user input and closed output
+  user = input<User | undefined>(undefined);
+  closed = output<'success' | 'cancel'>();
 
   // UI state
   isEdit = signal(false);
@@ -27,6 +44,7 @@ export class UserForm {
   isLoading = signal(false);
   submitting = signal(false);
   loadError = signal<string | null>(null);
+  emailError = signal<string | null>(null); // Field-specific error for 422
 
   // Form (non-nullable controls)
   form = this.fb.nonNullable.group({
@@ -37,7 +55,28 @@ export class UserForm {
   });
 
   constructor() {
-    // Read id once from snapshot — edit mode if present
+    // Modal mode: if user input is provided via input(), use it
+    let inputUser = this.user();
+
+    // Also check dialog data (from config.data)
+    if (!inputUser && this.dialogData?.user) {
+      inputUser = this.dialogData.user;
+    }
+
+    if (inputUser) {
+      this.isEdit.set(true);
+      this.userId.set(inputUser.id);
+      // Patch form immediately with input user
+      this.form.patchValue({
+        name: inputUser.name ?? '',
+        email: inputUser.email ?? '',
+        gender: (inputUser.gender as 'male' | 'female') ?? this.form.controls.gender.value,
+        status: (inputUser.status as UserStatus) ?? this.form.controls.status.value,
+      });
+      return;
+    }
+
+    // Route mode: Read id once from snapshot — edit mode if present
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const id = Number(idParam);
@@ -67,7 +106,7 @@ export class UserForm {
         },
         error: (err) => {
           console.error('Failed to load user', err);
-          this.loadError.set('Impossibile caricare l\u2019utente');
+          this.loadError.set('Unable to load user');
           this.isLoading.set(false);
         },
       });
@@ -91,7 +130,17 @@ export class UserForm {
       return;
     }
 
+    // Clear previous errors
+    this.emailError.set(null);
+    this.loadError.set(null);
+
     this.submitting.set(true);
+
+    // Disable backdrop close when submitting
+    if (this.dialogRef) {
+      this.dialogRef.disableClose = true;
+    }
+
     const payload = this.normalizeForSubmit();
 
     let op$ = this.api.create(payload as CreateUser);
@@ -101,24 +150,62 @@ export class UserForm {
 
     op$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
-        this.router.navigate(['/users']);
+        const msg = this.isEdit() ? 'User updated successfully' : 'User created successfully';
+        this.toast.show('success', msg);
+        this.submitting.set(false);
+
+        // Re-enable backdrop close
+        if (this.dialogRef) {
+          this.dialogRef.disableClose = false;
+        }
+
+        // Modal mode: close dialog and emit success
+        if (this.dialogRef) {
+          this.closed.emit('success');
+          this.dialogRef.close('success');
+        } else {
+          // Route mode: navigate back to users list
+          this.router.navigate(['/users']);
+        }
       },
       error: (err) => {
-        console.error('Save failed', err);
-        this.loadError.set('Salvataggio fallito');
-        // keep form enabled for retry
+        // Technical log
+        console.error('Save failed:', err);
+
         this.submitting.set(false);
-        // show a simple user-facing message
-        try {
-          alert('Errore durante il salvataggio. Riprova.');
-        } catch (e) {
-          console.warn('Alert failed', e);
+
+        // Re-enable backdrop close
+        if (this.dialogRef) {
+          this.dialogRef.disableClose = false;
+        }
+
+        // Error mapping
+        const status = err?.status;
+        if (status === 422) {
+          // Validation error - likely email already exists
+          this.emailError.set('Email already in use or invalid');
+          this.toast.show('error', 'Email already in use or invalid');
+        } else if (status === 429) {
+          // Rate limit
+          this.loadError.set('Please try again shortly');
+          this.toast.show('error', 'Too many requests. Please try again shortly.');
+        } else {
+          // Generic error
+          this.loadError.set('Save failed');
+          this.toast.show('error', 'An error occurred while saving. Please try again.');
         }
       },
     });
   }
 
   cancel(): void {
-    this.router.navigate(['/users']);
+    // Modal mode: close dialog and emit cancel
+    if (this.dialogRef) {
+      this.closed.emit('cancel');
+      this.dialogRef.close('cancel');
+    } else {
+      // Route mode: navigate back to users list
+      this.router.navigate(['/users']);
+    }
   }
 }

@@ -1,9 +1,17 @@
 <header class="app-navbar">
   <h1>NTT Data App</h1>
   <nav>
-    <a routerLink="/login">Login</a>
-    <a routerLink="/users">Users</a>
-    <a routerLink="/posts">Posts</a>
+    @if (!isLogged) {
+      <a routerLink="/login">Login</a>
+    }
+    @if (isLogged) {
+      <a routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        >Users</a
+      >
+      <a routerLink="/posts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        >Posts</a
+      >
+    }
   </nav>
   <app-theme-toggle></app-theme-toggle>
   <!-- Show logout when user is authenticated -->

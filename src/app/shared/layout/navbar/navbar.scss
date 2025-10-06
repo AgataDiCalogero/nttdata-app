@@ -18,7 +18,7 @@ a {
   &:hover {
     color: var(--color-on-accent);
     text-decoration: underline; /* WCAG 2.4.7 Non-color identification */
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   /* Enhanced focus visibility - WCAG 2.4.7 */
@@ -26,6 +26,44 @@ a {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
     text-decoration: underline;
-    background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.app-navbar nav a.active {
+  /* stronger accent background so it remains visible in both themes */
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  color: var(--color-on-accent);
+  box-shadow: none;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 6px;
+}
+
+/* ensure active nav links are keyboard visible */
+.app-navbar nav a.active:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+button.logout {
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  border: 2px solid var(--color-accent);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--color-accent-dark);
+    border-color: var(--color-accent-dark);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 }

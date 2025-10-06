@@ -94,3 +94,37 @@ select:focus-visible {
   --space-xl: calc(var(--space-unit) * 4); /* 32px - Available for future use */
   --space-xxl: calc(var(--space-unit) * 6); /* 48px */
 }
+
+/* Modal Dialog Styles */
+.blurred-backdrop {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.user-form-modal {
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  box-shadow: var(--shadow);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Optional: Lateral Drawer Styles */
+.slide-in-drawer {
+  animation: slideIn 0.3s ease;
+  border-radius: 0;
+  height: 100%;
+  max-height: 100vh;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

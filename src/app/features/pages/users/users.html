@@ -1,7 +1,18 @@
-<h2>Users</h2>
-
-@if ($users | async; as users) {
-  @if (users.length > 0) {
+<header class="users-header">
+  <h1>Users</h1>
+  <div class="users-header__actions">
+    <input
+      class="users-search"
+      placeholder="Search name or email"
+      (input)="onSearch($any($event.target).value)"
+    />
+    <button class="btn" (click)="openNewUserModal()" aria-label="Create new user">
+      + New User
+    </button>
+  </div>
+</header>
+<ng-container *ngIf="displayed$ | async as data">
+  <ng-container *ngIf="loading(); else notLoading">
     <table class="users-table">
       <thead>
         <tr>
@@ -13,28 +24,93 @@
         </tr>
       </thead>
       <tbody>
-        @for (user of users; track user.id) {
+        <tr class="skeleton" *ngFor="let i of [1, 2, 3, 4, 5]">
+          <td colspan="5">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-template #notLoading>
+    <div *ngIf="error(); else showList" class="users-error">
+      <p>{{ error() }}</p>
+      <button class="btn" (click)="loadUsers()">Riprova</button>
+    </div>
+  </ng-template>
+
+  <ng-template #showList>
+    <div *ngIf="data.total > 0; else emptyState">
+      <table class="users-table">
+        <thead>
           <tr>
+            <th>ID</th>
+            <th (click)="toggleSort('name')" class="sortable">
+              Name
+              <small>{{ sortDir('name') === 1 ? '▲' : sortDir('name') === -1 ? '▼' : '' }}</small>
+            </th>
+            <th (click)="toggleSort('email')" class="sortable">
+              Email
+              <small>{{ sortDir('email') === 1 ? '▲' : sortDir('email') === -1 ? '▼' : '' }}</small>
+            </th>
+            <th (click)="toggleSort('status')" class="sortable">
+              Status
+              <small>{{
+                sortDir('status') === 1 ? '▲' : sortDir('status') === -1 ? '▼' : ''
+              }}</small>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of data.items; trackBy: trackById">
             <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.status }}</td>
             <td>
-              <button (click)="openDeleteDialog(user)" aria-label="Delete {{ user.name }}">
+              <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/users', user.id, 'edit']" title="Edit user">✏️</a>
+              <button
+                type="button"
+                (click)="onDelete(user)"
+                title="Delete user"
+                aria-label="Delete {{ user.name }}"
+              >
                 <lucide-icon [img]="Trash2"></lucide-icon>
               </button>
             </td>
           </tr>
-        }
-      </tbody>
-    </table>
-  } @else {
-    <p>No users found.</p>
-  }
-} @else {
-  <p>Loading...</p>
-}
-@if (showDialog && selectedUser) {
-  <app-delete-dialog [entityName]="selectedUser.name" (confirmDelete)="onDialogClose($event)">
-  </app-delete-dialog>
-}
+        </tbody>
+      </table>
+
+      <div class="users-pagination">
+        <button
+          class="btn"
+          [disabled]="currentPage().page <= 1"
+          (click)="setPage(currentPage().page - 1, currentPage().per_page)"
+        >
+          Prev
+        </button>
+        <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
+        <button
+          class="btn"
+          [disabled]="currentPage().page >= totalPages(data.total)"
+          (click)="setPage(currentPage().page + 1, currentPage().per_page)"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="users-empty">
+        <p>No users found.</p>
+        <a class="btn" routerLink="/users/new">Create first user</a>
+      </div>
+    </ng-template>
+  </ng-template>
+</ng-container>
+
+<app-toast></app-toast>
+<!-- delete confirmation handled inline via onDelete() -->
