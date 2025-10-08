@@ -24,7 +24,8 @@
 
   /* hover and selected row states */
   tbody tr:hover {
-    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
+    background: rgba(176, 141, 87, 0.08); /* lighter brass tint */
+    cursor: pointer;
   }
 
   tbody tr.selected {
@@ -33,7 +34,8 @@
     outline: 2px solid rgba(176, 141, 87, 0.18);
   }
 
-  button {
+  button,
+  .edit-btn {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -64,7 +66,8 @@
     }
   }
 
-  button:hover {
+  button:hover,
+  .edit-btn:hover {
     background: rgba(176, 141, 87, 0.15); /* brass tint that works in both themes */
 
     lucide-icon {
@@ -73,7 +76,8 @@
   }
 
   /* Enhanced focus visibility - WCAG 2.4.7 */
-  button:focus-visible {
+  button:focus-visible,
+  .edit-btn:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
     background: rgba(176, 141, 87, 0.2);

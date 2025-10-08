@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '../services/users-api-service';
@@ -27,11 +26,9 @@ import { ToastService } from '../../../../shared/toast/toast.service';
 export class UserForm {
   private fb = inject(FormBuilder);
   private api = inject(UsersApiService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private destroyRef = inject(DestroyRef);
   private toast = inject(ToastService);
-  private dialogRef = inject(DialogRef<'success' | 'cancel'>, { optional: true });
+  private dialogRef = inject(DialogRef<'success' | 'cancel'>);
   private dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
 
   // Modal mode: optional user input and closed output
@@ -73,43 +70,7 @@ export class UserForm {
         gender: (inputUser.gender as 'male' | 'female') ?? this.form.controls.gender.value,
         status: (inputUser.status as UserStatus) ?? this.form.controls.status.value,
       });
-      return;
     }
-
-    // Route mode: Read id once from snapshot — edit mode if present
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      const id = Number(idParam);
-      if (!Number.isNaN(id)) {
-        this.isEdit.set(true);
-        this.userId.set(id);
-        this.loadUser(id);
-      }
-    }
-  }
-
-  private loadUser(id: number): void {
-    this.isLoading.set(true);
-    this.api
-      .getById(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (u: User) => {
-          // patch values if present — ensure gender/status are set to valid defaults
-          this.form.patchValue({
-            name: u.name ?? '',
-            email: u.email ?? '',
-            gender: (u.gender as 'male' | 'female') ?? this.form.controls.gender.value,
-            status: (u.status as UserStatus) ?? this.form.controls.status.value,
-          });
-          this.isLoading.set(false);
-        },
-        error: (err) => {
-          console.error('Failed to load user', err);
-          this.loadError.set('Unable to load user');
-          this.isLoading.set(false);
-        },
-      });
   }
 
   private normalizeForSubmit(): CreateUser | UpdateUser {
@@ -137,9 +98,7 @@ export class UserForm {
     this.submitting.set(true);
 
     // Disable backdrop close when submitting
-    if (this.dialogRef) {
-      this.dialogRef.disableClose = true;
-    }
+    this.dialogRef.disableClose = true;
 
     const payload = this.normalizeForSubmit();
 
@@ -155,18 +114,11 @@ export class UserForm {
         this.submitting.set(false);
 
         // Re-enable backdrop close
-        if (this.dialogRef) {
-          this.dialogRef.disableClose = false;
-        }
+        this.dialogRef.disableClose = false;
 
         // Modal mode: close dialog and emit success
-        if (this.dialogRef) {
-          this.closed.emit('success');
-          this.dialogRef.close('success');
-        } else {
-          // Route mode: navigate back to users list
-          this.router.navigate(['/users']);
-        }
+        this.closed.emit('success');
+        this.dialogRef.close('success');
       },
       error: (err) => {
         // Technical log
@@ -175,9 +127,7 @@ export class UserForm {
         this.submitting.set(false);
 
         // Re-enable backdrop close
-        if (this.dialogRef) {
-          this.dialogRef.disableClose = false;
-        }
+        this.dialogRef.disableClose = false;
 
         // Error mapping
         const status = err?.status;
@@ -199,13 +149,8 @@ export class UserForm {
   }
 
   cancel(): void {
-    // Modal mode: close dialog and emit cancel
-    if (this.dialogRef) {
-      this.closed.emit('cancel');
-      this.dialogRef.close('cancel');
-    } else {
-      // Route mode: navigate back to users list
-      this.router.navigate(['/users']);
-    }
+    // Close dialog and emit cancel
+    this.closed.emit('cancel');
+    this.dialogRef.close('cancel');
   }
 }

@@ -10,6 +10,10 @@ import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { ToastComponent } from '../../../shared/toast/toast.component';
 import { UserForm } from './user-form/user-form';
+import {
+  DeleteConfirmComponent,
+  type DeleteConfirmData,
+} from '../../../shared/dialog/delete-confirm/delete-confirm.component';
 
 // Users management page component
 @Component({
@@ -93,21 +97,6 @@ export class Users {
     this.pageState.next({ page: p, per_page: per });
 
     this.loadUsers();
-
-    // Deep-link: check for ?modal=new or ?modal=edit&id=X
-    const modalType = qp.get('modal');
-    if (modalType === 'new') {
-      // Open new user modal
-      setTimeout(() => this.openNewUserModal(), 0);
-    } else if (modalType === 'edit') {
-      const editId = qp.get('id');
-      if (editId) {
-        const userId = Number(editId);
-        if (!Number.isNaN(userId)) {
-          setTimeout(() => this.openEditUserModal(userId), 0);
-        }
-      }
-    }
   }
 
   // helpers for template
@@ -207,9 +196,6 @@ export class Users {
     const ref = this.dialog.open(UserForm, config);
 
     ref.closed.subscribe((result) => {
-      // Remove modal query param while preserving others (page, per_page, q, sort)
-      this.removeModalQueryParam();
-
       if (result === 'success') {
         this.loadUsers();
       }
@@ -253,9 +239,6 @@ export class Users {
         const ref = this.dialog.open(UserForm, config);
 
         ref.closed.subscribe((result) => {
-          // Remove modal query param while preserving others
-          this.removeModalQueryParam();
-
           if (result === 'success') {
             this.loadUsers();
           }
@@ -264,49 +247,48 @@ export class Users {
       error: (err) => {
         console.error('Failed to load user for edit:', err);
         this.toast.show('error', 'Unable to load user');
-        this.removeModalQueryParam();
       },
-    });
-  }
-
-  // Helper to remove modal query param while preserving others
-  private removeModalQueryParam(): void {
-    const currentParams = this.route.snapshot.queryParamMap;
-    const preserved: Record<string, string> = {};
-
-    // Preserve all params except 'modal' and 'id' (if it was for modal)
-    currentParams.keys.forEach((key) => {
-      if (key !== 'modal' && !(key === 'id' && currentParams.get('modal'))) {
-        const val = currentParams.get(key);
-        if (val !== null) preserved[key] = val;
-      }
-    });
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: preserved,
-      replaceUrl: true,
     });
   }
 
   // delete with confirm + toast
   onDelete(u: User): void {
-    const ok = confirm(`Delete ${u.name}?`);
-    if (!ok) return;
-    this.deletingId.set(u.id);
-    this.api.delete(u.id).subscribe({
-      next: () => {
-        // remove locally
-        const current = this.usersSubject.getValue();
-        this.usersSubject.next(current.filter((x) => x.id !== u.id));
-        this.deletingId.set(null);
-        this.toast.show('success', 'User deleted');
-      },
-      error: (err) => {
-        console.error('Delete failed:', err);
-        this.deletingId.set(null);
-        this.toast.show('error', 'Unable to delete user');
-      },
+    const data: DeleteConfirmData = {
+      title: 'Delete User',
+      message: `Are you sure you want to delete ${u.name}? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+    };
+
+    const ref = this.dialog.open(DeleteConfirmComponent, {
+      width: '400px',
+      maxWidth: '90vw',
+      backdropClass: 'blurred-backdrop',
+      panelClass: 'user-form-modal',
+      ariaLabel: 'Delete user confirmation',
+      autoFocus: true,
+      restoreFocus: true,
+      data,
+    });
+
+    ref.closed.subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.deletingId.set(u.id);
+      this.api.delete(u.id).subscribe({
+        next: () => {
+          // remove locally
+          const current = this.usersSubject.getValue();
+          this.usersSubject.next(current.filter((x) => x.id !== u.id));
+          this.deletingId.set(null);
+          this.toast.show('success', 'User deleted');
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+          this.deletingId.set(null);
+          this.toast.show('error', 'Unable to delete user');
+        },
+      });
     });
   }
 }

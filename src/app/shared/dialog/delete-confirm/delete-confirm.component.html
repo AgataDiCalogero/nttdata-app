@@ -1,0 +1,13 @@
+<div class="delete-confirm">
+  <h2>{{ data.title }}</h2>
+  <p class="delete-confirm__message">{{ data.message }}</p>
+
+  <div class="delete-confirm__actions">
+    <button type="button" class="btn-cancel" (click)="cancel()">
+      {{ data.cancelText || 'Cancel' }}
+    </button>
+    <button type="button" class="btn-confirm" (click)="confirm()">
+      {{ data.confirmText || 'Delete' }}
+    </button>
+  </div>
+</div>

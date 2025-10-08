@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  padding: var(--space-lg);
+  min-width: 320px;
+  max-width: 480px;
+}
+
+.delete-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.delete-confirm__message {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-on-surface);
+  line-height: 1.5;
+}
+
+.delete-confirm__actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  justify-content: flex-end;
+}
+
+button {
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+}
+
+.btn-cancel {
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  border: 2px solid var(--color-border);
+
+  &:hover {
+    background: var(--color-primary);
+    border-color: var(--color-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.btn-confirm {
+  background: var(--color-danger);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: var(--color-danger-dark);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}

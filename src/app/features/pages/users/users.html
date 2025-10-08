@@ -70,7 +70,15 @@
               <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
             </td>
             <td class="actions">
-              <a [routerLink]="['/users', user.id, 'edit']" title="Edit user">✏️</a>
+              <button
+                type="button"
+                (click)="openEditUserModal(user.id)"
+                title="Edit user"
+                aria-label="Edit {{ user.name }}"
+                class="edit-btn"
+              >
+                ✏️
+              </button>
               <button
                 type="button"
                 (click)="onDelete(user)"
