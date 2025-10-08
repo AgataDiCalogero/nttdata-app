@@ -10,6 +10,20 @@ export const routes: Routes = [
     path: 'users',
     canActivate: [authGuard],
     loadComponent: () => import('./features/pages/users/users').then((m) => m.Users),
+    children: [
+      {
+        path: 'new',
+        // load the user form as a standalone component so navigation to /users/new exists
+        loadComponent: () =>
+          import('./features/pages/users/user-form/user-form').then((m) => m.UserForm),
+      },
+      {
+        path: ':id/edit',
+        // load the user form for edit mode
+        loadComponent: () =>
+          import('./features/pages/users/user-form/user-form').then((m) => m.UserForm),
+      },
+    ],
   },
   {
     path: 'posts',
