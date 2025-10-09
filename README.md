@@ -35,7 +35,7 @@ Applicazione Angular che utilizza le API pubbliche di GoREST per gestire utenti,
 - **Gestione post globali**
   - Ricerca server-side per titolo con debounce e filtro autore basato sul roster utenti
   - Paginazione con scelta elementi per pagina, skeleton loader e stati empty/error gestiti
-  - Commenti caricati on demand e memorizzati per post con toast di feedback sugli errori
+  - Commenti caricati e creati on demand con form dedicato, caching per post e feedback toast
   - Creazione nuovi post tramite dialog/drawer responsive con validazioni e conferma toast
 - **Esperienza utente**
   - Tema scuro di default con toggle persistito, palette rispettosa delle WCAG
@@ -47,7 +47,6 @@ Applicazione Angular che utilizza le API pubbliche di GoREST per gestire utenti,
 
 ## Backlog (da implementare in base alla traccia)
 
-- [ ] Commenti: possibilita' di aggiungere commenti sia dai post globali sia dalla scheda utente (richiesta opzionale ma consigliata)
 - [ ] Testing: scrivere unit test significativi per servizi, guard e componenti, raggiungendo almeno il 60% di coverage
 - [ ] Valutare suddivisione multi-modulo e lazy loading avanzato (opzionale nella traccia, gia' parzialmente indirizzato con componenti standalone)
 - [ ] Preparare documentazione PDF di presentazione una volta stabilizzate le funzionalita'

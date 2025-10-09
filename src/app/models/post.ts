@@ -16,4 +16,4 @@ export interface Comment {
   body: string;
 }
 
-export type CreateComment = Omit<Comment, 'id'>;
+export type CreateComment = Omit<Comment, 'id' | 'post_id'>;

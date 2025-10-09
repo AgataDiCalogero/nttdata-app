@@ -1,0 +1,58 @@
+<form class="comment-form" [formGroup]="form" (ngSubmit)="submit()" aria-label="Aggiungi commento">
+  <div class="comment-form__grid">
+    <div class="form-field">
+      <label for="comment-name">Nome</label>
+      <input
+        id="comment-name"
+        type="text"
+        formControlName="name"
+        placeholder="Il tuo nome"
+        [disabled]="submitting()"
+        required
+      />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <p class="field-error">Inserisci almeno 2 caratteri.</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="comment-email">Email</label>
+      <input
+        id="comment-email"
+        type="email"
+        formControlName="email"
+        placeholder="nome@email.com"
+        [disabled]="submitting()"
+        required
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <p class="field-error">Inserisci un indirizzo email valido.</p>
+      }
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="comment-body">Commento</label>
+    <textarea
+      id="comment-body"
+      formControlName="body"
+      rows="4"
+      placeholder="Scrivi qui il tuo contributo..."
+      [disabled]="submitting()"
+      maxlength="500"
+      required
+    ></textarea>
+    <div class="field-hint">
+      <span>{{ bodyLength }}/500</span>
+      @if (form.controls.body.touched && form.controls.body.invalid) {
+        <p class="field-error">Il commento deve contenere almeno 10 caratteri.</p>
+      }
+    </div>
+  </div>
+
+  <div class="comment-form__actions">
+    <button type="submit" class="btn btn--primary" [disabled]="submitting()">
+      {{ submitting() ? 'Pubblicazione...' : 'Pubblica commento' }}
+    </button>
+  </div>
+</form>

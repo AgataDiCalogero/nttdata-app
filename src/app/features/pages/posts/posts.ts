@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,24 +7,24 @@ import {
   inject,
   signal,
 } from '@angular/core';
-
+import { CommentForm } from '../../../shared/comments/comment-form/comment-form';
+import { Dialog } from '@angular/cdk/dialog';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LucideAngularModule, MessageSquare, Plus } from 'lucide-angular';
+import { debounceTime, distinctUntilChanged, map, switchMap, catchError, of, tap } from 'rxjs';
+import { User } from '@app/models';
 import { PostsApiService } from './posts-api.service';
 import type { Comment, PaginationMeta, Post } from '@app/models';
-import { LucideAngularModule, MessageSquare, Plus } from 'lucide-angular';
 import { ToastComponent } from '../../../shared/toast/toast.component';
 import { ToastService } from '../../../shared/toast/toast.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, switchMap, catchError, of, tap } from 'rxjs';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Dialog } from '@angular/cdk/dialog';
-import { User } from '@app/models';
 import { UsersApiService } from '../users/services/users-api-service';
 import { PostForm } from './post-form/post-form';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [ReactiveFormsModule, LucideAngularModule, ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, ToastComponent, CommentForm],
   templateUrl: './posts.html',
   styleUrls: ['./posts.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -189,6 +190,13 @@ export class Posts {
           this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
         },
       });
+  }
+
+  onCommentCreated(postId: number, comment: Comment): void {
+    this.commentsMap.update((state) => {
+      const current = state[postId] ?? [];
+      return { ...state, [postId]: [comment, ...current] };
+    });
   }
 
   hasPagination(): boolean {

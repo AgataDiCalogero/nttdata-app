@@ -1,14 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { UsersApiService } from '../services/users-api-service';
 import { PostsApiService } from '../../posts/posts-api.service';
 import type { User, Post, Comment } from '@app/models';
+import { CommentForm } from '../../../shared/comments/comment-form/comment-form';
 
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [RouterModule],
+  imports: [CommonModule, RouterModule, CommentForm],
   templateUrl: './user-detail.html',
   styleUrls: ['./user-detail.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -89,6 +90,13 @@ export class UserDetail {
       complete: () => {
         this.commentsLoading.update((s) => ({ ...s, [postId]: false }));
       },
+    });
+  }
+
+  onCommentCreated(postId: number, comment: Comment): void {
+    this.commentsMap.update((state) => {
+      const current = state[postId] ?? [];
+      return { ...state, [postId]: [comment, ...current] };
     });
   }
 

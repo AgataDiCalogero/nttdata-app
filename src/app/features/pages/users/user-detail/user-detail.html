@@ -36,18 +36,26 @@
                     @if (commentsLoading()[p.id]) {
                       <div class="loading">Loading comments...</div>
                     } @else {
-                      <ul>
-                        <template>
-                          @for (c of commentsMap()[p.id]; track c.id) {
-                            <li>
-                              <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
-                              >)
-                              <p>{{ c.body }}</p>
-                            </li>
-                          }
-                        </template>
-                      </ul>
+                      @if (commentsMap()[p.id]?.length) {
+                        <ul>
+                          <template>
+                            @for (c of commentsMap()[p.id]; track c.id) {
+                              <li>
+                                <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
+                                >)
+                                <p>{{ c.body }}</p>
+                              </li>
+                            }
+                          </template>
+                        </ul>
+                      } @else {
+                        <div class="empty">Nessun commento disponibile.</div>
+                      }
                     }
+                    <app-comment-form
+                      [postId]="p.id"
+                      (created)="onCommentCreated(p.id, $event)"
+                    ></app-comment-form>
                   </div>
                 }
               </li>

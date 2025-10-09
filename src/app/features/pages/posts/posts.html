@@ -102,6 +102,10 @@
                       <div class="state state--empty">No comments available.</div>
                     }
                   }
+                  <app-comment-form
+                    [postId]="post.id"
+                    (created)="onCommentCreated(post.id, $event)"
+                  ></app-comment-form>
                 </div>
               }
             </li>
