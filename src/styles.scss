@@ -21,6 +21,25 @@
 
   --focus-ring: #b08d57; // Brass focus ring
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* Centralized fallbacks for color-mix() uses in components */
+  --fallback-border-rgba: rgba(128, 128, 128, 0.6);
+  --fallback-border-heavy-rgba: rgba(128, 128, 128, 0.65);
+  --fallback-accent-hover-rgba: rgba(0, 123, 255, 0.08);
+  --fallback-accent-border-rgba: rgba(0, 123, 255, 0.25);
+  --fallback-danger-rgba: rgba(220, 53, 69, 0.25);
+
+  /* Semantic mix variables (fallbacks). Components should use these. */
+  --accent-hover: var(--fallback-accent-hover-rgba);
+  --accent-border: var(--fallback-accent-border-rgba);
+  --border-mix-60: var(--fallback-border-rgba);
+  --border-mix-65: var(--fallback-border-heavy-rgba);
+  --surface-mix-82: rgba(255, 255, 255, 0.82);
+  --surface-mix-85: rgba(255, 255, 255, 0.85);
+  --surface-mix-88: rgba(255, 255, 255, 0.88);
+  --surface-mix-92: rgba(255, 255, 255, 0.92);
+  --danger-mix-25: var(--fallback-danger-rgba);
+  --focus-ring-mix: rgba(176, 141, 87, 0.4);
 }
 
 /* Light theme */
@@ -46,6 +65,41 @@
 
   --focus-ring: #9a7744; // Darkened brass focus ring
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Light-theme fallbacks */
+  --fallback-border-rgba: rgba(209, 213, 219, 0.6);
+  --fallback-border-heavy-rgba: rgba(209, 213, 219, 0.65);
+  --fallback-accent-hover-rgba: rgba(154, 119, 68, 0.08);
+  --fallback-accent-border-rgba: rgba(154, 119, 68, 0.25);
+  --fallback-danger-rgba: rgba(165, 62, 52, 0.25);
+
+  /* Semantic mix variables for light theme */
+  --accent-hover: var(--fallback-accent-hover-rgba);
+  --accent-border: var(--fallback-accent-border-rgba);
+  --border-mix-60: var(--fallback-border-rgba);
+  --border-mix-65: var(--fallback-border-heavy-rgba);
+  --surface-mix-82: rgba(250, 247, 242, 0.82);
+  --surface-mix-85: rgba(250, 247, 242, 0.85);
+  --surface-mix-88: rgba(250, 247, 242, 0.88);
+  --surface-mix-92: rgba(250, 247, 242, 0.92);
+  --danger-mix-25: var(--fallback-danger-rgba);
+  --focus-ring-mix: rgba(154, 119, 68, 0.4);
+}
+
+/* If browser supports color-mix(), override the semantic variables to use it */
+@supports (color: color-mix(in srgb, var(--color-surface) 82%, var(--color-bg))) {
+  :root {
+    --accent-hover: color-mix(in srgb, var(--color-accent) 8%, transparent);
+    --accent-border: color-mix(in srgb, var(--color-accent) 25%, var(--color-border));
+    --border-mix-60: color-mix(in srgb, var(--color-border) 60%, transparent);
+    --border-mix-65: color-mix(in srgb, var(--color-border) 65%, transparent);
+    --surface-mix-82: color-mix(in srgb, var(--color-surface) 82%, var(--color-bg));
+    --surface-mix-85: color-mix(in srgb, var(--color-surface) 85%, transparent);
+    --surface-mix-88: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+    --surface-mix-92: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    --danger-mix-25: color-mix(in srgb, var(--color-danger) 25%, var(--color-border));
+    --focus-ring-mix: color-mix(in srgb, var(--focus-ring) 40%, transparent);
+  }
 }
 
 body {
