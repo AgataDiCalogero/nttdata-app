@@ -69,16 +69,18 @@
                 </div>
                 <button
                   type="button"
-                  class="btn btn--ghost posts-card__delete"
+                  class="btn btn--danger posts-card__delete"
                   (click)="onDelete(post)"
                   [disabled]="isDeleting(post.id)"
                   aria-label="Delete {{ post.title }}"
                 >
                   <lucide-icon [img]="Trash2"></lucide-icon>
-                  <span>{{ isDeleting(post.id) ? 'Deleting...' : 'Delete' }}</span>
+                  <span>{{ isDeleting(post.id) ? 'Deleting…' : 'Delete' }}</span>
                 </button>
               </header>
+
               <p class="posts-card__body">{{ post.body }}</p>
+
               <footer class="posts-card__footer">
                 @let comments = commentsFor(post.id);
                 <button
@@ -92,15 +94,15 @@
                   {{ comments ? 'Hide comments' : 'Show comments' }}
                 </button>
               </footer>
-              @if (commentsFor(post.id)) {
+
+              @if (comments) {
                 <div class="posts-comments" id="comments-{{ post.id }}">
                   @if (commentsAreLoading(post.id)) {
                     <div class="loading">Loading comments...</div>
                   } @else {
-                    @let commentsList = commentsFor(post.id);
-                    @if (commentsList?.length) {
+                    @if (comments.length) {
                       <ul class="comments-list">
-                        @for (comment of commentsList; track comment.id) {
+                        @for (comment of comments; track comment.id) {
                           <li class="comments-item">
                             <div class="comments-item__header">
                               <strong>{{ comment.name }}</strong>
@@ -114,6 +116,7 @@
                       <div class="state state--empty">No comments available yet.</div>
                     }
                   }
+
                   <app-comment-form
                     [postId]="post.id"
                     (created)="onCommentCreated(post.id, $event)"
