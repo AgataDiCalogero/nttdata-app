@@ -50,9 +50,10 @@ export class ThemeService {
       return stored;
     }
 
-    const prefersLight = typeof window !== 'undefined' && 'matchMedia' in window
-      ? window.matchMedia('(prefers-color-scheme: light)').matches
-      : false;
+    const prefersLight =
+      typeof window !== 'undefined' && 'matchMedia' in window
+        ? window.matchMedia('(prefers-color-scheme: light)').matches
+        : false;
 
     return prefersLight ? 'light' : 'dark';
   }
