@@ -1,11 +1,11 @@
 <section class="post-form">
   <header class="post-form__header">
-    <h2>Crea un nuovo post</h2>
-    <p>Condividi idee o segnalazioni per migliorare la citta'.</p>
+    <h2>Create a new post</h2>
+    <p>Share ideas or reports to help improve the city.</p>
   </header>
 
   @if (loadingUsers() && !users().length) {
-    <div class="post-form__loading">Caricamento elenco autori...</div>
+    <div class="post-form__loading">Loading authors list...</div>
   }
 
   @if (loadError()) {
@@ -17,72 +17,72 @@
         (click)="retryLoadUsers()"
         [disabled]="loadingUsers()"
       >
-        Riprova
+        Retry
       </button>
     </div>
   }
 
   <form class="post-form__body" [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-field">
-      <label for="post-user">Autore</label>
+      <label for="post-user">Author</label>
       <select
         id="post-user"
         formControlName="userId"
         [disabled]="submitting() || loadingUsers() || !users().length"
       >
-        <option [ngValue]="0">Seleziona autore</option>
+        <option [ngValue]="0">Select author</option>
         @for (user of users(); track user.id) {
           <option [ngValue]="user.id">{{ user.name }} (ID {{ user.id }})</option>
         }
       </select>
       @if (userIdInvalid) {
-        <p class="field-error">Seleziona un autore valido.</p>
+        <p class="field-error">Please select a valid author.</p>
       }
     </div>
 
     <div class="form-field">
-      <label for="post-title">Titolo</label>
+      <label for="post-title">Title</label>
       <input
         id="post-title"
         type="text"
         formControlName="title"
-        placeholder="Titolo del post"
+        placeholder="Post title"
         [disabled]="submitting()"
         maxlength="120"
       />
       @if (titleInvalid) {
-        <p class="field-error">Il titolo deve contenere almeno 5 caratteri.</p>
+        <p class="field-error">Title must be at least 5 characters long.</p>
       }
     </div>
 
     <div class="form-field">
-      <label for="post-body">Contenuto</label>
+      <label for="post-body">Content</label>
       <textarea
         id="post-body"
         formControlName="body"
         rows="8"
-        placeholder="Descrivi la tua idea o segnalazione"
+        placeholder="Describe your idea or report"
         [disabled]="submitting()"
         maxlength="500"
       ></textarea>
       <div class="field-hint">
         <span>{{ form.controls.body.value.length }}/500</span>
         @if (bodyInvalid) {
-          <p class="field-error">Descrivi il post con almeno 20 caratteri.</p>
+          <p class="field-error">Please describe the post with at least 20 characters.</p>
         }
       </div>
     </div>
 
     <div class="post-form__actions">
       <button type="button" class="btn btn--ghost" (click)="cancel()" [disabled]="submitting()">
-        Annulla
+        Cancel
       </button>
       <button
         type="submit"
         class="btn btn--primary"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
-        {{ submitting() ? 'Salvataggio...' : 'Crea post' }}
+        {{ submitting() ? 'Saving...' : 'Create post' }}
       </button>
     </div>
   </form>

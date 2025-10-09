@@ -18,7 +18,7 @@
     }
 
     <section class="user-posts">
-      <h3>Post dell'utente</h3>
+      <h3>User posts</h3>
 
       @if (posts().length) {
         <ul class="posts-list">
@@ -28,13 +28,13 @@
                 <h4>{{ p.title }}</h4>
                 <p>{{ p.body }}</p>
                 <button type="button" (click)="toggleComments(p.id)">
-                  {{ commentsMap()[p.id] ? 'Nascondi commenti' : 'Mostra commenti' }}
+                  {{ commentsMap()[p.id] ? 'Hide comments' : 'Show comments' }}
                 </button>
 
                 @if (commentsMap()[p.id]) {
                   <div class="comments">
                     @if (commentsLoading()[p.id]) {
-                      <div class="loading">Caricamento commenti...</div>
+                      <div class="loading">Loading comments...</div>
                     } @else {
                       <ul>
                         <template>
@@ -55,7 +55,7 @@
           </template>
         </ul>
       } @else {
-        <div class="empty">Nessun post disponibile</div>
+        <div class="empty">No posts available</div>
       }
     </section>
   }
