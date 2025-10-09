@@ -7,7 +7,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
@@ -18,7 +18,7 @@ import { ToastService } from '../../../../shared/toast/toast.service';
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './user-form.html',
   styleUrls: ['./user-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

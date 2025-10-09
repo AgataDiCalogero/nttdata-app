@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { UsersApiService } from '../services/users-api-service';
 import { PostsApiService } from '../../posts/posts-api.service';
@@ -8,7 +8,7 @@ import type { User, Post, Comment } from '@app/models';
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './user-detail.html',
   styleUrls: ['./user-detail.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

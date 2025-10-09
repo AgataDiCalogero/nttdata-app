@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 
 export interface DeleteConfirmData {
@@ -12,7 +12,7 @@ export interface DeleteConfirmData {
 @Component({
   selector: 'app-delete-confirm',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './delete-confirm.component.html',
   styleUrls: ['./delete-confirm.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

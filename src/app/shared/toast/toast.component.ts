@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ToastService } from './toast.service';
 
 @Component({
   standalone: true,
   selector: 'app-toast',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './toast.html',
   styleUrls: ['./toast.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

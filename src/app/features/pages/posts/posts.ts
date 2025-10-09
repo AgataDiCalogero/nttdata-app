@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { PostsApiService } from './posts-api.service';
 import type { Comment, PaginationMeta, Post } from '@app/models';
 import { LucideAngularModule, MessageSquare, Plus } from 'lucide-angular';
@@ -23,7 +23,7 @@ import { PostForm } from './post-form/post-form';
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, ToastComponent],
+  imports: [ReactiveFormsModule, LucideAngularModule, ToastComponent],
   templateUrl: './posts.html',
   styleUrls: ['./posts.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

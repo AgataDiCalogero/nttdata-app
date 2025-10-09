@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '../posts-api.service';
@@ -11,7 +11,7 @@ import type { CreatePost, User } from '@app/models';
 @Component({
   selector: 'app-post-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './post-form.html',
   styleUrls: ['./post-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

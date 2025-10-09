@@ -1,6 +1,8 @@
 <div class="toast-container">
-  <div *ngFor="let t of svc.messages()" class="toast toast--{{ t.type }}">
-    <span class="toast__text">{{ t.text }}</span>
-    <button class="toast__close" (click)="svc.dismiss(t.id)">×</button>
-  </div>
+  @for (t of svc.messages(); track t) {
+    <div class="toast toast--{{ t.type }}">
+      <span class="toast__text">{{ t.text }}</span>
+      <button class="toast__close" (click)="svc.dismiss(t.id)">×</button>
+    </div>
+  }
 </div>

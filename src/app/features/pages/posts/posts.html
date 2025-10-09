@@ -11,7 +11,7 @@
       type="button"
       (click)="openCreatePost()"
       aria-label="Crea nuovo post"
-    >
+      >
       <lucide-icon [img]="Plus"></lucide-icon>
       Nuovo post
     </button>
@@ -23,130 +23,136 @@
       [formGroup]="searchForm"
       (submit)="$event.preventDefault()"
       aria-label="Filtri di ricerca"
-    >
+      >
       <input
         type="search"
         formControlName="title"
         placeholder="Cerca per titolo"
         aria-label="Cerca per titolo"
-      />
-      <select formControlName="userId" aria-label="Filtra per autore">
-        <option [ngValue]="0">Tutti gli autori</option>
-        @for (user of userOptions(); track user.id) {
-          <option [ngValue]="user.id">{{ user.name }}</option>
-        }
-      </select>
-      <button type="button" class="btn btn--ghost" (click)="resetFilters()">Reset</button>
-    </form>
-    <div class="posts-toolbar__summary">
-      <span>{{ posts().length }} post visualizzati</span>
-    </div>
-  </div>
-
-  <section class="posts-content">
-    @if (loading()) {
-      <ul class="posts-list posts-list--skeleton">
-        <li class="posts-card skeleton" *ngFor="let placeholder of [1, 2, 3]"></li>
-      </ul>
-    } @else if (error()) {
-      <div class="state state--error">
-        <p>{{ error() }}</p>
-        <button class="btn btn--primary" type="button" (click)="refresh()">Riprova</button>
-      </div>
-    } @else {
-      @if (posts().length) {
-        <ul class="posts-list">
-          <li class="posts-card" *ngFor="let post of posts()">
-            <header class="posts-card__header">
-              <h3>{{ post.title }}</h3>
-              <span class="posts-card__meta">
-                Autore: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
-              </span>
-            </header>
-            <p class="posts-card__body">{{ post.body }}</p>
-            <footer class="posts-card__footer">
-              @let comments = commentsFor(post.id);
-              <button
-                type="button"
-                class="btn btn--ghost"
-                (click)="toggleComments(post.id)"
-                [attr.aria-expanded]="comments ? 'true' : 'false'"
-                [attr.aria-controls]="'comments-' + post.id"
-              >
-                <lucide-icon [img]="MessageSquare"></lucide-icon>
-                {{ comments ? 'Nascondi commenti' : 'Mostra commenti' }}
-              </button>
-            </footer>
-            @if (commentsFor(post.id)) {
-              <div class="posts-comments" id="comments-{{ post.id }}">
-                @if (commentsAreLoading(post.id)) {
-                  <div class="loading">Caricamento commenti...</div>
-                } @else {
-                  @let commentsList = commentsFor(post.id);
-                  @if (commentsList?.length) {
-                    <ul class="comments-list">
-                      <li class="comments-item" *ngFor="let comment of commentsList">
-                        <div class="comments-item__header">
-                          <strong>{{ comment.name }}</strong>
-                          <span>{{ comment.email }}</span>
-                        </div>
-                        <p>{{ comment.body }}</p>
-                      </li>
-                    </ul>
-                  } @else {
-                    <div class="state state--empty">Nessun commento presente.</div>
-                  }
-                }
-              </div>
-            }
-          </li>
-        </ul>
-      } @else {
-        <div class="state state--empty">
-          <p>Nessun post disponibile con i filtri correnti.</p>
-          <button class="btn btn--ghost" type="button" (click)="resetFilters()">
-            Azzera filtri
-          </button>
-        </div>
-      }
-    }
-  </section>
-
-  @if (hasPagination()) {
-    <div class="posts-pagination" aria-label="Paginazione post">
-      <div class="posts-pagination__controls">
-        <button
-          class="btn btn--ghost"
-          type="button"
-          (click)="setPage(currentPage() - 1)"
-          [disabled]="currentPage() <= 1"
-        >
-          Precedente
-        </button>
-        <span>Pagina {{ currentPage() }} di {{ totalPages() }}</span>
-        <button
-          class="btn btn--ghost"
-          type="button"
-          (click)="setPage(currentPage() + 1)"
-          [disabled]="currentPage() >= totalPages()"
-        >
-          Successiva
-        </button>
-      </div>
-      <div class="posts-pagination__page-size">
-        <label for="per-page-select">Per pagina</label>
-        <select
-          id="per-page-select"
-          [value]="currentPerPage()"
-          (change)="changePerPage(+$any($event.target).value)"
-        >
-          @for (size of perPageOptions; track size) {
-            <option [value]="size">{{ size }}</option>
+        />
+        <select formControlName="userId" aria-label="Filtra per autore">
+          <option [ngValue]="0">Tutti gli autori</option>
+          @for (user of userOptions(); track user.id) {
+            <option [ngValue]="user.id">{{ user.name }}</option>
           }
         </select>
+        <button type="button" class="btn btn--ghost" (click)="resetFilters()">Reset</button>
+      </form>
+      <div class="posts-toolbar__summary">
+        <span>{{ posts().length }} post visualizzati</span>
       </div>
     </div>
-  }
 
-  <app-toast></app-toast>
-</section>
+    <section class="posts-content">
+      @if (loading()) {
+        <ul class="posts-list posts-list--skeleton">
+          @for (placeholder of [1, 2, 3]; track placeholder) {
+            <li class="posts-card skeleton"></li>
+          }
+        </ul>
+      } @else if (error()) {
+        <div class="state state--error">
+          <p>{{ error() }}</p>
+          <button class="btn btn--primary" type="button" (click)="refresh()">Riprova</button>
+        </div>
+      } @else {
+        @if (posts().length) {
+          <ul class="posts-list">
+            @for (post of posts(); track post) {
+              <li class="posts-card">
+                <header class="posts-card__header">
+                  <h3>{{ post.title }}</h3>
+                  <span class="posts-card__meta">
+                    Autore: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
+                  </span>
+                </header>
+                <p class="posts-card__body">{{ post.body }}</p>
+                <footer class="posts-card__footer">
+                  @let comments = commentsFor(post.id);
+                  <button
+                    type="button"
+                    class="btn btn--ghost"
+                    (click)="toggleComments(post.id)"
+                    [attr.aria-expanded]="comments ? 'true' : 'false'"
+                    [attr.aria-controls]="'comments-' + post.id"
+                    >
+                    <lucide-icon [img]="MessageSquare"></lucide-icon>
+                    {{ comments ? 'Nascondi commenti' : 'Mostra commenti' }}
+                  </button>
+                </footer>
+                @if (commentsFor(post.id)) {
+                  <div class="posts-comments" id="comments-{{ post.id }}">
+                    @if (commentsAreLoading(post.id)) {
+                      <div class="loading">Caricamento commenti...</div>
+                    } @else {
+                      @let commentsList = commentsFor(post.id);
+                      @if (commentsList?.length) {
+                        <ul class="comments-list">
+                          @for (comment of commentsList; track comment) {
+                            <li class="comments-item">
+                              <div class="comments-item__header">
+                                <strong>{{ comment.name }}</strong>
+                                <span>{{ comment.email }}</span>
+                              </div>
+                              <p>{{ comment.body }}</p>
+                            </li>
+                          }
+                        </ul>
+                      } @else {
+                        <div class="state state--empty">Nessun commento presente.</div>
+                      }
+                    }
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        } @else {
+          <div class="state state--empty">
+            <p>Nessun post disponibile con i filtri correnti.</p>
+            <button class="btn btn--ghost" type="button" (click)="resetFilters()">
+              Azzera filtri
+            </button>
+          </div>
+        }
+      }
+    </section>
+
+    @if (hasPagination()) {
+      <div class="posts-pagination" aria-label="Paginazione post">
+        <div class="posts-pagination__controls">
+          <button
+            class="btn btn--ghost"
+            type="button"
+            (click)="setPage(currentPage() - 1)"
+            [disabled]="currentPage() <= 1"
+            >
+            Precedente
+          </button>
+          <span>Pagina {{ currentPage() }} di {{ totalPages() }}</span>
+          <button
+            class="btn btn--ghost"
+            type="button"
+            (click)="setPage(currentPage() + 1)"
+            [disabled]="currentPage() >= totalPages()"
+            >
+            Successiva
+          </button>
+        </div>
+        <div class="posts-pagination__page-size">
+          <label for="per-page-select">Per pagina</label>
+          <select
+            id="per-page-select"
+            [value]="currentPerPage()"
+            (change)="changePerPage(+$any($event.target).value)"
+            >
+            @for (size of perPageOptions; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    }
+
+    <app-toast></app-toast>
+  </section>

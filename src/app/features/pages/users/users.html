@@ -5,120 +5,121 @@
       class="users-search"
       placeholder="Search name or email"
       (input)="onSearch($any($event.target).value)"
-    />
-    <button class="btn" (click)="openNewUserModal()" aria-label="Create new user">
-      + New User
-    </button>
-  </div>
-</header>
-<ng-container *ngIf="displayed$ | async as data">
-  <ng-container *ngIf="loading(); else notLoading">
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="skeleton" *ngFor="let i of [1, 2, 3, 4, 5]">
-          <td colspan="5">&nbsp;</td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-container>
-
-  <ng-template #notLoading>
-    <div *ngIf="error(); else showList" class="users-error">
-      <p>{{ error() }}</p>
-      <button class="btn" (click)="loadUsers()">Riprova</button>
+      />
+      <button class="btn" (click)="openNewUserModal()" aria-label="Create new user">
+        + New User
+      </button>
     </div>
-  </ng-template>
-
-  <ng-template #showList>
-    <div *ngIf="data.total > 0; else emptyState">
+  </header>
+  @if (displayed$ | async; as data) {
+    @if (loading()) {
       <table class="users-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th (click)="toggleSort('name')" class="sortable">
-              Name
-              <small>{{ sortDir('name') === 1 ? '▲' : sortDir('name') === -1 ? '▼' : '' }}</small>
-            </th>
-            <th (click)="toggleSort('email')" class="sortable">
-              Email
-              <small>{{ sortDir('email') === 1 ? '▲' : sortDir('email') === -1 ? '▼' : '' }}</small>
-            </th>
-            <th (click)="toggleSort('status')" class="sortable">
-              Status
-              <small>{{
-                sortDir('status') === 1 ? '▲' : sortDir('status') === -1 ? '▼' : ''
-              }}</small>
-            </th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of data.items; trackBy: trackById">
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-              <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
-            </td>
-            <td class="actions">
-              <button
-                type="button"
-                (click)="openEditUserModal(user.id)"
-                title="Edit user"
-                aria-label="Edit {{ user.name }}"
-                class="edit-btn"
-              >
-                ✏️
-              </button>
-              <button
-                type="button"
-                (click)="onDelete(user)"
-                title="Delete user"
-                aria-label="Delete {{ user.name }}"
-              >
-                <lucide-icon [img]="Trash2"></lucide-icon>
-              </button>
-            </td>
-          </tr>
+          @for (i of [1, 2, 3, 4, 5]; track i) {
+            <tr class="skeleton">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+          }
         </tbody>
       </table>
+    } @else {
+      @if (error()) {
+        <div class="users-error">
+          <p>{{ error() }}</p>
+          <button class="btn" (click)="loadUsers()">Riprova</button>
+        </div>
+      } @else {
+        @if (data.total > 0) {
+          <div>
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th (click)="toggleSort('name')" class="sortable">
+                    Name
+                    <small>{{ sortDir('name') === 1 ? '▲' : sortDir('name') === -1 ? '▼' : '' }}</small>
+                  </th>
+                  <th (click)="toggleSort('email')" class="sortable">
+                    Email
+                    <small>{{ sortDir('email') === 1 ? '▲' : sortDir('email') === -1 ? '▼' : '' }}</small>
+                  </th>
+                  <th (click)="toggleSort('status')" class="sortable">
+                    Status
+                    <small>{{
+                      sortDir('status') === 1 ? '▲' : sortDir('status') === -1 ? '▼' : ''
+                    }}</small>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of data.items; track trackById($index, user)) {
+                  <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                      <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
+                    </td>
+                    <td class="actions">
+                      <button
+                        type="button"
+                        (click)="openEditUserModal(user.id)"
+                        title="Edit user"
+                        aria-label="Edit {{ user.name }}"
+                        class="edit-btn"
+                        >
+                        ✏️
+                      </button>
+                      <button
+                        type="button"
+                        (click)="onDelete(user)"
+                        title="Delete user"
+                        aria-label="Delete {{ user.name }}"
+                        >
+                        <lucide-icon [img]="Trash2"></lucide-icon>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            <div class="users-pagination">
+              <button
+                class="btn"
+                [disabled]="currentPage().page <= 1"
+                (click)="setPage(currentPage().page - 1, currentPage().per_page)"
+                >
+                Prev
+              </button>
+              <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
+              <button
+                class="btn"
+                [disabled]="currentPage().page >= totalPages(data.total)"
+                (click)="setPage(currentPage().page + 1, currentPage().per_page)"
+                >
+                Next
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="users-empty">
+            <p>No users found.</p>
+            <a class="btn" routerLink="/users/new">Create first user</a>
+          </div>
+        }
+      }
+    }
+  }
 
-      <div class="users-pagination">
-        <button
-          class="btn"
-          [disabled]="currentPage().page <= 1"
-          (click)="setPage(currentPage().page - 1, currentPage().per_page)"
-        >
-          Prev
-        </button>
-        <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
-        <button
-          class="btn"
-          [disabled]="currentPage().page >= totalPages(data.total)"
-          (click)="setPage(currentPage().page + 1, currentPage().per_page)"
-        >
-          Next
-        </button>
-      </div>
-    </div>
-
-    <ng-template #emptyState>
-      <div class="users-empty">
-        <p>No users found.</p>
-        <a class="btn" routerLink="/users/new">Create first user</a>
-      </div>
-    </ng-template>
-  </ng-template>
-</ng-container>
-
-<app-toast></app-toast>
-<!-- delete confirmation handled inline via onDelete() -->
+  <app-toast></app-toast>
+  <!-- delete confirmation handled inline via onDelete() -->
