@@ -1,2 +1,22 @@
-<h2>Posts Page</h2>
-<p>Qui comparirà la lista post.</p>
+<section class="posts-page">
+  <h2>Posts</h2>
+  @if (loading()) {
+    <div class="loading">Caricamento...</div>
+  } @else if (error()) {
+    <div class="error">{{ error() }}</div>
+  } @else {
+    @if (posts().length) {
+      <ul class="posts-list">
+        @for (p of posts(); track p.id) {
+          <li class="post-item">
+            <h3>{{ p.title }}</h3>
+            <p class="body">{{ p.body }}</p>
+            <div class="meta">Autore ID: {{ p.user_id }}</div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="empty">Nessun post disponibile</div>
+    }
+  }
+</section>

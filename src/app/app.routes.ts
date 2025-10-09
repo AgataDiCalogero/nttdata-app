@@ -23,6 +23,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/pages/users/user-form/user-form').then((m) => m.UserForm),
       },
+      {
+        path: ':id',
+        // user detail page showing user info and their posts
+        loadComponent: () =>
+          import('./features/pages/users/user-detail/user-detail').then((m) => m.UserDetail),
+      },
     ],
   },
   {
