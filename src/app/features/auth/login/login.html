@@ -1,15 +1,50 @@
-<div class="login-container">
-  <h2>Login</h2>
-  <form (ngSubmit)="onSubmit()">
-    <label for="token">Token:</label>
-    <input
-      type="text"
-      id="token"
-      [(ngModel)]="token"
-      name="token"
-      placeholder="Enter your token"
-      required
-    />
-    <button type="submit">Login</button>
-  </form>
+<div class="login-page">
+  <div class="login-card">
+    <!-- Icon/Logo -->
+    <div class="icon-wrapper">
+      <div class="icon-container">
+        <svg
+          class="lock-icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h2 class="title">Bentornato</h2>
+    <p class="subtitle">Inserisci il tuo token per accedere</p>
+
+    <!-- Form -->
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="token" class="form-label">Token di accesso</label>
+        <input
+          type="password"
+          id="token"
+          [(ngModel)]="token"
+          name="token"
+          placeholder="Inserisci il tuo token"
+          class="form-input"
+          required
+        />
+      </div>
+
+      <button type="submit" class="submit-button">Accedi</button>
+    </form>
+
+    <!-- Footer -->
+    <div class="footer">
+      <button type="button" class="forgot-link">Hai dimenticato il token?</button>
+    </div>
+  </div>
 </div>
