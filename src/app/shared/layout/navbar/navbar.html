@@ -1,21 +1,47 @@
-<header class="app-navbar">
-  <h1>NTT Data App</h1>
-  <nav>
+<header class="app-navbar" [attr.data-menu-open]="menuOpen">
+  <a class="brand" routerLink="/" aria-label="NTT Data Home">
+    <h1>NTT Data App</h1>
+  </a>
+  <nav role="navigation" aria-label="Main navigation">
     @if (!isLogged) {
-      <a routerLink="/login">Login</a>
+      <a routerLink="/login" (click)="menuOpen && toggleMenu()">Login</a>
     }
     @if (isLogged) {
-      <a routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      <a
+        routerLink="/users"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="menuOpen && toggleMenu()"
         >Users</a
       >
-      <a routerLink="/posts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      <a
+        routerLink="/posts"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="menuOpen && toggleMenu()"
         >Posts</a
       >
     }
   </nav>
-  <app-theme-toggle></app-theme-toggle>
-  <!-- Show logout when user is authenticated -->
-  @if (isLogged) {
-    <button class="logout" (click)="logout()" aria-label="Logout">Logout</button>
+  <!-- Mobile menu toggle -->
+  <button
+    class="menu-toggle"
+    [attr.aria-expanded]="menuOpen"
+    aria-label="Toggle navigation"
+    (click)="toggleMenu()"
+  >
+    <span class="menu-icon" aria-hidden="true"></span>
+  </button>
+
+  <!-- overlay shown when mobile menu is open -->
+  @if (menuOpen) {
+    <div class="mobile-overlay" (click)="toggleMenu()" aria-hidden="true"></div>
   }
+  <div class="controls">
+    <app-theme-toggle></app-theme-toggle>
+    <!-- Show logout when user is authenticated -->
+    @if (isLogged) {
+      <button class="logout" (click)="logout()" aria-label="Logout">Logout</button>
+    }
+  </div>
 </header>

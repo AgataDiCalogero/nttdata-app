@@ -3,67 +3,203 @@
   background: var(--color-primary);
   color: var(--color-on-primary);
   display: flex;
+  gap: var(--space-md);
   justify-content: space-between;
   align-items: center;
-}
 
-a {
-  color: var(--color-accent);
-  text-decoration: none;
-  margin-left: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  h1 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
 
-  &:hover {
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  /* overlay and body lock for mobile menu */
+  .mobile-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 20;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-left: var(--space-sm);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: 4px;
+      transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.12s ease;
+
+      &:hover {
+        color: var(--color-on-accent);
+        text-decoration: underline; /* WCAG 2.4.7 Non-color identification */
+        background: var(--accent-hover);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+        text-decoration: underline;
+        background: var(--accent-hover);
+      }
+    }
+
+    /* Active link styling is a higher specificity state */
+    a.active {
+      background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+      color: var(--color-on-accent);
+      box-shadow: none;
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: 6px;
+
+      &:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  /* logout button grouped under navbar scope */
+  .logout {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-accent);
     color: var(--color-on-accent);
-    text-decoration: underline; /* WCAG 2.4.7 Non-color identification */
-    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid var(--color-accent);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition:
+      transform 0.12s ease,
+      background 0.12s ease,
+      border-color 0.12s ease;
+
+    &:hover {
+      background: var(--color-accent-dark);
+      border-color: var(--color-accent-dark);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
   }
 
-  /* Enhanced focus visibility - WCAG 2.4.7 */
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-    text-decoration: underline;
-    background: rgba(255, 255, 255, 0.05);
+  /* controls groups theme toggle and logout into a horizontal stack */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
   }
 }
 
-.app-navbar nav a.active {
-  /* stronger accent background so it remains visible in both themes */
-  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
-  color: var(--color-on-accent);
-  box-shadow: none;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 6px;
-}
+/* Responsive: collapse nav into a mobile menu */
+@media (max-width: 640px) {
+  .app-navbar {
+    padding: var(--space-sm) var(--space-md);
 
-/* ensure active nav links are keyboard visible */
-.app-navbar nav a.active:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
+    nav {
+      display: none; /* default hide on small screens */
+    }
 
-button.logout {
-  padding: var(--space-xs) var(--space-md);
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  border: 2px solid var(--color-accent);
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    .menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid var(--border-mix-60);
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-  &:hover {
-    background: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-    transform: translateY(-1px);
-  }
+    .menu-icon {
+      width: 18px;
+      height: 2px;
+      background: var(--color-on-primary);
+      position: relative;
+      display: inline-block;
 
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 18px;
+        height: 2px;
+        background: var(--color-on-primary);
+        transition:
+          transform 0.18s ease,
+          opacity 0.18s ease;
+      }
+
+      &::before {
+        top: -6px;
+      }
+      &::after {
+        top: 6px;
+      }
+    }
+
+    /* when menu open, show a stacked nav panel */
+    &[data-menu-open='true'] {
+      nav {
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        background: var(--color-surface);
+        color: var(--color-on-surface);
+        flex-direction: column;
+        gap: var(--space-sm);
+        padding: var(--space-md);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        z-index: 30;
+      }
+
+      .menu-icon {
+        background: transparent;
+
+        &::before {
+          transform: translateY(6px) rotate(45deg);
+        }
+        &::after {
+          transform: translateY(-6px) rotate(-45deg);
+        }
+      }
+    }
+
+    .controls {
+      display: flex;
+      gap: var(--space-sm);
+    }
   }
 }

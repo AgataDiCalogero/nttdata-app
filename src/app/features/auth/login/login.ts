@@ -8,7 +8,7 @@ import { AuthService } from '../../../core/auth/auth-service/auth-service';
   selector: 'app-login',
   imports: [FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
+  styleUrls: ['./login.scss'],
 })
 export class Login {
   token: string = '';

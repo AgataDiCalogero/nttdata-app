@@ -1,107 +1,6 @@
-/* Dark theme (default) */
-:root {
-  --color-primary: #1e1e1e; // Luxury dark surface
-  --color-on-primary: #f5f5f5; // Ivory-inspired on-dark
-  --color-bg: #151515; // Deep luxury background
+@use './styles/variables' as *;
 
-  --color-accent: #b08d57; // Reference brass
-  --color-accent-dark: #8b6b3f; // Darker brass for hover states
-  --color-on-accent: #1c1c1c; // Dark on brass
-
-  --color-surface: #262626; // Warm dark surface
-  --color-on-surface: #f5f5f5; // Consistent light text
-
-  --color-border: #3a3f4a; // WCAG contrast fix: stronger border
-  --color-muted: #a0a6b8; // WCAG contrast fix: 4.51:1 on bg
-
-  --color-danger: #c44536; // Warm red (brass-coordinated)
-  --color-danger-dark: #a13628; // Darker red for hover states
-  --color-success: #6b8e5a; // Muted green (luxury)
-  --color-warning: #b8860b; // Dark goldenrod (brass family)
-
-  --focus-ring: #b08d57; // Brass focus ring
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-
-  /* Centralized fallbacks for color-mix() uses in components */
-  --fallback-border-rgba: rgba(128, 128, 128, 0.6);
-  --fallback-border-heavy-rgba: rgba(128, 128, 128, 0.65);
-  --fallback-accent-hover-rgba: rgba(0, 123, 255, 0.08);
-  --fallback-accent-border-rgba: rgba(0, 123, 255, 0.25);
-  --fallback-danger-rgba: rgba(220, 53, 69, 0.25);
-
-  /* Semantic mix variables (fallbacks). Components should use these. */
-  --accent-hover: var(--fallback-accent-hover-rgba);
-  --accent-border: var(--fallback-accent-border-rgba);
-  --border-mix-60: var(--fallback-border-rgba);
-  --border-mix-65: var(--fallback-border-heavy-rgba);
-  --surface-mix-82: rgba(255, 255, 255, 0.82);
-  --surface-mix-85: rgba(255, 255, 255, 0.85);
-  --surface-mix-88: rgba(255, 255, 255, 0.88);
-  --surface-mix-92: rgba(255, 255, 255, 0.92);
-  --danger-mix-25: var(--fallback-danger-rgba);
-  --focus-ring-mix: rgba(176, 141, 87, 0.4);
-}
-
-/* Light theme */
-.light-theme {
-  --color-primary: #f8f5f0; // Reference ivory
-  --color-on-primary: #1c1c1c; // Reference on-ivory
-  --color-bg: #faf7f2; // Warmer ivory bg
-
-  --color-accent: #9a7744; // Reference darkened brass
-  --color-accent-dark: #7d5d2f; // Darker brass for hover states
-  --color-on-accent: #f8f5f0; // Ivory on brass
-
-  --color-surface: #fcf9f4; // Ivory surface
-  --color-on-surface: #1c1c1c; // Dark text
-
-  --color-border: #d1d5db; // WCAG contrast fix: stronger border
-  --color-muted: #5a6069; // WCAG contrast fix: 4.68:1 on bg
-
-  --color-danger: #a53e34; // Darker red for light theme
-  --color-danger-dark: #8b2b1e; // Darker red for hover states
-  --color-success: #5a7a4a; // Darker green for light theme
-  --color-warning: #996f0a; // Darker gold for light theme
-
-  --focus-ring: #9a7744; // Darkened brass focus ring
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-  /* Light-theme fallbacks */
-  --fallback-border-rgba: rgba(209, 213, 219, 0.6);
-  --fallback-border-heavy-rgba: rgba(209, 213, 219, 0.65);
-  --fallback-accent-hover-rgba: rgba(154, 119, 68, 0.08);
-  --fallback-accent-border-rgba: rgba(154, 119, 68, 0.25);
-  --fallback-danger-rgba: rgba(165, 62, 52, 0.25);
-
-  /* Semantic mix variables for light theme */
-  --accent-hover: var(--fallback-accent-hover-rgba);
-  --accent-border: var(--fallback-accent-border-rgba);
-  --border-mix-60: var(--fallback-border-rgba);
-  --border-mix-65: var(--fallback-border-heavy-rgba);
-  --surface-mix-82: rgba(250, 247, 242, 0.82);
-  --surface-mix-85: rgba(250, 247, 242, 0.85);
-  --surface-mix-88: rgba(250, 247, 242, 0.88);
-  --surface-mix-92: rgba(250, 247, 242, 0.92);
-  --danger-mix-25: var(--fallback-danger-rgba);
-  --focus-ring-mix: rgba(154, 119, 68, 0.4);
-}
-
-/* If browser supports color-mix(), override the semantic variables to use it */
-@supports (color: color-mix(in srgb, var(--color-surface) 82%, var(--color-bg))) {
-  :root {
-    --accent-hover: color-mix(in srgb, var(--color-accent) 8%, transparent);
-    --accent-border: color-mix(in srgb, var(--color-accent) 25%, var(--color-border));
-    --border-mix-60: color-mix(in srgb, var(--color-border) 60%, transparent);
-    --border-mix-65: color-mix(in srgb, var(--color-border) 65%, transparent);
-    --surface-mix-82: color-mix(in srgb, var(--color-surface) 82%, var(--color-bg));
-    --surface-mix-85: color-mix(in srgb, var(--color-surface) 85%, transparent);
-    --surface-mix-88: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
-    --surface-mix-92: color-mix(in srgb, var(--color-surface) 92%, transparent);
-    --danger-mix-25: color-mix(in srgb, var(--color-danger) 25%, var(--color-border));
-    --focus-ring-mix: color-mix(in srgb, var(--focus-ring) 40%, transparent);
-  }
-}
-
+/* Base & layout styles */
 body {
   margin: 0;
   font-family: Inter, sans-serif;
@@ -136,17 +35,6 @@ select:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 1px;
   border-color: var(--focus-ring);
-}
-
-/* 8pt Grid Spacing System */
-:root {
-  --space-unit: 8px;
-  --space-xs: calc(var(--space-unit) * 0.5); /* 4px */
-  --space-sm: var(--space-unit); /* 8px */
-  --space-md: calc(var(--space-unit) * 2); /* 16px */
-  --space-lg: calc(var(--space-unit) * 3); /* 24px */
-  --space-xl: calc(var(--space-unit) * 4); /* 32px - Available for future use */
-  --space-xxl: calc(var(--space-unit) * 6); /* 48px */
 }
 
 /* Modal Dialog Styles */
