@@ -1,0 +1,89 @@
+<section class="post-form">
+  <header class="post-form__header">
+    <h2>Crea un nuovo post</h2>
+    <p>Condividi idee o segnalazioni per migliorare la citta'.</p>
+  </header>
+
+  @if (loadingUsers() && !users().length) {
+    <div class="post-form__loading">Caricamento elenco autori...</div>
+  }
+
+  @if (loadError()) {
+    <div class="post-form__alert">
+      <p>{{ loadError() }}</p>
+      <button
+        type="button"
+        class="btn btn--ghost"
+        (click)="retryLoadUsers()"
+        [disabled]="loadingUsers()"
+      >
+        Riprova
+      </button>
+    </div>
+  }
+
+  <form class="post-form__body" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-field">
+      <label for="post-user">Autore</label>
+      <select
+        id="post-user"
+        formControlName="userId"
+        [disabled]="submitting() || loadingUsers() || !users().length"
+      >
+        <option [ngValue]="0">Seleziona autore</option>
+        @for (user of users(); track user.id) {
+          <option [ngValue]="user.id">{{ user.name }} (ID {{ user.id }})</option>
+        }
+      </select>
+      @if (userIdInvalid) {
+        <p class="field-error">Seleziona un autore valido.</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="post-title">Titolo</label>
+      <input
+        id="post-title"
+        type="text"
+        formControlName="title"
+        placeholder="Titolo del post"
+        [disabled]="submitting()"
+        maxlength="120"
+      />
+      @if (titleInvalid) {
+        <p class="field-error">Il titolo deve contenere almeno 5 caratteri.</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="post-body">Contenuto</label>
+      <textarea
+        id="post-body"
+        formControlName="body"
+        rows="8"
+        placeholder="Descrivi la tua idea o segnalazione"
+        [disabled]="submitting()"
+        maxlength="500"
+      ></textarea>
+      <div class="field-hint">
+        <span>{{ form.controls.body.value.length }}/500</span>
+        @if (bodyInvalid) {
+          <p class="field-error">Descrivi il post con almeno 20 caratteri.</p>
+        }
+      </div>
+    </div>
+
+    <div class="post-form__actions">
+      <button type="button" class="btn btn--ghost" (click)="cancel()" [disabled]="submitting()">
+        Annulla
+      </button>
+      <button
+        type="submit"
+        class="btn btn--primary"
+        [disabled]="submitting() || !users().length || loadingUsers()"
+      >
+        {{ submitting() ? 'Salvataggio...' : 'Crea post' }}
+      </button>
+    </div>
+  </form>
+</section>
