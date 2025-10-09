@@ -42,8 +42,8 @@
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
   border-radius: 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--color-danger) 30%, var(--color-border));
-  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+  border: 1px solid var(--color-danger-border, rgba(220, 53, 69, 0.3));
+  background: var(--color-danger-bg, rgba(220, 53, 69, 0.1));
 
   p {
     margin: 0;
@@ -69,8 +69,13 @@
   select,
   textarea {
     border-radius: 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
-    background: color-mix(in srgb, var(--color-bg) 40%, var(--color-surface));
+    border: 1px solid var(--color-border-light, rgba(125, 125, 125, 0.6));
+    background: var(--color-input-bg, #f5f5f5);
+
+    @supports (border: 1px solid color-mix(in srgb, red, blue)) {
+      border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+      background: color-mix(in srgb, var(--color-bg) 40%, var(--color-surface));
+    }
     color: var(--color-on-surface);
     padding: var(--space-sm) var(--space-md);
     transition:
