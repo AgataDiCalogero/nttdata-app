@@ -174,8 +174,9 @@
   /* BEM elements nested for clarity; they compile to .posts-card__* selectors */
   &__header {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-sm);
 
     h3 {
       margin: 0;
@@ -184,9 +185,30 @@
     }
   }
 
+  &__title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
   &__meta {
     font-size: 0.85rem;
     color: var(--color-muted);
+  }
+
+  &__delete {
+    padding-inline: var(--space-sm);
+    gap: var(--space-xs);
+    font-size: 0.85rem;
+
+    &[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    span {
+      white-space: nowrap;
+    }
   }
 
   &__body {

@@ -11,15 +11,19 @@ import { CommentForm } from '../../../shared/comments/comment-form/comment-form'
 import { Dialog } from '@angular/cdk/dialog';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LucideAngularModule, MessageSquare, Plus } from 'lucide-angular';
+import { LucideAngularModule, MessageSquare, Plus, Trash2 } from 'lucide-angular';
 import { debounceTime, distinctUntilChanged, map, switchMap, catchError, of, tap } from 'rxjs';
 import { User } from '@app/models';
-import { PostsApiService } from './posts-api.service';
+import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, PaginationMeta, Post } from '@app/models';
 import { ToastComponent } from '../../../shared/toast/toast.component';
 import { ToastService } from '../../../shared/toast/toast.service';
-import { UsersApiService } from '../users/services/users-api-service';
+import { UsersApiService } from '@app/services/users/users-api.service';
 import { PostForm } from './post-form/post-form';
+import {
+  DeleteConfirmComponent,
+  type DeleteConfirmData,
+} from '../../../shared/dialog/delete-confirm/delete-confirm.component';
 
 @Component({
   selector: 'app-posts',
@@ -39,6 +43,7 @@ export class Posts {
 
   readonly MessageSquare = MessageSquare;
   readonly Plus = Plus;
+  readonly Trash2 = Trash2;
 
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
@@ -48,6 +53,7 @@ export class Posts {
   readonly commentsLoading = signal<Record<number, boolean>>({});
   readonly userOptions = signal<User[]>([]);
   readonly userLookup = signal<Record<number, string>>({});
+  readonly deletingId = signal<number | null>(null);
 
   private readonly pageSignal = signal(1);
   private readonly perPageSignal = signal(10);
@@ -118,7 +124,7 @@ export class Posts {
             }),
             catchError((err) => {
               console.error('Failed to load posts:', err);
-              this.error.set('Impossibile caricare i post');
+              this.error.set('Unable to load posts');
               this.loading.set(false);
               return of(null);
             }),
@@ -154,7 +160,7 @@ export class Posts {
   }
 
   authorsName(userId: number): string {
-    return this.userLookup()[userId] ?? `Utente #${userId}`;
+    return this.userLookup()[userId] ?? `User #${userId}`;
   }
 
   commentsFor(postId: number): Comment[] | undefined {
@@ -184,7 +190,7 @@ export class Posts {
         },
         error: (err) => {
           console.error('Failed to load comments:', err);
-          this.toast.show('error', 'Impossibile caricare i commenti. Riprova.');
+          this.toast.show('error', 'Unable to load comments. Please retry.');
         },
         complete: () => {
           this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
@@ -280,5 +286,65 @@ export class Posts {
 
   currentPerPage(): number {
     return this.perPageSignal();
+  }
+
+  isDeleting(postId: number): boolean {
+    return this.deletingId() === postId;
+  }
+
+  onDelete(post: Post): void {
+    const data: DeleteConfirmData = {
+      title: 'Delete Post',
+      message: `Are you sure you want to delete "${post.title}"? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+    };
+
+    const ref = this.dialog.open(DeleteConfirmComponent, {
+      width: '420px',
+      maxWidth: '90vw',
+      backdropClass: 'blurred-backdrop',
+      panelClass: 'user-form-modal',
+      ariaLabel: 'Delete post confirmation',
+      autoFocus: true,
+      restoreFocus: true,
+      data,
+    });
+
+    ref.closed.subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      const shouldGoPrev = this.posts().length <= 1 && this.currentPage() > 1;
+      this.deletingId.set(post.id);
+
+      this.postsApi
+        .delete(post.id)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.deletingId.set(null);
+            this.posts.update((list) => list.filter((item) => item.id !== post.id));
+            this.pagination.update((meta) => {
+              if (!meta) return meta;
+              const total = Math.max(meta.total - 1, 0);
+              const limit = meta.limit || this.perPageSignal();
+              const pages = Math.max(1, Math.ceil(total / (limit || 1)));
+              return { ...meta, total, pages };
+            });
+            this.toast.show('success', 'Post deleted');
+
+            if (shouldGoPrev) {
+              this.setPage(this.currentPage() - 1);
+            } else {
+              this.refresh();
+            }
+          },
+          error: (err) => {
+            console.error('Failed to delete post:', err);
+            this.deletingId.set(null);
+            this.toast.show('error', 'Unable to delete post. Please retry.');
+          },
+        });
+    });
   }
 }

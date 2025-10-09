@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { UsersApiService } from './services/users-api-service';
+import { UsersApiService } from '@app/services/users/users-api.service';
 import type { User } from '@app/models';
 import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
@@ -119,7 +119,7 @@ export class Users {
       },
       error: (err) => {
         console.error('Failed to load users:', err);
-        this.error.set('Impossibile caricare gli utenti');
+        this.error.set('Unable to load users');
         this.loading.set(false);
       },
     });

@@ -10,7 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PostsApiService } from '../../../features/pages/posts/posts-api.service';
+import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, CreateComment } from '@app/models';
 import { ToastService } from '../../toast/toast.service';
 
@@ -62,7 +62,7 @@ export class CommentForm {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (comment) => {
-          this.toast.show('success', 'Commento pubblicato');
+          this.toast.show('success', 'Comment posted successfully');
           this.created.emit(comment);
           this.form.controls.body.reset('');
         },
@@ -70,11 +70,11 @@ export class CommentForm {
           console.error('Failed to create comment:', err);
           const status = err?.status;
           if (status === 422) {
-            this.toast.show('error', 'Dati commento non validi. Controlla i campi.');
+            this.toast.show('error', 'Comment data not valid. Please review the fields.');
           } else if (status === 429) {
-            this.toast.show('error', 'Limite di richieste raggiunto. Riprova tra poco.');
+            this.toast.show('error', 'Too many requests. Please try again shortly.');
           } else {
-            this.toast.show('error', 'Impossibile pubblicare il commento. Riprova.');
+            this.toast.show('error', 'Unable to publish the comment. Please retry.');
           }
         },
         complete: () => {

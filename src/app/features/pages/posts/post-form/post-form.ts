@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '
 
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { PostsApiService } from '../posts-api.service';
-import { UsersApiService } from '../../users/services/users-api-service';
+import { PostsApiService } from '@app/services/posts/posts-api.service';
+import { UsersApiService } from '@app/services/users/users-api.service';
 import { ToastService } from '../../../../shared/toast/toast.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, User } from '@app/models';
@@ -68,7 +68,7 @@ export class PostForm {
         },
         error: (err) => {
           console.error('Failed to load users for post form:', err);
-          this.loadError.set('Impossibile caricare gli utenti. Riprova.');
+          this.loadError.set('Unable to load users. Please retry.');
           this.loadingUsers.set(false);
         },
       });
@@ -111,7 +111,7 @@ export class PostForm {
         next: () => {
           this.submitting.set(false);
           this.dialogRef.disableClose = false;
-          this.toast.show('success', 'Post creato con successo');
+          this.toast.show('success', 'Post created successfully');
           this.dialogRef.close('success');
         },
         error: (err) => {
@@ -120,12 +120,12 @@ export class PostForm {
           this.dialogRef.disableClose = false;
           const status = err?.status;
           if (status === 422) {
-            this.toast.show('error', 'Dati non validi. Controlla i campi.');
+            this.toast.show('error', 'Invalid data. Please review the fields.');
             this.titleControl.setErrors({ api: true });
           } else if (status === 429) {
-            this.toast.show('error', 'Limite di richieste raggiunto. Riprovare piu tardi.');
+            this.toast.show('error', 'Too many requests. Please try again later.');
           } else {
-            this.toast.show('error', 'Impossibile creare il post. Riprova.');
+            this.toast.show('error', 'Unable to create the post. Please retry.');
           }
         },
       });

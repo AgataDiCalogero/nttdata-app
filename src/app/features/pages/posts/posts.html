@@ -3,7 +3,7 @@
     <div class="posts-header__titles">
       <h1>Posts</h1>
       <p class="posts-header__subtitle">
-        Search, filter and manage contributions published by the community.
+        Search, filter, and manage contributions shared by the community.
       </p>
     </div>
     <button
@@ -39,7 +39,7 @@
       <button type="button" class="btn btn--ghost" (click)="resetFilters()">Reset</button>
     </form>
     <div class="posts-toolbar__summary">
-      <span>{{ posts().length }} posts shown</span>
+      <span>{{ posts().length }} posts displayed</span>
     </div>
   </div>
 
@@ -58,13 +58,25 @@
     } @else {
       @if (posts().length) {
         <ul class="posts-list">
-          @for (post of posts(); track post) {
+          @for (post of posts(); track post.id) {
             <li class="posts-card">
               <header class="posts-card__header">
-                <h3>{{ post.title }}</h3>
-                <span class="posts-card__meta">
-                  Author: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
-                </span>
+                <div class="posts-card__title">
+                  <h3>{{ post.title }}</h3>
+                  <span class="posts-card__meta">
+                    Author: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn--ghost posts-card__delete"
+                  (click)="onDelete(post)"
+                  [disabled]="isDeleting(post.id)"
+                  aria-label="Delete {{ post.title }}"
+                >
+                  <lucide-icon [img]="Trash2"></lucide-icon>
+                  <span>{{ isDeleting(post.id) ? 'Deleting...' : 'Delete' }}</span>
+                </button>
               </header>
               <p class="posts-card__body">{{ post.body }}</p>
               <footer class="posts-card__footer">
@@ -88,7 +100,7 @@
                     @let commentsList = commentsFor(post.id);
                     @if (commentsList?.length) {
                       <ul class="comments-list">
-                        @for (comment of commentsList; track comment) {
+                        @for (comment of commentsList; track comment.id) {
                           <li class="comments-item">
                             <div class="comments-item__header">
                               <strong>{{ comment.name }}</strong>
@@ -99,7 +111,7 @@
                         }
                       </ul>
                     } @else {
-                      <div class="state state--empty">No comments available.</div>
+                      <div class="state state--empty">No comments available yet.</div>
                     }
                   }
                   <app-comment-form
@@ -133,7 +145,7 @@
         >
           Previous
         </button>
-        <span>Pagina {{ currentPage() }} di {{ totalPages() }}</span>
+        <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
         <button
           class="btn btn--ghost"
           type="button"

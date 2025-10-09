@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { UsersApiService } from '../services/users-api-service';
-import { PostsApiService } from '../../posts/posts-api.service';
+import { UsersApiService } from '@app/services/users/users-api.service';
+import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { User, Post, Comment } from '@app/models';
 import { CommentForm } from '../../../shared/comments/comment-form/comment-form';
 
@@ -36,7 +36,7 @@ export class UserDetail {
     const idParam = this.route.snapshot.paramMap.get('id') ?? '';
     const id = Number(idParam);
     if (!id) {
-      this.error.set('User ID non valido');
+      this.error.set('Invalid user ID');
       this.loading.set(false);
       return;
     }
@@ -50,7 +50,7 @@ export class UserDetail {
       next: (u) => this.user.set(u),
       error: (err) => {
         console.error('Failed to load user:', err);
-        this.error.set('Impossibile caricare i dettagli utente');
+        this.error.set('Unable to load user details');
       },
       complete: () => this.loading.set(false),
     });
@@ -61,7 +61,7 @@ export class UserDetail {
       next: (result) => this.posts.set(result.data ?? []),
       error: (err) => {
         console.error('Failed to load posts for user:', err);
-        this.error.set("Impossibile caricare i post dell'utente");
+        this.error.set('Unable to load user posts');
       },
     });
   }

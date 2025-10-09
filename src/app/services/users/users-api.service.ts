@@ -6,7 +6,7 @@ import type { User, CreateUser, UpdateUser } from '@app/models';
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
   private readonly http = inject(HttpClient);
-  private readonly base = '/users'; // apiPrefixInterceptor aggiunge baseUrl
+  private readonly base = '/users'; // apiPrefixInterceptor adds the API base URL
 
   list(params?: {
     page?: number;

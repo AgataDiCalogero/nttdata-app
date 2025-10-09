@@ -1,68 +1,71 @@
-# Istruzioni per assistenti AI e Copilot
+# Guidelines for AI Assistants and Copilot
 
-Questo file definisce le regole progettuali da seguire ogni volta che un assistente AI (inclusi te, GitHub Copilot, Cursor o altri strumenti simili) propone o modifica del codice in questo repository Angular.
+These rules apply to every AI assistant (Codex, GitHub Copilot, Cursor, etc.) when working on this Angular project.
 
-## Architettura Angular
+## General Principles
 
-- Utilizzare Angular 20 con componenti standalone; niente `NgModule` se non strettamente necessario.
-- Prediligere `inject()` al posto di `constructor` injection.
-- Utilizzare `signals`, `computed`, `effect` per lo stato locale; evitare `BehaviorSubject` salvo casi di condivisione tra servizi.
-- Mantenere le rotte lazy (`loadComponent` / `loadChildren`); usare i guard ed interceptor esistenti.
-- Ogni nuova funzionalita' deve essere modellata con servizi dedicati e tipi dichiarati in `src/app/models`.
+- **English only** for all user-facing text (UI labels, placeholders, README, comments) unless a stakeholder explicitly requests another language.
+- Keep comments minimal, purposeful, and in English. Prefer self-documenting code; add comments only for non-obvious decisions.
+- Preserve accessibility, responsiveness, and existing design tokens.
 
-## Stile TypeScript
+## Angular Architecture
 
-- Nessun utilizzo di `any`: usare tipi e interfacce esplicite.
-- Funzioni brevi, con early return per evitare annidamento profondo.
-- Separare responsabilita' in metodi privati leggibili; niente spaghetti code.
-- Per form e input usare `ReactiveFormsModule` con controlli tipizzati (`fb.nonNullable`).
-- Gestire gli errori HTTP con mapping chiaro e logging minimo (solo per debugging necessario).
+- Use Angular 20 standalone components; avoid `NgModule` unless strictly necessary.
+- Prefer `inject()` over constructor injection.
+- Manage local state with `signal`, `computed`, and `effect`. Reserve `BehaviorSubject` for shared service state.
+- Keep routing lazy via `loadComponent`/`loadChildren` and reuse existing guards and interceptors.
+- Model new features with dedicated services and shared types in `src/app/models`.
 
-## Template HTML
+## TypeScript Style
 
-- Usare la nuova sintassi di controllo (`@if`, `@for`, `@switch`) con `track` esplicito.
-- Garantire accessibilita': attributi `aria-*`, `role`, gestione del focus (`:focus-visible` gia' definito).
-- Nessuna logica pesante nei template; spostare in getter o metodi.
-- Evitare duplicazione: estrarre componenti standalone quando il markup e' riutilizzabile.
+- No `any`. Provide explicit interfaces and types.
+- Write short functions, use early returns to reduce nesting, and split responsibilities into private helpers.
+- Use `ReactiveFormsModule` with strongly typed controls (`fb.nonNullable`) for forms.
+- Map HTTP errors explicitly and keep logging minimal (only what helps debugging).
 
-## SCSS e design system
+## Templates
 
-- Le variabili globali vivono in `:root` / `.light-theme` come gia' impostato; non introdurre variabili hard-coded.
-- Struttura BEM (`.blocco__elemento--modificatore`) o variante leggibile; annidamento massimo 3 livelli.
-- Rispettare la spacing scale 8pt (`--space-*`); niente valori arbitrari senza commento.
-- In caso di nuovi componenti, creare file SCSS dedicati e importare solo cio' che serve; evitare utility inline.
-- Garantire contrasto minimo WCAG 4.5:1; se necessario aggiornare palette in modo coerente.
+- Adopt the new control flow syntax (`@if`, `@for`, `@switch`) with explicit `track` functions.
+- Enforce accessibility: `aria-*` attributes, focus management (`:focus-visible` already styled), semantic markup.
+- Move heavy logic to the component; keep templates declarative.
+- Extract reusable markup into standalone components (e.g., dialog content, shared controls).
 
-## HTTP e API
+## SCSS & Design System
 
-- Riutilizzare gli interceptor (`apiPrefixInterceptor`, `authInterceptor`, `errorInterceptor`).
-- Nessun URL assoluto nelle chiamate; usare path relativo (`/resource`) per permettere il prefisso automatico.
-- Gestire errori 4xx/5xx con feedback utente (toast / stato UI); evitare `alert`.
-- Per operazioni che mutano stato, sincronizzare UI locale senza ricarichi completi quando possibile.
+- Use the global CSS variables defined in `:root`/`.light-theme`; avoid magic values.
+- Follow a BEM-like structure with max three nesting levels.
+- Respect the 8pt spacing scale (`--space-*`). If deviating, explain briefly in code.
+- Create feature-specific SCSS files and avoid inline utilities.
+- Maintain WCAG 2.1 AA contrast or better.
 
-## Test e qualita'
+## HTTP & API
 
-- Ogni nuovo servizio o logica complessa richiede test unitari (target coverage >= 60% complessivo).
-- Per componenti usare TestBed con harness o `ComponentFixture`; mockare HTTP con `HttpTestingController`.
-- Aggiornare o aggiungere test solo se significativi; evitare snapshot fragili.
+- Rely on the global interceptors (`apiPrefixInterceptor`, `authInterceptor`, `errorInterceptor`).
+- Do not hardcode absolute URLs; use relative paths so the prefix interceptor can adjust them.
+- Provide user feedback (toast/state) for 4xx/5xx results; never use `alert` dialogs.
+- After mutations, keep UI state in sync without unnecessary reloads.
 
-## Tooling e formato
+## Testing & Quality
 
-- Rispettare ESLint e Prettier configurati nel progetto; non disattivare regole senza motivo documentato.
-- Run consigliati prima di push: `npm run lint`, `npm run test:ci`, `npm run build:ci`.
-- Se necessario bypassare husky (solo emergenze), documentare in commit.
+- Add or update unit tests for any non-trivial service/component logic (target ≥60% coverage overall).
+- Use Angular TestBed and HTTP testing utilities; avoid brittle snapshot tests.
+- Only disable lint rules with documented justification.
 
-## Documentazione e workflow
+## Tooling
 
-- Aggiornare il `README.md` (sezione funzionalita' / backlog) quando una feature passa da TODO a completata.
-- Mantenere questo file allineato se le regole cambiano o nuove convenzioni vengono adottate.
-- Annotare eventuali decisioni architetturali importanti in commenti brevi o file ADR separati.
+- Obey ESLint and Prettier configurations; run `npm run lint`, `npm run test:ci`, and `npm run build:ci` before pushing when possible.
+- Husky skips (`SKIP_PRE_PUSH=1`) are emergency only and must be noted in commits.
 
-## Cosa evitare
+## Documentation & Workflow
 
-- `console.log` permanenti o debug non rimossi.
-- Dipendenze non necessarie o alternative che duplicano funzionalita' gia' coperte.
-- Codice duplicato tra componenti; preferire shared component / utility.
-- Hard-code di token o dati sensibili; usare sempre environment variabili o parametri.
+- Update `README.md` when a feature moves from backlog to completed.
+- Keep this guideline file current with any new conventions.
+- Record major architectural decisions via brief comments or separate ADR-style notes.
 
-Seguire queste linee guida assicura coerenza del codice e facilita la collaborazione tra tutti gli strumenti AI e gli sviluppatori coinvolti nel progetto.
+## Avoid
+
+- Persistent debug statements (`console.log`).
+- Redundant dependencies or code duplication.
+- Hardcoded secrets or tokens.
+
+Following these rules keeps the codebase consistent and approachable for every contributor—human or AI.

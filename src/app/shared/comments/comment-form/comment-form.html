@@ -1,17 +1,17 @@
-<form class="comment-form" [formGroup]="form" (ngSubmit)="submit()" aria-label="Aggiungi commento">
+<form class="comment-form" [formGroup]="form" (ngSubmit)="submit()" aria-label="Add comment">
   <div class="comment-form__grid">
     <div class="form-field">
-      <label for="comment-name">Nome</label>
+      <label for="comment-name">Name</label>
       <input
         id="comment-name"
         type="text"
         formControlName="name"
-        placeholder="Il tuo nome"
+        placeholder="Your name"
         [disabled]="submitting()"
         required
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <p class="field-error">Inserisci almeno 2 caratteri.</p>
+        <p class="field-error">Please enter at least 2 characters.</p>
       }
     </div>
 
@@ -21,23 +21,23 @@
         id="comment-email"
         type="email"
         formControlName="email"
-        placeholder="nome@email.com"
+        placeholder="name@email.com"
         [disabled]="submitting()"
         required
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
-        <p class="field-error">Inserisci un indirizzo email valido.</p>
+        <p class="field-error">Please provide a valid email address.</p>
       }
     </div>
   </div>
 
   <div class="form-field">
-    <label for="comment-body">Commento</label>
+    <label for="comment-body">Comment</label>
     <textarea
       id="comment-body"
       formControlName="body"
       rows="4"
-      placeholder="Scrivi qui il tuo contributo..."
+      placeholder="Share your contribution..."
       [disabled]="submitting()"
       maxlength="500"
       required
@@ -45,14 +45,14 @@
     <div class="field-hint">
       <span>{{ bodyLength }}/500</span>
       @if (form.controls.body.touched && form.controls.body.invalid) {
-        <p class="field-error">Il commento deve contenere almeno 10 caratteri.</p>
+        <p class="field-error">The comment must contain at least 10 characters.</p>
       }
     </div>
   </div>
 
   <div class="comment-form__actions">
     <button type="submit" class="btn btn--primary" [disabled]="submitting()">
-      {{ submitting() ? 'Pubblicazione...' : 'Pubblica commento' }}
+      {{ submitting() ? 'Publishing...' : 'Post comment' }}
     </button>
   </div>
 </form>

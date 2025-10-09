@@ -33,6 +33,10 @@ export class PostsApiService {
     return this.http.post<Post>(this.base, payload);
   }
 
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}/${id}`);
+  }
+
   listComments(postId: number): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${this.base}/${postId}/comments`);
   }

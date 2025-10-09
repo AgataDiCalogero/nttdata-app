@@ -1,108 +1,104 @@
-# Progetto Angular 1 per NTT DATA
+# Angular Project for NTT DATA
 
-Applicazione Angular che utilizza le API pubbliche di GoREST per gestire utenti, post e commenti. Il progetto e' pensato come esercitazione completa: autenticazione a token, navigazione protetta, gestione CRUD degli utenti e lettura dei contenuti pubblicati.
+Single-page Angular application built on top of the public GoREST API to manage users, posts, and comments. The project serves as an end-to-end exercise: token-based authentication, protected navigation, CRUD flows, and a consistent UX with dark/light theming.
 
-## Stack tecnologico e librerie
+## Tech Stack & Tooling
 
-- Angular 20 con componenti standalone, router lazy e change detection senza zone (`provideZonelessChangeDetection`)
-- Angular CDK `Dialog` per modali e drawer riutilizzabili
-- `lucide-angular` per le icone
-- Tema light/dark gestito con `signals` e persistenza su `localStorage`
-- Tooling: ESLint, Prettier, Husky, lint-staged, Karma + Jasmine
+- Angular 20 with standalone components, lazy routing, and zoneless change detection (`provideZonelessChangeDetection`)
+- Angular CDK `Dialog` for modal/drawer experiences
+- `lucide-angular` icons
+- Custom dark/light theme persisted with signals + `localStorage`
+- Quality gates: ESLint, Prettier, Husky, lint-staged, Karma + Jasmine
 
-## Funzionalita' completate
+## Completed Features
 
-- **Autenticazione e sicurezza**
-  - Login a token con persistenza sicura (controllo platform per SSR)
-  - `AuthService`, `authGuard` e interceptor HTTP per applicare il bearer token e reindirizzare ai login su 401
-  - Interceptor dedicato per prefissare tutte le chiamate con `https://gorest.co.in/public/v2`
-  - Logout rapido dalla navbar che pulisce il token e invalida la sessione
-- **Struttura applicativa**
-  - Routing dichiarativo con lazy load delle pagine (`/login`, `/users`, `/posts`, `/users/:id`, ecc.)
-  - Navbar condivisa con toggle tema, link di navigazione e gestione utente loggato
-  - Servizi tipizzati per utenti e post (`UsersApiService`, `PostsApiService`) con tipologie `User`, `Post`, `Comment`
-- **Gestione utenti**
-  - Lista utenti con:
-    - Ricerca client-side per nome/email con debounce
-    - Ordinamento su nome, email e stato
-    - Paginazione client-side sincronizzata con le query string
-  - Creazione e modifica utente dentro dialog/drawer responsive, con validazione dei campi e gestione errori API (422, 429, generici)
-  - Eliminazione con dialog di conferma e toast di feedback
-  - Toast non invasivi per successo/errore, basati su `signals`
-- **Dettaglio utente**
-  - Scheda completa con dati anagrafici e lista dei post collegati
-  - Caricamento on demand dei commenti per ciascun post, con caching locale e stato di loading per singolo post
-- **Gestione post globali**
-  - Ricerca server-side per titolo con debounce e filtro autore basato sul roster utenti
-  - Paginazione con scelta elementi per pagina, skeleton loader e stati empty/error gestiti
-  - Commenti caricati e creati on demand con form dedicato, caching per post e feedback toast
-  - Creazione nuovi post tramite dialog/drawer responsive con validazioni e conferma toast
-- **Esperienza utente**
-  - Tema scuro di default con toggle persistito, palette rispettosa delle WCAG
-  - Skeleton loader, empty state, messaggi di errore e retry sugli elenchi
-  - Convenzioni di focus e accessibilita' per input, bottoni e link
-- **Qualita' e workflow**
-  - Husky: `lint-staged` su pre-commit; pipeline locale su pre-push (lint, test headless, build prod)
-  - Configurazione Prettier condivisa (HTML incluso), ESLint moderno con supporto Angular 20
+- **Authentication & security**
+  - Token login with SSR-safe persistence via `AuthService`
+  - Route guard and HTTP interceptors for bearer tokens and 401 redirects
+  - API prefix interceptor that rewrites relative URLs to `https://gorest.co.in/public/v2`
+  - Navbar logout that clears the session token
+- **Application structure**
+  - Lazy routes for login, users list, user detail, and posts
+  - Shared navbar with theme toggle, navigation, and logout state awareness
+  - Centralised typed services (`UsersApiService`, `PostsApiService`) now grouped under `src/app/services`
+- **User management**
+  - Debounced search, sorting, and client-side pagination synced with query params
+  - Responsive modal/drawer for create/edit with validation and error mapping (422/429)
+  - Delete confirmation dialog with optimistic UI update and toast feedback
+- **Post management**
+  - Server-side search by title, author filter, pagination size selector, skeleton states
+  - Comment viewer with caching per post, lazy loading, and toast-based error handling
+  - Comment composer embedded in both the posts list and user detail pages
+  - Post creation modal/drawer with validation, feedback toasts, and roster preload
+  - Post deletion workflow with confirmation dialog, loading guard, and automatic refresh
+- **User detail**
+  - Full profile view plus the user’s posts, each with inline comment loading/creation
+- **UX polish**
+  - Accessible focus styles, WCAG-friendly palette, 8pt spacing system
+  - Toast notifications for all success/error states
+- **Workflow**
+  - Husky hooks: lint-staged on pre-commit, full lint/test/build on pre-push
+  - Shared Prettier config (HTML included) and modern ESLint setup for Angular 20
 
-## Backlog (da implementare in base alla traccia)
+## Backlog (per project requirements)
 
-- [ ] Testing: scrivere unit test significativi per servizi, guard e componenti, raggiungendo almeno il 60% di coverage
-- [ ] Valutare suddivisione multi-modulo e lazy loading avanzato (opzionale nella traccia, gia' parzialmente indirizzato con componenti standalone)
-- [ ] Preparare documentazione PDF di presentazione una volta stabilizzate le funzionalita'
+- [ ] Unit test suite covering services, guards, and components (≥60% coverage)
+- [ ] Evaluate additional module boundaries and advanced lazy loading
+- [ ] Prepare the final presentation deck (PDF) once the scope stabilises
 
-## Setup locale
+## Local Setup
 
-### Prerequisiti
+### Prerequisites
 
-- Node.js 20.x (versione consigliata da Angular 20)
+- Node.js 20.x (recommended for Angular 20 toolchain)
 - npm 10.x
-- Token personale generato da <https://gorest.co.in/consumer/login> (copialo in luogo sicuro: non esiste refresh)
+- Personal access token from <https://gorest.co.in/consumer/login> (store it securely)
 
-### Installazione
+### Installation
 
 ```bash
 npm install
 ```
 
-### Avvio sviluppo
+### Development server
 
 ```bash
 npm start
 ```
 
-Apri `http://localhost:4200`. Al primo accesso digita il token personale nel form di login; verra' salvato in `localStorage` finche' non effettui logout.
+Navigate to `http://localhost:4200`, enter your token on first access, and the value will remain in `localStorage` until logout.
 
-### Build produzione
+### Production build
 
 ```bash
 npm run build
 ```
 
-L'output si trova in `dist/nttdata-app/`. E' disponibile anche lo script `npm run build:ci` usato nei check pre-push.
+Artifacts are available under `dist/nttdata-app/`. CI scripts (`npm run build:ci`) run the same build with production config.
 
-### Test e lint
+### Lint & tests
 
 ```bash
 npm run lint
-npm test            # avvia Karma in modalita' interattiva
-npm run test:ci     # esegue i test in Chrome headless (usato dal pre-push)
+npm test        # interactive Karma run
+npm run test:ci # headless Chrome run (pre-push hook)
 ```
 
-> Nota: al momento non sono presenti spec personalizzate; la coverage richiesta dalla traccia rientra nel backlog.
+> Note: custom spec files are pending; increasing coverage to the required 60% is tracked in the backlog.
 
-## Struttura progetto (alto livello)
+## Project Structure (high level)
 
-- `src/app/core`: servizi cross-cutting (auth, interceptors, theme)
-- `src/app/features/auth`: pagina login
-- `src/app/features/pages/users`: lista utenti, modale di creazione/modifica, dettaglio con post/commenti
-- `src/app/features/pages/posts`: elenco post con ricerca, filtro autore, paginazione, commenti e modale di creazione
-- `src/app/shared`: layout (navbar, theme toggle), dialog di conferma eliminazione, sistema di toast
-- `src/app/models`: tipizzazioni condivise per utenti, post e commenti
+- `src/app/core`: cross-cutting concerns (auth, interceptors, theme)
+- `src/app/features/auth`: login page
+- `src/app/features/pages/users`: users list, CRUD modal, user detail
+- `src/app/features/pages/posts`: posts list, filters, comment management, creation dialog
+- `src/app/services`: shared API services (users, posts)
+- `src/app/shared`: reusable layout, dialogs, toast system, comment form
+- `src/app/models`: shared typings for users, posts, comments, pagination
 
-## Convenzioni aggiuntive
+## Contribution Notes
 
-- Le API vengono chiamate sempre tramite gli interceptor globali; evitare URL assoluti per sfruttare il prefisso automatico
-- I token vengono gestiti lato client: usare `AuthService` per leggere/impostare/invalidare la sessione
-- Per nuove pagine preferire componenti standalone e lazy loading, seguendo l'approccio esistente
-- Prima dei push e' consigliato eseguire `SKIP_PRE_PUSH=1 git push` solo in casi eccezionali (es. WIP), altrimenti lasciare che husky esegua i check
+- All API calls pass through the shared interceptors—stick to relative URLs.
+- Manage session tokens exclusively via `AuthService`.
+- Prefer standalone components and lazy routing for new pages.
+- Keep user-facing copy in English, and run `npm run lint` before every commit.
