@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, computed, input } from '@angular/core';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';

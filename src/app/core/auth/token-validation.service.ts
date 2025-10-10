@@ -35,12 +35,10 @@ export class TokenValidationService {
     });
     const params = new HttpParams().set('per_page', '1');
 
-    return this.http
-      .get('/users', { headers, params, observe: 'response' })
-      .pipe(
-        map(() => ({ success: true as const })),
-        catchError((error: unknown) => of(this.mapError(error)))
-      );
+    return this.http.get('/users', { headers, params, observe: 'response' }).pipe(
+      map(() => ({ success: true as const })),
+      catchError((error: unknown) => of(this.mapError(error))),
+    );
   }
 
   private mapError(error: unknown): TokenValidationResult {

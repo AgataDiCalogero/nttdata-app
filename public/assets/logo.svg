@@ -1,0 +1,32 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="nttGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c" stop-opacity="1"/>
+      <stop offset="50%" stop-color="#f97316" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#ea580c" stop-opacity="1"/>
+    </linearGradient>
+    <filter id="nttGlow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect x="2" y="2" width="36" height="36" rx="8" fill="url(#nttGradient)" filter="url(#nttGlow)"/>
+
+  <!-- NTT Data stylized letters - clean modern design -->
+  <!-- Letter N -->
+  <path d="M10 13 L10 27 L12 27 L12 17 L16 27 L18 27 L18 13 L16 13 L16 23 L12 13 Z" fill="white" fill-opacity="0.95"/>
+
+  <!-- Letter T -->
+  <path d="M20 13 L20 15 L22 15 L22 27 L24 27 L24 15 L26 15 L26 13 Z" fill="white" fill-opacity="0.95"/>
+
+  <!-- Letter T -->
+  <path d="M27 13 L27 15 L29 15 L29 27 L31 27 L31 15 L33 15 L33 13 Z" fill="white" fill-opacity="0.95"/>
+
+  <!-- Accent dot representing "Data" -->
+  <circle cx="31" cy="11" r="2.5" fill="#fbbf24" fill-opacity="0.85"/>
+</svg>

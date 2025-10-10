@@ -37,7 +37,8 @@ body.reading-mode {
   --focus-ring-mix: rgba(246, 170, 79, 0.38);
   --accent-hover: rgba(246, 170, 79, 0.16);
   --surface-backdrop: rgba(255, 244, 226, 0.75);
-  background: radial-gradient(circle at top, rgba(255, 214, 178, 0.28), transparent 58%),
+  background:
+    radial-gradient(circle at top, rgba(255, 214, 178, 0.28), transparent 58%),
     linear-gradient(140deg, var(--color-bg) 0%, var(--color-bg-secondary) 60%, var(--color-bg) 100%);
   color: var(--color-on-surface);
 }

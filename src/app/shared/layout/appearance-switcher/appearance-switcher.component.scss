@@ -69,14 +69,14 @@
     right: 0; /* anchor to the right of the trigger to avoid empty space on the right */
     top: calc(100% + 0.6rem);
     transform: translateX(0);
-    min-width: 220px;
-    max-width: 320px; /* prevent overly wide panels */
+    min-width: 140px;
+    max-width: 190px; /* slightly narrower panel to avoid empty right space */
     background: var(--color-surface);
     color: var(--color-on-surface);
     border-radius: 1rem;
     border: 1px solid var(--border-mix-60);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
-    padding: var(--space-sm);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    padding: 4px; /* reduced padding to shrink content width */
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -86,7 +86,7 @@
       content: '';
       position: absolute;
       top: -0.6rem;
-      right: 1.1rem; /* place caret closer to the trigger's right edge */
+      right: 0.95rem; /* place caret closer to the trigger's right edge */
       width: 1rem;
       height: 1rem;
       border-radius: 0.2rem;
@@ -114,7 +114,14 @@
 
   &__options {
     display: flex;
-    gap: var(--space-xs);
+    gap: 6px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    /* allow options to shrink so the panel doesn't leave empty horizontal space */
+    > * {
+      flex: 0 1 auto;
+    }
   }
 }
 
@@ -124,7 +131,7 @@
   flex-direction: column;
   gap: var(--space-xs);
   position: relative;
-  padding: var(--space-md);
+  padding: var(--space-sm);
   border-radius: 0.75rem;
   border: 2px solid transparent;
   background: transparent;
@@ -136,9 +143,7 @@
     background 0.18s ease,
     border-color 0.18s ease,
     transform 0.12s ease;
-  [data-open='true'] .appearance-switcher__icon lucide-icon {
-    color: var(--color-accent); /* palette icon becomes orange when menu is open */
-  }
+  /* palette icon becomes orange when menu is open - rule placed globally further below */
 
   &:hover {
     background: rgba(249, 165, 76, 0.08);
@@ -163,16 +168,16 @@
   &--toggle {
     flex-direction: row;
     justify-content: flex-start;
-    width: 100%;
-    padding: var(--space-xs) var(--space-md);
+    width: auto; /* don't force full width on desktop, keeps panel compact */
+    padding: var(--space-xs) calc(var(--space-xxs, 6px));
   }
 
   &__icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     background: rgba(249, 165, 76, 0.08);
     color: var(--color-accent);

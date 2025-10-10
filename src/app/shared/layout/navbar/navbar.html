@@ -1,41 +1,6 @@
 <header class="app-navbar" [attr.data-menu-open]="menuOpen">
   <a class="brand" routerLink="/" aria-label="NTT Data Home">
-    <svg
-      class="brand__logo"
-      width="40"
-      height="40"
-      viewBox="0 0 40 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color: #fb923c; stop-opacity: 1" />
-          <stop offset="50%" style="stop-color: #f97316; stop-opacity: 1" />
-          <stop offset="100%" style="stop-color: #ea580c; stop-opacity: 1" />
-        </linearGradient>
-        <filter id="logoGlow">
-          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-      <rect
-        x="2"
-        y="2"
-        width="36"
-        height="36"
-        rx="8"
-        fill="url(#logoGradient)"
-        filter="url(#logoGlow)"
-      />
-      <path d="M12 14 L20 14 L20 18 L16 18 L16 26 L12 26 Z" fill="white" opacity="0.95" />
-      <path d="M22 14 L30 14 L30 18 L26 18 L26 26 L22 26 Z" fill="white" opacity="0.95" />
-      <circle cx="28" cy="12" r="3" fill="#fbbf24" opacity="0.8" />
-    </svg>
+    <img src="assets/logo.svg" alt="NTT Data" class="brand__logo" width="40" height="40" />
     <h1>NTT Data App</h1>
   </a>
   <nav role="navigation" aria-label="Main navigation">
