@@ -3,7 +3,7 @@
     <h1>NTT Data App</h1>
   </a>
   <nav role="navigation" aria-label="Main navigation">
-    @if (!isLogged) {
+    @if (!isLogged && !isLoginRoute) {
       <a routerLink="/login" (click)="menuOpen && toggleMenu()">Login</a>
     }
     @if (isLogged) {
@@ -38,7 +38,7 @@
     <div class="mobile-overlay" (click)="toggleMenu()" aria-hidden="true"></div>
   }
   <div class="controls">
-    <app-theme-toggle></app-theme-toggle>
+    <app-appearance-switcher></app-appearance-switcher>
     <!-- Show logout when user is authenticated -->
     @if (isLogged) {
       <button class="logout" (click)="logout()" aria-label="Logout">Logout</button>

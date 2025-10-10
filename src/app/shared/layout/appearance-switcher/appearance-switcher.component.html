@@ -1,0 +1,63 @@
+<div class="appearance-switcher" [attr.data-open]="menuOpen()">
+  <button
+    type="button"
+    class="appearance-switcher__trigger"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="menuOpen()"
+    aria-haspopup="menu"
+    aria-label="Apri impostazioni tema e lettura"
+  >
+    <lucide-icon [img]="Palette" aria-hidden="true"></lucide-icon>
+    <span class="appearance-switcher__current">{{ activeThemeLabel() }}</span>
+  </button>
+
+  @if (menuOpen()) {
+    <div class="appearance-switcher__panel" role="menu">
+      <div class="appearance-switcher__section">
+        <p class="appearance-switcher__section-label">Tema</p>
+        <div class="appearance-switcher__options">
+          <button
+            type="button"
+            class="appearance-option"
+            [class.appearance-option--active]="isLight()"
+            (click)="setTheme('light')"
+            role="menuitemradio"
+            [attr.aria-checked]="isLight()"
+          >
+            <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
+            <span class="appearance-option__label">Chiaro</span>
+          </button>
+
+          <button
+            type="button"
+            class="appearance-option"
+            [class.appearance-option--active]="!isLight()"
+            (click)="setTheme('dark')"
+            role="menuitemradio"
+            [attr.aria-checked]="!isLight()"
+          >
+            <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
+            <span class="appearance-option__label">Scuro</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="appearance-switcher__section appearance-switcher__section--reading">
+        <p class="appearance-switcher__section-label">Modalità lettura</p>
+        <button
+          type="button"
+          class="appearance-option appearance-option--reading"
+          [class.appearance-option--active]="isReadingMode()"
+          (click)="toggleReadingMode()"
+          role="menuitemcheckbox"
+          [attr.aria-checked]="isReadingMode()"
+        >
+          <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
+          <span class="appearance-option__label">
+            {{ isReadingMode() ? 'Disattiva' : 'Attiva' }}
+          </span>
+        </button>
+      </div>
+    </div>
+  }
+</div>

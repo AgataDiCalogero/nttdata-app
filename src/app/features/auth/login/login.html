@@ -21,31 +21,48 @@
     </div>
 
     <!-- Title -->
-    <h2 class="title">Bentornato</h2>
-    <p class="subtitle">Inserisci il tuo token per accedere</p>
+    <h2 class="title">Welcome back</h2>
+    <p class="subtitle">Enter your access token to continue.</p>
 
     <!-- Form -->
     <form (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label for="token" class="form-label">Token di accesso</label>
+        <label for="token" class="form-label">Access token</label>
         <input
           type="password"
           id="token"
           [(ngModel)]="token"
           name="token"
-          placeholder="Inserisci il tuo token"
+          placeholder="Paste your personal access token"
           class="form-input"
+          [disabled]="loading()"
+          autocomplete="off"
           required
         />
       </div>
 
-      <button type="submit" class="submit-button">Accedi</button>
+      @if (errorMessage(); as error) {
+        <div class="form-error-banner" role="alert" aria-live="assertive">
+          {{ error }}
+        </div>
+      }
+
+      <button
+        type="submit"
+        appButton
+        variant="primary"
+        [fullWidth]="true"
+        [loading]="loading()"
+        [disabled]="loading()"
+      >
+        Sign in
+      </button>
     </form>
 
     <!-- Footer -->
     <div class="footer">
       <button type="button" class="forgot-link" (click)="openTokenHelp()">
-        Hai perso il token?
+        Lost your token?
       </button>
     </div>
   </div>

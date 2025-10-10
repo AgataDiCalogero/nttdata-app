@@ -1,15 +1,15 @@
 import { Component, inject, OnDestroy } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
-import { ThemeToggle } from '../theme-toggle/theme-toggle';
+import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 import { AuthService } from '../../../core/auth/auth-service/auth-service';
 import { Subscription } from 'rxjs';
 
 // Main application navbar with navigation and authentication
 @Component({
   selector: 'app-navbar',
-  imports: [RouterModule, ThemeToggle],
+  imports: [RouterModule, AppearanceSwitcherComponent],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss'],
 })
@@ -18,8 +18,10 @@ export class Navbar implements OnDestroy {
   private auth = inject(AuthService);
   private document = inject(DOCUMENT);
   private platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   // simple local state for mobile menu
   menuOpen = false;
+  isLoginRoute = false;
   private routerSub?: Subscription;
 
   get isLogged(): boolean {
@@ -33,34 +35,38 @@ export class Navbar implements OnDestroy {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-    // lock body scroll when menu is open
-    const isBrowser = isPlatformBrowser(this.platformId);
-    if (!isBrowser) return;
+    if (!this.isBrowser) return;
+
+    const body = this.document?.body;
+    if (!body) return;
 
     if (this.menuOpen) {
-      this.document?.body?.classList.add('mobile-menu-open');
+      body.classList.add('mobile-menu-open');
     } else {
-      this.document?.body?.classList.remove('mobile-menu-open');
+      body.classList.remove('mobile-menu-open');
     }
   }
 
   constructor() {
+    this.isLoginRoute = this.router.url.startsWith('/login');
     // close menu on navigation events
-    const isBrowser = isPlatformBrowser(this.platformId);
-    this.routerSub = this.router.events.subscribe(() => {
+    this.routerSub = this.router.events.subscribe((event) => {
       if (this.menuOpen) {
         this.menuOpen = false;
-        if (isBrowser) {
+        if (this.isBrowser) {
           this.document?.body?.classList.remove('mobile-menu-open');
         }
+      }
+
+      if (event instanceof NavigationEnd) {
+        this.isLoginRoute = event.urlAfterRedirects.startsWith('/login');
       }
     });
   }
 
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
-    const isBrowser = isPlatformBrowser(this.platformId);
-    if (isBrowser) {
+    if (this.isBrowser) {
       this.document?.body?.classList.remove('mobile-menu-open');
     }
   }
