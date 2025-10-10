@@ -1,3 +1,8 @@
+@use '../../../../styles/buttons';
+@use '../../../../styles/forms';
+@use '../../../../styles/cards';
+@use '../../../../styles/pagination';
+
 .posts-page {
   display: flex;
   flex-direction: column;
@@ -36,118 +41,12 @@
   max-width: 42ch;
 }
 
-.btn--primary {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  border: 2px solid var(--color-accent);
-  border-radius: 0.75rem;
-  padding: var(--space-sm) var(--space-lg);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-weight: 600;
-  transition: all 0.25s ease;
-
-  &:hover {
-    background: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-    transform: translateY(-1px);
-  }
-}
-
-.btn--danger {
-  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-danger) 70%, transparent);
-  color: var(--color-danger);
-  border-radius: 0.75rem;
-  padding: calc(var(--space-sm) - 2px) var(--space-md);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-weight: 600;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    background: color-mix(in srgb, var(--color-danger) 18%, transparent);
-    border-color: var(--color-danger);
-    color: var(--color-on-primary);
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    background: color-mix(in srgb, var(--color-danger) 28%, transparent);
-  }
-
-  &[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-}
-
-.btn--ghost {
-  background: transparent;
-  border: 1px solid rgba(128, 128, 128, 0.6);
-  border: 1px solid var(--border-mix-60);
-  color: var(--color-on-surface);
-  border-radius: 0.75rem;
-  padding: calc(var(--space-sm) - 2px) var(--space-md);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--accent-hover);
-    border-color: var(--accent-border);
-  }
-}
-
 .posts-toolbar {
   display: flex;
   justify-content: space-between;
   gap: var(--space-md);
   align-items: center;
   flex-wrap: wrap;
-}
-
-.posts-filters {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-  align-items: center;
-  background: var(--color-surface-mix, rgba(255, 255, 255, 0.82));
-  background: var(--surface-mix-82);
-  border: 1px solid var(--border-mix-60);
-  border-radius: 1rem;
-  padding: var(--space-sm) var(--space-md);
-
-  input,
-  select {
-    min-height: 42px;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-mix-60);
-    background: var(--color-surface);
-    color: var(--color-on-surface);
-    padding: 0 var(--space-md);
-    transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
-
-    &:focus-visible {
-      border-color: var(--focus-ring);
-      box-shadow: 0 0 0 2px var(--focus-ring-mix);
-    }
-  }
-
-  input {
-    width: clamp(16rem, 24vw, 20rem);
-  }
 }
 
 .posts-toolbar__summary {
@@ -169,96 +68,6 @@
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
-
-.posts-list--skeleton {
-  .posts-card {
-    pointer-events: none;
-  }
-}
-
-.posts-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-lg);
-  border-radius: 1.25rem;
-  background: var(--color-surface-mix-88, rgba(255, 255, 255, 0.88));
-  background: var(--surface-mix-88);
-  border: 1px solid var(--border-mix-65);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.2);
-  }
-
-  &.skeleton {
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(255, 255, 255, 0.15) 50%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    animation: skeleton-shimmer 1.4s infinite;
-  }
-
-  /* BEM elements nested for clarity; they compile to .posts-card__* selectors */
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--space-sm);
-
-    h3 {
-      margin: 0;
-      font-size: 1.25rem;
-      line-height: 1.4;
-    }
-  }
-
-  &__title {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  &__meta {
-    font-size: 0.85rem;
-    color: var(--color-muted);
-  }
-
-  &__delete {
-    padding-inline: var(--space-sm);
-    gap: var(--space-xs);
-    font-size: 0.85rem;
-
-    &[disabled] {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    span {
-      white-space: nowrap;
-    }
-  }
-
-  &__body {
-    margin: 0;
-    font-size: 0.98rem;
-    line-height: 1.6;
-  }
-
-  &__footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: auto;
-  }
-}
-
-/* moved posts-card__* into .posts-card as &__* */
 
 .posts-comments {
   border-top: 1px solid rgba(128, 128, 128, 0.65);
@@ -332,53 +141,6 @@
   color: var(--color-muted);
 }
 
-.posts-pagination {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-md);
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid rgba(128, 128, 128, 0.6);
-  border-top: 1px solid var(--border-mix-60);
-  padding-top: var(--space-md);
-
-  &__controls {
-    display: flex;
-    gap: var(--space-sm);
-    align-items: center;
-
-    span {
-      color: var(--color-muted);
-      font-size: 0.9rem;
-    }
-  }
-
-  &__page-size {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-
-    label {
-      font-size: 0.9rem;
-      color: var(--color-muted);
-    }
-
-    select {
-      min-height: 40px;
-      border-radius: 0.75rem;
-      border: 1px solid var(--border-mix-60);
-      background: var(--color-surface);
-      color: var(--color-on-surface);
-      padding: 0 var(--space-sm);
-
-      &:focus-visible {
-        border-color: var(--focus-ring);
-        box-shadow: 0 0 0 2px var(--focus-ring-mix);
-      }
-    }
-  }
-}
-
 lucide-icon {
   display: inline-flex;
   width: 1.1rem;
@@ -389,14 +151,5 @@ lucide-icon {
     height: 100%;
     stroke: currentColor;
     stroke-width: 2;
-  }
-}
-
-@keyframes skeleton-shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
   }
 }

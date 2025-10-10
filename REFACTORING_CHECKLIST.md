@@ -1,27 +1,27 @@
-# 🔧 Refactoring Checklist - NTTData App
+﻿# Refactoring Checklist - NTTData App
 
 This document tracks all refactoring tasks to improve code organization, eliminate duplication, and maintain enterprise-level structure according to the AI_GUIDELINES.md.
 
-## ✅ Completed
+## Completed
 
 - [x] Fix SCSS deprecation warning in post-form.scss (line 78)
 - [x] Fix SCSS deprecation warning in post-form.scss (line 80 - transition placement)
 - [x] Update AI_GUIDELINES.md with code organization best practices
 
-## 🔴 Critical - Bundle Size Issues
+## Critical - Bundle Size Issues
 
 ### 1. Split posts.scss (Budget Exceeded: 6.76 kB / 4.00 kB)
 
 #### Priority: HIGH - Task 1
 
-- [ ] Extract button styles to `src/styles/_buttons.scss`
-- [ ] Extract form styles to `src/styles/_forms.scss`
-- [ ] Extract card styles to `src/styles/_cards.scss`
-- [ ] Extract pagination styles to `src/styles/_pagination.scss`
-- [ ] Import these partials in posts.scss
-- [ ] Verify bundle size is under 4 kB
+- [x] Extract button styles to `src/styles/_buttons.scss`
+- [x] Extract form styles to `src/styles/_forms.scss`
+- [x] Extract card styles to `src/styles/_cards.scss`
+- [x] Extract pagination styles to `src/styles/_pagination.scss`
+- [x] Import these partials in posts.scss
+- [x] Verify bundle size is under 4 kB (now ~3.0 kB)
 
-## 🎨 Centralize Duplicated Styles
+## Centralize Duplicated Styles
 
 ### 2. Button Styles (Duplicated across multiple files)
 
@@ -101,7 +101,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
   - Skeleton variants for different content types
 - [ ] Remove from posts.scss and reuse
 
-## 🔨 Split Large Components
+## Split Large Components
 
 ### 7. Posts Component (posts.ts)
 
@@ -142,7 +142,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
   - [ ] `posts-comments.scss` - comments section styles
   - [ ] Import in main posts.scss or component files
 
-## 🗂️ Code Organization Improvements
+## Code Organization Improvements
 
 ### 10. Consolidate Dialog Components
 
@@ -202,7 +202,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 - [ ] Create helper functions for common validation patterns
 - [ ] Document validation rules
 
-## 📝 HTML Template Optimization
+## HTML Template Optimization
 
 ### 15. Extract Repeated Template Patterns
 
@@ -216,7 +216,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 - [ ] Create small presentational components for these
 - [ ] Use `@if` / `@for` consistently
 
-## 🎯 Testing & Quality
+## Testing & Quality
 
 ### 16. Add Tests for Shared Components
 
@@ -238,7 +238,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
   - [ ] Check bundle sizes
   - [ ] Verify no console errors
 
-## 📊 Progress Summary
+## Progress Summary
 
 - **Total Tasks**: 17
 - **Completed**: 3
@@ -246,7 +246,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 - **Medium Priority**: 6
 - **Low Priority**: 5
 
-## 🚀 Recommended Implementation Order
+## Recommended Implementation Order
 
 1. **Phase 1 - Critical Fixes** (Tasks 1, 2, 3)
    - Fix bundle size by splitting posts.scss

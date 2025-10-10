@@ -1,0 +1,34 @@
+/* Temporary shared form styling extracted from posts filters */
+.posts-filters {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+  background: var(--color-surface-mix, rgba(255, 255, 255, 0.82));
+  background: var(--surface-mix-82);
+  border: 1px solid var(--border-mix-60);
+  border-radius: 1rem;
+  padding: var(--space-sm) var(--space-md);
+
+  input,
+  select {
+    min-height: 42px;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-mix-60);
+    background: var(--color-surface);
+    color: var(--color-on-surface);
+    padding: 0 var(--space-md);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:focus-visible {
+      border-color: var(--focus-ring);
+      box-shadow: 0 0 0 2px var(--focus-ring-mix);
+    }
+  }
+
+  input {
+    width: clamp(16rem, 24vw, 20rem);
+  }
+}

@@ -1,0 +1,72 @@
+/* Shared button variants extracted from posts page */
+.btn--primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  border: 2px solid var(--color-accent);
+  border-radius: 0.75rem;
+  padding: var(--space-sm) var(--space-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: var(--color-accent-dark);
+    border-color: var(--color-accent-dark);
+    transform: translateY(-1px);
+  }
+}
+
+.btn--danger {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 70%, transparent);
+  color: var(--color-danger);
+  border-radius: 0.75rem;
+  padding: calc(var(--space-sm) - 2px) var(--space-md);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-danger) 18%, transparent);
+    border-color: var(--color-danger);
+    color: var(--color-on-primary);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    background: color-mix(in srgb, var(--color-danger) 28%, transparent);
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(128, 128, 128, 0.6);
+  border: 1px solid var(--border-mix-60);
+  color: var(--color-on-surface);
+  border-radius: 0.75rem;
+  padding: calc(var(--space-sm) - 2px) var(--space-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-border);
+  }
+}

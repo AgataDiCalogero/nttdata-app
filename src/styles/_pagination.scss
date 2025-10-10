@@ -1,0 +1,47 @@
+/* Shared pagination controls extracted from posts page */
+.posts-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(128, 128, 128, 0.6);
+  border-top: 1px solid var(--border-mix-60);
+  padding-top: var(--space-md);
+
+  &__controls {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+
+    span {
+      color: var(--color-muted);
+      font-size: 0.9rem;
+    }
+  }
+
+  &__page-size {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    label {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    select {
+      min-height: 40px;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-mix-60);
+      background: var(--color-surface);
+      color: var(--color-on-surface);
+      padding: 0 var(--space-sm);
+
+      &:focus-visible {
+        border-color: var(--focus-ring);
+        box-shadow: 0 0 0 2px var(--focus-ring-mix);
+      }
+    }
+  }
+}
