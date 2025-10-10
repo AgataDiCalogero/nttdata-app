@@ -66,13 +66,9 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 #### Priority: MEDIUM - Card/Surface Styles
 
-- [ ] Create `src/styles/_cards.scss` with:
-  - `.card` base styles
-  - `.card__header`, `.card__body`, `.card__footer` elements
-  - Hover states
-  - Shadow/elevation variants
-- [ ] Extract `.posts-card` styles from posts.scss
-- [ ] Make card styles reusable across the app
+- [x] Deliver shared `app-card` component with configurable variants and header/body/footer slots
+- [x] Extract `.posts-card` structure from posts page into the shared component
+- [x] Adopt the shared card component anywhere the pattern is reused (posts list, login dialog)
 
 ### 5. State/Alert Styles (Error, Loading, Empty)
 
@@ -236,7 +232,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 ## Progress Summary
 
 - **Total Tasks**: 17
-- **Completed**: 5
+- **Completed**: 6
 - **High Priority**: 6
 - **Medium Priority**: 6
 - **Low Priority**: 5

@@ -17,7 +17,7 @@ import { User } from '@app/models';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, PaginationMeta, Post } from '@app/models';
 import { ToastComponent } from '../../../shared/toast/toast.component';
-import { ToastService } from '../../../shared/toast/toast.service';
+import { ToastService } from '@app/shared/ui/toast';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import { PostForm } from './post-form/post-form.component';
 import {
@@ -25,6 +25,7 @@ import {
   type DeleteConfirmData,
 } from '../../../shared/dialog/delete-confirm/delete-confirm.component';
 import { ButtonComponent } from '@app/shared/ui/button';
+import { CardComponent } from '@app/shared/ui/card';
 
 @Component({
   selector: 'app-posts',
@@ -36,6 +37,7 @@ import { ButtonComponent } from '@app/shared/ui/button';
     ToastComponent,
     CommentForm,
     ButtonComponent,
+    CardComponent,
   ],
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss'],

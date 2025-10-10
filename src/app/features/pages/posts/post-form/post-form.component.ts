@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import { UsersApiService } from '@app/services/users/users-api.service';
-import { ToastService } from '../../../../shared/toast/toast.service';
+import { ToastService } from '@app/shared/ui/toast';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, User } from '@app/models';
 import { ButtonComponent } from '@app/shared/ui/button';

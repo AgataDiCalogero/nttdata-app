@@ -13,7 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
-import { ToastService } from '../../../../shared/toast/toast.service';
+import { ToastService } from '@app/shared/ui/toast';
 import { ButtonComponent } from '@app/shared/ui/button';
 
 @Component({

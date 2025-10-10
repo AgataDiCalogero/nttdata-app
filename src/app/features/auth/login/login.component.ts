@@ -7,11 +7,12 @@ import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
 import { ButtonComponent } from '@app/shared/ui/button';
+import { AlertComponent } from '@app/shared/ui/alert';
 
 // Login page component for token-based authentication
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, ButtonComponent],
+  imports: [FormsModule, ButtonComponent, AlertComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

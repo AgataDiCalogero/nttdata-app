@@ -1,0 +1,10 @@
+<div class="loader__spinner" role="status" aria-live="polite">
+  <svg class="loader__svg" viewBox="0 0 50 50">
+    <circle class="loader__circle" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+  </svg>
+  @if (text()) {
+    <span class="loader__text">{{ text() }}</span>
+  } @else {
+    <span class="sr-only">Loading...</span>
+  }
+</div>

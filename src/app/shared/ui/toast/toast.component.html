@@ -1,0 +1,10 @@
+<div class="toast-container">
+  @for (t of svc.messages(); track t.id) {
+    <div class="toast toast--{{ t.type }}">
+      <span class="toast__text">{{ t.text }}</span>
+      <button class="toast__close" (click)="svc.dismiss(t.id)" aria-label="Dismiss notification">
+        ×
+      </button>
+    </div>
+  }
+</div>

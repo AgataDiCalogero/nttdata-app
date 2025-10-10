@@ -66,6 +66,7 @@ These rules apply to every AI assistant (Codex, GitHub Copilot, Cursor, etc.) wh
 
 - **Never duplicate code** across different parts of the application. Extract shared logic into services, utilities, or shared components.
 - **Centralize repeating elements** (toasts, dialogs, loaders, error handlers, etc.) into shared components or services under `src/app/shared/` and reuse them throughout the app.
+- **Promote real components**: any UI pattern rendered in more than one place must be extracted into a dedicated standalone Angular component (with its own `.ts`, `.html`, and `.scss`) so it can be customized via inputs rather than ad-hoc markup or CSS snippets.
 - **Split large files** when HTML templates or TypeScript files become too long (generally >300 lines):
   - Extract UI sections into separate child components with their own folders
   - Move business logic into dedicated services under `src/app/services/`

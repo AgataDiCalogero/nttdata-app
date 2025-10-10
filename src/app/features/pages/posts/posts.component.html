@@ -48,7 +48,9 @@
     @if (loading()) {
       <ul class="posts-list posts-list--skeleton">
         @for (placeholder of [1, 2, 3]; track placeholder) {
-          <li class="posts-card skeleton"></li>
+          <li aria-hidden="true">
+            <app-card class="posts-card" [skeleton]="true"></app-card>
+          </li>
         }
       </ul>
     } @else if (error()) {
@@ -60,44 +62,51 @@
       @if (posts().length) {
         <ul class="posts-list">
           @for (post of posts(); track post.id) {
-            <li class="posts-card">
-              <header class="posts-card__header">
-                <div class="posts-card__title">
-                  <h3>{{ post.title }}</h3>
-                  <span class="posts-card__meta">
-                    Author: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
-                  </span>
+            <li>
+              <app-card class="posts-card" [interactive]="true" padding="spacious">
+                <div card-header>
+                  <div class="card__title posts-card__title">
+                    <h3>{{ post.title }}</h3>
+                    <span class="card__meta">
+                      Author: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
+                    </span>
+                  </div>
+
+                  <div class="card__actions">
+                    <button
+                      appButton
+                      variant="danger"
+                      type="button"
+                      class="posts-card__delete"
+                      (click)="onDelete(post)"
+                      [disabled]="isDeleting(post.id)"
+                      aria-label="Delete {{ post.title }}"
+                    >
+                      <lucide-icon [img]="Trash2"></lucide-icon>
+                      <span>{{ isDeleting(post.id) ? 'Deleting...' : 'Delete' }}</span>
+                    </button>
+                  </div>
                 </div>
-                <button
-                  appButton
-                  variant="danger"
-                  type="button"
-                  class="posts-card__delete"
-                  (click)="onDelete(post)"
-                  [disabled]="isDeleting(post.id)"
-                  aria-label="Delete {{ post.title }}"
-                >
-                  <lucide-icon [img]="Trash2"></lucide-icon>
-                  <span>{{ isDeleting(post.id) ? 'Deleting…' : 'Delete' }}</span>
-                </button>
-              </header>
 
-              <p class="posts-card__body">{{ post.body }}</p>
+                <div card-body>
+                  {{ post.body }}
+                </div>
 
-              <footer class="posts-card__footer">
-                @let comments = commentsFor(post.id);
-                <button
-                  appButton
-                  variant="ghost"
-                  type="button"
-                  (click)="toggleComments(post.id)"
-                  [attr.aria-expanded]="comments ? 'true' : 'false'"
-                  [attr.aria-controls]="'comments-' + post.id"
-                >
-                  <lucide-icon [img]="MessageSquare"></lucide-icon>
-                  {{ comments ? 'Hide comments' : 'Show comments' }}
-                </button>
-              </footer>
+                <div card-footer>
+                  @let comments = commentsFor(post.id);
+                  <button
+                    appButton
+                    variant="ghost"
+                    type="button"
+                    (click)="toggleComments(post.id)"
+                    [attr.aria-expanded]="comments ? 'true' : 'false'"
+                    [attr.aria-controls]="'comments-' + post.id"
+                  >
+                    <lucide-icon [img]="MessageSquare"></lucide-icon>
+                    {{ comments ? 'Hide comments' : 'Show comments' }}
+                  </button>
+                </div>
+              </app-card>
 
               @if (comments) {
                 <div class="posts-comments" id="comments-{{ post.id }}">

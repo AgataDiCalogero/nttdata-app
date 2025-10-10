@@ -1,5 +1,4 @@
 @use '../../../../styles/forms';
-@use '../../../../styles/cards';
 @use '../../../../styles/pagination';
 
 .posts-page {
@@ -60,12 +59,16 @@
 }
 
 .posts-list {
+  margin: 0;
+  padding: 0;
   list-style: none;
   display: grid;
-  padding: 0;
-  margin: 0;
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.posts-list--skeleton .card {
+  min-height: 14rem;
 }
 
 .posts-comments {
@@ -151,4 +154,33 @@ lucide-icon {
     stroke: currentColor;
     stroke-width: 2;
   }
+}
+.posts-card {
+  --card-padding-x: var(--space-xl);
+  --card-padding-y: var(--space-xl);
+  gap: var(--space-md);
+}
+
+.posts-card .card__title {
+  gap: var(--space-xs);
+}
+
+.posts-card__delete {
+  padding-inline: var(--space-sm);
+  gap: var(--space-xs);
+  font-size: 0.85rem;
+
+  &[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  span {
+    white-space: nowrap;
+  }
+}
+
+.posts-card.card--skeleton {
+  --card-padding-x: var(--space-lg);
+  --card-padding-y: var(--space-lg);
 }

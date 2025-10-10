@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/layout/navbar/navbar.component';
-import { ToastComponent } from './shared/toast/toast.component';
+import { ToastComponent } from './shared/ui/toast';
 import { FooterComponent } from './shared/layout/footer/footer.component';
 
 @Component({

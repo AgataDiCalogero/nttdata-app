@@ -7,7 +7,7 @@ import type { User } from '@app/models';
 import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
-import { ToastService } from '../../../shared/toast/toast.service';
+import { ToastService } from '@app/shared/ui/toast';
 import { ToastComponent } from '../../../shared/toast/toast.component';
 import { UserForm } from './user-form/user-form.component';
 import {
