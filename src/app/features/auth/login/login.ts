@@ -3,10 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { take } from 'rxjs';
-import { AuthService } from '../../../core/auth/auth-service/auth-service';
-import { TokenValidationService } from '../../../core/auth/token-validation.service';
+import { AuthService } from '@app/core/auth/auth-service/auth-service';
+import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
-import { ToastService } from '../../../shared/toast/toast.service';
+import { ToastService } from '@app/shared/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button';
 
 // Login page component for token-based authentication

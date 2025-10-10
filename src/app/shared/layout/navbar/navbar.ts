@@ -3,7 +3,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
-import { AuthService } from '../../../core/auth/auth-service/auth-service';
+import { AuthService } from '@app/core/auth/auth-service/auth-service';
 import { Subscription } from 'rxjs';
 
 // Main application navbar with navigation and authentication

@@ -25,6 +25,32 @@ body {
   overflow-x: hidden;
 }
 
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+body.reading-mode {
+  --color-primary: #f9f4ea;
+  --color-on-primary: #2b251f;
+  --color-bg: #fdf7ef;
+  --color-bg-secondary: #f8f0e5;
+  --color-surface: rgba(255, 247, 236, 0.92);
+  --color-surface-solid: #fff8ed;
+  --color-on-surface: #26221d;
+  --color-border: rgba(222, 191, 152, 0.6);
+  --color-muted: #7b7166;
+  --focus-ring: #f9a54c;
+  --focus-ring-mix: rgba(249, 165, 76, 0.35);
+  --accent-hover: rgba(249, 165, 76, 0.12);
+  background: linear-gradient(
+    135deg,
+    var(--color-bg) 0%,
+    var(--color-bg-secondary) 50%,
+    var(--color-bg) 100%
+  );
+  color: var(--color-on-surface);
+}
+
 /* Decorative gradient blurs (background) */
 body::before,
 body::after {
@@ -53,6 +79,16 @@ body::after {
   height: 24rem;
   background: var(--color-accent-dark);
   opacity: 0.15;
+}
+
+body.reading-mode::before {
+  background: rgba(249, 165, 76, 0.22);
+  opacity: 0.3;
+}
+
+body.reading-mode::after {
+  background: rgba(250, 202, 107, 0.2);
+  opacity: 0.28;
 }
 
 .light-theme body::before {

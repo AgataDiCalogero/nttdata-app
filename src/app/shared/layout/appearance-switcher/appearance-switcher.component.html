@@ -5,7 +5,7 @@
     (click)="toggleMenu()"
     [attr.aria-expanded]="menuOpen()"
     aria-haspopup="menu"
-    aria-label="Apri impostazioni tema e lettura"
+    aria-label="Open appearance settings"
   >
     <lucide-icon [img]="Palette" aria-hidden="true"></lucide-icon>
     <span class="appearance-switcher__current">{{ activeThemeLabel() }}</span>
@@ -14,7 +14,7 @@
   @if (menuOpen()) {
     <div class="appearance-switcher__panel" role="menu">
       <div class="appearance-switcher__section">
-        <p class="appearance-switcher__section-label">Tema</p>
+        <p class="appearance-switcher__section-label">Theme</p>
         <div class="appearance-switcher__options">
           <button
             type="button"
@@ -25,7 +25,7 @@
             [attr.aria-checked]="isLight()"
           >
             <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
-            <span class="appearance-option__label">Chiaro</span>
+            <span class="appearance-option__label">Light</span>
           </button>
 
           <button
@@ -37,13 +37,13 @@
             [attr.aria-checked]="!isLight()"
           >
             <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
-            <span class="appearance-option__label">Scuro</span>
+            <span class="appearance-option__label">Dark</span>
           </button>
         </div>
       </div>
 
       <div class="appearance-switcher__section appearance-switcher__section--reading">
-        <p class="appearance-switcher__section-label">Modalità lettura</p>
+        <p class="appearance-switcher__section-label">Reading mode</p>
         <button
           type="button"
           class="appearance-option appearance-option--reading"
@@ -54,7 +54,7 @@
         >
           <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           <span class="appearance-option__label">
-            {{ isReadingMode() ? 'Disattiva' : 'Attiva' }}
+            {{ isReadingMode() ? 'Disable' : 'Enable' }}
           </span>
         </button>
       </div>

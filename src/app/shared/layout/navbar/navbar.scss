@@ -1,4 +1,7 @@
 .app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
   padding: var(--space-md) var(--space-xxl);
   background: var(--color-primary);
   color: var(--color-on-primary);
@@ -25,7 +28,7 @@
     }
   }
 
-  /* overlay and body lock for mobile menu */
+  /* overlay for mobile menu */
   .mobile-overlay {
     position: fixed;
     left: 0;
@@ -34,10 +37,6 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.35);
     z-index: 20;
-  }
-
-  body.mobile-menu-open {
-    overflow: hidden;
   }
 
   nav {
@@ -111,12 +110,20 @@
     }
   }
 
-  /* controls groups theme toggle and logout into a horizontal stack */
+  /* controls groups appearance switcher and logout into a horizontal stack */
   .controls {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
     margin-left: auto; /* Allinea i controlli a destra */
+
+    app-appearance-switcher {
+      display: inline-flex;
+    }
+  }
+
+  .menu-toggle {
+    display: none;
   }
 }
 

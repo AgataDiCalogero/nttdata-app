@@ -1,9 +1,0 @@
-<button
-  type="button"
-  class="theme-toggle"
-  (click)="toggleTheme()"
-  [attr.aria-pressed]="isLight()"
-  [attr.aria-label]="isLight() ? 'Attiva tema scuro' : 'Attiva tema chiaro'"
->
-  <lucide-icon [img]="isLight() ? Moon : Sun"></lucide-icon>
-</button>
