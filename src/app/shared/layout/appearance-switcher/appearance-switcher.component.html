@@ -1,4 +1,11 @@
-<div class="appearance-switcher" [attr.data-open]="menuOpen()">
+<div
+  class="appearance-switcher"
+  [attr.data-open]="menuOpen()"
+  appClickOutside
+  (appClickOutside)="onDocumentClick()"
+  appEscapeKey
+  (appEscapeKey)="onEscape()"
+>
   <button
     type="button"
     class="appearance-switcher__trigger"

@@ -1,18 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  HostListener,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
 import { LucideAngularModule, Palette, Sun, Moon, BookOpenCheck } from 'lucide-angular';
 import { ThemeService } from '@app/core/theme/theme.service';
+import { ClickOutsideDirective, EscapeKeyDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-appearance-switcher',
   standalone: true,
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, ClickOutsideDirective, EscapeKeyDirective],
   templateUrl: './appearance-switcher.component.html',
   styleUrls: ['./appearance-switcher.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,18 +44,11 @@ export class AppearanceSwitcherComponent {
     this.themeService.toggleReadingMode();
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event): void {
-    if (!this.menuState()) {
-      return;
-    }
-    const target = event.target as Node | null;
-    if (target && !this.host.nativeElement.contains(target)) {
-      this.closeMenu();
-    }
+  onDocumentClick(): void {
+    if (!this.menuState()) return;
+    this.closeMenu();
   }
 
-  @HostListener('keydown.escape')
   onEscape(): void {
     this.closeMenu();
   }

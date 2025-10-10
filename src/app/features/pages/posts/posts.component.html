@@ -54,81 +54,51 @@
         }
       </ul>
     } @else if (error()) {
-      <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
-        <div class="state state--error alert-inline">
-          <p>{{ error() }}</p>
+      <div class="state state--error">
+        <p class="state__title">{{ error() }}</p>
+        <div class="state__actions">
           <button appButton variant="primary" type="button" (click)="refresh()">Retry</button>
         </div>
-      </app-alert>
+      </div>
     } @else {
       @if (posts().length) {
         <ul class="posts-list">
           @for (post of posts(); track post.id) {
             <li>
-              <app-card class="posts-card" [interactive]="true" padding="spacious">
-                <div card-header>
-                  <div class="card__title posts-card__title">
-                    <h3>{{ post.title }}</h3>
-                    <span class="card__meta">
-                      Author: {{ authorsName(post.user_id) }} (ID {{ post.user_id }})
-                    </span>
-                  </div>
-
-                  <div class="card__actions">
-                    <button
-                      appButton
-                      variant="danger"
-                      type="button"
-                      class="posts-card__delete"
-                      (click)="onDelete(post)"
-                      [disabled]="isDeleting(post.id)"
-                      aria-label="Delete {{ post.title }}"
-                    >
-                      <lucide-icon [img]="Trash2"></lucide-icon>
-                      <span>{{ isDeleting(post.id) ? 'Deleting...' : 'Delete' }}</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div card-body>
-                  {{ post.body }}
-                </div>
-
-                <div card-footer>
-                  @let comments = commentsFor(post.id);
-                  <button
-                    appButton
-                    variant="ghost"
-                    type="button"
-                    (click)="toggleComments(post.id)"
-                    [attr.aria-expanded]="comments ? 'true' : 'false'"
-                    [attr.aria-controls]="'comments-' + post.id"
-                  >
-                    <lucide-icon [img]="MessageSquare"></lucide-icon>
-                    {{ comments ? 'Hide comments' : 'Show comments' }}
-                  </button>
-                </div>
-              </app-card>
+              @let comments = commentsFor(post.id);
+              <app-post-card
+                [post]="post"
+                [interactive]="true"
+                padding="spacious"
+                [isDeleting]="isDeleting(post.id)"
+                [comments]="comments ?? null"
+                (delete)="onDelete(post)"
+                (toggleComments)="toggleComments(post.id)"
+              ></app-post-card>
 
               @if (comments) {
                 <div class="posts-comments" id="comments-{{ post.id }}">
                   @if (commentsAreLoading(post.id)) {
-                    <div class="loading">Loading comments...</div>
+                    <div class="state state--loading state--compact">Loading comments...</div>
                   } @else {
                     @if (comments.length) {
                       <ul class="comments-list">
-                        @for (comment of comments; track comment.id) {
-                          <li class="comments-item">
-                            <div class="comments-item__header">
-                              <strong>{{ comment.name }}</strong>
-                              <span>{{ comment.email }}</span>
-                            </div>
-                            <p>{{ comment.body }}</p>
-                          </li>
-                        }
+                        <template>
+                          @for (comment of comments; track comment.id) {
+                            <li class="comments-item">
+                              <div class="comments-item__header">
+                                <strong>{{ comment.name }}</strong>
+                                <span>{{ comment.email }}</span>
+                              </div>
+                              <p>{{ comment.body }}</p>
+                            </li>
+                          }
+                        </template>
                       </ul>
                     } @else {
-                      <div class="state state--empty">No comments available yet.</div>
+                      <div class="state state--empty state--compact">
+                        No comments available yet.
+                      </div>
                     }
                   }
 
@@ -143,10 +113,12 @@
         </ul>
       } @else {
         <div class="state state--empty">
-          <p>No posts available for the current filters.</p>
-          <button appButton variant="ghost" type="button" (click)="resetFilters()">
-            Reset filters
-          </button>
+          <p class="state__title">No posts available for the current filters.</p>
+          <div class="state__actions">
+            <button appButton variant="ghost" type="button" (click)="resetFilters()">
+              Reset filters
+            </button>
+          </div>
         </div>
       }
     }

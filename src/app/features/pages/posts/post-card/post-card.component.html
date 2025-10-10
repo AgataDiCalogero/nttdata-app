@@ -1,0 +1,44 @@
+<app-card class="posts-card" [interactive]="interactive()" [padding]="padding()">
+  @let p = post();
+  @let deleting = isDeleting();
+  @let c = comments() ?? null;
+
+  <div card-header>
+    <div class="card__title posts-card__title">
+      <h3>{{ p?.title }}</h3>
+      <span class="card__meta">Author: {{ p?.user_id }}</span>
+    </div>
+
+    <div class="card__actions">
+      <button
+        appButton
+        variant="danger"
+        type="button"
+        class="posts-card__delete"
+        (click)="delete.emit()"
+        [disabled]="deleting"
+        aria-label="Delete {{ p?.title }}"
+      >
+        <lucide-icon [img]="Trash2"></lucide-icon>
+        <span>{{ deleting ? 'Deleting...' : 'Delete' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div card-body>
+    {{ p?.body }}
+  </div>
+
+  <div card-footer>
+    <button
+      appButton
+      variant="ghost"
+      type="button"
+      (click)="toggleComments.emit()"
+      [attr.aria-expanded]="c ? 'true' : 'false'"
+    >
+      <lucide-icon [img]="MessageSquare"></lucide-icon>
+      {{ c ? 'Hide comments' : 'Show comments' }}
+    </button>
+  </div>
+</app-card>

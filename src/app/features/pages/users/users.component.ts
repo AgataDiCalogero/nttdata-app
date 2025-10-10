@@ -8,7 +8,6 @@ import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
 import { ToastService } from '@app/shared/ui/toast';
-import { ToastComponent } from '@app/shared/ui/toast';
 import { UserForm } from './user-form/user-form.component';
 import {
   DeleteConfirmComponent,
@@ -19,7 +18,7 @@ import {
 @Component({
   standalone: true,
   selector: 'app-users',
-  imports: [CommonModule, RouterModule, AsyncPipe, LucideAngularModule, ToastComponent],
+  imports: [CommonModule, RouterModule, AsyncPipe, LucideAngularModule],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

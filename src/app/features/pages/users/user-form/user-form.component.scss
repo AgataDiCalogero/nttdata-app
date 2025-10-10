@@ -30,6 +30,8 @@
 .user-form__alert {
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
   border-radius: 0.875rem;
+  /* fallback */
+  border: 1px solid rgba(239, 68, 68, 0.28);
   border: 1px solid color-mix(in srgb, var(--color-danger) 28%, transparent);
   padding: var(--space-sm) var(--space-md);
   margin: var(--space-md) 0 0 0;

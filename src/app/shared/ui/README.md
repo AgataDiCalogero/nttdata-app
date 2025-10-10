@@ -4,7 +4,7 @@ Libreria di componenti riutilizzabili enterprise-grade per l'applicazione NTT Da
 
 ## Struttura
 
-```
+```text
 src/app/shared/ui/
 ├── alert/          # Componente per messaggi di stato (info, success, warning, error)
 ├── button/         # Direttiva button riutilizzabile con varianti
@@ -148,9 +148,10 @@ export class MyComponent {
 </app-card>
 ```
 
-## Sviluppo Futuro
+```ts
+Example: import { ButtonComponent } from './button/button.component';
+```
 
-- [ ] Input components (text, select, checkbox, radio)
 - [ ] Dialog/Modal components
 - [ ] Pagination component
 - [ ] Tabs component

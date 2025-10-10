@@ -1,0 +1,11 @@
+.posts-card {
+  --card-padding-x: var(--space-xl);
+  --card-padding-y: var(--space-lg);
+  gap: var(--space-md);
+}
+
+.posts-card__delete {
+  padding-inline: var(--space-sm);
+  gap: var(--space-xs);
+  font-size: 0.85rem;
+}

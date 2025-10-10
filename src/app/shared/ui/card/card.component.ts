@@ -20,6 +20,7 @@ export type CardPadding = 'none' | 'compact' | 'default' | 'spacious';
     '[class]': '"card card--" + variant() + " card--padding-" + padding()',
     '[class.card--interactive]': 'interactive()',
     '[class.card--skeleton]': 'skeleton()',
+    '[class.skeleton]': 'skeleton()',
   },
 })
 export class CardComponent {
