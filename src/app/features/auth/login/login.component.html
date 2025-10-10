@@ -42,7 +42,7 @@
       </div>
 
       @if (errorMessage(); as error) {
-        <app-alert variant="error">
+        <app-alert variant="error" [dismissible]="true" (dismissed)="errorMessage.set(null)">
           <svg
             alert-icon
             width="20"

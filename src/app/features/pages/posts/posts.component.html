@@ -54,10 +54,12 @@
         }
       </ul>
     } @else if (error()) {
-      <div class="state state--error">
-        <p>{{ error() }}</p>
-        <button appButton variant="primary" type="button" (click)="refresh()">Retry</button>
-      </div>
+      <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
+        <div class="state state--error alert-inline">
+          <p>{{ error() }}</p>
+          <button appButton variant="primary" type="button" (click)="refresh()">Retry</button>
+        </div>
+      </app-alert>
     } @else {
       @if (posts().length) {
         <ul class="posts-list">

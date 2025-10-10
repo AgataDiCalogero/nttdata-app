@@ -1,0 +1,45 @@
+/* Centralized state styles: error, empty, loading
+   Use project CSS variables for colors and provide safe fallbacks for color-mix()/backdrop-filter.
+*/
+
+.state {
+  border-radius: 0.75rem;
+  padding: var(--space-md);
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-on-surface);
+}
+
+.state--error {
+  /* fallback for color-mix: use semi-transparent danger color */
+  background: rgba(255, 235, 238, 0.9);
+  border: 1px solid rgba(183, 28, 28, 0.18);
+  color: var(--color-danger, #b71c1c);
+}
+
+.state--empty {
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  /* fallback for older browsers */
+  border: 1px dashed rgba(107, 114, 128, 0.12);
+  color: var(--color-muted);
+}
+
+.state--loading {
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  /* fallback for older browsers */
+  border: 1px solid rgba(107, 114, 128, 0.06);
+  color: var(--color-muted);
+}
+
+/* Small alert wrapper used by app-alert for consistent spacing */
+.alert-inline {
+  width: 100%;
+}
+
+/* Provide a safe backdrop blur wrapper used by some frosted cards or panels */
+.frosted-backdrop {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
