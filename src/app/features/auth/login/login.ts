@@ -6,7 +6,6 @@ import { take } from 'rxjs';
 import { AuthService } from '@app/core/auth/auth-service/auth-service';
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
-import { ToastService } from '@app/shared/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button';
 
 // Login page component for token-based authentication
@@ -22,7 +21,6 @@ export class Login {
   private readonly auth = inject(AuthService);
   private readonly dialog = inject(Dialog);
   private readonly validator = inject(TokenValidationService);
-  private readonly toast = inject(ToastService);
 
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
@@ -45,13 +43,13 @@ export class Login {
           const message =
             result.message ?? 'Unable to verify the token right now. Please try again.';
           this.errorMessage.set(message);
-          this.toast.show('error', message, 5000);
+          // Toast rimosso: mostriamo solo l'errore inline sotto il form
           return;
         }
 
         const normalized = this.token.trim();
         this.auth.setToken(normalized);
-        this.toast.show('success', 'Token verified. Welcome back!');
+        // Toast rimosso: l'utente viene reindirizzato immediatamente
         this.router.navigate(['/users']);
       });
   }

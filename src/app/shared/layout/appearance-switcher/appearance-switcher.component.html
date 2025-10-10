@@ -2,29 +2,42 @@
   <button
     type="button"
     class="appearance-switcher__trigger"
+    id="appearance-switcher-trigger"
     (click)="toggleMenu()"
     [attr.aria-expanded]="menuOpen()"
-    aria-haspopup="menu"
+    aria-haspopup="true"
+    [attr.aria-controls]="menuOpen() ? 'appearance-switcher-menu' : null"
     aria-label="Open appearance settings"
   >
-    <lucide-icon [img]="Palette" aria-hidden="true"></lucide-icon>
-    <span class="appearance-switcher__current">{{ activeThemeLabel() }}</span>
+    <span class="appearance-switcher__icon">
+      <lucide-icon [img]="Palette" aria-hidden="true"></lucide-icon>
+    </span>
+    <span class="appearance-switcher__current">Theme</span>
+    <span class="appearance-switcher__chevron" aria-hidden="true"></span>
   </button>
 
   @if (menuOpen()) {
-    <div class="appearance-switcher__panel" role="menu">
+    <div
+      class="appearance-switcher__panel"
+      id="appearance-switcher-menu"
+      role="menu"
+      aria-labelledby="appearance-switcher-trigger"
+    >
       <div class="appearance-switcher__section">
-        <p class="appearance-switcher__section-label">Theme</p>
-        <div class="appearance-switcher__options">
+        <div class="appearance-switcher__options" role="group" aria-label="Theme options">
           <button
             type="button"
             class="appearance-option"
             [class.appearance-option--active]="isLight()"
-            (click)="setTheme('light')"
             role="menuitemradio"
-            [attr.aria-checked]="isLight()"
+            aria-checked="false"
+            [attr.aria-checked]="isLight() ? 'true' : 'false'"
+            (click)="setTheme('light')"
+            aria-label="Light theme"
           >
-            <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
+            <span class="appearance-option__icon">
+              <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
+            </span>
             <span class="appearance-option__label">Light</span>
           </button>
 
@@ -32,30 +45,37 @@
             type="button"
             class="appearance-option"
             [class.appearance-option--active]="!isLight()"
-            (click)="setTheme('dark')"
             role="menuitemradio"
-            [attr.aria-checked]="!isLight()"
+            aria-checked="false"
+            [attr.aria-checked]="!isLight() ? 'true' : 'false'"
+            (click)="setTheme('dark')"
+            aria-label="Dark theme"
           >
-            <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
+            <span class="appearance-option__icon">
+              <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
+            </span>
             <span class="appearance-option__label">Dark</span>
           </button>
         </div>
       </div>
 
-      <div class="appearance-switcher__section appearance-switcher__section--reading">
-        <p class="appearance-switcher__section-label">Reading mode</p>
+      <div class="appearance-switcher__divider"></div>
+
+      <div class="appearance-switcher__section">
         <button
           type="button"
-          class="appearance-option appearance-option--reading"
+          class="appearance-option appearance-option--toggle"
           [class.appearance-option--active]="isReadingMode()"
           (click)="toggleReadingMode()"
           role="menuitemcheckbox"
-          [attr.aria-checked]="isReadingMode()"
+          aria-checked="false"
+          [attr.aria-checked]="isReadingMode() ? 'true' : 'false'"
+          aria-label="Toggle reading mode"
         >
-          <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
-          <span class="appearance-option__label">
-            {{ isReadingMode() ? 'Disable' : 'Enable' }}
+          <span class="appearance-option__icon">
+            <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           </span>
+          <span class="appearance-option__label">Reading mode</span>
         </button>
       </div>
     </div>

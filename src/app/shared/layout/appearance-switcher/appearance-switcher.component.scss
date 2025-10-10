@@ -6,100 +6,142 @@
   &__trigger {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-xs) var(--space-sm);
+    gap: var(--space-sm);
+    padding: calc(var(--space-xs) + 2px) var(--space-md);
     border-radius: 999px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    position: relative;
+    z-index: 60; /* keep trigger above the panel so it isn't visually covered */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(249, 165, 76, 0.06));
+    border: 1px solid rgba(249, 165, 76, 0.3);
     color: inherit;
     cursor: pointer;
     transition:
-      background 0.18s ease,
-      border-color 0.18s ease,
-      transform 0.12s ease;
+      background 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.18s ease,
+      box-shadow 0.25s ease;
+    box-shadow:
+      0 12px 32px -24px rgba(0, 0, 0, 0.4),
+      0 0 0 0 rgba(249, 115, 22, 0);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
 
     &:hover {
-      background: color-mix(in srgb, var(--color-accent) 16%, transparent);
-      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(249, 165, 76, 0.12));
+      border-color: rgba(249, 165, 76, 0.5);
+      transform: translateY(-2px);
+      box-shadow:
+        0 18px 40px -22px rgba(249, 165, 76, 0.5),
+        0 0 20px 0 rgba(249, 115, 22, 0.15);
     }
 
     &:focus-visible {
       outline: 2px solid var(--focus-ring);
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
+  }
 
-    lucide-icon {
-      width: 1.15rem;
-      height: 1.15rem;
-    }
+  &__icon lucide-icon {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
   &__current {
     font-size: 0.85rem;
     font-weight: 600;
     white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  &__chevron {
+    display: inline-flex;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.18s ease;
+    margin-left: calc(var(--space-sm) + 2px); /* more breathing room from the label */
   }
 
   &__panel {
     position: absolute;
-    right: 0;
-    margin-top: var(--space-sm);
+    right: 0; /* anchor to the right of the trigger to avoid empty space on the right */
+    top: calc(100% + 0.6rem);
+    transform: translateX(0);
     min-width: 220px;
+    max-width: 320px; /* prevent overly wide panels */
     background: var(--color-surface);
     color: var(--color-on-surface);
     border-radius: 1rem;
     border: 1px solid var(--border-mix-60);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-    padding: var(--space-md);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    padding: var(--space-sm);
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 0;
     z-index: 50;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -0.6rem;
+      right: 1.1rem; /* place caret closer to the trigger's right edge */
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.2rem;
+      background: inherit;
+      border: inherit;
+      border-bottom: none;
+      border-right: none;
+      box-shadow: inherit;
+      z-index: -1;
+      rotate: 45deg;
+    }
   }
 
   &__section {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: 0;
   }
 
-  &__section-label {
-    margin: 0;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-muted);
+  &__divider {
+    height: 1px;
+    background: var(--border-mix-60);
+    margin: var(--space-sm) 0;
   }
 
   &__options {
     display: flex;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
   }
 }
 
 .appearance-option {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
   gap: var(--space-xs);
   position: relative;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: 0.85rem;
-  border: 1px solid var(--border-mix-60);
+  padding: var(--space-md);
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
   background: transparent;
   color: var(--color-on-surface);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 0.85rem;
   transition:
     background 0.18s ease,
     border-color 0.18s ease,
     transform 0.12s ease;
+  [data-open='true'] .appearance-switcher__icon lucide-icon {
+    color: var(--color-accent); /* palette icon becomes orange when menu is open */
+  }
 
   &:hover {
-    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    background: rgba(249, 165, 76, 0.08);
     transform: translateY(-1px);
   }
 
@@ -109,23 +151,64 @@
   }
 
   &--active {
-    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
-    border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    background: linear-gradient(135deg, rgba(249, 165, 76, 0.18), rgba(249, 138, 22, 0.08));
+    border-color: rgba(249, 165, 76, 0.4);
+
+    .appearance-option__icon {
+      background: transparent;
+      color: var(--color-accent);
+    }
   }
 
-  &--reading {
-    width: 100%;
+  &--toggle {
+    flex-direction: row;
     justify-content: flex-start;
+    width: 100%;
+    padding: var(--space-xs) var(--space-md);
   }
 
-  lucide-icon {
-    width: 1.05rem;
-    height: 1.05rem;
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(249, 165, 76, 0.08);
+    color: var(--color-accent);
+    transition: all 0.2s ease;
+
+    lucide-icon {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
   }
 
   &__label {
     font-size: 0.85rem;
+    font-weight: 600;
   }
+}
+
+[data-open='true'] .appearance-switcher__chevron {
+  transform: rotate(-135deg) translateY(2px);
+}
+
+/* Visual state when menu is open: show trigger as active/selected */
+[data-open='true'] .appearance-switcher__trigger {
+  background: linear-gradient(135deg, rgba(249, 165, 76, 0.12), rgba(255, 255, 255, 0.03));
+  border-color: rgba(249, 165, 76, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px -22px rgba(249, 165, 76, 0.18);
+}
+
+[data-open='true'] .appearance-switcher__current {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+[data-open='true'] .appearance-switcher__icon lucide-icon {
+  color: var(--color-accent); /* palette icon becomes orange when menu is open */
 }
 
 @media (max-width: 640px) {
@@ -134,55 +217,49 @@
       padding: var(--space-xs);
       border-radius: 50%;
       border-width: 1px;
+      gap: 0;
+
+      .appearance-switcher__current,
+      .appearance-switcher__chevron {
+        display: none;
+      }
     }
 
-    &__current {
-      display: none;
+    /* Ensure icon is orange when menu open on mobile */
+    &[data-open='true'] .appearance-switcher__icon lucide-icon {
+      color: var(--color-accent);
     }
 
     &__panel {
       position: fixed;
       left: 50%;
       transform: translateX(-50%);
-      bottom: var(--space-lg);
-      top: auto;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      bottom: auto;
       right: auto;
       margin-top: 0;
-      width: min(320px, calc(100% - var(--space-lg)));
+      width: min(320px, calc(100% - var(--space-xl)));
       border-radius: 1.25rem;
-      padding: var(--space-lg);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      padding: var(--space-md);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+
+      &::before {
+        display: none; /* Hide caret on mobile centered position */
+      }
+    }
+
+    &__options {
+      flex-direction: row;
+      gap: var(--space-xs);
     }
 
     .appearance-option {
-      flex: 1 1 0;
-      padding: var(--space-sm);
-      flex-direction: column;
-      gap: var(--space-xs);
+      flex: 1;
     }
 
-    .appearance-switcher__options {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-sm);
-    }
-
-    .appearance-switcher__section--reading .appearance-option {
-      flex-direction: row;
-      justify-content: center;
-      gap: var(--space-xs);
-    }
-
-    .appearance-option__label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+    .appearance-option--toggle {
+      width: 100%;
     }
   }
 }
@@ -193,23 +270,21 @@ body.reading-mode .appearance-switcher__panel {
 }
 
 .light-theme .appearance-switcher__trigger {
-  border-color: rgba(17, 24, 39, 0.15);
+  border-color: rgba(17, 24, 39, 0.16);
 
   &:hover {
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    background: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.16);
   }
 }
 
 .light-theme .appearance-option {
-  border-color: rgba(17, 24, 39, 0.15);
-
   &:hover {
-    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    background: rgba(249, 115, 22, 0.08);
   }
 
   &--active {
-    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
-    border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(249, 138, 22, 0.08));
+    border-color: rgba(249, 115, 22, 0.35);
   }
 }

@@ -30,25 +30,43 @@ body.mobile-menu-open {
 }
 
 body.reading-mode {
-  --color-primary: #f9f4ea;
-  --color-on-primary: #2b251f;
-  --color-bg: #fdf7ef;
-  --color-bg-secondary: #f8f0e5;
-  --color-surface: rgba(255, 247, 236, 0.92);
-  --color-surface-solid: #fff8ed;
-  --color-on-surface: #26221d;
-  --color-border: rgba(222, 191, 152, 0.6);
-  --color-muted: #7b7166;
-  --focus-ring: #f9a54c;
-  --focus-ring-mix: rgba(249, 165, 76, 0.35);
-  --accent-hover: rgba(249, 165, 76, 0.12);
-  background: linear-gradient(
-    135deg,
-    var(--color-bg) 0%,
-    var(--color-bg-secondary) 50%,
-    var(--color-bg) 100%
-  );
+  --reading-highlight: rgba(249, 165, 76, 0.18);
+  --reading-border: rgba(222, 191, 152, 0.55);
+  --reading-shadow: 0 28px 60px -30px rgba(100, 72, 19, 0.45);
+  --focus-ring: #f6aa4f;
+  --focus-ring-mix: rgba(246, 170, 79, 0.38);
+  --accent-hover: rgba(246, 170, 79, 0.16);
+  --surface-backdrop: rgba(255, 244, 226, 0.75);
+  background: radial-gradient(circle at top, rgba(255, 214, 178, 0.28), transparent 58%),
+    linear-gradient(140deg, var(--color-bg) 0%, var(--color-bg-secondary) 60%, var(--color-bg) 100%);
   color: var(--color-on-surface);
+}
+
+body.light-theme.reading-mode {
+  --color-primary: #fef6eb;
+  --color-on-primary: #2f261c;
+  --color-bg: #fdf3e0;
+  --color-bg-secondary: #f8ead2;
+  --color-surface: rgba(255, 249, 240, 0.95);
+  --color-surface-solid: #fff8ec;
+  --color-on-surface: #2c2620;
+  --color-border: var(--reading-border);
+  --color-muted: #7b6b5a;
+  --shadow: 0 24px 60px -32px rgba(120, 72, 16, 0.4);
+}
+
+body.dark-theme.reading-mode {
+  --color-primary: #1e1a16;
+  --color-on-primary: #f5ede3;
+  --color-bg: #221e1a;
+  --color-bg-secondary: #2b251f;
+  --color-surface: rgba(44, 36, 30, 0.92);
+  --color-surface-solid: #2a241f;
+  --color-on-surface: #f4e7d9;
+  --color-border: rgba(239, 198, 137, 0.26);
+  --color-muted: rgba(244, 215, 184, 0.72);
+  --shadow: 0 28px 70px -30px rgba(0, 0, 0, 0.55);
+  --surface-backdrop: rgba(46, 38, 32, 0.9);
 }
 
 /* Decorative gradient blurs (background) */

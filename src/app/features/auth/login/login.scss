@@ -122,6 +122,7 @@
       &:focus {
         background: #fffdf9;
         border-color: var(--focus-ring);
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
         box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 35%, transparent);
       }
     }
@@ -134,8 +135,9 @@
   .form-error-banner {
     padding: var(--space-sm) var(--space-md);
     border-radius: 0.75rem;
+    background: rgba(239, 68, 68, 0.08);
     background: color-mix(in srgb, var(--color-danger) 16%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-danger) 40%, transparent);
+    border: 1px solid rgba(239, 68, 68, 0.16);
     color: var(--color-danger);
     font-size: 0.9rem;
   }

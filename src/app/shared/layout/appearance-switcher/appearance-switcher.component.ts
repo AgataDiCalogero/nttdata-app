@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -33,7 +32,6 @@ export class AppearanceSwitcherComponent {
 
   private readonly menuState = signal(false);
   readonly menuOpen = this.menuState.asReadonly();
-  readonly activeThemeLabel = computed(() => (this.isLight() ? 'Light theme' : 'Dark theme'));
 
   toggleMenu(): void {
     this.menuState.update((open) => !open);
