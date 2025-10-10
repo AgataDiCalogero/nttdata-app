@@ -1,0 +1,36 @@
+<section class="token-help">
+  <header class="token-help__header">
+    <h2 class="token-help__title">Hai perso il tuo token?</h2>
+    <p class="token-help__subtitle">
+      Nessun problema! Puoi generarne uno nuovo direttamente dal portale GoRest seguendo questi passaggi.
+    </p>
+  </header>
+
+  <ol class="token-help__steps">
+    <li>Visita il sito ufficiale GoRest e accedi con il tuo account.</li>
+    <li>Clicca su <strong>Get Your Access Token</strong> nella dashboard e genera un nuovo token personale.</li>
+    <li>Copia il token creato e incollalo nel campo “Token di accesso” di questa pagina.</li>
+  </ol>
+
+  <a
+    class="token-help__link"
+    href="{{ gorestUrl }}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Apri GoRest e genera il token
+  </a>
+
+  <footer class="token-help__footer">
+    <button
+      appButton
+      variant="primary"
+      size="lg"
+      type="button"
+      (click)="close()"
+      aria-label="Chiudi il messaggio di aiuto"
+    >
+      Ho capito
+    </button>
+  </footer>
+</section>
