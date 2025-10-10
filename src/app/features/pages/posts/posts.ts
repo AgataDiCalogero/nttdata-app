@@ -24,11 +24,19 @@ import {
   DeleteConfirmComponent,
   type DeleteConfirmData,
 } from '../../../shared/dialog/delete-confirm/delete-confirm.component';
+import { ButtonComponent } from '@app/shared/ui/button';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, ToastComponent, CommentForm],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LucideAngularModule,
+    ToastComponent,
+    CommentForm,
+    ButtonComponent,
+  ],
   templateUrl: './posts.html',
   styleUrls: ['./posts.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -29,21 +29,16 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 **Files affected**: `posts.scss`, `comment-form.scss`, `user-form.scss`
 
-- [ ] Create `src/styles/_buttons.scss` with:
-  - `.btn` base styles
-  - `.btn--primary` (orange accent)
-  - `.btn--secondary` (ghost/outline)
-  - `.btn--danger` (red/destructive)
-  - `.btn--ghost` (transparent)
-  - `.btn--icon` (icon-only buttons)
-  - Disabled states
-  - Size modifiers (`.btn--sm`, `.btn--lg`)
-- [ ] Import `_buttons.scss` in `src/styles.scss`
-- [ ] Remove duplicated button styles from:
+- [x] Expand `src/styles/_buttons.scss` with base styles, variants, sizes, and disabled state rules
+- [x] Create shared `ButtonComponent` (`button[appButton]`) in `src/app/shared/ui/button/`
+- [x] Adopt `appButton` in posts page and post-form templates
+- [x] Adopt `appButton` in comment form
+- [ ] Adopt `appButton` in user form
+- [x] Remove duplicated button styles from:
   - `src/app/features/pages/posts/posts.scss`
   - `src/app/shared/comments/comment-form/comment-form.scss`
-  - `src/app/features/pages/users/user-form/user-form.scss`
-- [ ] Update HTML templates to use consistent button classes
+  - `src/app/features/pages/posts/post-form/post-form.scss` (retain layout overrides only)
+- [ ] Remove duplicated button styles from `src/app/features/pages/users/user-form/user-form.scss`
 
 ### 3. Form Field Styles (Duplicated across multiple files)
 

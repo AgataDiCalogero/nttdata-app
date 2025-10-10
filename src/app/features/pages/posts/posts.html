@@ -7,7 +7,8 @@
       </p>
     </div>
     <button
-      class="btn btn--primary"
+      appButton
+      variant="primary"
       type="button"
       (click)="openCreatePost()"
       aria-label="Create new post"
@@ -36,7 +37,7 @@
           <option [ngValue]="user.id">{{ user.name }}</option>
         }
       </select>
-      <button type="button" class="btn btn--ghost" (click)="resetFilters()">Reset</button>
+      <button type="button" appButton variant="ghost" (click)="resetFilters()">Reset</button>
     </form>
     <div class="posts-toolbar__summary">
       <span>{{ posts().length }} posts displayed</span>
@@ -53,7 +54,7 @@
     } @else if (error()) {
       <div class="state state--error">
         <p>{{ error() }}</p>
-        <button class="btn btn--primary" type="button" (click)="refresh()">Retry</button>
+        <button appButton variant="primary" type="button" (click)="refresh()">Retry</button>
       </div>
     } @else {
       @if (posts().length) {
@@ -68,8 +69,10 @@
                   </span>
                 </div>
                 <button
+                  appButton
+                  variant="danger"
                   type="button"
-                  class="btn btn--danger posts-card__delete"
+                  class="posts-card__delete"
                   (click)="onDelete(post)"
                   [disabled]="isDeleting(post.id)"
                   aria-label="Delete {{ post.title }}"
@@ -84,8 +87,9 @@
               <footer class="posts-card__footer">
                 @let comments = commentsFor(post.id);
                 <button
+                  appButton
+                  variant="ghost"
                   type="button"
-                  class="btn btn--ghost"
                   (click)="toggleComments(post.id)"
                   [attr.aria-expanded]="comments ? 'true' : 'false'"
                   [attr.aria-controls]="'comments-' + post.id"
@@ -129,7 +133,7 @@
       } @else {
         <div class="state state--empty">
           <p>No posts available for the current filters.</p>
-          <button class="btn btn--ghost" type="button" (click)="resetFilters()">
+          <button appButton variant="ghost" type="button" (click)="resetFilters()">
             Reset filters
           </button>
         </div>
@@ -141,7 +145,8 @@
     <div class="posts-pagination" aria-label="Posts pagination">
       <div class="posts-pagination__controls">
         <button
-          class="btn btn--ghost"
+          appButton
+          variant="ghost"
           type="button"
           (click)="setPage(currentPage() - 1)"
           [disabled]="currentPage() <= 1"
@@ -150,7 +155,8 @@
         </button>
         <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
         <button
-          class="btn btn--ghost"
+          appButton
+          variant="ghost"
           type="button"
           (click)="setPage(currentPage() + 1)"
           [disabled]="currentPage() >= totalPages()"

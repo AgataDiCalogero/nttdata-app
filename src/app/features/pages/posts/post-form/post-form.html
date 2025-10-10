@@ -12,8 +12,9 @@
     <div class="post-form__alert">
       <p>{{ loadError() }}</p>
       <button
+        appButton
+        variant="ghost"
         type="button"
-        class="btn btn--ghost"
         (click)="retryLoadUsers()"
         [disabled]="loadingUsers()"
       >
@@ -74,12 +75,13 @@
     </div>
 
     <div class="post-form__actions">
-      <button type="button" class="btn btn--ghost" (click)="cancel()" [disabled]="submitting()">
+      <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
         Cancel
       </button>
       <button
+        appButton
+        variant="primary"
         type="submit"
-        class="btn btn--primary"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
         {{ submitting() ? 'Saving...' : 'Create post' }}

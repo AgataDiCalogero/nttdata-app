@@ -70,19 +70,3 @@
   display: flex;
   justify-content: flex-end;
 }
-
-.btn--primary {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  border: 2px solid var(--color-accent);
-  border-radius: 0.75rem;
-  padding: var(--space-sm) var(--space-lg);
-  font-weight: 600;
-  transition: all 0.25s ease;
-
-  &:hover:enabled {
-    background: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-    transform: translateY(-1px);
-  }
-}

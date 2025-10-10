@@ -13,11 +13,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, CreateComment } from '@app/models';
 import { ToastService } from '../../toast/toast.service';
+import { ButtonComponent } from '@app/shared/ui/button';
 
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './comment-form.html',
   styleUrls: ['./comment-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

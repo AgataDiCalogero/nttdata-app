@@ -1,41 +1,136 @@
-/* Shared button variants extracted from posts page */
+/* Global button foundation and variants for consistent styling */
+
+/* Fallback variable and feature-test for color-mix support */
+:root {
+  --btn-secondary-border-hover: var(--border-mix-60);
+  --btn-ghost-background-hover: transparent;
+}
+@supports (color: color-mix(in srgb, var(--color-border) 70%, transparent)) {
+  :root {
+    --btn-secondary-border-hover: color-mix(in srgb, var(--color-border) 70%, transparent);
+    --btn-ghost-background-hover: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-on-surface);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  min-height: 2.75rem;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+  }
+}
+
+.btn--sm {
+  min-height: 2.25rem;
+  padding: calc(var(--space-xs) + 2px) var(--space-md);
+  font-size: 0.85rem;
+}
+
+.btn--lg {
+  min-height: 3.1rem;
+  padding: var(--space-md) var(--space-xl);
+  font-size: 1rem;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--icon {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: var(--space-sm);
+  border-radius: 999px;
+  justify-content: center;
+
+  lucide-icon,
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
 .btn--primary {
   background: var(--color-accent);
   color: var(--color-on-accent);
   border: 2px solid var(--color-accent);
-  border-radius: 0.75rem;
-  padding: var(--space-sm) var(--space-lg);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-weight: 600;
-  transition: all 0.25s ease;
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+.btn--secondary {
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border-color: var(--border-mix-60);
+  color: var(--color-on-surface);
 
   &:hover {
-    background: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-    transform: translateY(-1px);
+    background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+    /* Use CSS variable that falls back for browsers without color-mix support */
+    border-color: var(--btn-secondary-border-hover);
+  }
+
+  &:focus-visible {
+    border-color: var(--focus-ring);
+    box-shadow: 0 0 0 2px var(--focus-ring-mix);
+  }
+
+  /* Use color-mix when supported */
+  @supports (color: color-mix(in srgb, var(--color-border) 70%, transparent)) {
+    border-color: color-mix(in srgb, var(--color-border) 70%, transparent);
+  }
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border-mix-60);
+  color: var(--color-on-surface);
+
+  &:hover {
+    background: var(--btn-ghost-background-hover);
+    border-color: var(--btn-secondary-border-hover);
+  }
+
+  &:focus-visible {
+    border-color: var(--focus-ring);
+    box-shadow: 0 0 0 2px var(--focus-ring-mix);
   }
 }
 
 .btn--danger {
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-danger) 70%, transparent);
+  border: 1px solid var(--color-danger);
   color: var(--color-danger);
-  border-radius: 0.75rem;
-  padding: calc(var(--space-sm) - 2px) var(--space-md);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-weight: 600;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
 
   &:hover {
-    background: color-mix(in srgb, var(--color-danger) 18%, transparent);
+    background: color-mix(in srgb, var(--color-danger) 20%, transparent);
     border-color: var(--color-danger);
     color: var(--color-on-primary);
     transform: translateY(-1px);
@@ -45,28 +140,13 @@
     background: color-mix(in srgb, var(--color-danger) 28%, transparent);
   }
 
-  &[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+  &:focus-visible {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-danger) 40%, transparent);
   }
-}
 
-.btn--ghost {
-  background: transparent;
-  border: 1px solid rgba(128, 128, 128, 0.6);
-  border: 1px solid var(--border-mix-60);
-  color: var(--color-on-surface);
-  border-radius: 0.75rem;
-  padding: calc(var(--space-sm) - 2px) var(--space-md);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--accent-hover);
-    border-color: var(--accent-border);
+  /* Use color-mix for border-color when supported; fallback uses plain --color-danger for older Chrome */
+  @supports (color: color-mix(in srgb, var(--color-danger) 70%, transparent)) {
+    border-color: color-mix(in srgb, var(--color-danger) 70%, transparent);
   }
 }

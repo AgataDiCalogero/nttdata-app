@@ -51,7 +51,7 @@
   </div>
 
   <div class="comment-form__actions">
-    <button type="submit" class="btn btn--primary" [disabled]="submitting()">
+    <button appButton variant="primary" type="submit" [disabled]="submitting()">
       {{ submitting() ? 'Publishing...' : 'Post comment' }}
     </button>
   </div>
