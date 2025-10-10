@@ -15,7 +15,7 @@ const SIZE_SET = new Set<ButtonSize>(['sm', 'md', 'lg']);
 @Component({
   selector: 'button[appButton]',
   standalone: true,
-  template: '<ng-content />',
+  templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
