@@ -73,6 +73,22 @@ These rules apply to every AI assistant (Codex, GitHub Copilot, Cursor, etc.) wh
   - Organize utility functions in `src/app/shared/utils/`
 - Maintain an **enterprise-level structure**: each feature, component, service, and directive should have a clear single responsibility and be easy to locate and maintain.
 
+## Syntax Error Prevention
+
+To avoid common syntax errors and maintain high code quality:
+
+- **Import Accuracy**: Always verify imports are correct, available, and used. Remove unused imports immediately. Use proper import paths relative to the file.
+- **Bracket and Parentheses Matching**: Ensure all braces `{`, brackets `[`, parentheses `(`, and angle brackets `<>` are properly matched and closed in the correct order.
+- **TypeScript Strictness**: Adhere to strict mode - no `any` types, explicit return types on functions, no implicit `any` parameters. Enable and respect all compiler flags.
+- **Semicolon Consistency**: Use semicolons consistently as per project style (enforced by Prettier).
+- **Angular Decorators**: Use correct decorator syntax (`@Component`, `@Injectable`, etc.) with proper metadata. Standalone components require `imports` for all used directives/pipes.
+- **String Literals**: Use consistent quotes (double quotes per project convention). Escape special characters properly in strings.
+- **SCSS Deprecations**: Avoid deprecated SCSS syntax. Use modern nesting, color functions, and property order. Follow the 8px grid spacing system.
+- **Template Syntax**: Use correct Angular template syntax - proper brackets for bindings `[]`, parentheses for events `()`, asterisks for structural directives `*`. Avoid mixing syntax errors in control flow (`@if`, `@for`, `@switch`).
+- **Null Safety**: Use safe navigation `?.`, nullish coalescing `??`, and optional chaining where appropriate. Check for potential null/undefined errors.
+- **Build Verification**: Always run `npm run lint`, `npm run build:ci`, and fix any errors before considering code complete.
+- **Peer Review Ready**: Write code that passes all automated checks and can be reviewed by peers without syntax errors.
+
 ## Avoid
 
 - Persistent debug statements (`console.log`).

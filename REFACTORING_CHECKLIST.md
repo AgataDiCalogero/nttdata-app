@@ -12,7 +12,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 1. Split posts.scss (Budget Exceeded: 6.76 kB / 4.00 kB)
 
-**Priority: HIGH**
+#### Priority: HIGH - Task 1
 
 - [ ] Extract button styles to `src/styles/_buttons.scss`
 - [ ] Extract form styles to `src/styles/_forms.scss`
@@ -25,7 +25,8 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 2. Button Styles (Duplicated across multiple files)
 
-**Priority: HIGH**
+#### Priority: HIGH - Task 2
+
 **Files affected**: `posts.scss`, `comment-form.scss`, `user-form.scss`
 
 - [ ] Create `src/styles/_buttons.scss` with:
@@ -46,7 +47,8 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 3. Form Field Styles (Duplicated across multiple files)
 
-**Priority: HIGH**
+#### Priority: HIGH - Task 3
+
 **Files affected**: `post-form.scss`, `comment-form.scss`, `user-form.scss`
 
 - [ ] Create `src/styles/_forms.scss` with:
@@ -67,7 +69,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 4. Card/Surface Styles
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM - Card/Surface Styles
 
 - [ ] Create `src/styles/_cards.scss` with:
   - `.card` base styles
@@ -79,7 +81,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 5. State/Alert Styles (Error, Loading, Empty)
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM - State/Alert Styles
 
 - [ ] Create `src/styles/_states.scss` with:
   - `.state` base styles
@@ -91,7 +93,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 6. Skeleton Loading Styles
 
-**Priority: LOW**
+#### Priority: LOW - Skeleton Loading
 
 - [ ] Create `src/styles/_skeleton.scss` with:
   - `.skeleton` base class
@@ -103,7 +105,8 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 7. Posts Component (posts.ts)
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM - Posts Component
+
 **Estimated lines**: ~300+
 
 - [ ] Analyze posts.ts component size
@@ -117,7 +120,8 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 8. Users Component (users.ts)
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM - Users Component
+
 **Estimated lines**: Unknown
 
 - [ ] Analyze users.ts component size
@@ -129,7 +133,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 9. Posts.scss File (387 lines)
 
-**Priority: HIGH**
+#### Priority: HIGH - Task 9
 
 - [ ] Split into modular files:
   - [ ] `posts.scss` - main layout only
@@ -142,7 +146,8 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 10. Consolidate Dialog Components
 
-**Priority: LOW**
+#### Priority: LOW - Task 10
+
 **Files**: `delete-confirm/`, `delete-dialog/`
 
 - [ ] Analyze the difference between `DeleteConfirmComponent` and `DeleteDialogComponent`
@@ -153,7 +158,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 11. Create Shared Directives Folder
 
-**Priority: LOW**
+#### Priority: LOW - Shared Directives
 
 - [ ] Create `src/app/shared/directives/` folder
 - [ ] Identify repeated DOM behaviors that could be directives:
@@ -165,7 +170,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 12. Create Shared Utilities Folder
 
-**Priority: LOW**
+#### Priority: LOW - Shared Utilities
 
 - [ ] Create `src/app/shared/utils/` folder
 - [ ] Extract utility functions:
@@ -177,7 +182,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 13. Centralize Error Handling
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM - Task 13
 
 - [ ] Create `src/app/shared/utils/error-handler.ts`
 - [ ] Extract repeated error handling logic from:
@@ -190,7 +195,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 14. Form Validation Service/Utilities
 
-**Priority: LOW**
+#### Priority: LOW - Form Validation
 
 - [ ] Create `src/app/shared/utils/form-validators.ts`
 - [ ] Extract custom validators used across forms
@@ -201,7 +206,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 15. Extract Repeated Template Patterns
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM
 
 - [ ] Identify repeated HTML patterns:
   - [ ] Form error display
@@ -215,7 +220,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 16. Add Tests for Shared Components
 
-**Priority: MEDIUM**
+#### Priority: MEDIUM - Task 16
 
 - [ ] Add tests for centralized button components
 - [ ] Add tests for centralized form components
@@ -224,7 +229,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 ### 17. Verify No Regressions
 
-**Priority: HIGH**
+#### Priority: HIGH - Task 17
 
 - [ ] After each refactoring task:
   - [ ] Run `npm run lint`
