@@ -69,17 +69,17 @@
     textarea {
       border-radius: 0.75rem;
       border: 1px solid var(--border-mix-60);
-      background: var(--surface-mix-85);
-
-      @supports (border: 1px solid color-mix(in srgb, red, blue)) {
-        border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
-        background: color-mix(in srgb, var(--color-bg) 40%, var(--color-surface));
-      }
+      background: var(--color-surface);
       color: var(--color-on-surface);
       padding: var(--space-sm) var(--space-md);
       transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
+
+      @supports (border: 1px solid color-mix(in srgb, red, blue)) {
+        border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+        background: color-mix(in srgb, var(--color-bg) 40%, var(--color-surface));
+      }
 
       &:focus-visible {
         border-color: var(--focus-ring);

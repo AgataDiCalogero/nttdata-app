@@ -62,10 +62,22 @@ These rules apply to every AI assistant (Codex, GitHub Copilot, Cursor, etc.) wh
 - Keep this guideline file current with any new conventions.
 - Record major architectural decisions via brief comments or separate ADR-style notes.
 
+## Code Organization & Reusability
+
+- **Never duplicate code** across different parts of the application. Extract shared logic into services, utilities, or shared components.
+- **Centralize repeating elements** (toasts, dialogs, loaders, error handlers, etc.) into shared components or services under `src/app/shared/` and reuse them throughout the app.
+- **Split large files** when HTML templates or TypeScript files become too long (generally >300 lines):
+  - Extract UI sections into separate child components with their own folders
+  - Move business logic into dedicated services under `src/app/services/`
+  - Create custom directives for reusable DOM behavior under `src/app/shared/directives/`
+  - Organize utility functions in `src/app/shared/utils/`
+- Maintain an **enterprise-level structure**: each feature, component, service, and directive should have a clear single responsibility and be easy to locate and maintain.
+
 ## Avoid
 
 - Persistent debug statements (`console.log`).
 - Redundant dependencies or code duplication.
 - Hardcoded secrets or tokens.
+- Large monolithic files (split when >300 lines).
 
 Following these rules keeps the codebase consistent and approachable for every contributor—human or AI.
