@@ -11,8 +11,8 @@
     border-radius: 999px;
     position: relative;
     z-index: 60; /* keep trigger above the panel so it isn't visually covered */
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(249, 165, 76, 0.06));
-    border: 1px solid rgba(249, 165, 76, 0.3);
+    background: linear-gradient(135deg, rgba(249, 165, 76, 0.3), rgba(249, 115, 22, 0.15));
+    border: 1px solid rgba(249, 165, 76, 0.5);
     color: inherit;
     cursor: pointer;
     transition:
@@ -23,8 +23,8 @@
     box-shadow:
       0 12px 32px -24px rgba(0, 0, 0, 0.4),
       0 0 0 0 rgba(249, 115, 22, 0);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
 
     &:hover {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(249, 165, 76, 0.12));
@@ -236,22 +236,14 @@
     }
 
     &__panel {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 50%;
-      transform: translate(-50%, -50%);
-      bottom: auto;
-      right: auto;
-      margin-top: 0;
-      width: min(320px, calc(100% - var(--space-xl)));
+      position: absolute;
+      right: 0;
+      top: calc(100% + 0.6rem);
+      transform: translateX(0);
+      width: min(320px, calc(100vw - var(--space-xl)));
       border-radius: 1.25rem;
       padding: var(--space-md);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
-
-      &::before {
-        display: none; /* Hide caret on mobile centered position */
-      }
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
     }
 
     &__options {
@@ -274,22 +266,30 @@ body.reading-mode .appearance-switcher__panel {
   color: var(--color-on-surface);
 }
 
-.light-theme .appearance-switcher__trigger {
-  border-color: rgba(17, 24, 39, 0.16);
+.light-theme {
+  .appearance-switcher {
+    &__current {
+      color: var(--color-accent);
+    }
 
-  &:hover {
-    background: rgba(249, 115, 22, 0.1);
-    border-color: rgba(249, 115, 22, 0.16);
+    &__trigger {
+      border-color: rgba(17, 24, 39, 0.16);
+
+      &:hover {
+        background: rgba(249, 115, 22, 0.1);
+        border-color: rgba(249, 115, 22, 0.16);
+      }
+    }
   }
-}
 
-.light-theme .appearance-option {
-  &:hover {
-    background: rgba(249, 115, 22, 0.08);
-  }
+  .appearance-option {
+    &:hover {
+      background: rgba(249, 115, 22, 0.08);
+    }
 
-  &--active {
-    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(249, 138, 22, 0.08));
-    border-color: rgba(249, 115, 22, 0.35);
+    &--active {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(249, 138, 22, 0.08));
+      border-color: rgba(249, 115, 22, 0.35);
+    }
   }
 }
