@@ -7,7 +7,7 @@ import {
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { AuthService } from '../auth/auth-service/auth-service.service';
+import { AuthService } from '../auth/auth-service/auth.service';
 
 /**
  * Error interceptor: mappa errori, effettua redirect su 401 e rilancia un error object tipato.

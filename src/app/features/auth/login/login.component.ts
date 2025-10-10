@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { take } from 'rxjs';
-import { AuthService } from '@app/core/auth/auth-service/auth-service.service';
+import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
 import { ButtonComponent } from '@app/shared/ui/button';
