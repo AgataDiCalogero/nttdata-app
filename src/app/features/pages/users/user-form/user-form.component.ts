@@ -19,8 +19,8 @@ import { ToastService } from '../../../../shared/toast/toast.service';
   selector: 'app-user-form',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './user-form.html',
-  styleUrls: ['./user-form.scss'],
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserForm {

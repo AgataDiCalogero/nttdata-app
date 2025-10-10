@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-navbar',
   imports: [RouterModule, AppearanceSwitcherComponent],
-  templateUrl: './navbar.html',
-  styleUrls: ['./navbar.scss'],
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
 })
 export class Navbar implements OnDestroy {
   private router = inject(Router);

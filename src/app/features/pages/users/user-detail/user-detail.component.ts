@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { User, Post, Comment } from '@app/models';
-import { CommentForm } from '@/app/shared/comments/comment-form/comment-form';
+import { CommentForm } from '@/app/shared/comments/comment-form/comment-form.component';
 
 @Component({
   selector: 'app-user-detail',

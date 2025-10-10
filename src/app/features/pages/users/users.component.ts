@@ -9,7 +9,7 @@ import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { ToastComponent } from '../../../shared/toast/toast.component';
-import { UserForm } from './user-form/user-form';
+import { UserForm } from './user-form/user-form.component';
 import {
   DeleteConfirmComponent,
   type DeleteConfirmData,
@@ -20,8 +20,8 @@ import {
   standalone: true,
   selector: 'app-users',
   imports: [CommonModule, RouterModule, AsyncPipe, LucideAngularModule, ToastComponent],
-  templateUrl: './users.html',
-  styleUrls: ['./users.scss'],
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Users {

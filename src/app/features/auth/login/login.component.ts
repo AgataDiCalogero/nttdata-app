@@ -12,8 +12,8 @@ import { ButtonComponent } from '@app/shared/ui/button';
 @Component({
   selector: 'app-login',
   imports: [FormsModule, ButtonComponent],
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class Login {
   token: string = '';

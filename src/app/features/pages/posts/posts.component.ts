@@ -7,7 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { CommentForm } from '../../../shared/comments/comment-form/comment-form';
+import { CommentForm } from '../../../shared/comments/comment-form/comment-form.component';
 import { Dialog } from '@angular/cdk/dialog';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,7 +19,7 @@ import type { Comment, PaginationMeta, Post } from '@app/models';
 import { ToastComponent } from '../../../shared/toast/toast.component';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { UsersApiService } from '@app/services/users/users-api.service';
-import { PostForm } from './post-form/post-form';
+import { PostForm } from './post-form/post-form.component';
 import {
   DeleteConfirmComponent,
   type DeleteConfirmData,
