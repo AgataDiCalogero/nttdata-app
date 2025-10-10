@@ -12,8 +12,8 @@ import { ButtonComponent } from '@app/shared/ui/button';
   selector: 'app-post-form',
   standalone: true,
   imports: [ReactiveFormsModule, ButtonComponent],
-  templateUrl: './post-form.html',
-  styleUrls: ['./post-form.scss'],
+  templateUrl: './post-form.component.html',
+  styleUrls: ['./post-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostForm {

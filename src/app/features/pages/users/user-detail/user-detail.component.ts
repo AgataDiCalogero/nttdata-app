@@ -10,8 +10,8 @@ import { CommentForm } from '@/app/shared/comments/comment-form/comment-form.com
   selector: 'app-user-detail',
   standalone: true,
   imports: [CommonModule, RouterModule, CommentForm],
-  templateUrl: './user-detail.html',
-  styleUrls: ['./user-detail.scss'],
+  templateUrl: './user-detail.component.html',
+  styleUrls: ['./user-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetail {

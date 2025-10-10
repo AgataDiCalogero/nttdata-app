@@ -6,8 +6,8 @@ import { ToastService } from './toast.service';
   standalone: true,
   selector: 'app-toast',
   imports: [],
-  templateUrl: './toast.html',
-  styleUrls: ['./toast.scss'],
+  templateUrl: './toast.component.html',
+  styleUrls: ['./toast.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastComponent {

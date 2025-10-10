@@ -37,8 +37,8 @@ import { ButtonComponent } from '@app/shared/ui/button';
     CommentForm,
     ButtonComponent,
   ],
-  templateUrl: './posts.html',
-  styleUrls: ['./posts.scss'],
+  templateUrl: './posts.component.html',
+  styleUrls: ['./posts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Posts {
