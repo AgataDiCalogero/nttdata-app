@@ -16,7 +16,7 @@ import { debounceTime, distinctUntilChanged, map, switchMap, catchError, of, tap
 import { User } from '@app/models';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, PaginationMeta, Post } from '@app/models';
-import { ToastComponent } from '../../../shared/toast/toast.component';
+import { ToastComponent } from '@app/shared/ui/toast';
 import { ToastService } from '@app/shared/ui/toast';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import { PostForm } from './post-form/post-form.component';

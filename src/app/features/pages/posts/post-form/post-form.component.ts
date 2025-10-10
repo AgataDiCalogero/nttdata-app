@@ -4,6 +4,7 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast';
+import { AlertComponent } from '@app/shared/ui/alert';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, User } from '@app/models';
 import { ButtonComponent } from '@app/shared/ui/button';
@@ -11,7 +12,7 @@ import { ButtonComponent } from '@app/shared/ui/button';
 @Component({
   selector: 'app-post-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent],
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

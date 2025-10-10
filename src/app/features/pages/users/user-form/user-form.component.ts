@@ -15,11 +15,12 @@ import { UsersApiService } from '@app/services/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
 import { ToastService } from '@app/shared/ui/toast';
 import { ButtonComponent } from '@app/shared/ui/button';
+import { AlertComponent } from '@app/shared/ui/alert';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent],
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

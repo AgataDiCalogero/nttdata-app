@@ -30,7 +30,9 @@
       type="email"
       formControlName="email"
       placeholder="user@example.com"
-      [attr.aria-invalid]="form.controls.email.invalid && form.controls.email.touched ? 'true' : null"
+      [attr.aria-invalid]="
+        form.controls.email.invalid && form.controls.email.touched ? 'true' : null
+      "
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
       <p class="form-error">Invalid email address.</p>
@@ -46,7 +48,9 @@
       class="form-select"
       id="gender"
       formControlName="gender"
-      [attr.aria-invalid]="form.controls.gender.invalid && form.controls.gender.touched ? 'true' : null"
+      [attr.aria-invalid]="
+        form.controls.gender.invalid && form.controls.gender.touched ? 'true' : null
+      "
     >
       @for (opt of ['male', 'female']; track opt) {
         <option [value]="opt">{{ opt }}</option>
@@ -63,7 +67,9 @@
       class="form-select"
       id="status"
       formControlName="status"
-      [attr.aria-invalid]="form.controls.status.invalid && form.controls.status.touched ? 'true' : null"
+      [attr.aria-invalid]="
+        form.controls.status.invalid && form.controls.status.touched ? 'true' : null
+      "
     >
       @for (option of ['active', 'inactive']; track option) {
         <option [value]="option">{{ option }}</option>
@@ -93,6 +99,8 @@
   </div>
 
   @if (loadError()) {
-    <p class="form-error user-form__alert" role="alert">{{ loadError() }}</p>
+    <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
+      {{ loadError() }}
+    </app-alert>
   }
 </form>

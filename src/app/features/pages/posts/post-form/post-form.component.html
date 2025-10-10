@@ -9,18 +9,22 @@
   }
 
   @if (loadError()) {
-    <div class="post-form__alert">
-      <p>{{ loadError() }}</p>
-      <button
-        appButton
-        variant="ghost"
-        type="button"
-        (click)="retryLoadUsers()"
-        [disabled]="loadingUsers()"
-      >
-        Retry
-      </button>
-    </div>
+    <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
+      <div class="post-form__alert">
+        <p>{{ loadError() }}</p>
+        <div class="post-form__alert-cta">
+          <button
+            appButton
+            variant="ghost"
+            type="button"
+            (click)="retryLoadUsers()"
+            [disabled]="loadingUsers()"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    </app-alert>
   }
 
   <form class="form post-form__body" [formGroup]="form" (ngSubmit)="submit()">

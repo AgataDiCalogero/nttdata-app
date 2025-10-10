@@ -8,17 +8,18 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AlertComponent } from '@app/shared/ui/alert';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, CreateComment } from '@app/models';
-import { ToastService } from '../../ui/toast';
+import { ToastService } from '@app/shared/ui/toast';
 import { ButtonComponent } from '@app/shared/ui/button';
 
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, AlertComponent],
   templateUrl: './comment-form.html',
   styleUrls: ['./comment-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +34,7 @@ export class CommentForm {
   readonly created = output<Comment>();
 
   readonly submitting = signal(false);
+  readonly submitError = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
     name: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(2)]),
@@ -72,10 +74,13 @@ export class CommentForm {
           const status = err?.status;
           if (status === 422) {
             this.toast.show('error', 'Comment data not valid. Please review the fields.');
+            this.submitError.set('Comment data not valid. Please review the fields.');
           } else if (status === 429) {
             this.toast.show('error', 'Too many requests. Please try again shortly.');
+            this.submitError.set('Too many requests. Please try again shortly.');
           } else {
             this.toast.show('error', 'Unable to publish the comment. Please retry.');
+            this.submitError.set('Unable to publish the comment. Please retry.');
           }
         },
         complete: () => {
