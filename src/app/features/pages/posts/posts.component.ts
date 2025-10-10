@@ -26,6 +26,7 @@ import {
 } from '../../../shared/dialog/delete-confirm/delete-confirm.component';
 import { ButtonComponent } from '@app/shared/ui/button';
 import { CardComponent } from '@app/shared/ui/card';
+import { DebounceInputDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-posts',
@@ -38,6 +39,7 @@ import { CardComponent } from '@app/shared/ui/card';
     ButtonComponent,
     CardComponent,
     PostCardComponent,
+    DebounceInputDirective,
   ],
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss'],

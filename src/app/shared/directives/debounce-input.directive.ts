@@ -8,14 +8,16 @@ import { Directive, EventEmitter, Output, input, effect, signal } from '@angular
   },
 })
 export class DebounceInputDirective {
-  readonly ms = input(300, { alias: 'appDebounceInput' });
+  readonly ms = input<number | ''>(300, { alias: 'appDebounceInput' });
   private readonly valueSig = signal<string>('');
 
   @Output() debounced = new EventEmitter<string>();
 
   constructor() {
     effect((onCleanup) => {
-      const t = setTimeout(() => this.debounced.emit(this.valueSig()), this.ms());
+      const v = this.ms();
+      const delay = typeof v === 'number' ? v : 300;
+      const t = setTimeout(() => this.debounced.emit(this.valueSig()), delay);
       onCleanup(() => clearTimeout(t));
     });
   }

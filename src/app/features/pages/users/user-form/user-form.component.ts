@@ -16,11 +16,12 @@ import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
 import { ToastService } from '@app/shared/ui/toast';
 import { ButtonComponent } from '@app/shared/ui/button';
 import { AlertComponent } from '@app/shared/ui/alert';
+import { AutoFocusDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent, AutoFocusDirective],
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

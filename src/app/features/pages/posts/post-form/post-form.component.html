@@ -55,6 +55,7 @@
         type="text"
         formControlName="title"
         placeholder="Post title"
+        appAutoFocus
         [disabled]="submitting()"
         [attr.aria-invalid]="titleInvalid ? 'true' : null"
         maxlength="120"

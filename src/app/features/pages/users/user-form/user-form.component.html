@@ -15,6 +15,7 @@
       type="text"
       formControlName="name"
       placeholder="Enter full name"
+      appAutoFocus
       [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched ? 'true' : null"
     />
     @if (form.controls.name.touched && form.controls.name.invalid) {

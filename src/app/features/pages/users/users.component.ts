@@ -6,6 +6,7 @@ import { UsersApiService } from '@app/services/users/users-api.service';
 import type { User } from '@app/models';
 import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
+import { DebounceInputDirective } from '@app/shared/directives';
 import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
 import { ToastService } from '@app/shared/ui/toast';
 import { UserForm } from './user-form/user-form.component';
@@ -18,7 +19,7 @@ import {
 @Component({
   standalone: true,
   selector: 'app-users',
-  imports: [CommonModule, RouterModule, AsyncPipe, LucideAngularModule],
+  imports: [CommonModule, RouterModule, AsyncPipe, LucideAngularModule, DebounceInputDirective],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

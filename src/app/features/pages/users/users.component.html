@@ -4,7 +4,8 @@
     <input
       class="users-search"
       placeholder="Search name or email"
-      (input)="onSearch($any($event.target).value)"
+      appDebounceInput
+      (debounced)="onSearch($event)"
     />
     <button class="btn" (click)="openNewUserModal()" aria-label="Create new user">
       + New User

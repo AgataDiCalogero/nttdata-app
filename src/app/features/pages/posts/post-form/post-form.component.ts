@@ -8,11 +8,12 @@ import { AlertComponent } from '@app/shared/ui/alert';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, User } from '@app/models';
 import { ButtonComponent } from '@app/shared/ui/button';
+import { AutoFocusDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-post-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent, AutoFocusDirective],
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
