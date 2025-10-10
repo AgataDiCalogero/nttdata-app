@@ -55,64 +55,6 @@
     gap: var(--space-lg);
   }
 
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-
-    label {
-      font-weight: 600;
-    }
-
-    input,
-    select,
-    textarea {
-      border-radius: 0.75rem;
-      border: 1px solid var(--border-mix-60);
-      background: var(--color-surface);
-      color: var(--color-on-surface);
-      padding: var(--space-sm) var(--space-md);
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-
-      @supports (border: 1px solid color-mix(in srgb, red, blue)) {
-        border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
-        background: color-mix(in srgb, var(--color-bg) 40%, var(--color-surface));
-      }
-
-      &:focus-visible {
-        border-color: var(--focus-ring);
-        box-shadow: 0 0 0 3px var(--focus-ring-mix);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 160px;
-      line-height: 1.5;
-    }
-  }
-
-  .field-hint {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-    color: var(--color-muted);
-  }
-
-  .field-error {
-    color: var(--color-danger);
-    font-size: 0.85rem;
-    margin: 0;
-  }
-
   &__actions {
     display: flex;
     justify-content: flex-end;
@@ -122,4 +64,10 @@
       min-width: 140px;
     }
   }
+}
+
+.post-form :is(.form-textarea, textarea) {
+  min-height: 160px;
+  line-height: 1.5;
+  resize: vertical;
 }

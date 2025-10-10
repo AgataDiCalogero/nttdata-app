@@ -33,12 +33,12 @@ This document tracks all refactoring tasks to improve code organization, elimina
 - [x] Create shared `ButtonComponent` (`button[appButton]`) in `src/app/shared/ui/button/`
 - [x] Adopt `appButton` in posts page and post-form templates
 - [x] Adopt `appButton` in comment form
-- [ ] Adopt `appButton` in user form
+- [x] Adopt `appButton` in user form
 - [x] Remove duplicated button styles from:
   - `src/app/features/pages/posts/posts.scss`
   - `src/app/shared/comments/comment-form/comment-form.scss`
   - `src/app/features/pages/posts/post-form/post-form.scss` (retain layout overrides only)
-- [ ] Remove duplicated button styles from `src/app/features/pages/users/user-form/user-form.scss`
+- [x] Remove duplicated button styles from `src/app/features/pages/users/user-form/user-form.scss`
 
 ### 3. Form Field Styles (Duplicated across multiple files)
 
@@ -46,7 +46,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 
 **Files affected**: `post-form.scss`, `comment-form.scss`, `user-form.scss`
 
-- [ ] Create `src/styles/_forms.scss` with:
+- [x] Create `src/styles/_forms.scss` with:
   - `.form-field` base styles
   - `.form-label` styles
   - `.form-input`, `.form-select`, `.form-textarea` styles
@@ -55,12 +55,12 @@ This document tracks all refactoring tasks to improve code organization, elimina
   - Focus states (`:focus-visible`)
   - Disabled states
   - Validation state styles
-- [ ] Import `_forms.scss` in `src/styles.scss`
-- [ ] Remove duplicated form styles from:
+- [x] Import `_forms.scss` in `src/styles.scss`
+- [x] Remove duplicated form styles from:
   - `src/app/features/pages/posts/post-form/post-form.scss`
   - `src/app/shared/comments/comment-form/comment-form.scss`
   - `src/app/features/pages/users/user-form/user-form.scss`
-- [ ] Update HTML templates to use consistent form classes
+- [x] Update HTML templates to use consistent form classes
 
 ### 4. Card/Surface Styles
 
@@ -236,7 +236,7 @@ This document tracks all refactoring tasks to improve code organization, elimina
 ## Progress Summary
 
 - **Total Tasks**: 17
-- **Completed**: 3
+- **Completed**: 5
 - **High Priority**: 6
 - **Medium Priority**: 6
 - **Low Priority**: 5

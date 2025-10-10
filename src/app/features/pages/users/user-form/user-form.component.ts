@@ -14,11 +14,12 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
 import { ToastService } from '../../../../shared/toast/toast.service';
+import { ButtonComponent } from '@app/shared/ui/button';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ButtonComponent],
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

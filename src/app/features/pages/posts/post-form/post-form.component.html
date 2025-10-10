@@ -23,13 +23,15 @@
     </div>
   }
 
-  <form class="post-form__body" [formGroup]="form" (ngSubmit)="submit()">
+  <form class="form post-form__body" [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-field">
-      <label for="post-user">Author</label>
+      <label class="form-label" for="post-user">Author</label>
       <select
+        class="form-select"
         id="post-user"
         formControlName="userId"
         [disabled]="submitting() || loadingUsers() || !users().length"
+        [attr.aria-invalid]="userIdInvalid ? 'true' : null"
       >
         <option [ngValue]="0">Select author</option>
         @for (user of users(); track user.id) {
@@ -42,13 +44,15 @@
     </div>
 
     <div class="form-field">
-      <label for="post-title">Title</label>
+      <label class="form-label" for="post-title">Title</label>
       <input
+        class="form-input"
         id="post-title"
         type="text"
         formControlName="title"
         placeholder="Post title"
         [disabled]="submitting()"
+        [attr.aria-invalid]="titleInvalid ? 'true' : null"
         maxlength="120"
       />
       @if (titleInvalid) {
@@ -57,13 +61,15 @@
     </div>
 
     <div class="form-field">
-      <label for="post-body">Content</label>
+      <label class="form-label" for="post-body">Content</label>
       <textarea
+        class="form-textarea"
         id="post-body"
         formControlName="body"
         rows="8"
         placeholder="Describe your idea or report"
         [disabled]="submitting()"
+        [attr.aria-invalid]="bodyInvalid ? 'true' : null"
         maxlength="500"
       ></textarea>
       <div class="field-hint">
@@ -82,6 +88,7 @@
         appButton
         variant="primary"
         type="submit"
+        [loading]="submitting()"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
         {{ submitting() ? 'Saving...' : 'Create post' }}
