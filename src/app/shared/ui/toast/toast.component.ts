@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
 
 import { ToastService } from './toast.service';
 
@@ -19,5 +19,17 @@ export class ToastComponent {
 
   dismiss(id: string): void {
     this.toastService.dismiss(id);
+  }
+
+  /**
+   * Allow users to dismiss all toasts with the Escape key as an accessibility fallback.
+   */
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape(event: KeyboardEvent): void {
+    if (event.defaultPrevented || this.toasts().length === 0) {
+      return;
+    }
+
+    this.toastService.clear();
   }
 }
