@@ -72,6 +72,7 @@ Conventions
 
 - Components: `input()`/`output()`, signals, `ChangeDetectionStrategy.OnPush`.
 - Templates: new control flow (`@if`, `@for`), explicit `track`, prefer native controls.
+  - Note: inside `<ul>/<ol>/<select>`, wrap `@for` in a native `<template>` (no whitespace) so children remain valid (`li`/`option`).
 - Styles: SCSS partials in `src/styles/`, BEM‑like class names, provide fallbacks for modern CSS features.
 - Accessibility: toasts use a polite live region; loaders expose status via `<output>`.
 
@@ -79,6 +80,7 @@ Conventions
 
 - Auth flow, interceptors, theming, users and posts features are functional.
 - Accessibility fixes landed for toast/loader; host metadata used instead of `@Host*` where applicable.
+  - Hydration: toast component is marked with `ngSkipHydration` (ephemeral UI). Avoid non-deterministic SSR output.
 - Posts feature re-organization: completed. Files are now organized into `container/`, `view/`, and `store/`. Re-export stubs at the feature root were removed and imports migrated to canonical paths (container/view/store) to simplify imports and history.
 - The project builds and the dev server runs locally (run `npm start`). A production build completed successfully; component style budgets were trimmed where possible. Consider refactoring large component styles or splitting them into partials later.
 
@@ -108,6 +110,7 @@ npm run build
 Suggested follow-ups (low risk order)
 
 - Run ESLint and fix remaining warnings (I can do this next and push fixes).
+- Replace any remaining `allowSignalWrites` uses; it’s deprecated and no longer needed.
 - Replace re-export stubs with direct imports across the repo in one PR (breaking but clean). Use the convenience `index.ts` during the transition.
 - Optionally refactor large component SCSS (split posts/appearance-switcher styles into partials) to meet original budgets.
 

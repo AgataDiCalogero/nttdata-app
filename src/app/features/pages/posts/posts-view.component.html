@@ -51,9 +51,7 @@
       <ul class="posts-list posts-list--skeleton">
         <template>
           @for (placeholder of [1, 2, 3]; track placeholder) {
-            <li aria-hidden="true">
-              <app-card class="posts-card" [skeleton]="true"></app-card>
-            </li>
+            <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
           }
         </template>
       </ul>
@@ -79,7 +77,6 @@
                   (delete)="deletePost.emit(post)"
                   (toggleComments)="toggleComments.emit(post.id)"
                 ></app-post-card>
-
                 @if (commentsFor(post.id)) {
                   <div class="posts-comments" id="comments-{{ post.id }}">
                     @if (commentsAreLoading(post.id)) {
@@ -105,7 +102,6 @@
                         </div>
                       }
                     }
-
                     <app-comment-form
                       [postId]="post.id"
                       (created)="onCommentCreated(post.id, $event)"

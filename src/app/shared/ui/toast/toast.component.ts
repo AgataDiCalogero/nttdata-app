@@ -11,6 +11,8 @@ import { ToastService } from './toast.service';
     class: 'toast-container',
     'aria-live': 'polite',
     'aria-atomic': 'true',
+    // Skip hydration for ephemeral toasts to avoid SSR/client DOM drift
+    ngSkipHydration: '',
     // Accessibility: allow dismissing all toasts with Escape
     '(document:keydown.escape)': 'handleEscape($event)',
   },

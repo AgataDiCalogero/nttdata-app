@@ -2,25 +2,13 @@
 
 Keep ogni bullet piccolo e autonomo (1 PR ciascuno).
 
-1. A11y & UX
+1. Remaining refactors (high level)
 
-- [ ] Liste e controlli: verificare che ogni `ul/ol` abbia solo `li` diretti; etichette e ruoli corretti nei template (focus su posts/comments).
+- Performance & State
+  - [ ] Verifica OnPush e `host` metadata su app shell, login, footer, Users, Posts (consistency pass).
+  - [ ] Migrazione a signals dove rimangono BehaviorSubject locali non necessari.
 
-1. Performance & State
-
-- [ ] Verifica OnPush e `host` metadata su app shell, login, footer, Users, Posts (consistency pass).
-- [ ] Migrazione a signals dove rimangono BehaviorSubject locali non necessari.
-
-1. Posts feature re‑org (completed)
-
-- ✅ Files reorganized into `container/`, `view/`, and `store/`.
-- ✅ `PostsStore` implemented at `src/app/features/pages/posts/store/posts.store.ts`.
-  -- ✅ Thin re-export stubs were used during migration and have now been removed; imports were migrated to canonical paths.
-
-Next tasks (recommended, ordered)
-
-- ESLint pass
-  - Run `npm run lint -- --fix` and manually fix remaining lint warnings.
+1. Next tasks (recommended, ordered)
 
 - Replace re-exports with canonical imports
   - Update import sites across the repo to use direct paths (e.g. `.../posts/container/posts.component`) and remove the re-export stubs in a single PR. This keeps history clean and avoids partially-broken imports.
@@ -33,7 +21,6 @@ Next tasks (recommended, ordered)
 
 Validation checklist (before merge)
 
-- [ ] `npm run lint` passes (or only non-blocking warnings remain)
 - [ ] `npm run build` completes
 - [ ] Tests added/updated for Posts (optional but encouraged)
 
