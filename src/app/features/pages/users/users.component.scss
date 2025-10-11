@@ -74,7 +74,7 @@
   padding: var(--space-xs);
   border-radius: var(--radius-xs);
   cursor: pointer;
-  @include mixins.smooth-transition(background, color);
+  @include mixins.smooth-transition((background, color));
 
   lucide-icon {
     width: var(--space-lg);

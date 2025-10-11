@@ -14,7 +14,7 @@
   z-index: 60;
   color: inherit;
   cursor: pointer;
-  @include mixins.smooth-transition(transform, box-shadow);
+  @include mixins.smooth-transition((transform, box-shadow));
 
   &:hover {
     transform: translateY(-2px);
@@ -84,7 +84,7 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.85rem;
-  @include mixins.smooth-transition(background, border-color, transform);
+  @include mixins.smooth-transition((background, border-color, transform));
 
   &:hover {
     background: var(--alpha-accent-08);

@@ -55,7 +55,7 @@
   cursor: pointer;
   @include mixins.radius('xs');
   opacity: 0.8;
-  @include mixins.smooth-transition(opacity, background);
+  @include mixins.smooth-transition((opacity, background));
 
   &:hover {
     opacity: 1;

@@ -58,7 +58,7 @@
     text-decoration: none;
     position: relative;
     overflow: hidden;
-    @include mixins.smooth-transition(transform, box-shadow, background, color, border-color);
+    @include mixins.smooth-transition((transform, box-shadow, background, color, border-color));
 
     /* border-color uses var(--color-accent) directly; color-mix fallbacks handled globally */
 
