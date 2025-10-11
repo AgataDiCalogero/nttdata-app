@@ -1,16 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  HostListener,
   inject,
   OnDestroy,
   signal,
   computed,
+  PLATFORM_ID,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter, map, startWith, tap } from 'rxjs';
@@ -25,6 +24,7 @@ import { filter, map, startWith, tap } from 'rxjs';
   host: {
     role: 'banner',
     '[attr.data-menu-open]': 'menuOpen() ? "true" : "false"',
+    '(window:resize)': 'onResize()',
   },
 })
 export class Navbar implements OnDestroy {
@@ -73,7 +73,6 @@ export class Navbar implements OnDestroy {
     }
   }
 
-  @HostListener('window:resize')
   onResize(): void {
     if (!this.isBrowser) return;
     if (window.innerWidth >= 640) {

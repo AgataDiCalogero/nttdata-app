@@ -11,12 +11,13 @@ Keep every bullet as its own PR/commit. Update this file as work lands.
 ## Phase 1 - A11y & Error UX
 
 - [x] Toast/Alert accessibility: ensure role="status", aria-live="polite", keyboard dismissal, and English-only copy in shared/ui/toast (remove duplicates).
-- [ ] Lists & controls audit: verify every <ul>/<ol> has only <li> children; ensure interactive elements are native controls with accessible labels. Next: review posts/comments markup after users table refactor.
+- [x] Replace `@HostListener` and `@HostBinding` with `host` metadata across shared components (toast, navbar, button, directives already compliant).
+- [ ] Lists & controls audit: verify every `ul`/`ol` has only `li` children; ensure interactive elements are native controls with accessible labels. Next: review posts/comments markup after users table refactor.
 - [x] Error mapping: add shared/utils/error-mapper.ts and update errorInterceptor (and auth interceptor as needed) to centralize handling for 401/403/422/429, including retry/backoff guidance on 429.
 
 ## Phase 2 - Performance & State
 
-- [ ] OnPush everywhere: set ChangeDetectionStrategy.OnPush and host metadata for app shell, navbar, login, footer, Users, Posts.
+- [ ] OnPush everywhere: set ChangeDetectionStrategy.OnPush and use `host` metadata (no `@Host*` decorators) for app shell, login, footer, Users, Posts.
 - [ ] Signals migration: replace local BehaviorSubject usage with signal/computed where sharing is unnecessary.
 - [ ] Posts decomposition: split the 360+ LOC Posts route into a container + presentation components and extract orchestration into a dedicated service.
 

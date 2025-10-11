@@ -7,11 +7,9 @@ import { CommentForm } from '../../../shared/comments/comment-form/comment-form.
 import { ButtonComponent } from '@app/shared/ui/button';
 import { CardComponent } from '@app/shared/ui/card';
 import { PostCardComponent } from './post-card/post-card.component';
-import { DebounceInputDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-posts-view',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -20,7 +18,6 @@ import { DebounceInputDirective } from '@app/shared/directives';
     ButtonComponent,
     CardComponent,
     PostCardComponent,
-    DebounceInputDirective,
   ],
   templateUrl: './posts-view.component.html',
   styleUrls: ['./posts.component.scss'],

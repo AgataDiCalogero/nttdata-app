@@ -4,7 +4,7 @@ Single-page Angular application built on top of the public GoREST API to manage 
 
 ## Tech Stack & Tooling
 
-- Angular 20 with standalone components, lazy routing, and zoneless change detection (`provideZonelessChangeDetection`)
+- Angular 20 with standalone components, lazy routing, and zoneless change detection (`provideZonelessChangeDetection`). Host bindings/listeners are declared via the `host` object in decorators (no `@HostBinding`/`@HostListener`).
 - Angular CDK `Dialog` for modal/drawer experiences
 - `lucide-angular` icons
 - Custom dark/light theme persisted with signals + `localStorage`
@@ -94,7 +94,7 @@ npm test        # interactive Karma run
 npm run test:ci # headless Chrome run (pre-push hook)
 ```
 
-> Note: custom spec files are pending; increasing coverage to the required 60% is tracked in the backlog.
+> Note: increasing coverage to the target 60% is tracked in the backlog.
 
 ## Project Structure (high level)
 
