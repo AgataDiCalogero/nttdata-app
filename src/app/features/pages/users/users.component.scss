@@ -1,3 +1,5 @@
+@use '../../../styles/mixins';
+
 .users-table {
   width: 100%;
   border-collapse: collapse;
@@ -37,10 +39,8 @@
 }
 
 .users-table__sort {
-  display: inline-flex;
-  align-items: center;
+  @include mixins.flex-row(var(--space-xs));
   justify-content: space-between;
-  gap: var(--space-xs);
   width: 100%;
   background: transparent;
   border: none;
@@ -48,15 +48,14 @@
   font: inherit;
   padding: 0;
   cursor: pointer;
-}
 
-.users-table__sort:hover {
-  color: var(--color-accent-dark, var(--color-accent));
-}
+  &:hover {
+    color: var(--color-accent-dark, var(--color-accent));
+  }
 
-.users-table__sort:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  &:focus-visible {
+    @include mixins.focus-ring;
+  }
 }
 
 .users-table__sort-indicator {
@@ -65,22 +64,17 @@
 }
 
 .actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
+  @include mixins.flex-row(0.75rem);
 }
 
 .action-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2xs);
+  @include mixins.flex-center(var(--space-2xs));
   background: transparent;
   border: none;
   padding: var(--space-xs);
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  @include mixins.smooth-transition(background, color);
 
   lucide-icon {
     width: var(--space-lg);
@@ -95,35 +89,30 @@
       stroke-width: 2;
     }
   }
-}
 
-.action-button:hover {
-  background: rgba(176, 141, 87, 0.15);
+  &:hover {
+    background: rgba(176, 141, 87, 0.15);
 
-  lucide-icon {
-    color: var(--color-danger);
+    lucide-icon {
+      color: var(--color-danger);
+    }
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring;
+    background: rgba(176, 141, 87, 0.2);
   }
 }
 
-.action-button:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-  background: rgba(176, 141, 87, 0.2);
-}
-
 .users-header {
-  display: flex;
-  align-items: center;
+  @include mixins.flex-row(var(--space-md));
   justify-content: space-between;
-  gap: var(--space-md);
 }
 
 /* Use global .btn styles from styles/_buttons.scss to ensure consistency */
 
 .users-header__actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
+  @include mixins.flex-row(0.75rem);
 }
 
 .users-search {
@@ -157,9 +146,7 @@
 }
 
 .users-pagination {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
+  @include mixins.flex-row(0.75rem);
   margin-top: var(--space-md);
 }
 

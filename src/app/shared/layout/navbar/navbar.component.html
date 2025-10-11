@@ -38,7 +38,13 @@
 
   <!-- overlay shown when mobile menu is open -->
   @if (menuOpen()) {
-    <div class="mobile-overlay" (click)="closeMenu()" aria-hidden="true"></div>
+    <div
+      class="mobile-overlay"
+      (click)="closeMenu()"
+      (keydown)="closeMenu()"
+      aria-hidden="true"
+      tabindex="-1"
+    ></div>
   }
   <div class="controls">
     <app-appearance-switcher></app-appearance-switcher>

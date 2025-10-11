@@ -1,7 +1,7 @@
+@use '../../../../../styles/mixins';
+
 .token-help {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
+  @include mixins.flex-column(var(--space-lg));
   max-width: 28rem;
   padding: var(--space-xl);
   background: var(--color-surface-solid);
@@ -13,9 +13,7 @@
   backdrop-filter: blur(12px);
 
   &__header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+    @include mixins.flex-column(var(--space-xs));
   }
 
   &__title {
@@ -33,9 +31,7 @@
   &__steps {
     margin: 0;
     padding-inline-start: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+    @include mixins.flex-column(var(--space-sm));
 
     li {
       line-height: 1.6;
@@ -49,9 +45,7 @@
 
   &__link {
     align-self: flex-start;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
+    @include mixins.flex-row(var(--space-xs));
     padding: var(--space-sm) var(--space-lg);
     border-radius: var(--border-radius-btn);
     border: 1px solid var(--color-accent);
@@ -64,12 +58,7 @@
     text-decoration: none;
     position: relative;
     overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      background 0.2s ease,
-      color 0.2s ease,
-      border-color 0.2s ease;
+    @include mixins.smooth-transition(transform, box-shadow, background, color, border-color);
 
     /* border-color uses var(--color-accent) directly; color-mix fallbacks handled globally */
 

@@ -1,3 +1,5 @@
+@use '../../../styles/mixins';
+
 .toast-container {
   position: fixed;
   right: 1rem;
@@ -11,9 +13,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  @include mixins.flex-column(0.5rem);
 }
 
 .toast {
@@ -24,15 +24,13 @@
     0 10px 25px rgba(0, 0, 0, 0.3),
     0 6px 12px rgba(0, 0, 0, 0.2);
   color: white;
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
+  @include mixins.flex-row(var(--space-sm));
   min-width: 280px;
   max-width: 400px;
   pointer-events: auto;
   animation: toast-slide-in 0.3s ease-out;
   outline: none;
-  transition: all 0.3s ease;
+  @include mixins.smooth-transition(all);
 
   &:hover {
     transform: translateX(-4px);
@@ -52,9 +50,7 @@
   flex-shrink: 0;
   width: 1.5rem;
   height: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include mixins.flex-center;
   background: transparent;
   border: none;
   color: inherit;
@@ -63,9 +59,7 @@
   cursor: pointer;
   border-radius: 0.25rem;
   opacity: 0.8;
-  transition:
-    opacity 0.2s ease,
-    background 0.2s ease;
+  @include mixins.smooth-transition(opacity, background);
 
   &:hover {
     opacity: 1;

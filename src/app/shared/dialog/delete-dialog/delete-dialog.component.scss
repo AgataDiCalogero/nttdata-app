@@ -1,3 +1,5 @@
+@use '../../../styles/mixins';
+
 .dialog-backdrop {
   position: fixed;
   top: 0;
@@ -5,9 +7,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include mixins.flex-center;
   z-index: 1000;
 }
 
@@ -22,9 +22,8 @@
 }
 
 .actions {
-  display: flex;
+  @include mixins.flex-row(var(--space-md));
   justify-content: flex-end;
-  gap: var(--space-md);
   margin-top: var(--space-md);
 
   button {
@@ -32,12 +31,11 @@
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    @include mixins.smooth-transition(all);
 
     /* Enhanced focus visibility - WCAG 2.4.7 */
     &:focus-visible {
-      outline: 2px solid var(--focus-ring);
-      outline-offset: 2px;
+      @include mixins.focus-ring;
     }
   }
 

@@ -1,3 +1,5 @@
+@use '../../../styles/mixins';
+
 :host {
   display: block;
   padding: var(--space-lg);
@@ -6,9 +8,7 @@
 }
 
 .delete-confirm {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  @include mixins.flex-column(var(--space-md));
 }
 
 h2 {
@@ -26,8 +26,7 @@ h2 {
 }
 
 .delete-confirm__actions {
-  display: flex;
-  gap: var(--space-sm);
+  @include mixins.flex-row(var(--space-sm));
   margin-top: var(--space-sm);
   padding-top: var(--space-md);
   border-top: 1px solid var(--color-border);
