@@ -1,34 +1,34 @@
-<header class="app-navbar" [attr.data-menu-open]="menuOpen">
+<header class="app-navbar">
   <a class="brand" routerLink="/" aria-label="NTT Data Home">
     <img src="assets/logo.svg" alt="NTT Data" class="brand__logo" width="40" height="40" />
     <h1>NTT Data App</h1>
   </a>
   <nav role="navigation" aria-label="Main navigation">
-    @if (!isLogged && !isLoginRoute) {
-      <a routerLink="/login" (click)="menuOpen && toggleMenu()">Login</a>
+    @if (!isLogged() && !isLoginRoute()) {
+      <a routerLink="/login" (click)="closeMenu()">Login</a>
     }
-    @if (isLogged) {
+    @if (isLogged()) {
       <a
         routerLink="/users"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
-        (click)="menuOpen && toggleMenu()"
+        (click)="closeMenu()"
         >Users</a
       >
       <a
         routerLink="/posts"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
-        (click)="menuOpen && toggleMenu()"
+        (click)="closeMenu()"
         >Posts</a
       >
     }
   </nav>
   <!-- Mobile menu toggle -->
-  @if (isLogged) {
+  @if (isLogged()) {
     <button
       class="menu-toggle"
-      [attr.aria-expanded]="menuOpen"
+      [attr.aria-expanded]="menuOpen()"
       aria-label="Toggle navigation"
       (click)="toggleMenu()"
     >
@@ -37,13 +37,13 @@
   }
 
   <!-- overlay shown when mobile menu is open -->
-  @if (menuOpen) {
-    <div class="mobile-overlay" (click)="toggleMenu()" aria-hidden="true"></div>
+  @if (menuOpen()) {
+    <div class="mobile-overlay" (click)="closeMenu()" aria-hidden="true"></div>
   }
   <div class="controls">
     <app-appearance-switcher></app-appearance-switcher>
     <!-- Show logout when user is authenticated -->
-    @if (isLogged) {
+    @if (isLogged()) {
       <button class="logout" (click)="logout()" aria-label="Logout">Logout</button>
     }
   </div>

@@ -14,7 +14,7 @@
     </button>
   </div>
 </header>
-@if (displayed$ | async; as data) {
+@if (displayed(); as data) {
   @if (loading()) {
     <table class="users-table">
       <thead>

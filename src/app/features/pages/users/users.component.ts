@@ -1,13 +1,11 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { UsersApiService } from '@app/services/users/users-api.service';
-import type { User } from '@app/models';
-import { AsyncPipe } from '@angular/common';
 import { LucideAngularModule, Trash2 } from 'lucide-angular';
 import { DebounceInputDirective } from '@app/shared/directives';
-import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
+import { UsersApiService } from '@app/services/users/users-api.service';
+import type { User } from '@app/models';
 import { ToastService } from '@app/shared/ui/toast';
 import { UserForm } from './user-form/user-form.component';
 import {
@@ -15,98 +13,102 @@ import {
   type DeleteConfirmData,
 } from '../../../shared/dialog/delete-confirm/delete-confirm.component';
 
-// Users management page component
+type SortField = 'name' | 'email' | 'status';
+
 @Component({
   standalone: true,
   selector: 'app-users',
-  imports: [CommonModule, RouterModule, AsyncPipe, LucideAngularModule, DebounceInputDirective],
+  imports: [CommonModule, RouterModule, LucideAngularModule, DebounceInputDirective],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Users {
-  private api = inject(UsersApiService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private toast = inject(ToastService);
-  private dialog = inject(Dialog);
+  private readonly api = inject(UsersApiService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly toast = inject(ToastService);
+  private readonly dialog = inject(Dialog);
 
-  // data source
-  private usersSubject = new BehaviorSubject<User[]>([]);
+  readonly Trash2 = Trash2;
 
-  // UI states
-  loading = signal(true);
-  error = signal<string | null>(null);
-  deletingId = signal<number | null>(null);
+  // base state
+  private readonly users = signal<User[]>([]);
+  readonly loading = signal(true);
+  readonly error = signal<string | null>(null);
+  readonly deletingId = signal<number | null>(null);
 
-  // controls
-  private searchTerm = new BehaviorSubject<string>('');
-  private sortState = new BehaviorSubject<{ field: 'name' | 'email' | 'status'; dir: 1 | -1 }>({
+  private readonly searchTerm = signal('');
+  private readonly sortState = signal<{ field: SortField; dir: 1 | -1 }>({
     field: 'name',
     dir: 1,
   });
-  private pageState = new BehaviorSubject<{ page: number; per_page: number }>({
+  private readonly pageState = signal<{ page: number; per_page: number }>({
     page: 1,
     per_page: 10,
   });
 
-  // exposed
-  readonly Trash2 = Trash2;
+  private readonly filteredUsers = computed(() => {
+    const query = this.searchTerm().trim().toLowerCase();
+    const { field, dir } = this.sortState();
+    const list = this.users();
 
-  // displayed observable: filter, sort, paginate
-  displayed$ = combineLatest({
-    users: this.usersSubject,
-    q: this.searchTerm.pipe(debounceTime(300)),
-    sort: this.sortState,
-    page: this.pageState,
-  }).pipe(
-    map(({ users, q, sort, page }) => {
-      // filter
-      const qq = q.trim().toLowerCase();
-      let filtered = users.filter((u) => {
-        if (!qq) return true;
-        return (
-          String(u.name).toLowerCase().includes(qq) || String(u.email).toLowerCase().includes(qq)
-        );
-      });
+    const filtered = query
+      ? list.filter(
+          (user) =>
+            String(user.name ?? '').toLowerCase().includes(query) ||
+            String(user.email ?? '').toLowerCase().includes(query),
+        )
+      : [...list];
 
-      // sort
-      filtered = filtered.sort((a, b) => {
-        const fa = String(a[sort.field] ?? '').toLowerCase();
-        const fb = String(b[sort.field] ?? '').toLowerCase();
-        if (fa < fb) return -1 * sort.dir;
-        if (fa > fb) return 1 * sort.dir;
-        return 0;
-      });
+    return filtered.sort((a, b) => {
+      const fa = String(a[field] ?? '').toLowerCase();
+      const fb = String(b[field] ?? '').toLowerCase();
+      if (fa < fb) return -1 * dir;
+      if (fa > fb) return 1 * dir;
+      return 0;
+    });
+  });
 
-      // pagination
-      const total = filtered.length;
-      const start = (page.page - 1) * page.per_page;
-      const end = start + page.per_page;
-      const pageItems = filtered.slice(start, end);
+  readonly displayed = computed(() => {
+    const { page, per_page } = this.pageState();
+    const data = this.filteredUsers();
+    const start = (page - 1) * per_page;
+    const items = data.slice(start, start + per_page);
 
-      return { items: pageItems, total };
-    }),
-  );
+    return {
+      items,
+      total: data.length,
+      page,
+      per_page,
+      totalPages: Math.max(1, Math.ceil(Math.max(data.length, 1) / per_page)),
+    };
+  });
 
   constructor() {
-    // read query params initial
     const qp = this.route.snapshot.queryParamMap;
-    const p = Number(qp.get('page') ?? 1) || 1;
-    const per = Number(qp.get('per_page') ?? 10) || 10;
-    this.pageState.next({ page: p, per_page: per });
+    const page = Number(qp.get('page') ?? 1) || 1;
+    const perPage = Number(qp.get('per_page') ?? 10) || 10;
+    this.pageState.set({
+      page: Math.max(1, page),
+      per_page: Math.max(1, perPage),
+    });
 
     this.loadUsers();
   }
 
-  // helpers for template
-  sortDir(field: 'name' | 'email' | 'status'): number {
-    const s = this.sortState.getValue();
-    return s.field === field ? s.dir : 0;
+  sortDir(field: SortField): number {
+    const sort = this.sortState();
+    return sort.field === field ? sort.dir : 0;
   }
 
   currentPage(): { page: number; per_page: number } {
-    return this.pageState.getValue();
+    return this.pageState();
+  }
+
+  totalPages(total: number): number {
+    const perPage = this.pageState().per_page || 1;
+    return Math.max(1, Math.ceil(total / perPage));
   }
 
   loadUsers(): void {
@@ -114,7 +116,7 @@ export class Users {
     this.error.set(null);
     this.api.list().subscribe({
       next: (list) => {
-        this.usersSubject.next(list ?? []);
+        this.users.set(list ?? []);
         this.loading.set(false);
       },
       error: (err) => {
@@ -125,46 +127,42 @@ export class Users {
     });
   }
 
-  totalPages(total: number): number {
-    const p = this.pageState.getValue();
-    return Math.max(1, Math.ceil(total / p.per_page));
+  onSearch(value: string): void {
+    this.searchTerm.set(value ?? '');
+    const { per_page } = this.pageState();
+    this.setPage(1, per_page, false);
   }
 
-  trackById(_idx: number, item: User): number {
-    return item.id;
-  }
-
-  // search input handler
-  onSearch(v: string): void {
-    this.searchTerm.next(v ?? '');
-    // reset to first page
-    const s = this.pageState.getValue();
-    this.setPage(1, s.per_page, false);
-  }
-
-  // sorting
-  toggleSort(field: 'name' | 'email' | 'status') {
-    const cur = this.sortState.getValue();
-    if (cur.field === field) {
-      this.sortState.next({ field, dir: cur.dir === 1 ? -1 : 1 });
+  toggleSort(field: SortField): void {
+    const current = this.sortState();
+    if (current.field === field) {
+      this.sortState.set({ field, dir: current.dir === 1 ? -1 : 1 });
     } else {
-      this.sortState.next({ field, dir: 1 });
+      this.sortState.set({ field, dir: 1 });
     }
+    this.setPage(1, this.pageState().per_page, false);
   }
 
-  // pagination - also update query params
-  setPage(page: number, per_page: number, pushUrl = true) {
-    this.pageState.next({ page, per_page });
+  setPage(page: number, per_page: number, pushUrl = true): void {
+    const perPage = Math.max(1, per_page);
+    const totalPages = Math.max(1, Math.ceil(this.filteredUsers().length / perPage));
+    const nextPage = Math.max(1, Math.min(page, totalPages));
+
+    this.pageState.set({ page: nextPage, per_page: perPage });
+
     if (pushUrl) {
       this.router.navigate([], {
         relativeTo: this.route,
-        queryParams: { page, per_page },
+        queryParams: { page: nextPage, per_page: perPage },
         queryParamsHandling: 'merge',
       });
     }
   }
 
-  // open New User modal
+  trackById(_idx: number, user: User): number {
+    return user.id;
+  }
+
   openNewUserModal(): void {
     const isMobile = window.innerWidth < 640;
     const config = isMobile
@@ -194,7 +192,6 @@ export class Users {
         };
 
     const ref = this.dialog.open(UserForm, config);
-
     ref.closed.subscribe((result) => {
       if (result === 'success') {
         this.loadUsers();
@@ -202,9 +199,7 @@ export class Users {
     });
   }
 
-  // open Edit User modal
   openEditUserModal(userId: number): void {
-    // Load user data first
     this.api.getById(userId).subscribe({
       next: (user) => {
         const isMobile = window.innerWidth < 640;
@@ -237,7 +232,6 @@ export class Users {
             };
 
         const ref = this.dialog.open(UserForm, config);
-
         ref.closed.subscribe((result) => {
           if (result === 'success') {
             this.loadUsers();
@@ -251,11 +245,10 @@ export class Users {
     });
   }
 
-  // delete with confirm + toast
-  onDelete(u: User): void {
+  onDelete(user: User): void {
     const data: DeleteConfirmData = {
       title: 'Delete User',
-      message: `Are you sure you want to delete ${u.name}? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${user.name}? This action cannot be undone.`,
       confirmText: 'Delete',
       cancelText: 'Cancel',
     };
@@ -274,14 +267,14 @@ export class Users {
     ref.closed.subscribe((confirmed) => {
       if (!confirmed) return;
 
-      this.deletingId.set(u.id);
-      this.api.delete(u.id).subscribe({
+      this.deletingId.set(user.id);
+      this.api.delete(user.id).subscribe({
         next: () => {
-          // remove locally
-          const current = this.usersSubject.getValue();
-          this.usersSubject.next(current.filter((x) => x.id !== u.id));
+          this.users.update((list) => list.filter((item) => item.id !== user.id));
           this.deletingId.set(null);
           this.toast.show('success', 'User deleted');
+          const { per_page } = this.pageState();
+          this.setPage(this.pageState().page, per_page, false);
         },
         error: (err) => {
           console.error('Delete failed:', err);
