@@ -1,0 +1,77 @@
+/* Utility mixins for common patterns */
+
+// Flexbox layouts
+@mixin flex-row($gap: var(--space-md), $align: center, $justify: flex-start) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
+@mixin flex-column($gap: var(--space-md), $align: stretch) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin flex-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $gap;
+}
+
+// Card/surface styles
+@mixin surface-card($padding: var(--space-lg)) {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: $padding;
+  box-shadow: var(--shadow);
+}
+
+// Focus states
+@mixin focus-ring($color: var(--focus-ring)) {
+  outline: 2px solid $color;
+  outline-offset: 2px;
+}
+
+// Truncate text
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Responsive breakpoints
+@mixin mobile {
+  @media (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 641px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// Hover/transition effects
+@mixin smooth-transition($properties: all, $duration: 0.2s) {
+  transition: $properties $duration ease;
+}
+
+// Glass morphism effect
+@mixin glassmorphism($blur: 10px) {
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+  border: 1px solid var(--color-border);
+}

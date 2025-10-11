@@ -91,7 +91,7 @@ export class Posts {
   }
 
   get postsCount() {
-    return this.store.posts().length;
+    return this.store.postsCount();
   }
 
   handleCreatePost(): void {

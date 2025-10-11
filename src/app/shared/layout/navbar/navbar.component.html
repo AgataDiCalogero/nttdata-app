@@ -44,7 +44,9 @@
     <app-appearance-switcher></app-appearance-switcher>
     <!-- Show logout when user is authenticated -->
     @if (isLogged()) {
-      <button class="logout" (click)="logout()" aria-label="Logout">Logout</button>
+      <button appButton variant="secondary" size="sm" (click)="logout()" aria-label="Logout">
+        Logout
+      </button>
     }
   </div>
 </header>

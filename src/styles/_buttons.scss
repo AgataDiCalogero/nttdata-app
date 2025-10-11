@@ -204,6 +204,27 @@
   }
 }
 
+.btn--outline {
+  background: transparent;
+  border: 2px solid var(--color-accent);
+  color: var(--color-accent);
+
+  &:hover {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    border-color: var(--color-accent);
+  }
+
+  &:focus-visible {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25);
+  }
+
+  &:active {
+    background: color-mix(in srgb, var(--color-accent) 90%, black);
+  }
+}
+
 .btn--ghost {
   background: transparent;
   border-color: var(--border-mix-60);

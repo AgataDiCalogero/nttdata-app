@@ -38,7 +38,16 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 - Keep templates simple and avoid complex logic
 - Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
+- **NEVER use `<template>` tags** with control flow - they are obsolete and cause errors. Use `<ng-container>` instead for wrapper-free elements
+- When using `@for` or `@if`, wrap content directly or use `<ng-container>` if you need a wrapper without DOM element
 - Use the async pipe to handle observables
+- Example correct usage:
+  ```html
+  @for (item of items; track item.id) {
+  <li>{{ item.name }}</li>
+  }
+  <!-- NOT: <template>@for (...) { ... }</template> -->
+  ```
 
 ## Services
 

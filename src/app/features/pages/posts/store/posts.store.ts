@@ -66,6 +66,7 @@ export class PostsStore {
   readonly currentPage = computed(() => this.pagination()?.page ?? this.page());
   readonly totalPages = computed(() => this.pagination()?.pages ?? 1);
   readonly currentPerPage = computed(() => this.pagination()?.limit ?? this.perPage());
+  readonly postsCount = computed(() => this.posts().length);
 
   constructor() {
     this.setupSearchForm();

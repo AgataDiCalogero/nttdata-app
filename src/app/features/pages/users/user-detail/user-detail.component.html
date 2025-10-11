@@ -22,45 +22,45 @@
 
       @if (posts().length) {
         <ul class="posts-list">
-          <template>
-            @for (p of posts(); track p.id) {
-              <li class="post-item">
-                <h4>{{ p.title }}</h4>
-                <p>{{ p.body }}</p>
-                <button type="button" (click)="toggleComments(p.id)">
-                  {{ commentsMap()[p.id] ? 'Hide comments' : 'Show comments' }}
-                </button>
+          @for (p of posts(); track p.id) {
+            <li class="post-item">
+              <h4>{{ p.title }}</h4>
+              <p>{{ p.body }}</p>
+              <button type="button" (click)="toggleComments(p.id)">
+                {{ commentsMap()[p.id] ? 'Hide comments' : 'Show comments' }}
+              </button>
 
-                @if (commentsMap()[p.id]) {
-                  <div class="comments">
-                    @if (commentsLoading()[p.id]) {
-                      <div class="loading">Loading comments...</div>
+              @if (commentsMap()[p.id]) {
+                <div class="comments">
+                  @if (commentsLoading()[p.id]) {
+                    <div class="loading">Loading comments...</div>
+                  } @else {
+                    @if (commentsMap()[p.id].length) {
+                      <ul>
+                        @for (c of commentsMap()[p.id]; track c.id) {
+                          <!--
+                      -->
+                          <li>
+                            <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
+                            >)
+                            <p>{{ c.body }}</p>
+                          </li>
+                          <!--
+                    -->
+                        }
+                      </ul>
                     } @else {
-                      @if (commentsMap()[p.id]?.length) {
-                        <ul>
-                          <template>
-                            @for (c of commentsMap()[p.id]; track c.id) {
-                              <li>
-                                <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
-                                >)
-                                <p>{{ c.body }}</p>
-                              </li>
-                            }
-                          </template>
-                        </ul>
-                      } @else {
-                        <div class="empty">No comments available yet.</div>
-                      }
+                      <div class="empty">No comments available yet.</div>
                     }
-                    <app-comment-form
-                      [postId]="p.id"
-                      (created)="onCommentCreated(p.id, $event)"
-                    ></app-comment-form>
-                  </div>
-                }
-              </li>
-            }
-          </template>
+                  }
+                  <app-comment-form
+                    [postId]="p.id"
+                    (created)="onCommentCreated(p.id, $event)"
+                  ></app-comment-form>
+                </div>
+              }
+            </li>
+          }
         </ul>
       } @else {
         <div class="empty">No posts available</div>

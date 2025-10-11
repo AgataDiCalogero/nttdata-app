@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
-const VARIANT_SET = new Set<ButtonVariant>(['primary', 'secondary', 'ghost', 'danger']);
+const VARIANT_SET = new Set<ButtonVariant>(['primary', 'secondary', 'outline', 'ghost', 'danger']);
 const SIZE_SET = new Set<ButtonSize>(['sm', 'md', 'lg']);
 
 @Component({
-  selector: 'button[appButton]',
+  selector: 'button[appButton], a[appButton]',
   standalone: true,
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
@@ -16,6 +16,7 @@ const SIZE_SET = new Set<ButtonSize>(['sm', 'md', 'lg']);
     class: 'btn',
     '[class.btn--primary]': 'isPrimary',
     '[class.btn--secondary]': 'isSecondary',
+    '[class.btn--outline]': 'isOutline',
     '[class.btn--ghost]': 'isGhost',
     '[class.btn--danger]': 'isDanger',
     '[class.btn--sm]': 'isSmall',
@@ -50,6 +51,9 @@ export class ButtonComponent {
   }
   protected get isSecondary(): boolean {
     return this.resolvedVariant() === 'secondary';
+  }
+  protected get isOutline(): boolean {
+    return this.resolvedVariant() === 'outline';
   }
   protected get isGhost(): boolean {
     return this.resolvedVariant() === 'ghost';
