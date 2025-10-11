@@ -17,7 +17,6 @@
       New post
     </button>
   </header>
-
   <div class="posts-toolbar">
     <form
       class="posts-filters"
@@ -43,15 +42,12 @@
       <span>{{ postsCount }} posts displayed</span>
     </div>
   </div>
-
   <section class="posts-content">
     @if (loading) {
       <ul class="posts-list posts-list--skeleton">
-        <template>
-          @for (placeholder of [1, 2, 3]; track placeholder) {
-            <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
-          }
-        </template>
+        <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
+        <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
+        <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
       </ul>
     } @else if (error) {
       <div class="state state--error">
@@ -62,25 +58,21 @@
       </div>
     } @else {
       @if (posts.length) {
-        <ul class="posts-list">
-          <template>
-            @for (post of posts; track trackPostById($index, post)) {
-              <li>
-                <div class="post-wrapper">
-                  <app-post-card
-                    [post]="post"
-                    [interactive]="true"
-                    padding="spacious"
-                    [isDeleting]="isDeleting(post.id)"
-                    [comments]="commentsFor(post.id) ?? null"
-                    (delete)="deletePost.emit(post)"
-                    (toggleComments)="toggleComments.emit(post.id)"
-                  ></app-post-card>
-                </div>
-              </li>
-            }
-          </template>
-        </ul>
+        <div class="posts-list">
+          @for (post of posts; track trackPostById($index, post)) {
+            <div class="post-wrapper">
+              <app-post-card
+                [post]="post"
+                [interactive]="true"
+                padding="spacious"
+                [isDeleting]="isDeleting(post.id)"
+                [comments]="commentsFor(post.id) ?? null"
+                (delete)="deletePost.emit(post)"
+                (toggleComments)="toggleComments.emit(post.id)"
+              ></app-post-card>
+            </div>
+          }
+        </div>
       } @else {
         <div class="state state--empty">
           <p class="state__title">No posts available for the current filters.</p>
@@ -93,7 +85,6 @@
       }
     }
   </section>
-
   @if (hasPagination) {
     <div class="posts-pagination" aria-label="Posts pagination">
       <div class="posts-pagination__controls">
@@ -120,8 +111,8 @@
         }
       </div>
       <div class="posts-pagination__page-size">
-        <label for="per-page-select">Per page</label>
-        <select
+        <label for="per-page-select">Per page</label
+        ><select
           id="per-page-select"
           [value]="currentPerPage"
           (change)="changePerPage.emit(+$any($event.target).value)"

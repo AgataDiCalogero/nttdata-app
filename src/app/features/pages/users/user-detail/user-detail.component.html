@@ -2,69 +2,61 @@
   @if (loading()) {
     <div class="loading">Loading...</div>
   } @else {
-    @if (error()) {
-      <div class="error">{{ error() }}</div>
-    }
-
-    @if (user()) {
-      <div class="profile">
-        <h2>{{ user()?.name }}</h2>
-        <div class="info">
-          <div>Email: {{ user()?.email }}</div>
-          <div>Gender: {{ user()?.gender }}</div>
-          <div>Status: {{ user()?.status }}</div>
-        </div>
-      </div>
-    }
-
-    <section class="user-posts">
-      <h3>User posts</h3>
-
-      @if (posts().length) {
-        <ul class="posts-list">
-          <template>
-            @for (p of posts(); track p.id) {
-              <li class="post-item">
-                <h4>{{ p.title }}</h4>
-                <p>{{ p.body }}</p>
-                <button type="button" (click)="toggleComments(p.id)">
-                  {{ commentsMap()[p.id] ? 'Hide comments' : 'Show comments' }}
-                </button>
-
-                @if (commentsMap()[p.id]) {
-                  <div class="comments">
-                    @if (commentsLoading()[p.id]) {
-                      <div class="loading">Loading comments...</div>
-                    } @else {
-                      @if (commentsMap()[p.id].length) {
-                        <ul>
-                          <template>
-                            @for (c of commentsMap()[p.id]; track c.id) {
-                              <li>
-                                <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
-                                >)
-                                <p>{{ c.body }}</p>
-                              </li>
-                            }
-                          </template>
-                        </ul>
-                      } @else {
-                        <div class="empty">No comments available yet.</div>
-                      }
-                    }
-                    <app-comment-form
-                      [postId]="p.id"
-                      (created)="onCommentCreated(p.id, $event)"
-                    ></app-comment-form>
-                  </div>
-                }
-              </li>
-            }
-          </template>
-        </ul>
-      } @else {
-        <div class="empty">No posts available</div>
+    <div>
+      @if (error()) {
+        <div class="error">{{ error() }}</div>
       }
-    </section>
+      @if (user()) {
+        <div class="profile">
+          <h2>{{ user()?.name }}</h2>
+          <div class="info">
+            <div>Email: {{ user()?.email }}</div>
+            <div>Gender: {{ user()?.gender }}</div>
+            <div>Status: {{ user()?.status }}</div>
+          </div>
+        </div>
+      }
+      <section class="user-posts">
+        <h3>User posts</h3>
+        @if (posts().length) {
+          @for (p of posts(); track p.id) {
+            <div class="post-item">
+              <h4>{{ p.title }}</h4>
+              <p>{{ p.body }}</p>
+              <button type="button" (click)="toggleComments(p.id)">
+                {{ commentsMap()[p.id] ? 'Hide comments' : 'Show comments' }}
+              </button>
+              @if (commentsMap()[p.id]) {
+                <div class="comments">
+                  @if (commentsLoading()[p.id]) {
+                    <div class="loading">Loading comments...</div>
+                  } @else {
+                    @if (commentsMap()[p.id].length) {
+                      <div>
+                        @for (c of commentsMap()[p.id]; track c.id) {
+                          <div>
+                            <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
+                            >)
+                            <p>{{ c.body }}</p>
+                          </div>
+                        }
+                      </div>
+                    } @else {
+                      <div class="empty">No comments available yet.</div>
+                    }
+                  }
+                  <app-comment-form
+                    [postId]="p.id"
+                    (created)="onCommentCreated(p.id, $event)"
+                  ></app-comment-form>
+                </div>
+              }
+            </div>
+          }
+        } @else {
+          <div class="empty">No posts available</div>
+        }
+      </section>
+    </div>
   }
 </section>
