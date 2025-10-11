@@ -1,0 +1,171 @@
+<section class="posts-page">
+  <header class="posts-header">
+    <div class="posts-header__titles">
+      <h1>Posts</h1>
+      <p class="posts-header__subtitle">
+        Search, filter, and manage contributions shared by the community.
+      </p>
+    </div>
+    <button
+      appButton
+      variant="primary"
+      type="button"
+      (click)="createPost.emit()"
+      aria-label="Create new post"
+    >
+      <lucide-icon [img]="Plus"></lucide-icon>
+      New post
+    </button>
+  </header>
+
+  <div class="posts-toolbar">
+    <form
+      class="posts-filters"
+      [formGroup]="searchForm"
+      (submit)="$event.preventDefault()"
+      aria-label="Search filters"
+    >
+      <input
+        type="search"
+        formControlName="title"
+        placeholder="Search by title"
+        aria-label="Search by title"
+      />
+      <select formControlName="userId" aria-label="Filter by author">
+        <option [ngValue]="0">All authors</option>
+        <template>
+          @for (user of userOptions; track user.id) {
+            <option [ngValue]="user.id">{{ user.name }}</option>
+          }
+        </template>
+      </select>
+      <button type="button" appButton variant="ghost" (click)="resetFilters.emit()">Reset</button>
+    </form>
+    <div class="posts-toolbar__summary">
+      <span>{{ postsCount }} posts displayed</span>
+    </div>
+  </div>
+
+  <section class="posts-content">
+    @if (loading) {
+      <ul class="posts-list posts-list--skeleton">
+        <template>
+          @for (placeholder of [1, 2, 3]; track placeholder) {
+            <li aria-hidden="true">
+              <app-card class="posts-card" [skeleton]="true"></app-card>
+            </li>
+          }
+        </template>
+      </ul>
+    } @else if (error) {
+      <div class="state state--error">
+        <p class="state__title">{{ error }}</p>
+        <div class="state__actions">
+          <button appButton variant="primary" type="button" (click)="refresh.emit()">Retry</button>
+        </div>
+      </div>
+    } @else {
+      @if (posts.length) {
+        <ul class="posts-list">
+          <template>
+            @for (post of posts; track trackPostById($index, post)) {
+              <li>
+                <app-post-card
+                  [post]="post"
+                  [interactive]="true"
+                  padding="spacious"
+                  [isDeleting]="isDeleting(post.id)"
+                  [comments]="commentsFor(post.id) ?? null"
+                  (delete)="deletePost.emit(post)"
+                  (toggleComments)="toggleComments.emit(post.id)"
+                ></app-post-card>
+
+                @if (commentsFor(post.id)) {
+                  <div class="posts-comments" id="comments-{{ post.id }}">
+                    @if (commentsAreLoading(post.id)) {
+                      <div class="state state--loading state--compact">Loading comments...</div>
+                    } @else {
+                      @if (commentsFor(post.id)?.length) {
+                        <ul class="comments-list">
+                          <template>
+                            @for (comment of commentsFor(post.id)!; track comment.id) {
+                              <li class="comments-item">
+                                <div class="comments-item__header">
+                                  <strong>{{ comment.name }}</strong
+                                  ><span>{{ comment.email }}</span>
+                                </div>
+                                <p>{{ comment.body }}</p>
+                              </li>
+                            }
+                          </template>
+                        </ul>
+                      } @else {
+                        <div class="state state--empty state--compact">
+                          No comments available yet.
+                        </div>
+                      }
+                    }
+
+                    <app-comment-form
+                      [postId]="post.id"
+                      (created)="onCommentCreated(post.id, $event)"
+                    ></app-comment-form>
+                  </div>
+                }
+              </li>
+            }
+          </template>
+        </ul>
+      } @else {
+        <div class="state state--empty">
+          <p class="state__title">No posts available for the current filters.</p>
+          <div class="state__actions">
+            <button appButton variant="ghost" type="button" (click)="resetFilters.emit()">
+              Reset filters
+            </button>
+          </div>
+        </div>
+      }
+    }
+  </section>
+
+  @if (hasPagination) {
+    <div class="posts-pagination" aria-label="Posts pagination">
+      <div class="posts-pagination__controls">
+        <button
+          appButton
+          variant="ghost"
+          type="button"
+          (click)="changePage.emit(currentPage - 1)"
+          [disabled]="currentPage <= 1"
+        >
+          Previous
+        </button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button
+          appButton
+          variant="ghost"
+          type="button"
+          (click)="changePage.emit(currentPage + 1)"
+          [disabled]="currentPage >= totalPages"
+        >
+          Next
+        </button>
+      </div>
+      <div class="posts-pagination__page-size">
+        <label for="per-page-select">Per page</label>
+        <select
+          id="per-page-select"
+          [value]="currentPerPage"
+          (change)="changePerPage.emit(+$any($event.target).value)"
+        >
+          <template>
+            @for (size of perPageOptions; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
+          </template>
+        </select>
+      </div>
+    </div>
+  }
+</section>

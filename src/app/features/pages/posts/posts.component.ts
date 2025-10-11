@@ -1,256 +1,103 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
-import { CommentForm } from '../../../shared/comments/comment-form/comment-form.component';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LucideAngularModule, MessageSquare, Plus, Trash2 } from 'lucide-angular';
-import { debounceTime, distinctUntilChanged, map, switchMap, catchError, of, tap } from 'rxjs';
-import { User } from '@app/models';
-import { PostsApiService } from '@app/services/posts/posts-api.service';
-import type { Comment, PaginationMeta, Post } from '@app/models';
-import { ToastService } from '@app/shared/ui/toast';
-import { UsersApiService } from '@app/services/users/users-api.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { PostsViewComponent } from './posts-view.component';
+import { PostsStore } from './posts.store';
 import { PostForm } from './post-form/post-form.component';
-import { PostCardComponent } from './post-card/post-card.component';
 import {
   DeleteConfirmComponent,
   type DeleteConfirmData,
 } from '../../../shared/dialog/delete-confirm/delete-confirm.component';
-import { ButtonComponent } from '@app/shared/ui/button';
-import { CardComponent } from '@app/shared/ui/card';
-import { DebounceInputDirective } from '@app/shared/directives';
+import type { Post, Comment } from '@app/models';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    LucideAngularModule,
-    CommentForm,
-    ButtonComponent,
-    CardComponent,
-    PostCardComponent,
-    DebounceInputDirective,
-  ],
+  imports: [PostsViewComponent],
   templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PostsStore],
 })
 export class Posts {
-  private readonly postsApi = inject(PostsApiService);
-  private readonly toast = inject(ToastService);
-  private readonly fb = inject(FormBuilder);
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly store = inject(PostsStore);
   private readonly dialog = inject(Dialog);
-  private readonly usersApi = inject(UsersApiService);
-
-  readonly MessageSquare = MessageSquare;
-  readonly Plus = Plus;
-  readonly Trash2 = Trash2;
-
-  readonly loading = signal(false);
-  readonly error = signal<string | null>(null);
-  readonly posts = signal<Post[]>([]);
-  readonly pagination = signal<PaginationMeta | null>(null);
-  readonly commentsMap = signal<Record<number, Comment[]>>({});
-  readonly commentsLoading = signal<Record<number, boolean>>({});
-  readonly userOptions = signal<User[]>([]);
-  readonly userLookup = signal<Record<number, string>>({});
-  readonly deletingId = signal<number | null>(null);
-
-  private readonly pageSignal = signal(1);
-  private readonly perPageSignal = signal(10);
-  private readonly filters = signal<{ title: string | null; userId: number | null }>({
-    title: null,
-    userId: null,
-  });
-  private readonly reloadToken = signal(0);
-
-  readonly perPageOptions = [5, 10, 20];
-
-  readonly queryCriteria = computed(() => ({
-    page: this.pageSignal(),
-    per_page: this.perPageSignal(),
-    title: this.filters().title ?? undefined,
-    user_id: this.filters().userId ?? undefined,
-    reload: this.reloadToken(),
-  }));
-
-  readonly searchForm = this.fb.nonNullable.group({
-    title: this.fb.nonNullable.control(''),
-    userId: this.fb.nonNullable.control(0),
-  });
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private lastSyncedPage = 1;
+  private lastSyncedPerPage = 10;
 
   constructor() {
-    this.loadUsersForFilter();
-    this.setupSearchForm();
-    this.setupPostsStream();
+    this.lastSyncedPage = Number(this.route.snapshot.queryParamMap.get('page') ?? 1);
+    this.lastSyncedPerPage = Number(this.route.snapshot.queryParamMap.get('per_page') ?? 10);
+    this.store.initializePaging(this.lastSyncedPage, this.lastSyncedPerPage);
+
+    effect(
+      () => {
+        const page = this.store.currentPage();
+        const perPage = this.store.currentPerPage();
+        this.syncQueryParams(page, perPage);
+      },
+      { allowSignalWrites: true },
+    );
   }
 
-  private setupSearchForm(): void {
-    this.searchForm.controls.title.valueChanges
-      .pipe(
-        debounceTime(300),
-        map((value) => value.trim()),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe((value) => {
-        this.filters.update((f) => ({ ...f, title: value.length ? value : null }));
-        this.setPage(1);
-      });
-
-    this.searchForm.controls.userId.valueChanges
-      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        const userId = Number(value);
-        this.filters.update((f) => ({ ...f, userId: userId > 0 ? userId : null }));
-        this.setPage(1);
-      });
+  get searchForm() {
+    return this.store.searchForm;
   }
 
-  private setupPostsStream(): void {
-    toObservable(this.queryCriteria)
-      .pipe(
-        map((criteria) => {
-          const { reload, ...params } = criteria;
-          void reload;
-          return params;
-        }),
-        switchMap((params) => {
-          this.loading.set(true);
-          this.error.set(null);
-          return this.postsApi.list(params).pipe(
-            tap((result) => {
-              this.posts.set(result.data ?? []);
-              this.pagination.set(result.pagination);
-              this.loading.set(false);
-            }),
-            catchError((err) => {
-              console.error('Failed to load posts:', err);
-              this.error.set('Unable to load posts');
-              this.loading.set(false);
-              return of(null);
-            }),
-          );
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe();
+  get userOptions() {
+    return this.store.userOptions();
   }
 
-  private loadUsersForFilter(): void {
-    this.usersApi
-      .list({ per_page: 50 })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (users) => {
-          const list = users ?? [];
-          this.userOptions.set(list);
-          const lookup = list.reduce<Record<number, string>>((acc, user) => {
-            acc[user.id] = user.name ?? `User #${user.id}`;
-            return acc;
-          }, {});
-          this.userLookup.set(lookup);
-        },
-        error: (err) => {
-          console.error('Failed to load users for filters:', err);
-        },
-      });
+  get loading() {
+    return this.store.loading();
   }
 
-  trackById(_idx: number, item: Post): number {
-    return item.id;
+  get error() {
+    return this.store.error();
   }
 
-  authorsName(userId: number): string {
-    return this.userLookup()[userId] ?? `User #${userId}`;
+  get posts() {
+    return this.store.posts();
   }
 
-  commentsFor(postId: number): Comment[] | undefined {
-    return this.commentsMap()[postId];
+  get commentsMap() {
+    return this.store.commentsMap();
   }
 
-  commentsAreLoading(postId: number): boolean {
-    return Boolean(this.commentsLoading()[postId]);
+  get commentsLoading() {
+    return this.store.commentsLoading();
   }
 
-  toggleComments(postId: number): void {
-    const loaded = this.commentsMap()[postId];
-    if (loaded) {
-      const copy = { ...this.commentsMap() };
-      delete copy[postId];
-      this.commentsMap.set(copy);
-      return;
-    }
-
-    this.commentsLoading.update((state) => ({ ...state, [postId]: true }));
-    this.postsApi
-      .listComments(postId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (comments) => {
-          this.commentsMap.update((state) => ({ ...state, [postId]: comments ?? [] }));
-        },
-        error: (err) => {
-          console.error('Failed to load comments:', err);
-          this.toast.show('error', 'Unable to load comments. Please retry.');
-        },
-        complete: () => {
-          this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
-        },
-      });
+  get perPageOptions() {
+    return this.store.perPageOptions;
   }
 
-  onCommentCreated(postId: number, comment: Comment): void {
-    this.commentsMap.update((state) => {
-      const current = state[postId] ?? [];
-      return { ...state, [postId]: [comment, ...current] };
-    });
+  get currentPage() {
+    return this.store.currentPage();
   }
 
-  hasPagination(): boolean {
-    const meta = this.pagination();
-    return meta ? meta.pages > 1 : false;
+  get totalPages() {
+    return this.store.totalPages();
   }
 
-  currentPage(): number {
-    return this.pageSignal();
+  get currentPerPage() {
+    return this.store.currentPerPage();
   }
 
-  totalPages(): number {
-    return this.pagination()?.pages ?? 1;
+  get hasPagination() {
+    return this.store.hasPagination();
   }
 
-  setPage(page: number): void {
-    const total = this.totalPages();
-    const nextPage = Math.max(1, Math.min(page, total));
-    if (nextPage !== this.pageSignal()) {
-      this.pageSignal.set(nextPage);
-    }
+  get deletingId() {
+    return this.store.deletingId();
   }
 
-  changePerPage(perPage: number): void {
-    const sanitized = Math.max(1, perPage);
-    if (sanitized !== this.perPageSignal()) {
-      this.perPageSignal.set(sanitized);
-      this.setPage(1);
-    }
+  get postsCount() {
+    return this.store.posts().length;
   }
 
-  refresh(): void {
-    this.reloadToken.update((n) => n + 1);
-  }
-
-  openCreatePost(): void {
+  handleCreatePost(): void {
     const isMobile = window.innerWidth < 640;
     const baseConfig = isMobile
       ? {
@@ -260,7 +107,7 @@ export class Posts {
           maxWidth: '100vw',
           panelClass: 'slide-in-drawer',
           backdropClass: 'blurred-backdrop',
-          ariaLabel: 'Nuovo post',
+          ariaLabel: 'New post',
           autoFocus: true,
           restoreFocus: true,
           closeOnNavigation: true,
@@ -271,7 +118,7 @@ export class Posts {
           maxWidth: '90vw',
           backdropClass: 'blurred-backdrop',
           panelClass: 'user-form-modal',
-          ariaLabel: 'Nuovo post',
+          ariaLabel: 'New post',
           autoFocus: true,
           restoreFocus: true,
           closeOnNavigation: true,
@@ -280,31 +127,30 @@ export class Posts {
 
     const ref = this.dialog.open(PostForm, {
       ...baseConfig,
-      data: { users: this.userOptions() },
+      data: { users: this.store.userOptions() },
     });
+
     ref.closed.subscribe((result) => {
       if (result === 'success') {
-        this.setPage(1);
-        this.refresh();
+        this.store.setPage(1);
+        this.store.refresh();
       }
     });
   }
 
-  resetFilters(): void {
-    this.searchForm.reset({ title: '', userId: 0 });
-    this.filters.set({ title: null, userId: null });
-    this.setPage(1);
+  handleResetFilters(): void {
+    this.store.resetFilters();
   }
 
-  currentPerPage(): number {
-    return this.perPageSignal();
+  handleRefresh(): void {
+    this.store.refresh();
   }
 
-  isDeleting(postId: number): boolean {
-    return this.deletingId() === postId;
+  handleToggleComments(postId: number): void {
+    this.store.toggleComments(postId);
   }
 
-  onDelete(post: Post): void {
+  handleDeletePost(post: Post): void {
     const data: DeleteConfirmData = {
       title: 'Delete Post',
       message: `Are you sure you want to delete "${post.title}"? This action cannot be undone.`,
@@ -325,38 +171,40 @@ export class Posts {
 
     ref.closed.subscribe((confirmed) => {
       if (!confirmed) return;
-
-      const shouldGoPrev = this.posts().length <= 1 && this.currentPage() > 1;
-      this.deletingId.set(post.id);
-
-      this.postsApi
-        .delete(post.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: () => {
-            this.deletingId.set(null);
-            this.posts.update((list) => list.filter((item) => item.id !== post.id));
-            this.pagination.update((meta) => {
-              if (!meta) return meta;
-              const total = Math.max(meta.total - 1, 0);
-              const limit = meta.limit || this.perPageSignal();
-              const pages = Math.max(1, Math.ceil(total / (limit || 1)));
-              return { ...meta, total, pages };
-            });
-            this.toast.show('success', 'Post deleted');
-
-            if (shouldGoPrev) {
-              this.setPage(this.currentPage() - 1);
-            } else {
-              this.refresh();
-            }
-          },
-          error: (err) => {
-            console.error('Failed to delete post:', err);
-            this.deletingId.set(null);
-            this.toast.show('error', 'Unable to delete post. Please retry.');
-          },
-        });
+      this.store.deletePost(post);
     });
+  }
+
+  handleCommentCreated(event: { postId: number; comment: Comment }): void {
+    this.store.onCommentCreated(event.postId, event.comment);
+  }
+
+  handleChangePage(page: number): void {
+    this.store.setPage(page);
+  }
+
+  handleChangePerPage(perPage: number): void {
+    this.store.changePerPage(perPage);
+  }
+
+  private syncQueryParams(page: number, perPage: number): void {
+    const snapshot = this.route.snapshot.queryParamMap;
+    const currentPage = Number(snapshot.get('page') ?? 1);
+    const currentPerPage = Number(snapshot.get('per_page') ?? 10);
+
+    if (this.lastSyncedPage === page && this.lastSyncedPerPage === perPage) {
+      return;
+    }
+
+    this.lastSyncedPage = page;
+    this.lastSyncedPerPage = perPage;
+
+    this.router
+      .navigate([], {
+        relativeTo: this.route,
+        queryParams: { page, per_page: perPage },
+        queryParamsHandling: 'merge',
+      })
+      .catch(() => {});
   }
 }
