@@ -26,4 +26,17 @@ export class PostCardComponent {
 
   @Output() readonly delete = new EventEmitter<void>();
   @Output() readonly toggleComments = new EventEmitter<void>();
+
+  // Text expansion state
+  isExpanded = false;
+
+  // Check if post body is long enough to truncate
+  shouldTruncate(): boolean {
+    const body = this.post()?.body || '';
+    return body.length > 200; // Truncate after 200 characters
+  }
+
+  toggleExpansion(): void {
+    this.isExpanded = !this.isExpanded;
+  }
 }

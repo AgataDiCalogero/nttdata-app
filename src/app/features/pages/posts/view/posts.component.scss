@@ -16,3 +16,8 @@
     padding-inline: var(--layout-gutter-tight);
   }
 }
+
+.post-wrapper {
+  @include flex-column(var(--space-sm));
+  width: 100%;
+}

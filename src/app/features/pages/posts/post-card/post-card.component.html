@@ -12,7 +12,8 @@
     <div class="card__actions">
       <button
         appButton
-        variant="danger"
+        variant="ghost"
+        size="sm"
         type="button"
         class="posts-card__delete"
         (click)="delete.emit()"
@@ -20,13 +21,20 @@
         aria-label="Delete {{ p?.title }}"
       >
         <lucide-icon [img]="Trash2"></lucide-icon>
-        <span>{{ deleting ? 'Deleting...' : 'Delete' }}</span>
       </button>
     </div>
   </div>
 
   <div card-body>
-    {{ p?.body }}
+    <div class="post-content" [class.post-content--truncated]="shouldTruncate() && !isExpanded">
+      <p class="post-content__text">{{ p?.body }}</p>
+
+      @if (shouldTruncate()) {
+        <button type="button" class="post-content__toggle" (click)="toggleExpansion()">
+          {{ isExpanded ? 'Show less' : 'Read more' }}
+        </button>
+      }
+    </div>
   </div>
 
   <div card-footer>

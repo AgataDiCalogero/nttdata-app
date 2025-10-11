@@ -1,5 +1,6 @@
 @use '../../../../../../styles/mixins' as mixins;
 
+// Legacy styles - these will be replaced by the new Facebook-style comments
 .posts-comments {
   border-top: 1px solid var(--border-mix-65);
   padding-top: var(--space-md);
@@ -9,6 +10,119 @@
   gap: var(--space-md);
 }
 
+// New Facebook-style comments (below post-card)
+.post-comments {
+  background: var(--color-surface);
+  border: 1px solid var(--comment-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md);
+  margin-top: var(--space-sm);
+
+  .comments-section__title {
+    margin: 0 0 var(--space-md) 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-on-surface);
+  }
+
+  .comments-list {
+    @include mixins.flex-column(var(--space-md));
+  }
+
+  .comment-item {
+    @include mixins.flex-row(var(--space-sm));
+    align-items: flex-start;
+
+    &__avatar {
+      flex-shrink: 0;
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-full);
+        background: var(--color-accent);
+        color: var(--color-on-accent);
+        @include mixins.flex-center;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+    }
+
+    &__content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &__meta {
+      margin-top: var(--space-2xs);
+      padding-left: var(--space-sm);
+    }
+  }
+
+  .comment-bubble {
+    background: var(--comment-bg);
+    border: 1px solid var(--comment-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm) var(--space-md);
+    position: relative;
+
+    // Facebook-style speech bubble tail
+    &::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 12px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 6px 6px 6px 0;
+      border-color: transparent var(--comment-border) transparent transparent;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 12px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 6px 6px 6px 0;
+      border-color: transparent var(--comment-bg) transparent transparent;
+    }
+
+    &__header {
+      margin-bottom: var(--space-xs);
+    }
+
+    &__author {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-on-surface);
+    }
+
+    &__text {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: var(--color-on-surface);
+      word-wrap: break-word;
+    }
+  }
+
+  .comment-meta__email {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .comment-form-wrapper {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--comment-border);
+  }
+}
+
+// Legacy styles
 .comments-list {
   list-style: none;
   padding: 0;
