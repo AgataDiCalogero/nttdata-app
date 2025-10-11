@@ -11,16 +11,28 @@ Keep ogni bullet piccolo e autonomo (1 PR ciascuno).
 - [ ] Verifica OnPush e `host` metadata su app shell, login, footer, Users, Posts (consistency pass).
 - [ ] Migrazione a signals dove rimangono BehaviorSubject locali non necessari.
 
-1. Posts feature re‑org
+1. Posts feature re‑org (in progress)
 
 - [ ] Riorganizzare `src/app/features/pages/posts/` in sotto-cartelle:
   - `container/` (page orchestration)
   - `view/` (presentational `PostsViewComponent`)
   - `post-card/` (già presente)
   - `post-form/` (già presente)
-  - `store/` (signal store)
+  - `store/` (signal store) — `PostsStore` scaffolding added at `store/posts.store.ts`
   - `styles/` (SCSS dedicati)
   - Aggiornare import e paths, nessun cambio funzionale.
+
+Notes & validation
+
+- A thin re-export `src/app/features/pages/posts/index.ts` exists to keep imports stable while files move.
+- After changes run:
+
+  ```bat
+  npm run build
+  npm run lint
+  ```
+
+  Ensure the build completes and update imports in one follow-up PR to avoid breaking changes.
 
 1. Styling & Design System
 

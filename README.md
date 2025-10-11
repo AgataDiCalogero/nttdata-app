@@ -79,7 +79,8 @@ Conventions
 
 - Auth flow, interceptors, theming, users and posts features are functional.
 - Accessibility fixes landed for toast/loader; host metadata used instead of `@Host*` where applicable.
-- Remaining refactors and tests are tracked in `REFACTORING_CHECKLIST.md` (kept minimal and ordered).
+- Posts feature: initial re-organization started (container/view/store split). A signal-based `PostsStore` has been added and thin re-export wrappers exist to keep imports stable while the migration finishes.
+- The project builds and the dev server runs locally (run `npm start`). Two small component style budget warnings were observed during recent production builds for `posts.component.scss` and `appearance-switcher.component.scss` — non-blocking and tracked for follow-up.
 
 ## Notes for contributors
 
@@ -87,3 +88,22 @@ Conventions
 - Keep user‑facing copy in English.
 - Prefer small, focused standalone components and lazy routes.
 - Run `npm run lint` and ensure the app builds before opening a PR.
+
+If you're picking up the posts re-organization:
+
+- The new store lives at `src/app/features/pages/posts/store/posts.store.ts`.
+- Presentational components will be moved into `src/app/features/pages/posts/view/` and container logic into `.../container/`.
+- A convenience re-export exists at `src/app/features/pages/posts/index.ts` to keep imports working during the transition.
+
+Local dev quick-check (Windows cmd.exe)
+
+```bat
+npm install
+npm start
+```
+
+If you need a production build and to see budget warnings:
+
+```bat
+npm run build
+```

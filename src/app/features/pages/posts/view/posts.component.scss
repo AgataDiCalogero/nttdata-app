@@ -1,0 +1,18 @@
+@use '../../../../styles/forms';
+@use '../../../../styles/pagination';
+
+@use '../../posts-card.scss';
+@use '../../posts-filters.scss';
+@use '../../posts-comments.scss';
+
+.posts-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xxl) var(--space-lg);
+  color: var(--color-on-surface);
+
+  @media (max-width: 720px) {
+    padding: var(--space-lg) var(--space-sm);
+  }
+}
