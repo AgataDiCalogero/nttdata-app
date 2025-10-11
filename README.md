@@ -1,114 +1,89 @@
-# Angular Project for NTT DATA
+# NTT DATA Angular App
 
-Single-page Angular application built on top of the public GoREST API to manage users, posts, and comments. The project serves as an end-to-end exercise: token-based authentication, protected navigation, CRUD flows, and a consistent UX with dark/light theming.
+Single-page Angular app on the GoREST API for users, posts and comments. It demonstrates token-based auth, protected routes, CRUD, accessibility and theming.
 
-## Tech Stack & Tooling
+## Tech stack
 
-- Angular 20 with standalone components, lazy routing, and zoneless change detection (`provideZonelessChangeDetection`). Host bindings/listeners are declared via the `host` object in decorators (no `@HostBinding`/`@HostListener`).
-- Angular CDK `Dialog` for modal/drawer experiences
-- `lucide-angular` icons
-- Custom dark/light theme persisted with signals + `localStorage`
-- Quality gates: ESLint, Prettier, Husky, lint-staged, Karma + Jasmine
+- Angular 20 with standalone components, lazy routing and zoneless change detection (`provideZonelessChangeDetection`).
+- Host bindings/listeners declared in the `host` object of decorators (avoid `@HostBinding`/`@HostListener`).
+- Angular CDK Dialog for modal/drawer UIs, `lucide-angular` for icons.
+- Signals for local state; interceptors for API prefix, auth, and error mapping.
+- Tooling: ESLint + Prettier, Husky + lint-staged, Karma + Jasmine.
 
-## Completed Features
+## Quick start (Windows)
 
-- **Authentication & security**
-  - Token login with SSR-safe persistence via `AuthService`
-  - Route guard and HTTP interceptors for bearer tokens and 401 redirects
-  - API prefix interceptor that rewrites relative URLs to `https://gorest.co.in/public/v2`
-  - Navbar logout that clears the session token
-- **Application structure**
-  - Lazy routes for login, users list, user detail, and posts
-  - Shared navbar with theme toggle, navigation, and logout state awareness
-  - Centralised typed services (`UsersApiService`, `PostsApiService`) now grouped under `src/app/services`
-- **User management**
-  - Debounced search, keyboard-accessible sorting (aria-sort) and client-side pagination synced with query params
-  - Responsive modal/drawer for create/edit with validation and error mapping (422/429)
-  - Delete confirmation dialog with optimistic UI update and toast feedback
-- **Post management**
-  - Server-side search by title, author filter, pagination size selector, skeleton states
-  - Comment viewer with caching per post, lazy loading, and toast-based error handling
-  - Comment composer embedded in both the posts list and user detail pages
-  - Post creation modal/drawer with validation, feedback toasts, and roster preload
-  - Post deletion workflow with confirmation dialog, loading guard, and automatic refresh
-- **User detail**
-  - Full profile view plus the user's posts, each with inline comment loading/creation
-- **UX polish**
-  - Accessible focus styles, WCAG-friendly palette, 8pt spacing system
-  - Toast notifications with deduplication, polite live region, and Escape-to-dismiss support
-- **Workflow**
-  - Husky hooks: lint-staged on pre-commit, full lint/test/build on pre-push
-  - Shared Prettier config (HTML included) and modern ESLint setup for Angular 20
+Prerequisites
 
-## Refactoring Status
-
-- **Phase 0 - Foundations**: complete (CI workflow, PR template, architecture ADR in place).
-- **Phase 1 - Accessibility & Error UX**: toast system updated; lists/controls audit still pending for posts/comments.
-- **Phase 2 - Performance & State**: outstanding (OnPush coverage, signal migration, posts route decomposition).
-- **Phase 3 - Design System**: outstanding (central SCSS utilities, color-mix fallbacks sweep, NgOptimizedImage adoption).
-- **Phase 4 - Testing >=60%**: outstanding (service/guard/component specs and coverage gate).
-
-## Remaining Work
-
-- Build the automated test suite to reach >=60% statement coverage and enforce the CI gate.
-- Finish the lists & controls audit (posts/comments views) to guarantee semantic `<li>` usage and native controls everywhere.
-- Complete performance/state refactors (`ChangeDetectionStrategy.OnPush`, signal migration, posts feature split).
-- Consolidate shared styling utilities and apply color-mix fallbacks across all feature styles; switch static assets to `NgOptimizedImage`.
-- Prepare the final presentation deck (PDF) once scope stabilises.
-
-## Local Setup
-
-### Prerequisites
-
-- Node.js 20.x (recommended for Angular 20 toolchain)
+- Node.js 20.x
 - npm 10.x
-- Personal access token from <https://gorest.co.in/consumer/login> (store it securely)
+- A GoREST access token from <https://gorest.co.in/consumer/login>
 
-### Installation
+Install dependencies
 
-```bash
+```bat
 npm install
 ```
 
-### Development server
+Run the dev server
 
-```bash
+```bat
 npm start
 ```
 
-Navigate to `http://localhost:4200`, enter your token on first access, and the value will remain in `localStorage` until logout.
+Open <http://localhost:4200> and paste your token on the first access (it’s kept in localStorage until logout).
 
-### Production build
+Build for production
 
-```bash
+```bat
 npm run build
 ```
 
-Artifacts are available under `dist/nttdata-app/`. CI scripts (`npm run build:ci`) run the same build with production config.
+Lint and tests
 
-### Lint & tests
-
-```bash
+```bat
 npm run lint
-npm test        # interactive Karma run
-npm run test:ci # headless Chrome run (pre-push hook)
+npm test
+npm run test:ci
 ```
 
-> Note: increasing coverage to the target 60% is tracked in the backlog.
+Troubleshooting
 
-## Project Structure (high level)
+- 401/redirect to login: set or refresh your GoREST token.
+- CORS or network errors: the API base URL comes from `src/environments/*.ts` (`baseUrl`).
+- CSS bundle warnings: two component styles slightly exceed the budget; non‑blocking and tracked for cleanup.
 
-- `src/app/core`: cross-cutting concerns (auth, interceptors, theme)
-- `src/app/features/auth`: login page
-- `src/app/features/pages/users`: users list, CRUD modal, user detail
-- `src/app/features/pages/posts`: posts list, filters, comment management, creation dialog
-- `src/app/services`: shared API services (users, posts)
-- `src/app/shared`: reusable layout, dialogs, toast system, comment form
-- `src/app/models`: shared typings for users, posts, comments, pagination
+## Scripts
 
-## Contribution Notes
+- `npm start` – local dev server (SSR hydration enabled)
+- `npm run build` – production build (output in `dist/nttdata-app`)
+- `npm run lint` – ESLint
+- `npm test` – Karma interactive
+- `npm run test:ci` – headless tests for CI
 
-- All API calls pass through the shared interceptors; stick to relative URLs.
-- Manage session tokens exclusively via `AuthService`.
-- Prefer standalone components and lazy routing for new pages.
-- Keep user-facing copy in English, and run `npm run lint` before every commit.
+## Architecture overview
+
+- `src/app/core` – interceptors (API prefix, auth, error), guards, theme service
+- `src/app/services` – API services (`UsersApiService`, `PostsApiService`)
+- `src/app/features` – route features (Users, Posts, Auth)
+- `src/app/shared` – UI atoms (button, card, toast, loader), directives, dialogs, utilities
+- `src/app/models` – shared types
+
+Conventions
+
+- Components: `input()`/`output()`, signals, `ChangeDetectionStrategy.OnPush`.
+- Templates: new control flow (`@if`, `@for`), explicit `track`, prefer native controls.
+- Styles: SCSS partials in `src/styles/`, BEM‑like class names, provide fallbacks for modern CSS features.
+- Accessibility: toasts use a polite live region; loaders expose status via `<output>`.
+
+## Current status
+
+- Auth flow, interceptors, theming, users and posts features are functional.
+- Accessibility fixes landed for toast/loader; host metadata used instead of `@Host*` where applicable.
+- Remaining refactors and tests are tracked in `REFACTORING_CHECKLIST.md` (kept minimal and ordered).
+
+## Notes for contributors
+
+- Use relative URLs; API base is added by the API prefix interceptor.
+- Keep user‑facing copy in English.
+- Prefer small, focused standalone components and lazy routes.
+- Run `npm run lint` and ensure the app builds before opening a PR.

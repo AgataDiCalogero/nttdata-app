@@ -1,37 +1,36 @@
-# Refactoring Checklist - Extended Plan
+# Refactoring Checklist (TODO only)
 
-Keep every bullet as its own PR/commit. Update this file as work lands.
+Keep ogni bullet piccolo e autonomo (1 PR ciascuno).
 
-## Phase 0 - Foundations _(blocking)_
+1. A11y & UX
 
-- [x] CI on PRs: add .github/workflows/ci.yml running npm run lint, npm run test:ci -- --code-coverage --watch=false, npm run build:ci, uploading coverage artifacts.
-- [x] PR template: create .github/PULL_REQUEST_TEMPLATE.md including the enterprise checklist.
-- [x] ADR: document architecture standards in docs/adr/0001-architecture-standards.md (standalone, signals, OnPush, zoneless).
+- [ ] Liste e controlli: verificare che ogni `ul/ol` abbia solo `li` diretti; etichette e ruoli corretti nei template (focus su posts/comments).
 
-## Phase 1 - A11y & Error UX
+1. Performance & State
 
-- [x] Toast/Alert accessibility: ensure role="status", aria-live="polite", keyboard dismissal, and English-only copy in shared/ui/toast (remove duplicates).
-- [x] Replace `@HostListener` and `@HostBinding` with `host` metadata across shared components (toast, navbar, button, directives already compliant).
-- [ ] Lists & controls audit: verify every `ul`/`ol` has only `li` children; ensure interactive elements are native controls with accessible labels. Next: review posts/comments markup after users table refactor.
-- [x] Error mapping: add shared/utils/error-mapper.ts and update errorInterceptor (and auth interceptor as needed) to centralize handling for 401/403/422/429, including retry/backoff guidance on 429.
+- [ ] Verifica OnPush e `host` metadata su app shell, login, footer, Users, Posts (consistency pass).
+- [ ] Migrazione a signals dove rimangono BehaviorSubject locali non necessari.
 
-## Phase 2 - Performance & State
+1. Posts feature re‑org
 
-- [ ] OnPush everywhere: set ChangeDetectionStrategy.OnPush and use `host` metadata (no `@Host*` decorators) for app shell, login, footer, Users, Posts.
-- [ ] Signals migration: replace local BehaviorSubject usage with signal/computed where sharing is unnecessary.
-- [ ] Posts decomposition: split the 360+ LOC Posts route into a container + presentation components and extract orchestration into a dedicated service.
+- [ ] Riorganizzare `src/app/features/pages/posts/` in sotto-cartelle:
+  - `container/` (page orchestration)
+  - `view/` (presentational `PostsViewComponent`)
+  - `post-card/` (già presente)
+  - `post-form/` (già presente)
+  - `store/` (signal store)
+  - `styles/` (SCSS dedicati)
+  - Aggiornare import e paths, nessun cambio funzionale.
 
-## Phase 3 - Styling & Design System
+1. Styling & Design System
 
-- [ ] SCSS utilities: confirm buttons/forms/states/skeleton/appearance live under src/styles/ partials and are imported per feature.
-- [ ] color-mix() fallbacks: add RGBA fallbacks (via mixin) before modern declarations across feature styles. Partial: users table updated; sweep remaining components.
-- [ ] NgOptimizedImage: switch static assets (logo, illustrations) to ngSrc with intrinsic dimensions.
+- [ ] Consolidare utilità SCSS: assicurare import coerenti dei partials in features; rimuovere duplicazioni.
+- [ ] Sweep `color-mix()` + fallback RGBA dove mancano.
+- [ ] Adottare `NgOptimizedImage` per immagini statiche con dimensioni intrinseche.
 
-## Phase 4 - Testing >=60%
+1. Testing (target ≥ 60%)
 
-- [ ] Bootstrap specs: cover AuthService, AuthGuard, PostsApiService, UsersApiService, errorInterceptor, one feature container (Users or Posts), and ToastService.
-- [ ] Coverage gate: configure CI to fail below 60 percent statement coverage.
+- [ ] Aggiungere spec minime per: AuthService, AuthGuard, PostsApiService, UsersApiService, errorInterceptor, ToastService, 1 container (Users o Posts).
+- [ ] Impostare gate di copertura in CI (< 60% = fail).
 
----
-
-Reminder: run npm run lint, npm run test:ci -- --code-coverage, and npm run build:ci before marking tasks complete.
+Note: eseguire `npm run lint`, `npm run test:ci` (con coverage) e `npm run build:ci` prima di chiudere ogni attività.
