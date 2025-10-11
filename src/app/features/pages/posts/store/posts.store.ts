@@ -5,7 +5,7 @@ import { debounceTime, distinctUntilChanged, map, switchMap, tap, catchError, of
 import type { Comment, PaginationMeta, Post, User } from '@app/models';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import { UsersApiService } from '@app/services/users/users-api.service';
-import { ToastService } from '@app/shared/ui/toast';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 interface PostFilters {
   title: string | null;

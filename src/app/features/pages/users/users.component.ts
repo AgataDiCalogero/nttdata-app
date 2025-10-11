@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
-import { DebounceInputDirective } from '@app/shared/directives';
+import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { User } from '@app/models';
-import { ToastService } from '@app/shared/ui/toast';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { UserForm } from './user-form/user-form.component';
 import {
   DeleteConfirmComponent,

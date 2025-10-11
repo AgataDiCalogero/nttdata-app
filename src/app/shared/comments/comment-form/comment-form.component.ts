@@ -13,7 +13,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import type { Comment, CreateComment } from '@app/models';
-import { ToastService } from '@app/shared/ui/toast';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button';
 
 @Component({

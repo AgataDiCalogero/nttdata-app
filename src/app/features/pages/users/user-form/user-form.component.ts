@@ -13,10 +13,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
-import { ToastService } from '@app/shared/ui/toast';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button';
 import { AlertComponent } from '@app/shared/ui/alert';
-import { AutoFocusDirective } from '@app/shared/directives';
+import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 
 @Component({
   selector: 'app-user-form',

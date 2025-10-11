@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
 import { LucideAngularModule, Palette, Sun, Moon, BookOpenCheck } from 'lucide-angular';
 import { ThemeService } from '@app/core/theme/theme.service';
-import { ClickOutsideDirective, EscapeKeyDirective } from '@app/shared/directives';
+import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
+import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
 
 @Component({
   selector: 'app-appearance-switcher',

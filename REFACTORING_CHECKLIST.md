@@ -5,8 +5,6 @@ Keep ogni bullet piccolo e autonomo (1 PR ciascuno).
 1. Remaining refactors (high level)
 
 - Performance & State
-  - [ ] Verifica OnPush e `host` metadata su app shell, login, footer, Users, Posts (consistency pass).
-  - [ ] Migrazione a signals dove rimangono BehaviorSubject locali non necessari.
 
 1. Next tasks (recommended, ordered)
 
