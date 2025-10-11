@@ -1,3 +1,4 @@
+export * from './store/posts.store';
 import { Injectable, DestroyRef, computed, inject, signal } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
