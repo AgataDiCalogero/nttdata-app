@@ -8,7 +8,7 @@
   border: 1px solid transparent;
   font-size: 0.9375rem;
   line-height: 1.5;
-  @include mixins.smooth-transition((opacity, transform));
+  @include mixins.transition-group((opacity, transform));
 }
 
 .alert__content {
@@ -43,7 +43,7 @@
   cursor: pointer;
   @include mixins.radius('xs');
   opacity: 0.7;
-  @include mixins.smooth-transition((opacity, background));
+  @include mixins.transition-group((opacity, background));
 
   &:hover {
     opacity: 1;

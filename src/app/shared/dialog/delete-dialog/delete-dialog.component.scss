@@ -8,30 +8,30 @@
   bottom: 0;
   background: var(--alpha-overlay-dark);
   @include mixins.flex-center;
-  z-index: 1000;
+  z-index: var(--z-backdrop);
+  padding: var(--space-md);
 }
 
 .dialog {
   background: var(--color-surface);
   color: var(--color-on-surface);
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  width: 300px;
-  max-width: 90%;
+  padding: clamp(var(--space-md), 3vw, var(--space-xl));
+  @include mixins.radius('xl');
+  width: min(100%, 320px);
   box-shadow: var(--shadow);
+  @include mixins.transition-group((transform, box-shadow), 0.3s);
 }
 
 .actions {
-  @include mixins.flex-row(var(--space-md));
-  justify-content: flex-end;
+  @include mixins.button-group(var(--space-sm), flex-end, wrap);
   margin-top: var(--space-md);
 
   button {
     padding: var(--space-sm) var(--space-md);
-    border: none;
-    border-radius: var(--radius-xs);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    @include mixins.smooth-transition(all);
+    @include mixins.transition-group((background, color, border-color, box-shadow), 0.2s);
 
     /* Enhanced focus visibility - WCAG 2.4.7 */
     &:focus-visible {
@@ -54,15 +54,15 @@
 
   .secondary {
     background: var(--color-surface);
-    color: var(--color-on-primary);
-    border: 1px solid var(--color-muted);
+    color: var(--color-on-surface);
+    border-color: var(--border-mix-60);
 
     &:hover {
-      background: var(--color-muted);
+      background: var(--color-surface-variant);
     }
 
     &:focus-visible {
-      background: var(--color-muted);
+      background: var(--color-surface-variant);
     }
   }
 }

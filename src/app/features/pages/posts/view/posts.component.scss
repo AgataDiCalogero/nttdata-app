@@ -5,10 +5,14 @@
 
 .posts-page {
   @include flex-column(var(--space-lg));
-  padding: var(--space-xxl) var(--space-lg);
+  padding-block: var(--space-xxl);
+  padding-inline: var(--layout-gutter);
   color: var(--color-on-surface);
+  margin-inline: auto;
+  width: min(100%, var(--layout-wide-width));
 
   @include mobile {
-    padding: var(--space-lg) var(--space-sm);
+    padding-block: var(--space-xl);
+    padding-inline: var(--layout-gutter-tight);
   }
 }

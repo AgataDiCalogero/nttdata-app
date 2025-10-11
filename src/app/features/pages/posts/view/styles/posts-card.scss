@@ -1,10 +1,10 @@
+@use '../../../../../../styles/mixins' as mixins;
+
 .posts-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  @include mixins.grid-stack(320px, var(--space-lg));
 }
 
 .posts-list--skeleton .card {
@@ -25,6 +25,7 @@
   padding-inline: var(--space-sm);
   gap: var(--space-xs);
   font-size: 0.85rem;
+  @include mixins.transition-group((color, background, border-color), 0.2s);
 
   &[disabled] {
     opacity: 0.6;
@@ -40,4 +41,15 @@
 .posts-card.skeleton--card {
   --card-padding-x: var(--space-lg);
   --card-padding-y: var(--space-lg);
+}
+
+@include mixins.mobile {
+  .posts-list {
+    @include mixins.grid-stack(100%, var(--space-sm));
+  }
+
+  .posts-card {
+    --card-padding-x: var(--space-lg);
+    --card-padding-y: var(--space-lg);
+  }
 }

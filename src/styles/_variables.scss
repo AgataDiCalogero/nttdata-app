@@ -168,12 +168,21 @@
 
   /* 8pt Grid Spacing System */
   --space-unit: 8px;
+  --space-xxs: calc(var(--space-unit) * 0.25); /* 2px */
+  --space-2xs: calc(var(--space-unit) * 0.375); /* 3px */
   --space-xs: calc(var(--space-unit) * 0.5); /* 4px */
   --space-sm: var(--space-unit); /* 8px */
   --space-md: calc(var(--space-unit) * 2); /* 16px */
   --space-lg: calc(var(--space-unit) * 3); /* 24px */
-  --space-xl: calc(var(--space-unit) * 4); /* 32px - Available for future use */
+  --space-xl: calc(var(--space-unit) * 4); /* 32px */
+  --space-2xl: calc(var(--space-unit) * 5); /* 40px */
   --space-xxl: calc(var(--space-unit) * 6); /* 48px */
+  --space-3xl: calc(var(--space-unit) * 8); /* 64px */
+
+  --layout-max-width: 1200px;
+  --layout-wide-width: 1440px;
+  --layout-gutter: clamp(var(--space-md), 3vw, var(--space-xl));
+  --layout-gutter-tight: clamp(var(--space-sm), 2vw, var(--space-lg));
 }
 
 .light-theme {
@@ -196,6 +205,16 @@
   --color-border: #fed7aa; /* orange-200 border */
   --color-muted: #6b7280; /* gray-500 muted text */
   --alpha-white-60: rgba(255, 255, 255, 0.6);
+  --surface-mix-92: rgba(255, 255, 255, 0.92);
+  --state-surface-bg: rgba(249, 250, 251, 0.7);
+  --state-surface-border: rgba(203, 213, 225, 0.75);
+  --state-error-bg: rgba(254, 226, 226, 0.85);
+  --state-error-border: rgba(248, 113, 113, 0.4);
+  --state-loading-bg: rgba(219, 234, 254, 0.8);
+  --state-loading-border: rgba(59, 130, 246, 0.3);
+  --state-empty-bg: rgba(229, 231, 235, 0.6);
+  --state-success-bg: rgba(220, 252, 231, 0.85);
+  --state-success-border: rgba(74, 222, 128, 0.35);
   --border-accent-soft: rgba(249, 115, 22, 0.2);
   --border-accent-strong: rgba(249, 115, 22, 0.5);
   --alpha-accent-18: rgba(249, 165, 76, 0.18);

@@ -16,7 +16,7 @@
   border-radius: var(--card-radius);
   box-shadow: var(--card-shadow);
   color: var(--color-on-surface);
-  @include mixins.smooth-transition((transform, box-shadow, background, border-color));
+  @include mixins.transition-group((transform, box-shadow, background, border-color));
 }
 
 :host(.card--interactive) {

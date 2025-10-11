@@ -14,7 +14,7 @@
   z-index: 60;
   color: inherit;
   cursor: pointer;
-  @include mixins.smooth-transition((transform, box-shadow));
+  @include mixins.transition-group((transform, box-shadow));
 
   &:hover {
     transform: translateY(-2px);
@@ -43,7 +43,7 @@
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
-  @include mixins.smooth-transition(transform);
+  @include mixins.transition-group(transform);
   margin-left: calc(var(--space-sm) + 2px);
 }
 
@@ -84,7 +84,7 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.85rem;
-  @include mixins.smooth-transition((background, border-color, transform));
+  @include mixins.transition-group((background, border-color, transform));
 
   &:hover {
     background: var(--alpha-accent-08);
@@ -113,7 +113,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: var(--radius-full);
-  @include mixins.smooth-transition(all);
+  @include mixins.transition-group(all);
 
   lucide-icon {
     width: 1.4rem;

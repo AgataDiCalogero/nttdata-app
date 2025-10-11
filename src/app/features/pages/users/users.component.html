@@ -118,13 +118,13 @@
             <tbody>
               @for (user of data.items; track trackById($index, user)) {
                 <tr>
-                  <td>{{ user.id }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>
+                  <td data-column="ID">{{ user.id }}</td>
+                  <td data-column="Name">{{ user.name }}</td>
+                  <td data-column="Email">{{ user.email }}</td>
+                  <td data-column="Status">
                     <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
                   </td>
-                  <td class="actions">
+                  <td class="actions" data-column="Actions">
                     <button
                       type="button"
                       class="action-button"

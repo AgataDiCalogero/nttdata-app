@@ -3,7 +3,7 @@
 .token-help {
   @include mixins.flex-column(var(--space-lg));
   max-width: 28rem;
-  padding: var(--space-xl);
+  padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
   background: var(--color-surface-solid);
   color: var(--color-on-surface);
   border-radius: var(--radius-xl);
@@ -58,7 +58,7 @@
     text-decoration: none;
     position: relative;
     overflow: hidden;
-    @include mixins.smooth-transition((transform, box-shadow, background, color, border-color));
+    @include mixins.transition-group((transform, box-shadow, background, color, border-color), 0.3s);
 
     /* border-color uses var(--color-accent) directly; color-mix fallbacks handled globally */
 
@@ -108,16 +108,11 @@
   }
 
   &__footer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    align-items: stretch;
+    @include mixins.button-group(var(--space-sm), flex-end, wrap, stretch);
 
-    @media (min-width: 640px) {
-      flex-direction: row;
+    @include mixins.tablet-up {
       justify-content: flex-end;
-      align-items: center;
-      gap: var(--space-md);
+      flex-wrap: nowrap;
     }
   }
 }

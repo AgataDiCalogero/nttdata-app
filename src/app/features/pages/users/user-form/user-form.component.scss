@@ -1,6 +1,8 @@
+@use '../../../../../styles/mixins' as *;
+
 :host {
   display: block;
-  padding: var(--space-lg);
+  padding: clamp(var(--space-md), 4vw, var(--space-xxl));
   min-height: 100%;
 }
 
@@ -18,13 +20,14 @@
   border-radius: var(--radius-xl);
   padding: var(--space-lg);
   box-shadow: var(--shadow-xl);
+  @include transition-group((box-shadow, transform), 0.25s);
 }
 
 .user-form__actions {
   border-top: 1px solid var(--border-mix-60);
   margin-top: var(--space-lg);
   padding-top: var(--space-md);
-  justify-content: flex-end;
+  @include button-group(var(--space-sm), flex-end, wrap);
 }
 
 .user-form__alert {
@@ -37,7 +40,7 @@
   margin: var(--space-md) 0 0 0;
 }
 
-@media (max-width: 680px) {
+@include mobile {
   :host {
     padding: var(--space-md);
   }

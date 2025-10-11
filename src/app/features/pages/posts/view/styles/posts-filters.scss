@@ -1,8 +1,7 @@
+@use '../../../../../../styles/mixins' as mixins;
+
 .posts-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-lg);
+  @include mixins.flex-row(var(--space-lg), flex-start, space-between);
   flex-wrap: wrap;
 
   h1 {
@@ -12,9 +11,7 @@
 }
 
 .posts-header__titles {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
+  @include mixins.flex-column(var(--space-xs));
 }
 
 .posts-header__subtitle {
@@ -25,10 +22,7 @@
 }
 
 .posts-toolbar {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-md);
-  align-items: center;
+  @include mixins.flex-row(var(--space-md), center, space-between);
   flex-wrap: wrap;
 }
 
@@ -38,7 +32,22 @@
 }
 
 .posts-filters {
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
+  @include mixins.flex-row(var(--space-sm), center);
+}
+
+@include mixins.mobile {
+  .posts-header {
+    @include mixins.flex-column(var(--space-sm));
+    align-items: flex-start;
+  }
+
+  .posts-toolbar {
+    @include mixins.flex-column(var(--space-sm));
+    align-items: flex-start;
+  }
+
+  .posts-filters {
+    flex-wrap: wrap;
+    width: 100%;
+  }
 }

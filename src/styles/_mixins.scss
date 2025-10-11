@@ -1,3 +1,6 @@
+@use 'sass:meta';
+@use 'sass:list';
+
 /* Utility mixins for common patterns */
 
 // Flexbox layouts
@@ -19,6 +22,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: $gap;
+}
+
+@mixin button-group($gap: var(--space-sm), $justify: flex-end, $wrap: wrap, $align: center) {
+  display: flex;
+  gap: $gap;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+  align-items: $align;
+}
+
+@mixin container($max-width: var(--layout-max-width), $padding-inline: var(--layout-gutter)) {
+  width: min(100%, $max-width);
+  margin-inline: auto;
+  padding-inline: $padding-inline;
+}
+
+@mixin grid-stack($min-width: 280px, $gap: var(--space-lg)) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
   gap: $gap;
 }
 
@@ -63,9 +86,38 @@
   }
 }
 
+@mixin tablet-up {
+  @media (min-width: 641px) {
+    @content;
+  }
+}
+
+@mixin desktop-wide {
+  @media (min-width: 1281px) {
+    @content;
+  }
+}
+
+@mixin until-tablet {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
 // Hover/transition effects
-@mixin smooth-transition($properties: all, $duration: 0.2s) {
-  transition: $properties $duration ease;
+@mixin smooth-transition($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
+  $transitions: ();
+  @if meta.type-of($properties) != 'list' {
+    $properties: ($properties,);
+  }
+  @each $property in $properties {
+    $transitions: list.append($transitions, '#{$property} #{$duration} #{$timing} #{$delay}', comma);
+  }
+  transition: $transitions;
+}
+
+@mixin transition-group($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
+  @include smooth-transition($properties, $duration, $timing, $delay);
 }
 
 // Glass morphism effect
