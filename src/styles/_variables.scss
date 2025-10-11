@@ -35,6 +35,12 @@
   --shadow: var(--shadow-lg);
   --shadow-orange: var(--shadow-accent);
   --border-radius-btn: var(--radius-button);
+
+  /* ===== INPUT BACKGROUNDS ===== */
+  --color-bg-input-dark: rgba(17, 24, 39, 0.2); /* subtle dark overlay */
+  --color-bg-input-dark-focus: rgba(17, 24, 39, 0.7); /* darker on focus */
+  --color-accent-light-alpha: rgba(249, 115, 22, 0.35);
+
   /* Button sizing tokens (centralized for consistency) */
   --btn-height-sm: 2.5rem; /* 40px */
   --btn-height-md: 2.75rem; /* 44px */
@@ -91,6 +97,12 @@
   --focus-ring: #f97316; /* orange-500 focus ring */
   --shadow: var(--shadow-lg);
   --shadow-orange: var(--shadow-accent);
+
+  /* ===== INPUT BACKGROUNDS (LIGHT THEME) ===== */
+  --color-bg-input-light: #fff8ef; /* warm light background */
+  --color-bg-input-light-focus: #fffdf9; /* lighter on focus */
+  --shadow-input-light:
+    inset 0 0 0 1px rgba(249, 115, 22, 0.12), 0 6px 16px -10px rgba(249, 115, 22, 0.2);
 
   /* Light-theme fallbacks */
   --fallback-accent-hover-rgba: rgba(249, 115, 22, 0.08);

@@ -9,9 +9,9 @@
     width: 100%;
     max-width: 26rem;
     @include glassmorphism(24px);
-    border-radius: 1rem;
+    @include radius('xl');
     padding: var(--space-lg) var(--space-xl);
-    box-shadow: var(--shadow);
+    @include shadow('lg');
     @include smooth-transition(all, 0.3s);
 
     @include mobile {
@@ -28,10 +28,10 @@
   .icon-container {
     width: 4rem;
     height: 4rem;
-    border-radius: 1rem;
+    @include radius('xl');
     @include flex-center;
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
-    box-shadow: var(--shadow-orange);
+    background: var(--gradient-primary);
+    @include shadow('accent');
     @include smooth-transition(transform);
 
     &:hover {
@@ -81,42 +81,41 @@
   .form-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
+    @include radius('lg');
     border: 1px solid var(--color-border);
     box-sizing: border-box;
-    background: rgba(17, 24, 39, 0.2); /* subtle dark overlay for contrast */
+    background: var(--color-bg-input-dark);
     color: var(--color-on-surface);
-    font-size: 1rem;
+    font-size: var(--font-size-base);
     @include smooth-transition(all, 0.3s);
     outline: none;
 
     &::placeholder {
-      color: rgba(156, 163, 175, 0.6375);
+      color: var(--color-muted);
+      opacity: 0.6;
     }
 
     &:focus {
       @include focus-ring;
       border-color: var(--color-accent);
-      background: rgba(17, 24, 39, 0.7); /* darker on focus */
+      background: var(--color-bg-input-dark-focus);
     }
 
     .light-theme & {
-      background: #fff8ef;
-      border-color: rgba(249, 115, 22, 0.35);
-      color: var(--color-primary);
-      box-shadow:
-        inset 0 0 0 1px rgba(249, 115, 22, 0.12),
-        0 6px 16px -10px rgba(249, 115, 22, 0.2);
+      background: var(--color-bg-input-light);
+      border-color: var(--color-accent-light-alpha);
+      color: var(--color-on-primary);
+      box-shadow: var(--shadow-input-light);
 
       &::placeholder {
-        color: rgba(17, 24, 39, 0.55);
-        opacity: 1;
+        color: var(--color-on-primary);
+        opacity: 0.55;
       }
 
       &:focus {
-        background: #fffdf9;
+        background: var(--color-bg-input-light-focus);
         border-color: var(--focus-ring);
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
+        box-shadow: var(--shadow-focus);
       }
     }
   }
@@ -127,12 +126,11 @@
 
   .form-error-banner {
     padding: var(--space-sm) var(--space-md);
-    border-radius: 0.75rem;
-    background: rgba(239, 68, 68, 0.08);
+    @include radius('lg');
     background: color-mix(in srgb, var(--color-danger) 16%, transparent);
-    border: 1px solid rgba(239, 68, 68, 0.16);
+    border: 1px solid color-mix(in srgb, var(--color-danger) 16%, transparent);
     color: var(--color-danger);
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
   }
 
   .footer {
