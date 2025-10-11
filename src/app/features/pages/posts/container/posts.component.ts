@@ -31,14 +31,11 @@ export class Posts {
     this.lastSyncedPerPage = Number(this.route.snapshot.queryParamMap.get('per_page') ?? 10);
     this.store.initializePaging(this.lastSyncedPage, this.lastSyncedPerPage);
 
-    effect(
-      () => {
-        const page = this.store.currentPage();
-        const perPage = this.store.currentPerPage();
-        this.syncQueryParams(page, perPage);
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      const page = this.store.currentPage();
+      const perPage = this.store.currentPerPage();
+      this.syncQueryParams(page, perPage);
+    });
   }
 
   get searchForm() {
