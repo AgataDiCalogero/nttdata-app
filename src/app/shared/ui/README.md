@@ -98,11 +98,11 @@ export class MyComponent {
   private toast = inject(ToastService);
 
   showSuccess() {
-    this.toast.show('success', 'Operazione completata!');
+    this.toast.show('success', 'Operation completed successfully.');
   }
 
   showError() {
-    this.toast.show('error', 'Si è verificato un errore', 5000);
+    this.toast.show('error', 'An unexpected error occurred.', 5000);
   }
 }
 ```

@@ -1,16 +1,16 @@
-import {
-  HttpInterceptorFn,
-  HttpErrorResponse,
-  HttpRequest,
-  HttpHandlerFn,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { catchError, mergeMap, retryWhen, throwError, timer } from 'rxjs';
 import { AuthService } from '../auth/auth-service/auth.service';
+import { ToastService } from '@app/shared/ui/toast';
+import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
+
+const MAX_RATE_LIMIT_RETRIES = 1;
 
 /**
- * Error interceptor: mappa errori, effettua redirect su 401 e rilancia un error object tipato.
+ * Centralised error interceptor: maps HTTP errors to UI errors, handles auth redirects,
+ * rate limit retry with backoff, and surfaces consistent toasts.
  */
 export const errorInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
@@ -18,24 +18,55 @@ export const errorInterceptor: HttpInterceptorFn = (
 ) => {
   const router = inject(Router);
   const auth = inject(AuthService);
+  const toast = inject(ToastService);
 
   return next(req).pipe(
-    // Tipizziamo l'errore HTTP per avere autocompletion e rilevamento dei tipi
-    catchError((error: HttpErrorResponse) => {
-      const status = error?.status ?? 0;
+    retryWhen((errors) =>
+      errors.pipe(
+        mergeMap((error, attempt) => {
+          const mapped = mapHttpError(error);
+          if (mapped.kind === 'rate-limit' && attempt < MAX_RATE_LIMIT_RETRIES) {
+            const delayMs = mapped.retryAfterMs ?? Math.min(2000 * (attempt + 1), 5000);
+            const seconds = Math.max(1, Math.ceil(delayMs / 1000));
+            toast.show('info', `Too many requests. Retrying in ${seconds}s.`, delayMs + 500);
+            return timer(delayMs);
+          }
+          return throwError(() => error);
+        }),
+      ),
+    ),
+    catchError((error: unknown) => {
+      const mapped = mapHttpError(error);
+      const httpError =
+        error instanceof HttpErrorResponse
+          ? error
+          : new HttpErrorResponse({ error, status: 0 });
 
-      // Handle auth
-      if (status === 401) {
-        try {
-          auth?.clearToken?.();
-        } catch {
-          /* ignore */
-        }
-        router.navigate(['/login']).catch(() => {});
+      (httpError as HttpErrorResponse & { uiError?: UiError }).uiError = mapped;
+
+      switch (mapped.kind) {
+        case 'unauthorized':
+          auth.clearToken();
+          toast.show('warning', mapped.message, 4000);
+          router.navigate(['/login']).catch(() => {});
+          break;
+        case 'forbidden':
+          toast.show('error', mapped.message, 4000);
+          break;
+        case 'validation':
+          // Let feature components surface field-level details.
+          break;
+        case 'rate-limit':
+          toast.show('info', mapped.message, 4000);
+          break;
+        case 'network':
+          toast.show('error', mapped.message, 4000);
+          break;
+        default:
+          toast.show('error', mapped.message, 4000);
       }
 
-      // Rilanciamo l'errore originale tipizzato per permettere al consumer di gestirlo
-      return throwError(() => error);
+      return throwError(() => httpError);
     }),
   );
 };

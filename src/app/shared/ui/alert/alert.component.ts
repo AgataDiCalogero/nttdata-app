@@ -10,6 +10,9 @@ export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
   host: {
     '[class]': '"alert alert--" + variant()',
     '[class.alert--dismissible]': 'dismissible()',
+    role: 'status',
+    'aria-live': 'polite',
+    'aria-atomic': 'true',
   },
 })
 export class AlertComponent {

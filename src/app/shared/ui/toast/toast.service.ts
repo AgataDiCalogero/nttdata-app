@@ -1,26 +1,32 @@
 import { Injectable, signal } from '@angular/core';
 
-export type ToastType = 'success' | 'error' | 'info';
+export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 export interface ToastMessage {
   id: string;
   type: ToastType;
   text: string;
+  ttl: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private _messages = signal<ToastMessage[]>([]);
-  messages = this._messages.asReadonly();
+  private readonly messagesSignal = signal<ToastMessage[]>([]);
+  readonly messages = this.messagesSignal.asReadonly();
 
-  show(type: ToastType, text: string, ttl = 3000) {
-    const id = String(Date.now()) + Math.random().toString(36).slice(2, 8);
-    const m: ToastMessage = { id, type, text };
-    this._messages.set([...this._messages(), m]);
+  show(type: ToastType, text: string, ttl = 3000): void {
+    const id = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`;
+    const toast: ToastMessage = { id, type, text, ttl };
+    this.messagesSignal.set([...this.messagesSignal(), toast]);
+
     setTimeout(() => this.dismiss(id), ttl);
   }
 
-  dismiss(id: string) {
-    this._messages.set(this._messages().filter((t) => t.id !== id));
+  dismiss(id: string): void {
+    this.messagesSignal.set(this.messagesSignal().filter((toast) => toast.id !== id));
+  }
+
+  clear(): void {
+    this.messagesSignal.set([]);
   }
 }

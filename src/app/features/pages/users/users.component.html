@@ -2,8 +2,10 @@
   <h1>Users</h1>
   <div class="users-header__actions">
     <input
+      type="search"
       class="users-search"
       placeholder="Search name or email"
+      aria-label="Search users by name or email"
       appDebounceInput
       (debounced)="onSearch($event)"
     />

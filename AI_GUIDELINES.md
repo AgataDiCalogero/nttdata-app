@@ -1,186 +1,331 @@
-# Guidelines for AI Assistants and Copilot
+# Angular Enterprise Guidelines for AI Assistants & Contributors
 
-These rules apply to every AI assistant (Codex, GitHub Copilot, Cursor, etc.) when working on this Angular project.
+These guidelines summarize conventions for contributors and automated assistants working on this Angular project. They are intentionally concise and formatted to avoid common markdown lint issues.
 
-## General Principles
+## Language, accessibility & UX
 
-- **English only** for all user-facing text (UI labels, placeholders, README, comments) unless a stakeholder explicitly requests another language.
-- Keep comments minimal, purposeful, and in English. Prefer self-documenting code; add comments only for non-obvious decisions.
-- Preserve accessibility, responsiveness, and existing design tokens.
+- Keep user-facing text in English unless otherwise requested by stakeholders.
+- Prefer native controls (`button`, `input`, `a`) and ensure keyboard accessibility, visible focus styles and ARIA where required.
+- Provide semantic landmarks (`header`, `main`, `nav`, `footer`) and use `aria-live` for asynchronous status updates.
 
-## Angular Architecture
+## Architecture & project layout
 
-- Use Angular 20 standalone components; avoid `NgModule` unless strictly necessary.
-- Prefer `inject()` over constructor injection.
-- Manage local state with `signal`, `computed`, and `effect`. Reserve `BehaviorSubject` for shared service state.
-- Keep routing lazy via `loadComponent`/`loadChildren` and reuse existing guards and interceptors.
-- Model new features with dedicated services and shared types in `src/app/models`.
+- Organize by feature under `src/app/` (core, shared, models, features).
+- One responsibility per file; consider splitting files that exceed ~300 lines.
+- Promote reusability: extract UI patterns used in more than one place into `shared/`.
 
-## TypeScript Style
+## Routing
 
-- No `any`. Provide explicit interfaces and types.
-- Write short functions, use early returns to reduce nesting, and split responsibilities into private helpers.
-- Use `ReactiveFormsModule` with strongly typed controls (`fb.nonNullable`) for forms.
-- Map HTTP errors explicitly and keep logging minimal (only what helps debugging).
+- Lazy-load feature routes using `loadComponent` / `loadChildren`.
+- Use `inject()` for guards and resolvers when possible.
+
+## Components
+
+- Keep components small and focused. Move business logic into services.
+- Prefer modern APIs: `input()` / `output()`, `signal`, `computed`, `effect`.
+- Use the decorator `host` object for host bindings. Set `changeDetection: ChangeDetectionStrategy.OnPush`.
+
+## State management
+
+- Local component state: use signals (`signal`, `computed`, `effect`).
+- Shared state: expose read-only Observables or signals from services.
 
 ## Templates
 
-- Adopt the new control flow syntax (`@if`, `@for`, `@switch`) with explicit `track` functions.
-- Enforce accessibility: `aria-*` attributes, focus management (`:focus-visible` already styled), semantic markup.
-- Move heavy logic to the component; keep templates declarative.
-- Extract reusable markup into standalone components (e.g., dialog content, shared controls).
+- Use the control flow constructs `@if`, `@for`, `@switch` and always provide `track` for lists.
+- Avoid `ngClass`/`ngStyle`; prefer explicit class and style bindings.
 
-## SCSS & Design System
+## Styling & design system
 
-- Use the global CSS variables defined in `:root`/`.light-theme`; avoid magic values.
-- Follow a BEM-like structure with max three nesting levels.
-- Respect the 8pt spacing scale (`--space-*`). If deviating, explain briefly in code.
-- Create feature-specific SCSS files and avoid inline utilities.
-- Maintain WCAG 2.1 AA contrast or better.
+- Centralize tokens and utilities under `src/styles/` as SCSS partials.
+- Follow an 8pt spacing scale and BEM-like naming; provide fallbacks for modern CSS features.
 
-## HTTP & API
+## HTTP & APIs
 
-- Rely on the global interceptors (`apiPrefixInterceptor`, `authInterceptor`, `errorInterceptor`).
-- Do not hardcode absolute URLs; use relative paths so the prefix interceptor can adjust them.
-- Provide user feedback (toast/state) for 4xx/5xx results; never use `alert` dialogs.
-- After mutations, keep UI state in sync without unnecessary reloads.
+- Use global interceptors for API prefix, auth and error mapping.
+- Prefer relative URLs and surface user-friendly error messages via toast/alert components.
 
-## Testing & Quality
+## Forms
 
-- Add or update unit tests for any non-trivial service/component logic (target ≥60% coverage overall).
-- Use Angular TestBed and HTTP testing utilities; avoid brittle snapshot tests.
-- Only disable lint rules with documented justification.
+- Use Reactive Forms with strongly typed controls (e.g., `FormBuilder.nonNullable`).
+
+## Error handling & logging
+
+- Centralize error mapping and show concise, non-sensitive messages to users. Use `aria-live="polite"` for toasts.
+
+## Performance
+
+- Prefer signals for template bindings. Use `NgOptimizedImage` for static assets and provide width/height.
+
+## Testing & quality
+
+- Add tests for non-trivial logic; keep tests fast and deterministic. Run lint and build checks before reviews.
 
 ## Tooling
 
-- Obey ESLint and Prettier configurations; run `npm run lint`, `npm run test:ci`, and `npm run build:ci` before pushing when possible.
-- Husky skips (`SKIP_PRE_PUSH=1`) are emergency only and must be noted in commits.
+- Follow ESLint and Prettier rules. Keep Husky hooks for pre-commit and pre-push checks.
 
-## Documentation & Workflow
+## Documentation
 
-- Update `README.md` when a feature moves from backlog to completed.
-- Keep this guideline file current with any new conventions.
-- Record major architectural decisions via brief comments or separate ADR-style notes.
+- Keep `README.md` and ADRs updated for major design decisions.
 
-## Code Organization & Reusability
+## Quick references
 
-- **Never duplicate code** across different parts of the application. Extract shared logic into services, utilities, or shared components.
-- **Centralize repeating elements** (toasts, dialogs, loaders, error handlers, etc.) into shared components or services under `src/app/shared/` and reuse them throughout the app.
-- **Promote real components**: any UI pattern rendered in more than one place must be extracted into a dedicated standalone Angular component (with its own `.ts`, `.html`, and `.scss`) so it can be customized via inputs rather than ad-hoc markup or CSS snippets.
-- **Split large files** when HTML templates or TypeScript files become too long (generally >300 lines):
-  - Extract UI sections into separate child components with their own folders
-  - Move business logic into dedicated services under `src/app/services/`
-  - Create custom directives for reusable DOM behavior under `src/app/shared/directives/`
-  - Organize utility functions in `src/app/shared/utils/`
-- Maintain an **enterprise-level structure**: each feature, component, service, and directive should have a clear single responsibility and be easy to locate and maintain.
+- Lists: ensure `ul`/`ol` direct children are `li`, `script`, or `template`.
+- Signals: use `set` or `update`; avoid `mutate`.
 
-## Syntax Error Prevention
+  src/app/
+  core/ // singletons: interceptors, guards, config, logging
+  shared/ // UI atoms, directives, pipes, validators, utilities
+  models/ // app-level types & interfaces
+  features/
+  &lt;feature&gt;/
+  components/ // small, focused standalone components
+  pages/ // route components (lazy loaded)
+  services/ // business logic, API orchestration
+  store/ // feature-level signals or RxJS subjects (if shared)
+  &lt;feature&gt;.routes.ts
 
-To avoid common syntax errors and maintain high code quality:
+  ```text
 
-- **Import Accuracy**: Always verify imports are correct, available, and used. Remove unused imports immediately. Use proper import paths relative to the file.
-- **Bracket and Parentheses Matching**: Ensure all braces `{`, brackets `[`, parentheses `(`, and angle brackets `<>` are properly matched and closed in the correct order.
-- **TypeScript Strictness**: Adhere to strict mode - no `any` types, explicit return types on functions, no implicit `any` parameters. Enable and respect all compiler flags.
-- **Semicolon Consistency**: Use semicolons consistently as per project style (enforced by Prettier).
-- **Angular Decorators**: Use correct decorator syntax (`@Component`, `@Injectable`, etc.) with proper metadata. Standalone components require `imports` for all used directives/pipes.
-- **String Literals**: Use consistent quotes (double quotes per project convention). Escape special characters properly in strings.
-- **SCSS Deprecations**: Avoid deprecated SCSS syntax. Use modern nesting, color functions, and property order. Follow the 8px grid spacing system.
-- **Template Syntax**: Use correct Angular template syntax - proper brackets for bindings `[]`, parentheses for events `()`, asterisks for structural directives `*`. Avoid mixing syntax errors in control flow (`@if`, `@for`, `@switch`).
-- **Null Safety**: Use safe navigation `?.`, nullish coalescing `??`, and optional chaining where appropriate. Check for potential null/undefined errors.
-- **Build Verification**: Always run `npm run lint`, `npm run build:ci`, and fix any errors before considering code complete.
-- **Peer Review Ready**: Write code that passes all automated checks and can be reviewed by peers without syntax errors.
+  ```
 
-### Specific rules for errors seen in the Problems panel
+## 3) Routing (Lazy by default)
 
-The project has shown recurring, specific issues in the editor Problems view (missing ARIA attributes, incorrect children inside `<ul>/<ol>`, and CSS `color-mix` compatibility). Add these concrete rules so AI-generated code avoids them.
+- Define feature routes lazily with `loadComponent`/`loadChildren`. Prefer function guards/resolvers using `inject()`.
+- Keep URLs stable and descriptive; avoid breaking changes without migrations.
+- Example route file:
 
-- ARIA & interactive controls
-  - Prefer native interactive elements when possible: use `<button>`, `<input type="checkbox">`, or `<input type="radio">` instead of `div`/`span` with `role` unless there is a compelling reason.
-  - If you must use ARIA roles (e.g., `role="switch"` or `role="checkbox"`), always include the matching required attributes: `aria-checked` (true|false), and a visible label via `aria-label` or `aria-labelledby`.
-  - Ensure keyboard operability: include `tabindex="0"` if element isn't naturally focusable, and handle `Space`/`Enter` to toggle state.
-  - Example (preferred native):
+  ```ts
+  // src/app/features/todos/todos.routes.ts
+  import { Routes } from '@angular/router';
+  import { inject } from '@angular/core';
 
-    ```html
-    <input
-      type="checkbox"
-      id="appearance-switch"
-      class="appearance-switch"
-      aria-label="Toggle appearance"
-    />
+  export const TODOS_ROUTES: Routes = [
+    {
+      path: '',
+      loadComponent: () => import('./pages/todos-page.component').then((m) => m.TodosPageComponent),
+      canActivate: [() => inject(AuthGuard).canActivate()],
+      resolve: { seed: () => inject(TodosResolver).resolve() },
+    },
+  ];
+  ```
+
+## 4) Components
+
+... (file trimmed for brevity in this patch)
+class="todo"
+[class.todo--done]="done()"
+(click)="toggle.emit(id())"
+tabindex="0"
+(keydown.enter)="toggle.emit(id())"
+(keydown.space)="toggle.emit(id())" >
+![Check mark](/assets/check.svg)
+
+### {{ title() }}
+
+@if (badge() as b) {
+<span class="todo\_\_badge" [attr.aria-label]="b">{{ b }}</span>
+}
+
+</article>
+`,
+            styles: [
+              `
+.todo {
+display: flex;
+gap: var(--space-2);
+align-items: center;
+}
+`,
+],
+host: { role: 'listitem' },
+changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TodoItemComponent {
+readonly id = input.required&lt;string&gt;();
+readonly title = input.required&lt;string&gt;();
+readonly completed = input(false);
+readonly badge = input&lt;string | null&gt;(null);
+
+readonly toggle = output&lt;string&gt;();
+
+readonly done = computed(() => this.completed());
+
+constructor() {
+effect(() => {
+if (this.done()) {
+// minimal, purposeful side effects only
+}
+});
+}
+}
+```
+
+        validators: [Validators.required, Validators.maxLength(100)],
+      }),
+      completed: fb.nonNullable.control(false),
+    });
     ```
 
-  - Example (if role needed):
+## 10) Error Handling & Logging
 
-    ```html
-    <div role="switch" aria-checked="false" aria-label="Toggle appearance" tabindex="0"></div>
-    ```
+- Centralize HTTP error mapping and **minimal** logging (only what helps debugging).
+- Expose user-friendly messages via shared toast service with `aria-live="polite"`.
+- Never leak secrets, tokens, or stack traces to the UI.
 
-- Lists (`<ul>` / `<ol>`)
-  - A `ul` or `ol` must contain only `<li>`, `<script>`, or `<template>` as direct children. Do not place text nodes, headings, or other elements directly inside a list.
-  - Always wrap list items in `<li>` even if they contain complex markup (links, headings, custom components).
-  - Example (incorrect):
+## 11) Performance & Platform Features
 
-    ```html
-    <ul>
-      <h3>Section</h3>
-      <li>Item 1</li>
-    </ul>
-    ```
+- Prefer signals over change‑heavy observables in templates; bridge with `toSignal()` when needed.
+- Use `ChangeDetectionStrategy.OnPush` everywhere.
+- Coalesce events and defer non-critical work (deferrable views, requestIdleCallback where appropriate).
+- Use `NgOptimizedImage` for static images (not for inline base64); provide explicit width/height.
+- Always provide `track` in `@for`.
 
-  - Example (correct):
+## 12) Testing & Quality Targets
 
-    ```html
-    <ul>
-      <li><h3>Section</h3></li>
-      <li>Item 1</li>
-    </ul>
-    ```
+- Add/maintain unit tests for non‑trivial component/service logic. Target **≥60% coverage overall**.
+- Use Angular TestBed and HTTP testing utilities. Avoid brittle snapshots.
+- Keep tests fast, deterministic, and isolated. Prefer testing **behavior** over internals.
 
-  - When generating lists from templates, ensure the template returns `<li>` elements (or wrap the template output in `<li>`).
+## 13) Tooling & Automation (ESLint, Prettier, Husky)
 
-- CSS `color-mix()` compatibility and fallbacks
-  - `color-mix()` (and some `color-mix(in srgb, ...)` forms) are not supported in older browsers (Chrome < 111 and some other engines). Do not rely on it without a fallback.
-  - Provide a fallback value before the `color-mix()` declaration. CSS should list the fallback first, then the modern declaration. Example:
+- Obey ESLint & Prettier. Run:
+  - `npm run lint`
+  - `npm run test:ci`
+  - `npm run build:ci`
+- **Husky**:
+  - **pre-commit**: lint-staged → format + lint only changed files, typecheck if feasible.
+  - **pre-push**: `npm run test:ci` and `npm run build:ci`.
+  - Emergency skips require justification: `SKIP_PRE_PUSH=1 git push` (document in commit message).
+- Keep lint rules enabled; only disable with a brief justification comment.
 
-    ```css
-    /* Fallback for older browsers */
-    border-color: rgba(34, 139, 230, 0.45);
-    /* Modern preferred */
-    border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
-    ```
+## 14) Documentation & Workflow
 
-  - Prefer maintaining a separate RGB CSS variable when feasible (e.g., `--color-accent-rgb: 34,139,230`) so you can derive transparent variants with `rgba()` in a cross-browser way from a single source of truth.
+- Update `README.md` as features move from backlog → completed.
+- Keep this guideline updated with new conventions.
+- Record major decisions via short ADR notes in `/docs/adr/`.
 
-  - Example SCSS mixin (recommended):
+## 15) Syntax Safety & Problem‑Panel Hotspots
 
-    ```scss
-    // Assumes you define --color-accent and --color-accent-rgb in :root
-    @mixin accent-transparent($alpha-percent) {
-      // translate percent to alpha (0..1) in SCSS when possible
-      $alpha: $alpha-percent / 100;
-      border-color: rgba(var(--color-accent-rgb), $alpha); // broad support
-      border-color: color-mix(
-        in srgb,
-        var(--color-accent) $alpha-percent%,
-        transparent
-      ); // modern override
-    }
-    ```
+- **Import accuracy**: Verify imports exist and are used. Remove unused imports immediately.
+- **Brackets/parentheses**: Ensure pairs match and close in correct order.
+- **TypeScript strictness**: No `any`. Prefer `unknown` when needed; provide explicit return types.
+- **Semicolons/quotes**: Follow Prettier settings (double quotes, consistent semicolons).
+- **Decorators**: Correct metadata; ensure required `imports` for standalone components/directives/pipes.
+- **Template syntax**: Use correct binding forms. Avoid mixing syntax in control flow.
+- **Null safety**: Use `?.` and `??` appropriately; avoid non‑null assertions unless absolutely necessary with explanation.
+- **Build verification**: Code must pass `lint` and `build:ci` before review.
 
-  - If you can't add an RGB variable, compute a reasonable RGBA fallback manually and keep the `color-mix()` line after it.
+### 15.1 ARIA & Interactive Controls (recurring editor issues)
 
-- Editor / generation checks
-  - When generating HTML, validate that ARIA-required attributes are present for any ARIA role assigned. If an attribute is required by the role, the generator must emit it.
-  - When generating lists, the generator must either output `<li>` wrapper elements or explicitly document why a non-`li` direct child is used (very rare).
-  - When generating styles that use newer CSS features, the generator must include a safe fallback first.
+- Prefer native controls: `<button>`, `<input type="checkbox">`, `<input type="radio">`.
+- If you must use ARIA roles (e.g., `role="switch"` or `role="checkbox"`):
+  - Include required attributes: `aria-checked="true|false"` and a visible label via `aria-label` or `aria-labelledby`.
+  - Ensure keyboard operability: add `tabindex="0"` if the element isn’t natively focusable and handle `Enter`/`Space`.
+- **Preferred native example**:
 
-These targeted rules will reduce the Problems view noise and make generated code safer and more compatible across browsers and assistive technologies.
+  ```html
+  <input
+    type="checkbox"
+    id="appearance-switch"
+    class="appearance-switch"
+    aria-label="Toggle appearance"
+  />
+  ```
 
-## Avoid
+- **If role is necessary**:
 
-- Persistent debug statements (`console.log`).
-- Redundant dependencies or code duplication.
-- Hardcoded secrets or tokens.
-- Large monolithic files (split when >300 lines).
+  ```html
+  <div role="switch" aria-checked="false" aria-label="Toggle appearance" tabindex="0"></div>
+  ```
 
-Following these rules keeps the codebase consistent and approachable for every contributor—human or AI.
+### 15.2 Lists (`<ul>` / `<ol>`) (recurring editor issues)
+
+- `ul`/`ol` direct children must be only `<li>`, `<script>`, or `<template>`.
+- Always wrap content in `<li>` even for complex markup.
+- **Incorrect**:
+
+  ```html
+  <ul>
+    <h3>Section</h3>
+    <li>Item 1</li>
+  </ul>
+  ```
+
+- **Correct**:
+
+  ```html
+  <ul>
+    <li><h3>Section</h3></li>
+    <li>Item 1</li>
+  </ul>
+  ```
+
+- When generating with templates, ensure the output produces `<li>` elements or wrap the result in `<li>`.
+
+### 15.3 CSS `color-mix()` Fallbacks (recurring editor issues)
+
+- Provide a broadly supported fallback **before** the `color-mix()` declaration.
+- Prefer a separate RGB custom property (e.g., `--color-accent-rgb: 34,139,230`).
+- Example:
+
+  ```scss
+  /* Fallback for older browsers */
+  border-color: rgba(var(--color-accent-rgb), 0.45);
+  /* Modern preferred */
+  border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  ```
+
+- Recommended SCSS mixin:
+
+  ```scss
+  @mixin accent-transparent($alpha-percent) {
+    $alpha: $alpha-percent / 100;
+    border-color: rgba(var(--color-accent-rgb), $alpha);
+    border-color: color-mix(in srgb, var(--color-accent) $alpha-percent%, transparent);
+  }
+  ```
+
+## 16) Security & Privacy
+
+- Never commit secrets or tokens. Use environment files and runtime configuration.
+- Use interceptors to attach tokens; avoid exposing tokens in logs. Prefer HTTP‑only cookies for refresh tokens when possible.
+- Sanitize any HTML input. Avoid `innerHTML` unless absolutely necessary and sanitized.
+- Use `withCredentials` only when required by the backend; document the reason.
+
+## 17) Code Reuse & Shared Elements
+
+- Centralize repeating UI (toasts, dialogs, loaders, error banners) under `shared/` and reuse across features.
+- Keep shared utilities pure and framework‑agnostic where possible.
+- Do not duplicate code; extract shared logic into services/utilities.
+
+## 18) Internationalization & Localization
+
+- Default language is English. If localization is introduced, keep translation keys stable and use ICU messages where needed. Avoid concatenated strings in templates.
+
+## 19) Pull Requests & Review Checklist (copy into PR template)
+
+- [ ] English‑only user‑facing text and accessible UI.
+- [ ] Standalone components; modern APIs (`signal`, `input`, `output`, `computed`).
+- [ ] Lazy routes; guards/resolvers as functions with `inject()`.
+- [ ] Strongly typed forms with `fb.nonNullable`.
+- [ ] No absolute URLs; interceptors used; errors mapped; toasts wired.
+- [ ] Template uses new control flow; explicit `track`; no `ngClass`/`ngStyle`.
+- [ ] SCSS respects design tokens, 8pt scale, and includes `color-mix()` fallbacks.
+- [ ] Unit tests added/updated; coverage not reduced (< 60% overall is blocked).
+- [ ] ESLint/Prettier pass; `npm run lint` & `npm run build:ci` succeed.
+- [ ] Husky hooks not skipped (or justified if `SKIP_PRE_PUSH=1`).
+- [ ] Files >300 lines considered for splitting; no duplicated code.
+
+---
+
+### Quick References
+
+- Signals: prefer `set`/`update`; keep transforms pure.
+- Host bindings: use `host` object in `@Component`/`@Directive`.
+- Images: use `NgOptimizedImage` for static assets with width/height.
+- Observables: expose read‑only streams; bridge to signals for template consumption.
+- Error UX: toast + `aria-live` region; never `alert()`.
+- Lists: only `<li>` direct children; add `track` in `@for`.
+- CSS: provide fallbacks before modern features like `color-mix()`.
