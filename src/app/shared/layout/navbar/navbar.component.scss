@@ -130,6 +130,7 @@
       height: 40px;
       background: transparent;
       border: 1px solid var(--border-mix-60);
+      z-index: var(--z-max);
       cursor: pointer;
       @include radius('md');
       @include transition-group((border-color, background, transform));
@@ -177,7 +178,7 @@
         color: var(--color-on-surface);
         padding: var(--space-md);
         @include shadow('lg');
-        z-index: var(--z-dropdown);
+        z-index: var(--z-max);
 
         a {
           width: 100%;

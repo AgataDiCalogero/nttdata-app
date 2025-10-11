@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import type { Comment, Post, User } from '@app/models';
-import { CommentForm } from '@app/shared/comments/comment-form/comment-form.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
 import { PostCardComponent } from '../post-card/post-card.component';
@@ -15,7 +14,6 @@ import { PostCardComponent } from '../post-card/post-card.component';
     CommonModule,
     ReactiveFormsModule,
     LucideAngularModule,
-    CommentForm,
     ButtonComponent,
     CardComponent,
     PostCardComponent,

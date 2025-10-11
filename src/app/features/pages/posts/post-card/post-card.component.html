@@ -26,8 +26,14 @@
   </div>
 
   <div card-body>
-    <div class="post-content" [class.post-content--truncated]="shouldTruncate() && !isExpanded">
-      <p class="post-content__text">{{ p?.body }}</p>
+    <div class="post-content">
+      <p class="post-content__text" [attr.aria-expanded]="isExpanded">
+        @if (!isExpanded && shouldTruncate()) {
+          {{ previewText() }}
+        } @else {
+          {{ p?.body }}
+        }
+      </p>
 
       @if (shouldTruncate()) {
         <button type="button" class="post-content__toggle" (click)="toggleExpansion()">
@@ -49,4 +55,60 @@
       {{ c ? 'Hide comments' : 'Show comments' }}
     </button>
   </div>
+
+  @if (c) {
+    <div class="post-comments">
+      @if (c.length === 0) {
+        <div class="state state--empty state--compact">No comments available yet.</div>
+      } @else {
+        <div class="comments-section">
+          <h4 class="comments-section__title">Comments</h4>
+          <div class="comments-list">
+            @for (comment of c; track comment.id) {
+              <div class="comment-item">
+                <div class="comment-item__avatar">
+                  <div class="avatar">{{ comment.name.charAt(0).toUpperCase() }}</div>
+                </div>
+                <div class="comment-item__content">
+                  <div class="comment-bubble">
+                    <div class="comment-bubble__header">
+                      <strong class="comment-bubble__author">{{ comment.name }}</strong>
+                    </div>
+                    <p
+                      class="comment-bubble__text"
+                      [attr.aria-expanded]="isCommentExpanded(comment.id)"
+                    >
+                      @if (
+                        !isCommentExpanded(comment.id) && shouldTruncateText(comment.body, 120)
+                      ) {
+                        {{ preview(comment.body, 120) }}
+                      } @else {
+                        {{ comment.body }}
+                      }
+                    </p>
+                    @if (shouldTruncateText(comment.body, 120)) {
+                      <button
+                        type="button"
+                        class="comment-toggle"
+                        (click)="toggleCommentExpansion(comment.id)"
+                      >
+                        {{ isCommentExpanded(comment.id) ? 'Show less' : 'Read more' }}
+                      </button>
+                    }
+                  </div>
+                  <div class="comment-item__meta">
+                    <span class="comment-meta__email">{{ comment.email }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <div class="comment-form-wrapper">
+        <app-comment-form [postId]="p!.id" (created)="toggleComments.emit()"></app-comment-form>
+      </div>
+    </div>
+  }
 </app-card>
