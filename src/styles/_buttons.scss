@@ -162,23 +162,17 @@
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, #fba94a 0%, #f97316 45%, #d65a08 100%);
+  background: var(--gradient-primary);
   color: var(--color-on-accent);
   border: 1px solid rgba(249, 115, 22, 0.26);
-  box-shadow:
-    0 12px 28px -18px rgba(249, 115, 22, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: var(--shadow-button-primary);
 
   &:hover {
-    box-shadow:
-      0 18px 38px -20px rgba(249, 140, 22, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    box-shadow: var(--shadow-button-primary-hover);
   }
 
   &:focus-visible {
-    box-shadow:
-      0 0 0 3px rgba(249, 115, 22, 0.25),
-      0 16px 40px -22px rgba(249, 115, 22, 0.55);
+    box-shadow: var(--shadow-button-primary-focus);
   }
 }
 
@@ -195,7 +189,7 @@
 
   &:focus-visible {
     border-color: var(--focus-ring);
-    box-shadow: 0 0 0 2px var(--focus-ring-mix);
+    box-shadow: var(--shadow-focus);
   }
 
   /* Use color-mix when supported */
@@ -217,7 +211,7 @@
 
   &:focus-visible {
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25);
+    box-shadow: var(--shadow-focus);
   }
 
   &:active {
@@ -237,7 +231,7 @@
 
   &:focus-visible {
     border-color: var(--focus-ring);
-    box-shadow: 0 0 0 2px var(--focus-ring-mix);
+    box-shadow: var(--shadow-focus);
   }
 }
 
@@ -259,7 +253,7 @@
 
   &:focus-visible {
     border-color: var(--color-danger);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-danger) 40%, transparent);
+    box-shadow: var(--shadow-focus-danger);
   }
 
   /* Use color-mix for border-color when supported; fallback uses plain --color-danger for older Chrome */

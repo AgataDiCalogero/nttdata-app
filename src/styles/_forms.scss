@@ -65,14 +65,14 @@
   font: inherit;
   color: var(--color-on-surface);
   background: var(--color-surface);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-input);
   border: 1px solid var(--border-mix-65);
   padding: var(--space-sm) var(--space-md);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     background 0.2s ease;
-  box-shadow: 0 1px 1px rgba(15, 23, 42, 0.04);
+  box-shadow: var(--shadow-xs);
 
   &::placeholder {
     color: color-mix(in srgb, var(--color-muted) 82%, transparent);
@@ -80,7 +80,7 @@
 
   &:focus-visible {
     border-color: var(--focus-ring);
-    box-shadow: 0 0 0 3px var(--focus-ring-mix);
+    box-shadow: var(--shadow-focus);
     outline: none;
   }
 
@@ -103,7 +103,7 @@
   ),
 :is(.form-input, .form-select, .form-textarea, input, select, textarea)[aria-invalid='true'] {
   border-color: color-mix(in srgb, var(--color-danger) 65%, transparent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) 24%, transparent);
+  box-shadow: var(--shadow-focus-danger);
 }
 
 .form-field--inline {
@@ -159,7 +159,7 @@
   align-items: center;
   background: var(--surface-mix-82);
   border: 1px solid var(--border-mix-60);
-  border-radius: 1rem;
+  border-radius: var(--radius-xl);
   padding: var(--space-sm) var(--space-md);
 }
 

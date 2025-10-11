@@ -75,3 +75,47 @@
   backdrop-filter: blur($blur);
   border: 1px solid var(--color-border);
 }
+
+// Shadow helpers
+@mixin shadow($level: 'md') {
+  @if $level == 'xs' {
+    box-shadow: var(--shadow-xs);
+  } @else if $level == 'sm' {
+    box-shadow: var(--shadow-sm);
+  } @else if $level == 'md' {
+    box-shadow: var(--shadow-md);
+  } @else if $level == 'lg' {
+    box-shadow: var(--shadow-lg);
+  } @else if $level == 'xl' {
+    box-shadow: var(--shadow-xl);
+  } @else if $level == '2xl' {
+    box-shadow: var(--shadow-2xl);
+  } @else if $level == 'accent' {
+    box-shadow: var(--shadow-accent);
+  } @else if $level == 'accent-lg' {
+    box-shadow: var(--shadow-accent-lg);
+  } @else if $level == 'none' {
+    box-shadow: var(--shadow-none);
+  }
+}
+
+// Border radius helpers
+@mixin radius($size: 'md') {
+  @if $size == 'xs' {
+    border-radius: var(--radius-xs);
+  } @else if $size == 'sm' {
+    border-radius: var(--radius-sm);
+  } @else if $size == 'md' {
+    border-radius: var(--radius-md);
+  } @else if $size == 'lg' {
+    border-radius: var(--radius-lg);
+  } @else if $size == 'xl' {
+    border-radius: var(--radius-xl);
+  } @else if $size == '2xl' {
+    border-radius: var(--radius-2xl);
+  } @else if $size == 'full' {
+    border-radius: var(--radius-full);
+  } @else if $size == 'none' {
+    border-radius: var(--radius-none);
+  }
+}
