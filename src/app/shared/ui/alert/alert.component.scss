@@ -47,7 +47,7 @@
 
   &:hover {
     opacity: 1;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--alpha-overlay-light);
   }
 
   &:focus-visible {
@@ -59,66 +59,66 @@
 
 /* Variant: Info (default) */
 .alert--info {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
-  color: #1e40af;
+  background: var(--color-info-bg);
+  border-color: var(--color-info-border);
+  color: var(--color-info-text-dark);
 
   .alert__icon {
-    color: #3b82f6;
+    color: var(--color-info);
   }
 }
 
 .light-theme .alert--info {
-  background: rgba(59, 130, 246, 0.08);
-  color: #1e3a8a;
+  background: var(--color-info-bg);
+  color: var(--color-info-text-light);
 }
 
 /* Variant: Success */
 .alert--success {
-  background: rgba(34, 197, 94, 0.1);
-  border-color: rgba(34, 197, 94, 0.3);
-  color: #166534;
+  background: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text-dark);
 
   .alert__icon {
-    color: #22c55e;
+    color: var(--color-success-light);
   }
 }
 
 .light-theme .alert--success {
-  background: rgba(34, 197, 94, 0.08);
-  color: #14532d;
+  background: var(--color-success-bg);
+  color: var(--color-success-text-light);
 }
 
 /* Variant: Warning */
 .alert--warning {
-  background: rgba(245, 158, 11, 0.1);
-  border-color: rgba(245, 158, 11, 0.3);
-  color: #92400e;
+  background: var(--color-warning-bg);
+  border-color: var(--color-warning-border);
+  color: var(--color-warning-text-dark);
 
   .alert__icon {
-    color: #f59e0b;
+    color: var(--color-warning);
   }
 }
 
 .light-theme .alert--warning {
-  background: rgba(245, 158, 11, 0.08);
-  color: #78350f;
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text-light);
 }
 
 /* Variant: Error/Danger */
 .alert--error {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #991b1b;
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text-dark);
 
   .alert__icon {
-    color: #ef4444;
+    color: var(--color-danger);
   }
 }
 
 .light-theme .alert--error {
-  background: rgba(239, 68, 68, 0.08);
-  color: #7f1d1d;
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text-light);
 }
 
 /* Dismissible modifier */

@@ -28,8 +28,30 @@
 
   --color-danger: #ef4444; /* red-500 */
   --color-danger-dark: #dc2626; /* red-600 */
+  --color-danger-bg: rgba(239, 68, 68, 0.1);
+  --color-danger-border: rgba(239, 68, 68, 0.3);
+  --color-danger-text-dark: #991b1b; /* red-800 */
+  --color-danger-text-light: #7f1d1d; /* red-900 */
+
   --color-success: #10b981; /* green-500 */
+  --color-success-light: #22c55e; /* green-500 */
+  --color-success-bg: rgba(34, 197, 94, 0.1);
+  --color-success-border: rgba(34, 197, 94, 0.3);
+  --color-success-text-dark: #166534; /* green-800 */
+  --color-success-text-light: #14532d; /* green-900 */
+
   --color-warning: #f59e0b; /* amber-500 */
+  --color-warning-bg: rgba(245, 158, 11, 0.1);
+  --color-warning-border: rgba(245, 158, 11, 0.3);
+  --color-warning-text-dark: #92400e; /* amber-800 */
+  --color-warning-text-light: #78350f; /* amber-900 */
+
+  --color-info: #3b82f6; /* blue-500 */
+  --color-info-dark: #1e40af; /* blue-800 */
+  --color-info-bg: rgba(59, 130, 246, 0.1);
+  --color-info-border: rgba(59, 130, 246, 0.3);
+  --color-info-text-dark: #1e40af; /* blue-800 */
+  --color-info-text-light: #1e3a8a; /* blue-900 */
 
   --focus-ring: #f97316; /* orange-500 focus ring */
   --shadow: var(--shadow-lg);
@@ -40,6 +62,18 @@
   --color-bg-input-dark: rgba(17, 24, 39, 0.2); /* subtle dark overlay */
   --color-bg-input-dark-focus: rgba(17, 24, 39, 0.7); /* darker on focus */
   --color-accent-light-alpha: rgba(249, 115, 22, 0.35);
+
+  /* ===== COMMON ALPHA VALUES (for consistency) ===== */
+  --alpha-overlay-dark: rgba(0, 0, 0, 0.6); /* backdrop overlay */
+  --alpha-overlay-light: rgba(0, 0, 0, 0.05); /* subtle hover */
+  --alpha-white-94: rgba(255, 255, 255, 0.94); /* card backgrounds */
+  --alpha-white-85: rgba(255, 255, 255, 0.85);
+  --alpha-white-70: rgba(255, 255, 255, 0.7);
+  --alpha-white-50: rgba(255, 255, 255, 0.5);
+  --alpha-white-15: rgba(255, 255, 255, 0.15);
+  --alpha-white-12: rgba(255, 255, 255, 0.12);
+  --alpha-white-0: rgba(255, 255, 255, 0);
+  --alpha-border-slate: rgba(148, 163, 184, 0.55); /* frosted glass border */
 
   /* Button sizing tokens (centralized for consistency) */
   --btn-height-sm: 2.5rem; /* 40px */
@@ -91,8 +125,30 @@
 
   --color-danger: #dc2626; /* red-600 */
   --color-danger-dark: #b91c1c; /* red-700 */
+  --color-danger-bg: rgba(239, 68, 68, 0.08);
+  --color-danger-border: rgba(239, 68, 68, 0.3);
+  --color-danger-text-dark: #991b1b; /* red-800 */
+  --color-danger-text-light: #7f1d1d; /* red-900 */
+
   --color-success: #059669; /* green-600 */
+  --color-success-light: #22c55e; /* green-500 */
+  --color-success-bg: rgba(34, 197, 94, 0.08);
+  --color-success-border: rgba(34, 197, 94, 0.3);
+  --color-success-text-dark: #166534; /* green-800 */
+  --color-success-text-light: #14532d; /* green-900 */
+
   --color-warning: #d97706; /* amber-600 */
+  --color-warning-bg: rgba(245, 158, 11, 0.08);
+  --color-warning-border: rgba(245, 158, 11, 0.3);
+  --color-warning-text-dark: #92400e; /* amber-800 */
+  --color-warning-text-light: #78350f; /* amber-900 */
+
+  --color-info: #3b82f6; /* blue-500 */
+  --color-info-dark: #1e40af; /* blue-800 */
+  --color-info-bg: rgba(59, 130, 246, 0.08);
+  --color-info-border: rgba(59, 130, 246, 0.3);
+  --color-info-text-dark: #1e40af; /* blue-800 */
+  --color-info-text-light: #1e3a8a; /* blue-900 */
 
   --focus-ring: #f97316; /* orange-500 focus ring */
   --shadow: var(--shadow-lg);
