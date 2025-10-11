@@ -15,9 +15,9 @@
   max-width: clamp(320px, 65vw, 520px);
   background: color-mix(in srgb, var(--color-surface) 94%, transparent);
   border: 1px solid var(--border-mix-65);
-  border-radius: 1rem;
+  border-radius: var(--radius-xl);
   padding: var(--space-lg);
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  box-shadow: var(--shadow-xl);
 }
 
 .user-form__actions {
@@ -29,9 +29,9 @@
 
 .user-form__alert {
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
-  border-radius: 0.875rem;
+  border-radius: var(--radius-xl);
   /* fallback */
-  border: 1px solid rgba(239, 68, 68, 0.28);
+  border: 1px solid var(--color-danger-border);
   border: 1px solid color-mix(in srgb, var(--color-danger) 28%, transparent);
   padding: var(--space-sm) var(--space-md);
   margin: var(--space-md) 0 0 0;
@@ -44,8 +44,8 @@
 
   .user-form__form {
     padding: var(--space-md);
-    border-radius: 0.75rem;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
   }
 
   .user-form__actions {

@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--alpha-overlay-dark);
   @include mixins.flex-center;
   z-index: 1000;
 }
@@ -15,7 +15,7 @@
   background: var(--color-surface);
   color: var(--color-on-surface);
   padding: var(--space-lg);
-  border-radius: var(--space-sm);
+  border-radius: var(--radius-md);
   width: 300px;
   max-width: 90%;
   box-shadow: var(--shadow);
@@ -29,7 +29,7 @@
   button {
     padding: var(--space-sm) var(--space-md);
     border: none;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-xs);
     cursor: pointer;
     @include mixins.smooth-transition(all);
 

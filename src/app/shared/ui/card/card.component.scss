@@ -1,7 +1,7 @@
 @use '../../../styles/mixins';
 
 :host {
-  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-bg: var(--alpha-white-94);
   --card-bg: color-mix(in srgb, var(--color-surface) 94%, transparent);
   --card-border: var(--border-mix-65);
   --card-shadow: var(--shadow-lg);
@@ -39,21 +39,21 @@
 }
 
 :host(.card--subtle) {
-  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-bg: var(--alpha-white-85);
   --card-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
   --card-shadow: var(--shadow-md);
 }
 
 :host(.card--frosted) {
-  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-bg: var(--alpha-white-70);
   --card-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
   -webkit-backdrop-filter: blur(22px);
   backdrop-filter: blur(22px);
-  border: 1px solid rgba(148, 163, 184, 0.55);
+  border: 1px solid var(--alpha-border-slate);
 }
 
 :host(.card--danger) {
-  --card-border: rgba(220, 38, 38, 0.4);
+  --card-border: var(--color-danger-border-strong);
   --card-border: color-mix(in srgb, var(--color-danger) 40%, transparent);
   --card-shadow: var(--shadow-xl);
 }
@@ -95,9 +95,9 @@
     inset: 0;
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.5) 45%,
-      rgba(255, 255, 255, 0) 80%
+      var(--alpha-white-0) 0%,
+      var(--alpha-white-50) 45%,
+      var(--alpha-white-0) 80%
     );
     animation: card-skeleton-shimmer 1.6s ease-in-out infinite;
   }

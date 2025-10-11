@@ -16,7 +16,7 @@
 }
 
 .loader__circle {
-  stroke: var(--color-accent, #f97316);
+  stroke: var(--color-accent);
   stroke-linecap: round;
   stroke-dasharray: 80, 200;
   stroke-dashoffset: 0;
