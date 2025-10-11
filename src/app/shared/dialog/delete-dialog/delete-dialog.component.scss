@@ -41,7 +41,7 @@
 
   .danger {
     background: var(--color-danger);
-    color: white;
+    color: var(--color-white);
 
     &:hover {
       background: var(--color-danger-dark);

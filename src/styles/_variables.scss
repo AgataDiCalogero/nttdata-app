@@ -2,20 +2,26 @@
 /* Default (dark) theme variables live under :root; light theme overrides live under .light-theme */
 
 :root {
+  /* ===== BASE COLORS ===== */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  /* ===== SEMANTIC COLORS ===== */
   --color-primary: #1f2937; /* gray-800 surface */
-  --color-on-primary: #ffffff; /* white text on dark */
+  --color-on-primary: var(--color-white); /* white text on dark */
   --color-bg: #111827; /* gray-900 background */
   --color-bg-secondary: #1f2937; /* gray-800 for gradients */
 
   --color-accent: #f97316; /* orange-500 primary accent */
   --color-accent-light: #fb923c; /* orange-400 */
   --color-accent-dark: #ea580c; /* orange-600 for hover */
-  --color-on-accent: #ffffff; /* white on orange */
+  --color-on-accent: var(--color-white); /* white on orange */
 
   --color-surface: rgba(31, 41, 55, 0.5); /* gray-800/50 with alpha */
   --color-surface-solid: #1f2937; /* solid surface */
   --color-surface-variant: rgba(55, 65, 81, 0.4); /* gray-700/40 for hover states */
-  --color-on-surface: #ffffff; /* white text on surface */
+  --color-on-surface: var(--color-white); /* white text on surface */
 
   --color-border: rgba(55, 65, 81, 0.5); /* gray-700/50 */
   --color-muted: #9ca3af; /* gray-400 muted text */

@@ -21,7 +21,7 @@
   padding: var(--space-sm) var(--space-md);
   @include mixins.radius('md');
   box-shadow: var(--shadow-toast);
-  color: white;
+  color: var(--color-white);
   @include mixins.flex-row(var(--space-sm));
   min-width: 280px;
   max-width: 400px;
@@ -63,7 +63,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid white;
+    outline: 2px solid var(--color-white);
     outline-offset: 2px;
     opacity: 1;
     box-shadow: var(--shadow-toast-focus);
@@ -85,7 +85,7 @@
 
 .toast--warning {
   background: var(--gradient-warning);
-  color: #1f2937;
+  color: var(--color-primary);
 
   .toast__close {
     color: inherit;
