@@ -11,28 +11,16 @@
     border-radius: 999px;
     position: relative;
     z-index: 60; /* keep trigger above the panel so it isn't visually covered */
-    background: linear-gradient(135deg, rgba(249, 165, 76, 0.3), rgba(249, 115, 22, 0.15));
-    border: 1px solid rgba(249, 165, 76, 0.5);
     color: inherit;
     cursor: pointer;
     transition:
-      background 0.25s ease,
-      border-color 0.25s ease,
       transform 0.18s ease,
       box-shadow 0.25s ease;
-    box-shadow:
-      0 12px 32px -24px rgba(0, 0, 0, 0.4),
-      0 0 0 0 rgba(249, 115, 22, 0);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+    /* Use shared appearance helper for visuals */
+    @extend .appearance-switcher__trigger;
 
     &:hover {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(249, 165, 76, 0.12));
-      border-color: rgba(249, 165, 76, 0.5);
       transform: translateY(-2px);
-      box-shadow:
-        0 18px 40px -22px rgba(249, 165, 76, 0.5),
-        0 0 20px 0 rgba(249, 115, 22, 0.15);
     }
 
     &:focus-visible {
@@ -75,29 +63,11 @@
     color: var(--color-on-surface);
     border-radius: 1rem;
     border: 1px solid var(--border-mix-60);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
     padding: 4px; /* reduced padding to shrink content width */
     display: flex;
     flex-direction: column;
     gap: 0;
     z-index: 50;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: -0.6rem;
-      right: 0.95rem; /* place caret closer to the trigger's right edge */
-      width: 1rem;
-      height: 1rem;
-      border-radius: 0.2rem;
-      background: inherit;
-      border: inherit;
-      border-bottom: none;
-      border-right: none;
-      box-shadow: inherit;
-      z-index: -1;
-      rotate: 45deg;
-    }
   }
 
   &__section {

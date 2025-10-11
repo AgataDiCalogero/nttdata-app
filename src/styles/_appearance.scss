@@ -1,0 +1,18 @@
+/* Shared appearance/appearance-switcher helper rules to reduce duplication in component styles */
+
+.appearance-switcher__trigger {
+  /* lightweight fallback trigger visuals shared across themes */
+  background: linear-gradient(135deg, rgba(249, 165, 76, 0.12), rgba(255, 255, 255, 0.03));
+  border-color: rgba(249, 165, 76, 0.18);
+  box-shadow: 0 18px 40px -22px rgba(249, 165, 76, 0.18);
+}
+
+.appearance-option__icon {
+  background: rgba(249, 165, 76, 0.08);
+  color: var(--color-accent);
+}
+
+.appearance-option--active {
+  background: linear-gradient(135deg, rgba(249, 165, 76, 0.18), rgba(249, 138, 22, 0.08));
+  border-color: rgba(249, 165, 76, 0.4);
+}

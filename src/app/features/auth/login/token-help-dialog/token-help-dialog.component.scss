@@ -55,10 +55,6 @@
     padding: var(--space-sm) var(--space-lg);
     border-radius: var(--border-radius-btn);
     border: 1px solid var(--color-accent);
-    /* Use color-mix in browsers that support it to get the intended translucent border */
-    @supports (color: color-mix(in srgb, var(--color-accent) 85%, transparent)) {
-      border-color: color-mix(in srgb, var(--color-accent) 85%, transparent);
-    }
     background: transparent;
     color: var(--color-accent);
     font-weight: 600;
@@ -74,6 +70,8 @@
       background 0.2s ease,
       color 0.2s ease,
       border-color 0.2s ease;
+
+    /* border-color uses var(--color-accent) directly; color-mix fallbacks handled globally */
 
     &::before,
     &::after {
