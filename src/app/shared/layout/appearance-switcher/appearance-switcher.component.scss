@@ -95,9 +95,16 @@
     @include mixins.focus-ring;
   }
 
-  &--active .appearance-option__icon {
-    background: transparent;
-    color: var(--color-accent);
+  &--active {
+    background: var(--alpha-accent-10);
+    border-color: var(--color-accent);
+    transform: none;
+
+    .appearance-option__icon {
+      background: var(--alpha-accent-14);
+      color: var(--color-accent);
+      box-shadow: 0 0 0 4px var(--alpha-accent-06);
+    }
   }
 
   &--toggle {

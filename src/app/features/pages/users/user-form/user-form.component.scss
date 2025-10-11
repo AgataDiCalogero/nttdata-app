@@ -16,13 +16,15 @@
 .user-form__form {
   max-width: clamp(320px, 65vw, 520px);
   background: var(--color-surface);
-  @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
-    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
-  }
   border: 1px solid var(--border-mix-65);
   border-radius: var(--radius-xl);
   padding: var(--space-lg);
   box-shadow: var(--shadow-xl);
+
+  @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
+    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  }
+
   @include transition-group((box-shadow, transform), 0.25s);
 }
 
