@@ -1,4 +1,4 @@
-@use '../../../../styles/mixins';
+@use '../../../../../styles/mixins';
 
 .post-form {
   @include mixins.flex-column(var(--space-lg));
