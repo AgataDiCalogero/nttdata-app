@@ -1,4 +1,9 @@
-import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, mergeMap, retryWhen, throwError, timer } from 'rxjs';
@@ -38,9 +43,7 @@ export const errorInterceptor: HttpInterceptorFn = (
     catchError((error: unknown) => {
       const mapped = mapHttpError(error);
       const httpError =
-        error instanceof HttpErrorResponse
-          ? error
-          : new HttpErrorResponse({ error, status: 0 });
+        error instanceof HttpErrorResponse ? error : new HttpErrorResponse({ error, status: 0 });
 
       (httpError as HttpErrorResponse & { uiError?: UiError }).uiError = mapped;
 

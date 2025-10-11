@@ -54,11 +54,11 @@ export class Users {
     const list = this.users();
 
     const filtered = query
-      ? list.filter(
-          (user) =>
-            String(user.name ?? '').toLowerCase().includes(query) ||
-            String(user.email ?? '').toLowerCase().includes(query),
-        )
+      ? list.filter((user) => {
+          const name = String(user.name ?? '').toLowerCase();
+          const email = String(user.email ?? '').toLowerCase();
+          return name.includes(query) || email.includes(query);
+        })
       : [...list];
 
     return filtered.sort((a, b) => {

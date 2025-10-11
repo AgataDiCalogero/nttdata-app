@@ -202,7 +202,11 @@ export class PostsStore {
 
   private setupSearchForm(): void {
     this.searchForm.controls.title.valueChanges
-      .pipe(debounceTime(300), map((value) => value.trim()), takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        debounceTime(300),
+        map((value) => value.trim()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe((value) => {
         this.setTitleFilter(value);
         this.setPage(1);
@@ -219,7 +223,11 @@ export class PostsStore {
   private setupPostsStream(): void {
     toObservable(this.queryCriteria)
       .pipe(
-        map(({ reload, ...params }) => params),
+        map((criteria) => {
+          const { reload, ...params } = criteria;
+          void reload;
+          return params;
+        }),
         switchMap((params) => {
           this.loading.set(true);
           this.error.set(null);

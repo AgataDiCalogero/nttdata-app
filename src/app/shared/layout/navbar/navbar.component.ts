@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, HostListener, inject, OnDestroy, signal, computed } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  inject,
+  OnDestroy,
+  signal,
+  computed,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';

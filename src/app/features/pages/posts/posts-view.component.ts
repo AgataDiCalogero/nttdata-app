@@ -72,5 +72,4 @@ export class PostsViewComponent {
   trackPostById(_index: number, post: Post): number {
     return post.id;
   }
-
 }

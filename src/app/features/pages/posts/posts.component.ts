@@ -188,10 +188,6 @@ export class Posts {
   }
 
   private syncQueryParams(page: number, perPage: number): void {
-    const snapshot = this.route.snapshot.queryParamMap;
-    const currentPage = Number(snapshot.get('page') ?? 1);
-    const currentPerPage = Number(snapshot.get('per_page') ?? 10);
-
     if (this.lastSyncedPage === page && this.lastSyncedPerPage === perPage) {
       return;
     }
