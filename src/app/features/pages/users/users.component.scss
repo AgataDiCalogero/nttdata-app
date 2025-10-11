@@ -15,26 +15,26 @@
 
   th {
     /* fallback before color-mix for broader browser support */
-    background: rgba(31, 91, 187, 0.12);
+    background: var(--table-header-bg);
     background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
     color: var(--color-on-primary);
     padding: var(--space-sm) var(--space-md);
   }
 
   tr:nth-child(even) {
-    background: rgba(17, 17, 17, 0.03);
+    background: var(--table-row-even-bg);
     background: color-mix(in srgb, var(--color-surface) 50%, var(--color-bg));
   }
 
   tbody tr:hover {
-    background: rgba(176, 141, 87, 0.08);
+    background: var(--table-row-hover-bg);
     cursor: pointer;
   }
 
   tbody tr.selected {
-    background: rgba(176, 141, 87, 0.1);
+    background: var(--table-row-selected-bg);
     background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
-    outline: 2px solid rgba(176, 141, 87, 0.18);
+    outline: 2px solid var(--table-row-selected-outline);
   }
 }
 
@@ -72,7 +72,7 @@
   background: transparent;
   border: none;
   padding: var(--space-xs);
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   @include mixins.smooth-transition(background, color);
 
@@ -91,7 +91,7 @@
   }
 
   &:hover {
-    background: rgba(176, 141, 87, 0.15);
+    background: var(--table-action-hover-bg);
 
     lucide-icon {
       color: var(--color-danger);
@@ -100,7 +100,7 @@
 
   &:focus-visible {
     @include mixins.focus-ring;
-    background: rgba(176, 141, 87, 0.2);
+    background: var(--table-action-focus-bg);
   }
 }
 
@@ -117,31 +117,31 @@
 
 .users-search {
   padding: 0.4rem 0.6rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
 }
 
 .badge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 999px;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
   font-size: 0.85rem;
 }
 
 .badge--active {
-  background: rgba(107, 142, 90, 0.18);
+  background: var(--badge-active-bg);
   color: var(--color-success);
-  border: 1px solid rgba(107, 142, 90, 0.25);
+  border: 1px solid var(--badge-active-border);
 }
 
 .badge--inactive {
-  background: rgba(196, 69, 54, 0.06);
+  background: var(--badge-inactive-bg);
   color: var(--color-danger);
-  border: 1px solid rgba(196, 69, 54, 0.12);
+  border: 1px solid var(--badge-inactive-border);
 }
 
 .skeleton td {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.04));
+  background: linear-gradient(90deg, var(--skeleton-tint-02), var(--skeleton-tint-04));
   height: 36px;
 }
 
