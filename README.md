@@ -79,8 +79,8 @@ Conventions
 
 - Auth flow, interceptors, theming, users and posts features are functional.
 - Accessibility fixes landed for toast/loader; host metadata used instead of `@Host*` where applicable.
-- Posts feature: initial re-organization started (container/view/store split). A signal-based `PostsStore` has been added and thin re-export wrappers exist to keep imports stable while the migration finishes.
-- The project builds and the dev server runs locally (run `npm start`). Two small component style budget warnings were observed during recent production builds for `posts.component.scss` and `appearance-switcher.component.scss` — non-blocking and tracked for follow-up.
+- Posts feature re-organization: completed. Files are now organized into `container/`, `view/`, and `store/`. Thin re-export stubs are present at the posts root to preserve imports while the repo migrates to canonical imports.
+- The project builds and the dev server runs locally (run `npm start`). A production build completed successfully after a small, temporary increase to the per-component style warning budget (see `angular.json`). Consider refactoring large component styles or splitting them into partials later.
 
 ## Notes for contributors
 
@@ -89,11 +89,27 @@ Conventions
 - Prefer small, focused standalone components and lazy routes.
 - Run `npm run lint` and ensure the app builds before opening a PR.
 
-If you're picking up the posts re-organization:
+Notes for maintainers working on the posts feature
 
-- The new store lives at `src/app/features/pages/posts/store/posts.store.ts`.
-- Presentational components will be moved into `src/app/features/pages/posts/view/` and container logic into `.../container/`.
-- A convenience re-export exists at `src/app/features/pages/posts/index.ts` to keep imports working during the transition.
+- The new store is at `src/app/features/pages/posts/store/posts.store.ts`.
+- Presentational code is in `src/app/features/pages/posts/view/` and orchestration lives in `.../container/`.
+- Re-exports exist at the feature root (`src/app/features/pages/posts/*.ts`) to avoid widespread import churn. Plan to replace those with canonical imports in a single refactor PR.
+
+Immediate next actions you can take locally
+
+```bat
+# run lint and autofix where possible
+npm run lint -- --fix
+
+# run a production build to verify
+npm run build
+```
+
+Suggested follow-ups (low risk order)
+
+- Run ESLint and fix remaining warnings (I can do this next and push fixes).
+- Replace re-export stubs with direct imports across the repo in one PR (breaking but clean). Use the convenience `index.ts` during the transition.
+- Optionally refactor large component SCSS (split posts/appearance-switcher styles into partials) to meet original budgets.
 
 Local dev quick-check (Windows cmd.exe)
 

@@ -2,99 +2,74 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-
-  &__trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: calc(var(--space-xs) + 2px) var(--space-md);
-    border-radius: 999px;
-    position: relative;
-    z-index: 60; /* keep trigger above the panel so it isn't visually covered */
-    color: inherit;
-    cursor: pointer;
-    transition:
-      transform 0.18s ease,
-      box-shadow 0.25s ease;
-    /* Use shared appearance helper for visuals */
-    @extend .appearance-switcher__trigger;
-
-    &:hover {
-      transform: translateY(-2px);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--focus-ring);
-      outline-offset: 3px;
-    }
-  }
-
-  &__icon lucide-icon {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
-
-  &__current {
-    font-size: 0.85rem;
-    font-weight: 600;
-    white-space: nowrap;
-    letter-spacing: 0.02em;
-  }
-
-  &__chevron {
-    display: inline-flex;
-    width: 0.55rem;
-    height: 0.55rem;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(45deg);
-    transition: transform 0.18s ease;
-    margin-left: calc(var(--space-sm) + 2px); /* more breathing room from the label */
-  }
-
-  &__panel {
-    position: absolute;
-    right: 0; /* anchor to the right of the trigger to avoid empty space on the right */
-    top: calc(100% + 0.6rem);
-    transform: translateX(0);
-    min-width: 140px;
-    max-width: 190px; /* slightly narrower panel to avoid empty right space */
-    background: var(--color-surface);
-    color: var(--color-on-surface);
-    border-radius: 1rem;
-    border: 1px solid var(--border-mix-60);
-    padding: 4px; /* reduced padding to shrink content width */
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    z-index: 50;
-  }
-
-  &__section {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  &__divider {
-    height: 1px;
-    background: var(--border-mix-60);
-    margin: var(--space-sm) 0;
-  }
-
-  &__options {
-    display: flex;
-    gap: 6px;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: nowrap;
-    /* allow options to shrink so the panel doesn't leave empty horizontal space */
-    > * {
-      flex: 0 1 auto;
-    }
-  }
 }
-
+.appearance-switcher__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: calc(var(--space-xs) + 2px) var(--space-md);
+  border-radius: 999px;
+  position: relative;
+  z-index: 60;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.18s,
+    box-shadow 0.25s;
+}
+.appearance-switcher__trigger:hover {
+  transform: translateY(-2px);
+}
+.appearance-switcher__trigger:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+.appearance-switcher__icon lucide-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.appearance-switcher__current {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.appearance-switcher__chevron {
+  display: inline-flex;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.18s;
+  margin-left: calc(var(--space-sm) + 2px);
+}
+.appearance-switcher__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.6rem);
+  transform: translateX(0);
+  min-width: 140px;
+  max-width: 190px;
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  border-radius: 1rem;
+  border: 1px solid var(--border-mix-60);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  z-index: 50;
+}
+.appearance-switcher__options {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.appearance-switcher__options > * {
+  flex: 0 1 auto;
+}
 .appearance-option {
   display: inline-flex;
   align-items: center;
@@ -110,156 +85,102 @@
   font-weight: 500;
   font-size: 0.85rem;
   transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.12s ease;
-  /* palette icon becomes orange when menu is open - rule placed globally further below */
-
-  &:hover {
-    background: rgba(249, 165, 76, 0.08);
-    transform: translateY(-1px);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
-
-  &--active {
-    background: linear-gradient(135deg, rgba(249, 165, 76, 0.18), rgba(249, 138, 22, 0.08));
-    border-color: rgba(249, 165, 76, 0.4);
-
-    .appearance-option__icon {
-      background: transparent;
-      color: var(--color-accent);
-    }
-  }
-
-  &--toggle {
-    flex-direction: row;
-    justify-content: flex-start;
-    width: auto; /* don't force full width on desktop, keeps panel compact */
-    padding: var(--space-xs) calc(var(--space-xxs, 6px));
-  }
-
-  &__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: rgba(249, 165, 76, 0.08);
-    color: var(--color-accent);
-    transition: all 0.2s ease;
-
-    lucide-icon {
-      width: 1.4rem;
-      height: 1.4rem;
-    }
-  }
-
-  &__label {
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
+    background 0.18s,
+    border-color 0.18s,
+    transform 0.12s;
 }
-
+.appearance-option:hover {
+  background: rgba(249, 165, 76, 0.08);
+  transform: translateY(-1px);
+}
+.appearance-option:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.appearance-option--active {
+  background: linear-gradient(135deg, rgba(249, 165, 76, 0.18), rgba(249, 138, 22, 0.08));
+  border-color: rgba(249, 165, 76, 0.4);
+}
+.appearance-option--active .appearance-option__icon {
+  background: transparent;
+  color: var(--color-accent);
+}
+.appearance-option--toggle {
+  flex-direction: row;
+  justify-content: flex-start;
+  width: auto;
+  padding: var(--space-xs) calc(var(--space-xxs, 6px));
+}
+.appearance-option__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(249, 165, 76, 0.08);
+  color: var(--color-accent);
+  transition: all 0.2s;
+}
+.appearance-option__icon lucide-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.appearance-option__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
 [data-open='true'] .appearance-switcher__chevron {
   transform: rotate(-135deg) translateY(2px);
 }
-
-/* Visual state when menu is open: show trigger as active/selected */
 [data-open='true'] .appearance-switcher__trigger {
-  background: linear-gradient(135deg, rgba(249, 165, 76, 0.12), rgba(255, 255, 255, 0.03));
+  background: rgba(249, 165, 76, 0.06);
   border-color: rgba(249, 165, 76, 0.18);
   transform: translateY(-1px);
-  box-shadow: 0 18px 40px -22px rgba(249, 165, 76, 0.18);
 }
-
 [data-open='true'] .appearance-switcher__current {
   color: var(--color-accent);
   font-weight: 700;
 }
-
 [data-open='true'] .appearance-switcher__icon lucide-icon {
-  color: var(--color-accent); /* palette icon becomes orange when menu is open */
+  color: var(--color-accent);
 }
-
 @media (max-width: 640px) {
-  .appearance-switcher {
-    &__trigger {
-      padding: var(--space-xs);
-      border-radius: 50%;
-      border-width: 1px;
-      gap: 0;
-
-      .appearance-switcher__current,
-      .appearance-switcher__chevron {
-        display: none;
-      }
-    }
-
-    /* Ensure icon is orange when menu open on mobile */
-    &[data-open='true'] .appearance-switcher__icon lucide-icon {
-      color: var(--color-accent);
-    }
-
-    &__panel {
-      position: absolute;
-      right: 0;
-      top: calc(100% + 0.6rem);
-      transform: translateX(0);
-      width: min(320px, calc(100vw - var(--space-xl)));
-      border-radius: 1.25rem;
-      padding: var(--space-md);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-    }
-
-    &__options {
-      flex-direction: row;
-      gap: var(--space-xs);
-    }
-
-    .appearance-option {
-      flex: 1;
-    }
-
-    .appearance-option--toggle {
-      width: 100%;
-    }
+  .appearance-switcher__trigger {
+    padding: var(--space-xs);
+    border-radius: 50%;
+    border-width: 1px;
+    gap: 0;
+  }
+  .appearance-switcher__trigger .appearance-switcher__current,
+  .appearance-switcher__trigger .appearance-switcher__chevron {
+    display: none;
+  }
+  [data-open='true'] .appearance-switcher__icon lucide-icon {
+    color: var(--color-accent);
+  }
+  .appearance-switcher__panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.6rem);
+    transform: translateX(0);
+    width: min(320px, calc(100vw - var(--space-xl)));
+    border-radius: 1.25rem;
+    padding: var(--space-md);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  }
+  .appearance-switcher__options {
+    flex-direction: row;
+    gap: var(--space-xs);
+  }
+  .appearance-option {
+    flex: 1;
+  }
+  .appearance-option--toggle {
+    width: 100%;
   }
 }
-
 body.reading-mode .appearance-switcher__panel {
   background: var(--color-surface);
   color: var(--color-on-surface);
-}
-
-.light-theme {
-  .appearance-switcher {
-    &__current {
-      color: var(--color-accent);
-    }
-
-    &__trigger {
-      border-color: rgba(17, 24, 39, 0.16);
-
-      &:hover {
-        background: rgba(249, 115, 22, 0.1);
-        border-color: rgba(249, 115, 22, 0.16);
-      }
-    }
-  }
-
-  .appearance-option {
-    &:hover {
-      background: rgba(249, 115, 22, 0.08);
-    }
-
-    &--active {
-      background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(249, 138, 22, 0.08));
-      border-color: rgba(249, 115, 22, 0.35);
-    }
-  }
 }

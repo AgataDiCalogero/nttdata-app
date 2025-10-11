@@ -36,18 +36,6 @@
   color: var(--color-muted);
   font-size: 0.9rem;
 }
-.posts-toolbar {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-md);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.posts-toolbar__summary {
-  color: var(--color-muted);
-  font-size: 0.9rem;
-}
 
 .posts-filters {
   display: flex;

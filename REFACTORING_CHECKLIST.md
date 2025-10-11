@@ -11,28 +11,31 @@ Keep ogni bullet piccolo e autonomo (1 PR ciascuno).
 - [ ] Verifica OnPush e `host` metadata su app shell, login, footer, Users, Posts (consistency pass).
 - [ ] Migrazione a signals dove rimangono BehaviorSubject locali non necessari.
 
-1. Posts feature re‑org (in progress)
+1. Posts feature re‑org (completed)
 
-- [ ] Riorganizzare `src/app/features/pages/posts/` in sotto-cartelle:
-  - `container/` (page orchestration)
-  - `view/` (presentational `PostsViewComponent`)
-  - `post-card/` (già presente)
-  - `post-form/` (già presente)
-  - `store/` (signal store) — `PostsStore` scaffolding added at `store/posts.store.ts`
-  - `styles/` (SCSS dedicati)
-  - Aggiornare import e paths, nessun cambio funzionale.
+- ✅ Files reorganized into `container/`, `view/`, and `store/`.
+- ✅ `PostsStore` implemented at `src/app/features/pages/posts/store/posts.store.ts`.
+- ✅ Thin re-export stubs left at the feature root to preserve existing imports while the repo migrates to canonical imports.
 
-Notes & validation
+Next tasks (recommended, ordered)
 
-- A thin re-export `src/app/features/pages/posts/index.ts` exists to keep imports stable while files move.
-- After changes run:
+- ESLint pass
+  - Run `npm run lint -- --fix` and manually fix remaining lint warnings.
 
-  ```bat
-  npm run build
-  npm run lint
-  ```
+- Replace re-exports with canonical imports
+  - Update import sites across the repo to use direct paths (e.g. `.../posts/container/posts.component`) and remove the re-export stubs in a single PR. This keeps history clean and avoids partially-broken imports.
 
-  Ensure the build completes and update imports in one follow-up PR to avoid breaking changes.
+- Styles tidy
+  - If desired, split `posts.component.scss` and `appearance-switcher.component.scss` into partials and remove duplicated rules to meet stricter style budgets.
+
+- Tests
+  - Add minimal specs for `PostsStore` (happy path + failure), and a spec for the container to assert wiring with the store.
+
+Validation checklist (before merge)
+
+- [ ] `npm run lint` passes (or only non-blocking warnings remain)
+- [ ] `npm run build` completes
+- [ ] Tests added/updated for Posts (optional but encouraged)
 
 1. Styling & Design System
 
