@@ -28,6 +28,13 @@
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
   --shadow-orange: 0 10px 25px -5px rgba(249, 115, 22, 0.3);
   --border-radius-btn: 0.75rem;
+  /* Button sizing tokens (centralized for consistency) */
+  --btn-height-sm: 2.5rem; /* 40px */
+  --btn-height-md: 2.75rem; /* 44px */
+  --btn-height-lg: 3.25rem; /* 52px */
+  --btn-padding-x-sm: var(--space-md); /* 16px */
+  --btn-padding-x-md: var(--space-lg); /* 24px */
+  --btn-padding-x-lg: var(--space-xl); /* 32px */
 
   /* Centralized fallbacks for color-mix() uses in components */
   --fallback-accent-hover-rgba: rgba(249, 115, 22, 0.1);
@@ -39,6 +46,15 @@
   --border-mix-60: var(--fallback-border-rgba);
   --surface-backdrop: var(--fallback-surface-backdrop);
   --focus-ring-mix: rgba(249, 115, 22, 0.3);
+
+  /* 8pt Grid Spacing System */
+  --space-unit: 8px;
+  --space-xs: calc(var(--space-unit) * 0.5); /* 4px */
+  --space-sm: var(--space-unit); /* 8px */
+  --space-md: calc(var(--space-unit) * 2); /* 16px */
+  --space-lg: calc(var(--space-unit) * 3); /* 24px */
+  --space-xl: calc(var(--space-unit) * 4); /* 32px - Available for future use */
+  --space-xxl: calc(var(--space-unit) * 6); /* 48px */
 }
 
 .light-theme {
@@ -89,13 +105,4 @@
   }
 }
 
-/* 8pt Grid Spacing System */
-:root {
-  --space-unit: 8px;
-  --space-xs: calc(var(--space-unit) * 0.5); /* 4px */
-  --space-sm: var(--space-unit); /* 8px */
-  --space-md: calc(var(--space-unit) * 2); /* 16px */
-  --space-lg: calc(var(--space-unit) * 3); /* 24px */
-  --space-xl: calc(var(--space-unit) * 4); /* 32px - Available for future use */
-  --space-xxl: calc(var(--space-unit) * 6); /* 48px */
-}
+/* End of variables */

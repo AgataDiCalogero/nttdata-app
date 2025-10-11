@@ -118,34 +118,7 @@
   gap: var(--space-md);
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: var(--space-sm) var(--space-lg);
-  border: 2px solid var(--color-accent);
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.875rem;
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-
-  &:hover {
-    background: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
-}
+/* Use global .btn styles from styles/_buttons.scss to ensure consistency */
 
 .users-header__actions {
   display: flex;

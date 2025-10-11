@@ -3,10 +3,10 @@
   <p class="delete-confirm__message">{{ data.message }}</p>
 
   <div class="delete-confirm__actions">
-    <button type="button" class="btn-cancel" (click)="cancel()">
+    <button type="button" appButton variant="secondary" class="btn" (click)="cancel()">
       {{ data.cancelText || 'Cancel' }}
     </button>
-    <button type="button" class="btn-confirm" (click)="confirm()">
+    <button type="button" appButton variant="danger" class="btn" (click)="confirm()">
       {{ data.confirmText || 'Delete' }}
     </button>
   </div>

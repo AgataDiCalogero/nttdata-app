@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
 import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { User } from '@app/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
@@ -18,7 +19,13 @@ type SortField = 'name' | 'email' | 'status';
 @Component({
   standalone: true,
   selector: 'app-users',
-  imports: [CommonModule, RouterModule, LucideAngularModule, DebounceInputDirective],
+  imports: [
+    CommonModule,
+    RouterModule,
+    LucideAngularModule,
+    DebounceInputDirective,
+    ButtonComponent,
+  ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

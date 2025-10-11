@@ -9,36 +9,29 @@
       appDebounceInput
       (debounced)="onSearch($event)"
     />
-    <button class="btn" (click)="openNewUserModal()" aria-label="Create new user">
+    <button
+      appButton
+      variant="primary"
+      class="btn"
+      (click)="openNewUserModal()"
+      aria-label="Create new user"
+    >
       + New User
     </button>
   </div>
 </header>
 @if (displayed(); as data) {
   @if (loading()) {
-    <table class="users-table" role="presentation">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Status</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (i of [1, 2, 3, 4, 5]; track i) {
-          <tr class="skeleton">
-            <td colspan="5">&nbsp;</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <div class="users-skeleton">
+      @for (i of [1, 2, 3, 4, 5]; track i) {
+        <div class="users-skeleton__row" aria-hidden="true"></div>
+      }
+    </div>
   } @else {
     @if (error()) {
       <div class="users-error">
         <p>{{ error() }}</p>
-        <button class="btn" (click)="loadUsers()">Retry</button>
+        <button appButton variant="ghost" class="btn" (click)="loadUsers()">Retry</button>
       </div>
     } @else {
       @if (data.total > 0) {
@@ -58,10 +51,14 @@
                     @if (sortIndicator('name'); as indicator) {
                       @switch (indicator) {
                         @case ('asc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true">&#9650;</span>
+                          <span class="users-table__sort-indicator" aria-hidden="true"
+                            >&#9650;</span
+                          >
                         }
                         @case ('desc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true">&#9660;</span>
+                          <span class="users-table__sort-indicator" aria-hidden="true"
+                            >&#9660;</span
+                          >
                         }
                       }
                     }
@@ -78,10 +75,14 @@
                     @if (sortIndicator('email'); as indicator) {
                       @switch (indicator) {
                         @case ('asc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true">&#9650;</span>
+                          <span class="users-table__sort-indicator" aria-hidden="true"
+                            >&#9650;</span
+                          >
                         }
                         @case ('desc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true">&#9660;</span>
+                          <span class="users-table__sort-indicator" aria-hidden="true"
+                            >&#9660;</span
+                          >
                         }
                       }
                     }
@@ -98,10 +99,14 @@
                     @if (sortIndicator('status'); as indicator) {
                       @switch (indicator) {
                         @case ('asc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true">&#9650;</span>
+                          <span class="users-table__sort-indicator" aria-hidden="true"
+                            >&#9650;</span
+                          >
                         }
                         @case ('desc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true">&#9660;</span>
+                          <span class="users-table__sort-indicator" aria-hidden="true"
+                            >&#9660;</span
+                          >
                         }
                       }
                     }
@@ -147,6 +152,8 @@
           </table>
           <div class="users-pagination">
             <button
+              appButton
+              variant="secondary"
               class="btn"
               [disabled]="currentPage().page <= 1"
               (click)="setPage(currentPage().page - 1, currentPage().per_page)"
@@ -155,6 +162,8 @@
             </button>
             <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
             <button
+              appButton
+              variant="secondary"
               class="btn"
               [disabled]="currentPage().page >= totalPages(data.total)"
               (click)="setPage(currentPage().page + 1, currentPage().per_page)"
