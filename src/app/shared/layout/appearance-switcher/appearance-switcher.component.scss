@@ -43,8 +43,8 @@
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
-  @include mixins.transition-group(transform);
   margin-left: calc(var(--space-sm) + 2px);
+  @include mixins.transition-group(transform);
 }
 
 .appearance-switcher__panel {

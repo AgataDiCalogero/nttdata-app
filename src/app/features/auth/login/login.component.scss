@@ -88,8 +88,8 @@
     background: var(--color-bg-input-dark);
     color: var(--color-on-surface);
     font-size: var(--font-size-base);
-    @include smooth-transition(all, 0.3s);
     outline: none;
+    @include smooth-transition(all, 0.3s);
 
     &::placeholder {
       color: var(--color-muted);

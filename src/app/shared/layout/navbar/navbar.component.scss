@@ -130,9 +130,9 @@
       height: 40px;
       background: transparent;
       border: 1px solid var(--border-mix-60);
+      cursor: pointer;
       @include radius('md');
       @include transition-group((border-color, background, transform));
-      cursor: pointer;
 
       &:hover {
         background: var(--color-surface-variant);

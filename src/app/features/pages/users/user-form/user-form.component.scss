@@ -37,17 +37,19 @@
 
 .user-form__alert {
   background: var(--state-error-bg);
-  @supports (background: color-mix(in srgb, var(--color-danger) 12%, transparent)) {
-    background: color-mix(in srgb, var(--color-danger) 12%, transparent);
-  }
   border-radius: var(--radius-xl);
   /* fallback */
   border: 1px solid var(--color-danger-border);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-md) 0 0 0;
+
+  @supports (background: color-mix(in srgb, var(--color-danger) 12%, transparent)) {
+    background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  }
+
   @supports (color: color-mix(in srgb, var(--color-danger) 28%, transparent)) {
     border: 1px solid color-mix(in srgb, var(--color-danger) 28%, transparent);
   }
-  padding: var(--space-sm) var(--space-md);
-  margin: var(--space-md) 0 0 0;
 }
 
 @include mobile {

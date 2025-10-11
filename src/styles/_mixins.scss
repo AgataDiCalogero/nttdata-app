@@ -107,13 +107,22 @@
 // Hover/transition effects
 @mixin smooth-transition($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
   $transitions: ();
+
   @if meta.type-of($properties) != 'list' {
-    $properties: ($properties,);
+    $properties: ($properties);
   }
+
   @each $property in $properties {
-    $transitions: list.append($transitions, '#{$property} #{$duration} #{$timing} #{$delay}', comma);
+    $transitions: list.append(
+      $transitions,
+      '#{$property} #{$duration} #{$timing} #{$delay}',
+      comma
+    );
   }
-  transition: $transitions;
+
+  & {
+    transition: $transitions;
+  }
 }
 
 @mixin transition-group($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
