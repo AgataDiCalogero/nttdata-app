@@ -14,7 +14,7 @@ import type { Post, Comment } from '@app/models';
   selector: 'app-posts',
   standalone: true,
   imports: [PostsViewComponent],
-  templateUrl: '../posts.component.html',
+  templateUrl: './posts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PostsStore],
 })

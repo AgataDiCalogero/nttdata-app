@@ -1,9 +1,6 @@
-@use '../../../../styles/forms';
-@use '../../../../styles/pagination';
-
-@use '../../posts-card.scss';
-@use '../../posts-filters.scss';
-@use '../../posts-comments.scss';
+@use './styles/posts-card.scss';
+@use './styles/posts-filters.scss';
+@use './styles/posts-comments.scss';
 
 .posts-page {
   display: flex;

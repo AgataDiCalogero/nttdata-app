@@ -20,8 +20,8 @@ import { PostCardComponent } from '../post-card/post-card.component';
     CardComponent,
     PostCardComponent,
   ],
-  templateUrl: '../posts-view.component.html',
-  styleUrls: ['../posts.component.scss'],
+  templateUrl: './posts-view.component.html',
+  styleUrls: ['./posts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsViewComponent {
@@ -69,5 +69,13 @@ export class PostsViewComponent {
 
   trackPostById(_index: number, post: Post): number {
     return post.id;
+  }
+
+  trackUserById(_index: number, user: User): number {
+    return user.id;
+  }
+
+  trackByCommentId(_index: number, comment: Comment): number {
+    return comment.id;
   }
 }
