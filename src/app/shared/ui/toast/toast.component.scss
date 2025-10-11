@@ -76,9 +76,6 @@
     outline: 2px solid white;
     outline-offset: 2px;
     opacity: 1;
-  }
-
-  &:focus-visible {
     box-shadow:
       0 0 0 2px rgba(255, 255, 255, 0.7),
       0 12px 30px rgba(0, 0, 0, 0.3);

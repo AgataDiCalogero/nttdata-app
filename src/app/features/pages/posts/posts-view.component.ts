@@ -10,6 +10,7 @@ import { PostCardComponent } from './post-card/post-card.component';
 
 @Component({
   selector: 'app-posts-view',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

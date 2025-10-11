@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, mergeMap, retryWhen, throwError, timer } from 'rxjs';
+import { catchError, throwError, timer, retry } from 'rxjs';
 import { AuthService } from '../auth/auth-service/auth.service';
 import { ToastService } from '@app/shared/ui/toast';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
@@ -26,20 +26,21 @@ export const errorInterceptor: HttpInterceptorFn = (
   const toast = inject(ToastService);
 
   return next(req).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, attempt) => {
-          const mapped = mapHttpError(error);
-          if (mapped.kind === 'rate-limit' && attempt < MAX_RATE_LIMIT_RETRIES) {
-            const delayMs = mapped.retryAfterMs ?? Math.min(2000 * (attempt + 1), 5000);
-            const seconds = Math.max(1, Math.ceil(delayMs / 1000));
-            toast.show('info', `Too many requests. Retrying in ${seconds}s.`, delayMs + 500);
-            return timer(delayMs);
-          }
-          return throwError(() => error);
-        }),
-      ),
-    ),
+    // Retry only on rate-limit using RxJS retry config
+    retry({
+      count: MAX_RATE_LIMIT_RETRIES,
+      delay: (error, retryCount) => {
+        const mapped = mapHttpError(error);
+        if (mapped.kind === 'rate-limit') {
+          const delayMs = mapped.retryAfterMs ?? Math.min(2000 * retryCount, 5000);
+          const seconds = Math.max(1, Math.ceil(delayMs / 1000));
+          toast.show('info', `Too many requests. Retrying in ${seconds}s.`, delayMs + 500);
+          return timer(delayMs);
+        }
+        // Stop retrying for non rate-limit errors
+        throw error;
+      },
+    }),
     catchError((error: unknown) => {
       const mapped = mapHttpError(error);
       const httpError =

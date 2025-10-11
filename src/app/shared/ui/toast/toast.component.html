@@ -1,15 +1,17 @@
-<ul class="toast-list" role="presentation">
-  @for (toast of toasts(); track toast.id) {
-    <li class="toast toast--{{ toast.type }}" role="status">
-      <span class="toast__text">{{ toast.text }}</span>
-      <button
-        type="button"
-        class="toast__close"
-        (click)="dismiss(toast.id)"
-        aria-label="Dismiss notification"
-      >
-        &times;
-      </button>
-    </li>
-  }
+<ul class="toast-list">
+  <template>
+    @for (toast of toasts(); track toast.id) {
+      <li class="toast toast--{{ toast.type }}">
+        <output class="toast__text" aria-live="polite">{{ toast.text }}</output>
+        <button
+          type="button"
+          class="toast__close"
+          (click)="dismiss(toast.id)"
+          aria-label="Dismiss notification"
+        >
+          &times;
+        </button>
+      </li>
+    }
+  </template>
 </ul>
