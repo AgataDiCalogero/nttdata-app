@@ -1,3 +1,6 @@
+@use '/src/styles/mixins' as *;
+@use '/src/styles/variables' as *;
+
 .app-navbar {
   position: sticky;
   top: 0;
@@ -5,10 +8,7 @@
   padding: var(--space-md) var(--space-xxl);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  display: flex;
-  gap: var(--space-md);
-  justify-content: space-between;
-  align-items: center;
+  @include flex-row(var(--space-md), center, space-between);
 
   h1 {
     margin: 0;
@@ -18,12 +18,10 @@
   }
 
   .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
+    @include flex-row(var(--space-sm));
     color: inherit;
     text-decoration: none;
-    transition: transform 0.2s ease;
+    @include smooth-transition(transform);
 
     &:hover {
       transform: translateY(-1px);
@@ -60,8 +58,7 @@
   }
 
   nav {
-    display: flex;
-    align-items: center;
+    @include flex-row(0, center);
 
     a {
       color: var(--color-accent);
@@ -69,10 +66,7 @@
       margin-left: var(--space-sm);
       padding: var(--space-xs) var(--space-sm);
       border-radius: 4px;
-      transition:
-        background 0.18s ease,
-        color 0.18s ease,
-        transform 0.12s ease;
+      @include smooth-transition((background, color, transform), 0.18s);
 
       &:hover {
         color: var(--color-on-accent);
@@ -81,8 +75,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid var(--focus-ring);
-        outline-offset: 2px;
+        @include focus-ring;
         text-decoration: underline;
         background: var(--accent-hover);
       }
@@ -97,17 +90,14 @@
       border-radius: 6px;
 
       &:focus-visible {
-        outline: 2px solid var(--focus-ring);
-        outline-offset: 2px;
+        @include focus-ring;
       }
     }
   }
 
   /* controls groups appearance switcher and logout into a horizontal stack */
   .controls {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
+    @include flex-row(var(--space-sm), center);
     margin-left: auto; /* Allinea i controlli a destra */
 
     app-appearance-switcher {
@@ -172,15 +162,13 @@
     /* when menu open, show a stacked nav panel */
     &[data-menu-open='true'] {
       nav {
-        display: flex;
+        @include flex-column(var(--space-sm));
         position: absolute;
         left: 0;
         right: 0;
         top: 100%;
         background: var(--color-surface);
         color: var(--color-on-surface);
-        flex-direction: column;
-        gap: var(--space-sm);
         padding: var(--space-md);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         z-index: 50;
@@ -216,8 +204,7 @@
     }
 
     .controls {
-      display: flex;
-      gap: var(--space-sm);
+      @include flex-row(var(--space-sm));
     }
   }
 }

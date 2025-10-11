@@ -14,6 +14,7 @@
 
   --color-surface: rgba(31, 41, 55, 0.5); /* gray-800/50 with alpha */
   --color-surface-solid: #1f2937; /* solid surface */
+  --color-surface-variant: rgba(55, 65, 81, 0.4); /* gray-700/40 for hover states */
   --color-on-surface: #ffffff; /* white text on surface */
 
   --color-border: rgba(55, 65, 81, 0.5); /* gray-700/50 */
@@ -70,6 +71,7 @@
 
   --color-surface: rgba(255, 255, 255, 0.8); /* white/80 with alpha */
   --color-surface-solid: #ffffff; /* solid white surface */
+  --color-surface-variant: rgba(249, 115, 22, 0.05); /* orange tint for hover */
   --color-on-surface: #111827; /* dark text on light surface */
 
   --color-border: #fed7aa; /* orange-200 border */

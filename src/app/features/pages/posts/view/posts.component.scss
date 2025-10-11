@@ -1,15 +1,14 @@
+@use '/src/styles/mixins' as *;
 @use './styles/posts-card.scss';
 @use './styles/posts-filters.scss';
 @use './styles/posts-comments.scss';
 
 .posts-page {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
+  @include flex-column(var(--space-lg));
   padding: var(--space-xxl) var(--space-lg);
   color: var(--color-on-surface);
 
-  @media (max-width: 720px) {
+  @include mobile {
     padding: var(--space-lg) var(--space-sm);
   }
 }
