@@ -75,7 +75,12 @@
   box-shadow: var(--shadow-xs);
 
   &::placeholder {
-    color: color-mix(in srgb, var(--color-muted) 82%, transparent);
+    color: var(--color-muted);
+    opacity: 0.8;
+    @supports (color: color-mix(in srgb, var(--color-muted) 82%, transparent)) {
+      color: color-mix(in srgb, var(--color-muted) 82%, transparent);
+      opacity: 1;
+    }
   }
 
   &:focus-visible {
@@ -88,7 +93,10 @@
   &[disabled] {
     opacity: 0.6;
     cursor: not-allowed;
-    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+    background: var(--color-surface);
+    @supports (background: color-mix(in srgb, var(--color-surface) 90%, transparent)) {
+      background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+    }
   }
 }
 
@@ -102,7 +110,10 @@
     textarea
   ),
 :is(.form-input, .form-select, .form-textarea, input, select, textarea)[aria-invalid='true'] {
-  border-color: color-mix(in srgb, var(--color-danger) 65%, transparent);
+  border-color: var(--color-danger-border);
+  @supports (color: color-mix(in srgb, var(--color-danger) 65%, transparent)) {
+    border-color: color-mix(in srgb, var(--color-danger) 65%, transparent);
+  }
   box-shadow: var(--shadow-focus-danger);
 }
 

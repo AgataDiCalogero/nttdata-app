@@ -38,15 +38,11 @@
                     @if (commentsMap()[p.id].length) {
                       <ul>
                         @for (c of commentsMap()[p.id]; track c.id) {
-                          <!--
-                      -->
                           <li>
                             <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
                             >)
                             <p>{{ c.body }}</p>
                           </li>
-                          <!--
-                    -->
                         }
                       </ul>
                     } @else {

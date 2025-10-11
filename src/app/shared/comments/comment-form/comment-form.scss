@@ -4,7 +4,9 @@
   gap: var(--space-md);
   /* fallback for older browsers */
   background: var(--color-surface);
-  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  @supports (background: color-mix(in srgb, var(--color-surface) 90%, transparent)) {
+    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  }
   border: 1px solid var(--alpha-border-slate);
   border-radius: var(--radius-xl);
   padding: var(--space-md);

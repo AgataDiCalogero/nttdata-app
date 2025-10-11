@@ -39,25 +39,35 @@
   --state-bg: var(--state-error-bg);
   --state-color: var(--color-danger-text-dark);
   background: var(--state-error-bg);
-  background: color-mix(in srgb, var(--color-danger) 15%, transparent);
+  @supports (background: color-mix(in srgb, var(--color-danger) 15%, transparent)) {
+    background: color-mix(in srgb, var(--color-danger) 15%, transparent);
+  }
   border: 1px solid var(--state-error-border);
-  border: 1px solid color-mix(in srgb, var(--color-danger) 24%, transparent);
+  @supports (color: color-mix(in srgb, var(--color-danger) 24%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--color-danger) 24%, transparent);
+  }
 }
 
 .state--loading {
   --state-bg: var(--state-loading-bg);
   --state-color: var(--color-muted);
   background: var(--state-loading-bg);
-  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  @supports (background: color-mix(in srgb, var(--color-accent) 14%, transparent)) {
+    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  }
   border: 1px solid var(--state-loading-border);
-  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+  @supports (color: color-mix(in srgb, var(--color-accent) 18%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+  }
 }
 
 .state--empty {
   --state-bg: var(--state-empty-bg);
   --state-color: var(--color-muted);
   background: var(--state-empty-bg);
-  background: color-mix(in srgb, var(--color-muted) 18%, transparent);
+  @supports (background: color-mix(in srgb, var(--color-muted) 18%, transparent)) {
+    background: color-mix(in srgb, var(--color-muted) 18%, transparent);
+  }
   border-style: dashed;
 }
 
@@ -65,9 +75,13 @@
   --state-bg: var(--state-success-bg);
   --state-color: var(--color-success-text-dark);
   background: var(--state-success-bg);
-  background: color-mix(in srgb, var(--color-success) 18%, transparent);
+  @supports (background: color-mix(in srgb, var(--color-success) 18%, transparent)) {
+    background: color-mix(in srgb, var(--color-success) 18%, transparent);
+  }
   border: 1px solid var(--state-success-border);
-  border: 1px solid color-mix(in srgb, var(--color-success) 22%, transparent);
+  @supports (color: color-mix(in srgb, var(--color-success) 22%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--color-success) 22%, transparent);
+  }
 }
 
 .state--compact {
