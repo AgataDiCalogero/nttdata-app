@@ -5,7 +5,6 @@
   gap: var(--space-md);
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(128, 128, 128, 0.6);
   border-top: 1px solid var(--border-mix-60);
   padding-top: var(--space-md);
 
@@ -32,7 +31,7 @@
 
     select {
       min-height: 40px;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-lg);
       border: 1px solid var(--border-mix-60);
       background: var(--color-surface);
       color: var(--color-on-surface);

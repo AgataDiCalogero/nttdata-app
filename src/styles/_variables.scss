@@ -78,11 +78,13 @@
   --alpha-white-60: rgba(255, 255, 255, 0.6);
   --alpha-white-50: rgba(255, 255, 255, 0.5);
   --alpha-white-45: rgba(255, 255, 255, 0.45);
+  --alpha-white-28: rgba(255, 255, 255, 0.28);
   --alpha-white-08: rgba(255, 255, 255, 0.08);
   --alpha-white-15: rgba(255, 255, 255, 0.15);
   --alpha-white-12: rgba(255, 255, 255, 0.12);
   --alpha-white-0: rgba(255, 255, 255, 0);
   --alpha-border-slate: rgba(148, 163, 184, 0.55); /* frosted glass border */
+  --surface-mix-92: rgba(255, 255, 255, 0.92);
   --alpha-accent-18: rgba(249, 165, 76, 0.18); /* accent outline */
   --alpha-accent-08: rgba(249, 165, 76, 0.08); /* accent hover background */
   --alpha-accent-06: rgba(249, 165, 76, 0.06); /* accent subtle background */
@@ -99,6 +101,15 @@
   --badge-inactive-border: rgba(196, 69, 54, 0.12);
   --skeleton-tint-02: rgba(255, 255, 255, 0.02);
   --skeleton-tint-04: rgba(255, 255, 255, 0.04);
+  --state-surface-bg: rgba(15, 23, 42, 0.04);
+  --state-surface-border: rgba(148, 163, 184, 0.4);
+  --state-error-bg: rgba(248, 113, 113, 0.12);
+  --state-error-border: rgba(239, 68, 68, 0.28);
+  --state-loading-bg: rgba(59, 130, 246, 0.08);
+  --state-loading-border: rgba(59, 130, 246, 0.18);
+  --state-empty-bg: rgba(148, 163, 184, 0.08);
+  --state-success-bg: rgba(34, 197, 94, 0.12);
+  --state-success-border: rgba(34, 197, 94, 0.24);
 
   /* Button sizing tokens (centralized for consistency) */
   --btn-height-sm: 2.5rem; /* 40px */

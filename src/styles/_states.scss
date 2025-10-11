@@ -2,10 +2,10 @@
 /* Provide RGBA fallbacks before color-mix() to support older browsers */
 
 .state {
-  --state-bg: rgba(15, 23, 42, 0.04);
-  --state-border: rgba(148, 163, 184, 0.4);
+  --state-bg: var(--state-surface-bg);
+  --state-border: var(--state-surface-border);
   --state-color: var(--color-on-surface);
-  border-radius: 1rem;
+  border-radius: var(--radius-xl);
   padding: var(--space-md) var(--space-lg);
   display: flex;
   flex-direction: column;
@@ -36,48 +36,42 @@
 }
 
 .state--error {
-  --state-bg: rgba(248, 113, 113, 0.12);
-  --state-color: var(--color-danger, #b91c1c);
-  background: rgba(248, 113, 113, 0.12);
+  --state-bg: var(--state-error-bg);
+  --state-color: var(--color-danger-text-dark);
+  background: var(--state-error-bg);
   background: color-mix(in srgb, var(--color-danger) 15%, transparent);
-  border: 1px solid rgba(239, 68, 68, 0.28);
-  /* fallback for older browsers */
-  border: 1px solid rgba(239, 68, 68, 0.28);
+  border: 1px solid var(--state-error-border);
   border: 1px solid color-mix(in srgb, var(--color-danger) 24%, transparent);
 }
 
 .state--loading {
-  --state-bg: rgba(59, 130, 246, 0.08);
+  --state-bg: var(--state-loading-bg);
   --state-color: var(--color-muted);
-  background: rgba(59, 130, 246, 0.08);
+  background: var(--state-loading-bg);
   background: color-mix(in srgb, var(--color-accent) 14%, transparent);
-  border: 1px solid rgba(59, 130, 246, 0.18);
-  /* fallback for older browsers */
-  border: 1px solid rgba(59, 130, 246, 0.18);
+  border: 1px solid var(--state-loading-border);
   border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
 }
 
 .state--empty {
-  --state-bg: rgba(148, 163, 184, 0.08);
+  --state-bg: var(--state-empty-bg);
   --state-color: var(--color-muted);
-  background: rgba(148, 163, 184, 0.08);
+  background: var(--state-empty-bg);
   background: color-mix(in srgb, var(--color-muted) 18%, transparent);
   border-style: dashed;
 }
 
 .state--success {
-  --state-bg: rgba(34, 197, 94, 0.12);
-  --state-color: var(--color-success, #166534);
-  background: rgba(34, 197, 94, 0.12);
-  background: color-mix(in srgb, var(--color-success, #22c55e) 18%, transparent);
-  border: 1px solid rgba(34, 197, 94, 0.24);
-  /* fallback for older browsers */
-  border: 1px solid rgba(34, 197, 94, 0.24);
-  border: 1px solid color-mix(in srgb, var(--color-success, #22c55e) 22%, transparent);
+  --state-bg: var(--state-success-bg);
+  --state-color: var(--color-success-text-dark);
+  background: var(--state-success-bg);
+  background: color-mix(in srgb, var(--color-success) 18%, transparent);
+  border: 1px solid var(--state-success-border);
+  border: 1px solid color-mix(in srgb, var(--color-success) 22%, transparent);
 }
 
 .state--compact {
   padding: var(--space-sm) var(--space-md);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-lg);
   gap: var(--space-xs);
 }
