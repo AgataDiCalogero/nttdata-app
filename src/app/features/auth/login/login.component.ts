@@ -6,8 +6,8 @@ import { take } from 'rxjs';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
-import { ButtonComponent } from '@app/shared/ui/button';
-import { AlertComponent } from '@app/shared/ui/alert';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 
 // Login page component for token-based authentication
 @Component({

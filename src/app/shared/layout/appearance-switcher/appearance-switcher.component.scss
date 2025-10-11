@@ -1,3 +1,5 @@
+@use '../../../../styles/_appearance' as *;
+
 .appearance-switcher {
   position: relative;
   display: inline-flex;
@@ -97,10 +99,6 @@
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
-.appearance-option--active {
-  background: linear-gradient(135deg, rgba(249, 165, 76, 0.18), rgba(249, 138, 22, 0.08));
-  border-color: rgba(249, 165, 76, 0.4);
-}
 .appearance-option--active .appearance-option__icon {
   background: transparent;
   color: var(--color-accent);
@@ -118,15 +116,13 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: rgba(249, 165, 76, 0.08);
-  color: var(--color-accent);
   transition: all 0.2s;
 }
-.appearance-option__icon lucide-icon {
+appearance-option__icon lucide-icon {
   width: 1.4rem;
   height: 1.4rem;
 }
-.appearance-option__label {
+appearance-option__label {
   font-size: 0.85rem;
   font-weight: 600;
 }

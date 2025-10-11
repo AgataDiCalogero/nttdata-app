@@ -2,6 +2,12 @@
 
 Single-page Angular app on the GoREST API for users, posts and comments. It demonstrates token-based auth, protected routes, CRUD, accessibility and theming.
 
+## Changelog (local fixes)
+
+- Fixed SSR hydration mismatch caused by toast component and templates — added `ngSkipHydration` to `ToastComponent` and made list templates deterministic.
+- Corrected several templates (`posts` view) so `<ul>/<select>` children are valid and avoid text-node hydration mismatches.
+- Removed deprecated `allowSignalWrites` option and cleaned up re-export index usage across the codebase (imports replaced with direct file paths where appropriate).
+
 ## Tech stack
 
 - Angular 20 with standalone components, lazy routing and zoneless change detection (`provideZonelessChangeDetection`).

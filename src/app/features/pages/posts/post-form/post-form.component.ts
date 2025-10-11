@@ -4,10 +4,10 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@app/services/posts/posts-api.service';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { AlertComponent } from '@app/shared/ui/alert';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, User } from '@app/models';
-import { ButtonComponent } from '@app/shared/ui/button';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 
 @Component({

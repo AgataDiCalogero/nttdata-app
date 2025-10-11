@@ -291,22 +291,25 @@ export class Users {
 
     ref.closed.subscribe((confirmed) => {
       if (!confirmed) return;
+      this.handleDeleteConfirmed(user.id);
+    });
+  }
 
-      this.deletingId.set(user.id);
-      this.api.delete(user.id).subscribe({
-        next: () => {
-          this.users.update((list) => list.filter((item) => item.id !== user.id));
-          this.deletingId.set(null);
-          this.toast.show('success', 'User deleted');
-          const { per_page } = this.pageState();
-          this.setPage(this.pageState().page, per_page, false);
-        },
-        error: (err) => {
-          console.error('Delete failed:', err);
-          this.deletingId.set(null);
-          this.toast.show('error', 'Unable to delete user');
-        },
-      });
+  private handleDeleteConfirmed(userId: number): void {
+    this.deletingId.set(userId);
+    this.api.delete(userId).subscribe({
+      next: () => {
+        this.users.update((list) => list.filter((item) => item.id !== userId));
+        this.deletingId.set(null);
+        this.toast.show('success', 'User deleted');
+        const { per_page } = this.pageState();
+        this.setPage(this.pageState().page, per_page, false);
+      },
+      error: (err) => {
+        console.error('Delete failed:', err);
+        this.deletingId.set(null);
+        this.toast.show('error', 'Unable to delete user');
+      },
     });
   }
 }

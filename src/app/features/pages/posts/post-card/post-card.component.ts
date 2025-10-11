@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, input, Output } from '@angular/core';
-import { ButtonComponent } from '@app/shared/ui/button';
-import { CardComponent } from '@app/shared/ui/card';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { CardComponent } from '@app/shared/ui/card/card.component';
 import { LucideAngularModule, MessageSquare, Trash2 } from 'lucide-angular';
 import type { Post, Comment } from '@app/models';
 

@@ -224,9 +224,10 @@ export class PostsStore {
     toObservable(this.queryCriteria)
       .pipe(
         map((criteria) => {
-          const { reload, ...params } = criteria;
-          void reload;
-          return params;
+          // reload is used only to trigger recomputation; omit it from the params
+          const params = { ...criteria } as Record<string, unknown>;
+          delete params.reload;
+          return params as Omit<QueryCriteria, 'reload'>;
         }),
         switchMap((params) => {
           this.loading.set(true);

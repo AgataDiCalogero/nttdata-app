@@ -14,8 +14,8 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { ButtonComponent } from '@app/shared/ui/button';
-import { AlertComponent } from '@app/shared/ui/alert';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 
 @Component({
@@ -27,12 +27,12 @@ import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserForm {
-  private fb = inject(FormBuilder);
-  private api = inject(UsersApiService);
-  private destroyRef = inject(DestroyRef);
-  private toast = inject(ToastService);
-  private dialogRef = inject(DialogRef<'success' | 'cancel'>);
-  private dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
+  private readonly fb = inject(FormBuilder);
+  private readonly api = inject(UsersApiService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly toast = inject(ToastService);
+  private readonly dialogRef = inject(DialogRef<'success' | 'cancel'>);
+  private readonly dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
 
   // Modal mode: optional user input and closed output
   user = input<User | undefined>(undefined);
@@ -70,8 +70,8 @@ export class UserForm {
       this.form.patchValue({
         name: inputUser.name ?? '',
         email: inputUser.email ?? '',
-        gender: (inputUser.gender as 'male' | 'female') ?? this.form.controls.gender.value,
-        status: (inputUser.status as UserStatus) ?? this.form.controls.status.value,
+        gender: this.normalizeGender(inputUser.gender) ?? this.form.controls.gender.value,
+        status: this.normalizeStatus(inputUser.status) ?? this.form.controls.status.value,
       });
     }
   }
@@ -81,10 +81,23 @@ export class UserForm {
     const payload: CreateUser = {
       name: String(raw.name).trim(),
       email: String(raw.email).toLowerCase().trim(),
-      gender: (raw.gender as 'male' | 'female') ?? 'male',
-      status: (raw.status as UserStatus) ?? 'active',
+      gender: this.normalizeGender(raw.gender) ?? 'male',
+      status: this.normalizeStatus(raw.status) ?? 'active',
     };
     return payload;
+  }
+
+  private normalizeGender(value: unknown): 'male' | 'female' | undefined {
+    if (typeof value !== 'string') return undefined;
+    const v = value.toLowerCase();
+    if (v === 'male') return 'male';
+    if (v === 'female') return 'female';
+    return undefined;
+  }
+
+  private normalizeStatus(value: unknown): UserStatus | undefined {
+    if (value === 'active' || value === 'inactive') return value;
+    return undefined;
   }
 
   submit(): void {

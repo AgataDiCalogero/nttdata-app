@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DialogRef } from '@angular/cdk/dialog';
-import { ButtonComponent } from '@app/shared/ui/button';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 @Component({
   selector: 'app-token-help-dialog',

@@ -92,7 +92,7 @@ Sistema di notifiche toast centralizzato.
 **Uso nel component:**
 
 ```typescript
-import { ToastService } from '@app/shared/ui/toast';
+import { ToastService } from './toast/toast.service';
 
 export class MyComponent {
   private toast = inject(ToastService);
