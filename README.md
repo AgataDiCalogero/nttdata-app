@@ -2,26 +2,59 @@
 
 Single-page Angular app on the GoREST API for users, posts and comments. It demonstrates token-based auth, protected routes, CRUD, accessibility and theming.
 
-## Changelog (local fixes)
+````markdown
+# NTT DATA Angular App
 
-- Fixed SSR hydration mismatch caused by toast component and templates — added `ngSkipHydration` to `ToastComponent` and made list templates deterministic.
-- Corrected several templates (`posts` view) so `<ul>/<select>` children are valid and avoid text-node hydration mismatches.
-- Removed deprecated `allowSignalWrites` option and cleaned up re-export index usage across the codebase (imports replaced with direct file paths where appropriate).
+A polished Angular single‑page application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases modern Angular patterns: standalone components, Signals for state, SSR hydration, accessibility, and a themed UI.
+
+## Features
+
+- Secure login with personal API token (stored in localStorage)
+- Protected routes for Users and Posts
+- Users: list, view details, create, update, delete
+- Posts: list with filters (title, author), pagination, inline comments load/create, delete
+- Consistent design system (buttons, cards, toasts, loaders) and light/dark theme
+- Accessibility‑minded templates and focus management
 
 ## Tech stack
 
-- Angular 20 with standalone components, lazy routing and zoneless change detection (`provideZonelessChangeDetection`).
-- Host bindings/listeners declared in the `host` object of decorators (avoid `@HostBinding`/`@HostListener`).
-- Angular CDK Dialog for modal/drawer UIs, `lucide-angular` for icons.
-- Signals for local state; interceptors for API prefix, auth, and error mapping.
-- Tooling: ESLint + Prettier, Husky + lint-staged, Karma + Jasmine.
+- Angular 20 (standalone, OnPush, Signals)
+- Router with lazy loaded features and guard‑protected routes
+- Interceptors: API prefix, Auth (Bearer), Error mapping
+- UI: Angular CDK Dialog, lucide‑angular icons
+- Tooling: ESLint + Prettier, Karma + Jasmine, Husky + lint‑staged
 
-## Quick start (Windows)
+## Getting started (Windows)
 
 Prerequisites
 
-- Node.js 20.x
-- npm 10.x
+# NTT DATA Angular App
+
+A polished Angular single‑page application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases modern Angular patterns: standalone components, Signals for state, SSR hydration, accessibility, and a themed UI.
+
+## Features
+
+- Secure login with personal API token (stored in localStorage)
+- Protected routes for Users and Posts
+- Users: list, view details, create, update, delete
+- Posts: list with filters (title, author), pagination, inline comments load/create, delete
+- Consistent design system (buttons, cards, toasts, loaders) and light/dark theme
+- Accessibility‑minded templates and focus management
+
+## Tech stack
+
+- Angular 20 (standalone, OnPush, Signals)
+- Router with lazy loaded features and guard‑protected routes
+- Interceptors: API prefix, Auth (Bearer), Error mapping
+- UI: Angular CDK Dialog, lucide‑angular icons
+- Tooling: ESLint + Prettier, Karma + Jasmine, Husky + lint‑staged
+
+## Getting started (Windows)
+
+Prerequisites
+
+- Node.js 20+
+- npm 10+
 - A GoREST access token from <https://gorest.co.in/consumer/login>
 
 Install dependencies
@@ -30,13 +63,13 @@ Install dependencies
 npm install
 ```
 
-Run the dev server
+Run locally
 
 ```bat
 npm start
 ```
 
-Open <http://localhost:4200> and paste your token on the first access (it’s kept in localStorage until logout).
+Open <http://localhost:4200> and paste your token on first access. The token is persisted in localStorage until logout.
 
 Build for production
 
@@ -44,7 +77,7 @@ Build for production
 npm run build
 ```
 
-Lint and tests
+Run lint and tests
 
 ```bat
 npm run lint
@@ -52,83 +85,40 @@ npm test
 npm run test:ci
 ```
 
-Troubleshooting
+## Configuration
 
-- 401/redirect to login: set or refresh your GoREST token.
-- CORS or network errors: the API base URL comes from `src/environments/*.ts` (`baseUrl`).
-- CSS bundle warnings: two component styles slightly exceed the budget; non‑blocking and tracked for cleanup.
+API base URL is defined in `src/environments/*.ts` (see `baseUrl`). Interceptors automatically prefix relative URLs and attach the Bearer token when available.
+
+## Project structure
+
+- `src/app/core` – guards, interceptors, theme service
+- `src/app/services` – REST clients (`UsersApiService`, `PostsApiService`)
+- `src/app/features` – feature areas (Auth, Users, Posts)
+- `src/app/shared` – reusable UI (button, card, toast, loader), directives, dialogs
+- `src/app/models` – shared TypeScript models
+
+## Conventions
+
+- Use `input()`/`output()` helpers, Signals for local state, and `ChangeDetectionStrategy.OnPush`
+- Prefer new template control flow (`@if`, `@for`) and explicit `track`
+- Inside `<ul>/<ol>/<select>`, wrap `@for` in a native `<template>` element to keep valid children (`li`/`option`) and ensure clean hydration
+- Host bindings/listeners go in the `host` block of decorators
+
+## Accessibility
+
+- Toasts are announced through a polite live region
+- Lists and controls have labels and valid structures
+- Focus is preserved/restored in dialogs and drawers
 
 ## Scripts
 
-- `npm start` – local dev server (SSR hydration enabled)
-- `npm run build` – production build (output in `dist/nttdata-app`)
-- `npm run lint` – ESLint
-- `npm test` – Karma interactive
-- `npm run test:ci` – headless tests for CI
+- `npm start` – dev server
+- `npm run build` – production build
+- `npm run lint` – linting
+- `npm test` – unit tests (interactive)
+- `npm run test:ci` – unit tests (headless)
 
-## Architecture overview
+## License
 
-- `src/app/core` – interceptors (API prefix, auth, error), guards, theme service
-- `src/app/services` – API services (`UsersApiService`, `PostsApiService`)
-- `src/app/features` – route features (Users, Posts, Auth)
-- `src/app/shared` – UI atoms (button, card, toast, loader), directives, dialogs, utilities
-- `src/app/models` – shared types
-
-Conventions
-
-- Components: `input()`/`output()`, signals, `ChangeDetectionStrategy.OnPush`.
-- Templates: new control flow (`@if`, `@for`), explicit `track`, prefer native controls.
-  - Note: inside `<ul>/<ol>/<select>`, wrap `@for` in a native `<template>` (no whitespace) so children remain valid (`li`/`option`).
-- Styles: SCSS partials in `src/styles/`, BEM‑like class names, provide fallbacks for modern CSS features.
-- Accessibility: toasts use a polite live region; loaders expose status via `<output>`.
-
-## Current status
-
-- Auth flow, interceptors, theming, users and posts features are functional.
-- Accessibility fixes landed for toast/loader; host metadata used instead of `@Host*` where applicable.
-  - Hydration: toast component is marked with `ngSkipHydration` (ephemeral UI). Avoid non-deterministic SSR output.
-- Posts feature re-organization: completed. Files are now organized into `container/`, `view/`, and `store/`. Re-export stubs at the feature root were removed and imports migrated to canonical paths (container/view/store) to simplify imports and history.
-- The project builds and the dev server runs locally (run `npm start`). A production build completed successfully; component style budgets were trimmed where possible. Consider refactoring large component styles or splitting them into partials later.
-
-## Notes for contributors
-
-- Use relative URLs; API base is added by the API prefix interceptor.
-- Keep user‑facing copy in English.
-- Prefer small, focused standalone components and lazy routes.
-- Run `npm run lint` and ensure the app builds before opening a PR.
-
-Notes for maintainers working on the posts feature
-
-- The new store is at `src/app/features/pages/posts/store/posts.store.ts`.
-- Presentational code is in `src/app/features/pages/posts/view/` and orchestration lives in `.../container/`.
-- Re-export stubs were removed and all imports were migrated to direct canonical paths. If you need to move files, update imports to `.../posts/container/...`, `.../posts/view/...`, or `.../posts/store/...` as appropriate.
-
-Immediate next actions you can take locally
-
-```bat
-# run lint and autofix where possible
-npm run lint -- --fix
-
-# run a production build to verify
-npm run build
-```
-
-Suggested follow-ups (low risk order)
-
-- Run ESLint and fix remaining warnings (I can do this next and push fixes).
-- Replace any remaining `allowSignalWrites` uses; it’s deprecated and no longer needed.
-- Replace re-export stubs with direct imports across the repo in one PR (breaking but clean). Use the convenience `index.ts` during the transition.
-- Optionally refactor large component SCSS (split posts/appearance-switcher styles into partials) to meet original budgets.
-
-Local dev quick-check (Windows cmd.exe)
-
-```bat
-npm install
-npm start
-```
-
-If you need a production build and to see budget warnings:
-
-```bat
-npm run build
-```
+This project is provided for educational purposes. Replace or extend licensing as needed for your use case.
+````
