@@ -116,6 +116,10 @@
 /* Responsive: collapse nav into a mobile menu */
 @include mobile {
   .app-navbar {
+    /* Ensure the navbar (and its mobile menu) stack above the page backdrop/overlay
+       on small screens. Making this change only inside the mobile media query
+       avoids changing desktop stacking contexts. */
+    z-index: var(--z-max);
     padding: var(--space-sm) var(--layout-gutter-tight);
 
     nav {

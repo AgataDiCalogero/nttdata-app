@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnDestroy,
+  OnInit,
   signal,
   computed,
   PLATFORM_ID,
@@ -25,10 +26,9 @@ import { filter, map, startWith, tap } from 'rxjs';
   host: {
     role: 'banner',
     '[attr.data-menu-open]': 'menuOpen() ? "true" : "false"',
-    '(window:resize)': 'onResize()',
   },
 })
-export class Navbar implements OnDestroy {
+export class Navbar implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly document = inject(DOCUMENT);
@@ -51,6 +51,8 @@ export class Navbar implements OnDestroy {
   });
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
+
+  private resizeHandler: (() => void) | null = null;
 
   logout(): void {
     this.auth.clearToken();
@@ -84,6 +86,40 @@ export class Navbar implements OnDestroy {
   ngOnDestroy(): void {
     if (this.isBrowser) {
       this.document?.body?.classList.remove('mobile-menu-open');
+      if (this.resizeHandler) {
+        try {
+          const handler = this.resizeHandler;
+          if (handler) {
+            (
+              window as unknown as {
+                removeEventListener(type: string, listener: (...args: unknown[]) => void): void;
+              }
+            ).removeEventListener('resize', handler);
+          }
+        } catch {
+          // ignore - defensive for non-browser test envs
+        }
+        this.resizeHandler = null;
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    if (!this.isBrowser) return;
+    // Attach window resize listener at runtime only on the browser.
+    this.resizeHandler = () => this.onResize();
+    try {
+      const handler = this.resizeHandler;
+      if (handler) {
+        (
+          window as unknown as {
+            addEventListener(type: string, listener: (...args: unknown[]) => void): void;
+          }
+        ).addEventListener('resize', handler);
+      }
+    } catch {
+      // Defensive: some test environments may throw when adding global listeners
+      this.resizeHandler = null;
     }
   }
 

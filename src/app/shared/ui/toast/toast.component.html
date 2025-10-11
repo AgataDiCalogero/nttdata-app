@@ -1,6 +1,6 @@
-<ul class="toast-list">
+<div class="toast-list">
   @for (toast of toasts(); track toast.id) {
-    <li class="toast toast--{{ toast.type }}">
+    <div class="toast toast--{{ toast.type }}">
       <output class="toast__text" aria-live="polite">{{ toast.text }}</output
       ><button
         type="button"
@@ -10,6 +10,6 @@
       >
         &times;
       </button>
-    </li>
+    </div>
   }
-</ul>
+</div>
