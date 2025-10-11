@@ -15,7 +15,7 @@ Keep ogni bullet piccolo e autonomo (1 PR ciascuno).
 
 - ✅ Files reorganized into `container/`, `view/`, and `store/`.
 - ✅ `PostsStore` implemented at `src/app/features/pages/posts/store/posts.store.ts`.
-- ✅ Thin re-export stubs left at the feature root to preserve existing imports while the repo migrates to canonical imports.
+  -- ✅ Thin re-export stubs were used during migration and have now been removed; imports were migrated to canonical paths.
 
 Next tasks (recommended, ordered)
 

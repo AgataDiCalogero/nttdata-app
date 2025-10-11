@@ -79,8 +79,8 @@ Conventions
 
 - Auth flow, interceptors, theming, users and posts features are functional.
 - Accessibility fixes landed for toast/loader; host metadata used instead of `@Host*` where applicable.
-- Posts feature re-organization: completed. Files are now organized into `container/`, `view/`, and `store/`. Thin re-export stubs are present at the posts root to preserve imports while the repo migrates to canonical imports.
-- The project builds and the dev server runs locally (run `npm start`). A production build completed successfully after a small, temporary increase to the per-component style warning budget (see `angular.json`). Consider refactoring large component styles or splitting them into partials later.
+- Posts feature re-organization: completed. Files are now organized into `container/`, `view/`, and `store/`. Re-export stubs at the feature root were removed and imports migrated to canonical paths (container/view/store) to simplify imports and history.
+- The project builds and the dev server runs locally (run `npm start`). A production build completed successfully; component style budgets were trimmed where possible. Consider refactoring large component styles or splitting them into partials later.
 
 ## Notes for contributors
 
@@ -93,7 +93,7 @@ Notes for maintainers working on the posts feature
 
 - The new store is at `src/app/features/pages/posts/store/posts.store.ts`.
 - Presentational code is in `src/app/features/pages/posts/view/` and orchestration lives in `.../container/`.
-- Re-exports exist at the feature root (`src/app/features/pages/posts/*.ts`) to avoid widespread import churn. Plan to replace those with canonical imports in a single refactor PR.
+- Re-export stubs were removed and all imports were migrated to direct canonical paths. If you need to move files, update imports to `.../posts/container/...`, `.../posts/view/...`, or `.../posts/store/...` as appropriate.
 
 Immediate next actions you can take locally
 
