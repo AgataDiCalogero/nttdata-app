@@ -36,44 +36,44 @@ body.mobile-menu-open {
 }
 
 body.reading-mode {
-  --reading-highlight: rgba(249, 165, 76, 0.18);
-  --reading-border: rgba(222, 191, 152, 0.55);
-  --reading-shadow: 0 28px 60px -30px rgba(100, 72, 19, 0.45);
-  --focus-ring: #f6aa4f;
-  --focus-ring-mix: rgba(246, 170, 79, 0.38);
-  --accent-hover: rgba(246, 170, 79, 0.16);
-  --surface-backdrop: rgba(255, 244, 226, 0.75);
+  --reading-highlight: var(--reading-highlight-color);
+  --reading-border: var(--reading-border-color);
+  --reading-shadow: var(--reading-shadow-elevation);
+  --focus-ring: var(--reading-focus-ring-color);
+  --focus-ring-mix: var(--reading-focus-ring-mix-color);
+  --accent-hover: var(--reading-accent-hover-color);
+  --surface-backdrop: var(--reading-surface-backdrop-color);
   background:
-    radial-gradient(circle at top, rgba(255, 214, 178, 0.28), transparent 58%),
+    var(--reading-gradient-top),
     linear-gradient(140deg, var(--color-bg) 0%, var(--color-bg-secondary) 60%, var(--color-bg) 100%);
   color: var(--color-on-surface);
 }
 
 body.light-theme.reading-mode {
-  --color-primary: #fef6eb;
-  --color-on-primary: #2f261c;
-  --color-bg: #fdf3e0;
-  --color-bg-secondary: #f8ead2;
-  --color-surface: rgba(255, 249, 240, 0.95);
-  --color-surface-solid: #fff8ec;
-  --color-on-surface: #2c2620;
+  --color-primary: var(--reading-light-color-primary);
+  --color-on-primary: var(--reading-light-color-on-primary);
+  --color-bg: var(--reading-light-bg);
+  --color-bg-secondary: var(--reading-light-bg-secondary);
+  --color-surface: var(--reading-light-surface);
+  --color-surface-solid: var(--reading-light-surface-solid);
+  --color-on-surface: var(--reading-light-on-surface);
   --color-border: var(--reading-border);
-  --color-muted: #7b6b5a;
-  --shadow: 0 24px 60px -32px rgba(120, 72, 16, 0.4);
+  --color-muted: var(--reading-light-muted);
+  --shadow: var(--reading-light-shadow);
 }
 
 body.dark-theme.reading-mode {
-  --color-primary: #1e1a16;
-  --color-on-primary: #f5ede3;
-  --color-bg: #221e1a;
-  --color-bg-secondary: #2b251f;
-  --color-surface: rgba(44, 36, 30, 0.92);
-  --color-surface-solid: #2a241f;
-  --color-on-surface: #f4e7d9;
-  --color-border: rgba(239, 198, 137, 0.26);
-  --color-muted: rgba(244, 215, 184, 0.72);
-  --shadow: 0 28px 70px -30px rgba(0, 0, 0, 0.55);
-  --surface-backdrop: rgba(46, 38, 32, 0.9);
+  --color-primary: var(--reading-dark-color-primary);
+  --color-on-primary: var(--reading-dark-color-on-primary);
+  --color-bg: var(--reading-dark-bg);
+  --color-bg-secondary: var(--reading-dark-bg-secondary);
+  --color-surface: var(--reading-dark-surface);
+  --color-surface-solid: var(--reading-dark-surface-solid);
+  --color-on-surface: var(--reading-dark-on-surface);
+  --color-border: var(--reading-dark-border);
+  --color-muted: var(--reading-dark-muted);
+  --shadow: var(--reading-dark-shadow);
+  --surface-backdrop: var(--reading-dark-surface-backdrop);
 }
 
 /* Decorative gradient blurs (background) */
@@ -107,12 +107,12 @@ body::after {
 }
 
 body.reading-mode::before {
-  background: rgba(249, 165, 76, 0.22);
+  background: var(--reading-glow-primary);
   opacity: 0.3;
 }
 
 body.reading-mode::after {
-  background: rgba(250, 202, 107, 0.2);
+  background: var(--reading-glow-secondary);
   opacity: 0.28;
 }
 
@@ -128,7 +128,7 @@ body.reading-mode::after {
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
 }
 
 /* Button Focus Enhancement */
@@ -157,11 +157,11 @@ select:focus-visible {
 .blurred-backdrop {
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--overlay-backdrop-soft);
 }
 
 .user-form-modal {
-  border-radius: 1rem;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: var(--color-surface);
   color: var(--color-on-surface);

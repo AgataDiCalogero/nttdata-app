@@ -64,12 +64,12 @@
   }
 
   &::before {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+    background: linear-gradient(135deg, var(--alpha-white-08), var(--alpha-white-0));
     opacity: 0;
   }
 
   &::after {
-    background: radial-gradient(circle at top, rgba(255, 255, 255, 0.45), transparent 55%);
+    background: radial-gradient(circle at top, var(--alpha-white-45), transparent 55%);
     mix-blend-mode: screen;
     opacity: 0;
     transform: translateY(30%);
@@ -109,7 +109,7 @@
   min-width: var(--btn-height-md);
   min-height: var(--btn-height-md);
   padding: var(--space-sm);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   justify-content: center;
 
   lucide-icon,
@@ -146,7 +146,7 @@
   height: 1.1rem;
   border: 2px solid currentColor;
   border-bottom-color: transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   animation: btn-spinner 0.6s linear infinite;
 }
 
@@ -164,7 +164,7 @@
 .btn--primary {
   background: var(--gradient-primary);
   color: var(--color-on-accent);
-  border: 1px solid rgba(249, 115, 22, 0.26);
+  border: 1px solid var(--border-accent-emphasis);
   box-shadow: var(--shadow-button-primary);
 
   &:hover {
@@ -215,7 +215,7 @@
   }
 
   &:active {
-    background: color-mix(in srgb, var(--color-accent) 90%, black);
+    background: color-mix(in srgb, var(--color-accent) 90%, var(--color-black));
   }
 }
 

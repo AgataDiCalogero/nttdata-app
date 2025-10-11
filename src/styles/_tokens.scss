@@ -18,6 +18,7 @@
   /* Colored shadows for accent elements */
   --shadow-accent:
     0 10px 25px -5px rgba(249, 115, 22, 0.3), 0 8px 10px -6px rgba(249, 115, 22, 0.2);
+  --shadow-accent-soft: 0 12px 24px -8px rgba(249, 115, 22, 0.3);
   --shadow-accent-lg:
     0 20px 40px -10px rgba(249, 115, 22, 0.35), 0 10px 15px -5px rgba(249, 115, 22, 0.25);
 
@@ -136,6 +137,7 @@
   --shadow-focus: 0 0 0 3px rgba(249, 115, 22, 0.4);
   --shadow-accent:
     0 10px 25px -5px rgba(249, 115, 22, 0.4), 0 8px 10px -6px rgba(249, 115, 22, 0.25);
+  --shadow-accent-soft: 0 12px 24px -8px rgba(249, 115, 22, 0.35);
   --shadow-accent-lg:
     0 20px 40px -10px rgba(249, 115, 22, 0.45), 0 10px 15px -5px rgba(249, 115, 22, 0.3);
 
