@@ -16,14 +16,14 @@
 </header>
 @if (displayed(); as data) {
   @if (loading()) {
-    <table class="users-table">
+    <table class="users-table" role="presentation">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -46,26 +46,68 @@
           <table class="users-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th (click)="toggleSort('name')" class="sortable">
-                  Name
-                  <small>{{
-                    sortDir('name') === 1 ? '▲' : sortDir('name') === -1 ? '▼' : ''
-                  }}</small>
+                <th scope="col">ID</th>
+                <th scope="col" class="sortable" [attr.aria-sort]="ariaSort('name')">
+                  <button
+                    type="button"
+                    class="users-table__sort"
+                    (click)="toggleSort('name')"
+                    [attr.aria-label]="sortButtonLabel('name', 'Name')"
+                  >
+                    <span>Name</span>
+                    @if (sortIndicator('name'); as indicator) {
+                      @switch (indicator) {
+                        @case ('asc') {
+                          <span class="users-table__sort-indicator" aria-hidden="true">&#9650;</span>
+                        }
+                        @case ('desc') {
+                          <span class="users-table__sort-indicator" aria-hidden="true">&#9660;</span>
+                        }
+                      }
+                    }
+                  </button>
                 </th>
-                <th (click)="toggleSort('email')" class="sortable">
-                  Email
-                  <small>{{
-                    sortDir('email') === 1 ? '▲' : sortDir('email') === -1 ? '▼' : ''
-                  }}</small>
+                <th scope="col" class="sortable" [attr.aria-sort]="ariaSort('email')">
+                  <button
+                    type="button"
+                    class="users-table__sort"
+                    (click)="toggleSort('email')"
+                    [attr.aria-label]="sortButtonLabel('email', 'Email')"
+                  >
+                    <span>Email</span>
+                    @if (sortIndicator('email'); as indicator) {
+                      @switch (indicator) {
+                        @case ('asc') {
+                          <span class="users-table__sort-indicator" aria-hidden="true">&#9650;</span>
+                        }
+                        @case ('desc') {
+                          <span class="users-table__sort-indicator" aria-hidden="true">&#9660;</span>
+                        }
+                      }
+                    }
+                  </button>
                 </th>
-                <th (click)="toggleSort('status')" class="sortable">
-                  Status
-                  <small>{{
-                    sortDir('status') === 1 ? '▲' : sortDir('status') === -1 ? '▼' : ''
-                  }}</small>
+                <th scope="col" class="sortable" [attr.aria-sort]="ariaSort('status')">
+                  <button
+                    type="button"
+                    class="users-table__sort"
+                    (click)="toggleSort('status')"
+                    [attr.aria-label]="sortButtonLabel('status', 'Status')"
+                  >
+                    <span>Status</span>
+                    @if (sortIndicator('status'); as indicator) {
+                      @switch (indicator) {
+                        @case ('asc') {
+                          <span class="users-table__sort-indicator" aria-hidden="true">&#9650;</span>
+                        }
+                        @case ('desc') {
+                          <span class="users-table__sort-indicator" aria-hidden="true">&#9660;</span>
+                        }
+                      }
+                    }
+                  </button>
                 </th>
-                <th>Actions</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -80,20 +122,23 @@
                   <td class="actions">
                     <button
                       type="button"
+                      class="action-button"
                       (click)="openEditUserModal(user.id)"
                       title="Edit user"
                       aria-label="Edit {{ user.name }}"
-                      class="edit-btn"
                     >
-                      ✏️
+                      <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
+                      <span class="visually-hidden">Edit</span>
                     </button>
                     <button
                       type="button"
+                      class="action-button"
                       (click)="onDelete(user)"
                       title="Delete user"
                       aria-label="Delete {{ user.name }}"
                     >
-                      <lucide-icon [img]="Trash2"></lucide-icon>
+                      <lucide-icon [img]="Trash2" aria-hidden="true"></lucide-icon>
+                      <span class="visually-hidden">Delete</span>
                     </button>
                   </td>
                 </tr>

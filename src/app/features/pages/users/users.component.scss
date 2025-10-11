@@ -12,80 +12,103 @@
   }
 
   th {
-    /* subtle tint so header is visible in both light and dark themes */
+    /* fallback before color-mix for broader browser support */
+    background: rgba(31, 91, 187, 0.12);
     background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
     color: var(--color-on-primary);
     padding: var(--space-sm) var(--space-md);
   }
 
   tr:nth-child(even) {
+    background: rgba(17, 17, 17, 0.03);
     background: color-mix(in srgb, var(--color-surface) 50%, var(--color-bg));
   }
 
-  /* hover and selected row states */
   tbody tr:hover {
-    background: rgba(176, 141, 87, 0.08); /* lighter brass tint */
+    background: rgba(176, 141, 87, 0.08);
     cursor: pointer;
   }
 
   tbody tr.selected {
+    background: rgba(176, 141, 87, 0.1);
     background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
-    /* fallback outline: semi-transparent brass (approx) */
     outline: 2px solid rgba(176, 141, 87, 0.18);
   }
+}
 
-  button,
-  .edit-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-xs);
-    border-radius: 4px;
-    transition: all 0.2s ease;
+.users-table__sort {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
 
-    lucide-icon {
-      width: var(--space-lg);
-      height: var(--space-lg);
-      /* higher contrast for icons (works both in light and dark themes) */
-      color: var(--color-on-surface);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.users-table__sort:hover {
+  color: var(--color-accent-dark, var(--color-accent));
+}
 
-      svg {
-        width: 100%;
-        height: 100%;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-      }
+.users-table__sort:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.users-table__sort-indicator {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  background: transparent;
+  border: none;
+  padding: var(--space-xs);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  lucide-icon {
+    width: var(--space-lg);
+    height: var(--space-lg);
+    color: var(--color-on-surface);
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
     }
   }
+}
 
-  button:hover,
-  .edit-btn:hover {
-    background: rgba(176, 141, 87, 0.15); /* brass tint that works in both themes */
+.action-button:hover {
+  background: rgba(176, 141, 87, 0.15);
 
-    lucide-icon {
-      color: var(--color-danger);
-    }
+  lucide-icon {
+    color: var(--color-danger);
   }
+}
 
-  /* Enhanced focus visibility - WCAG 2.4.7 */
-  button:focus-visible,
-  .edit-btn:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-    background: rgba(176, 141, 87, 0.2);
-
-    lucide-icon {
-      color: var(--color-danger);
-    }
-  }
+.action-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  background: rgba(176, 141, 87, 0.2);
 }
 
 .users-header {
@@ -124,17 +147,12 @@
   }
 }
 
-.actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
 .users-header__actions {
   display: flex;
   gap: 0.75rem;
   align-items: center;
 }
+
 .users-search {
   padding: 0.4rem 0.6rem;
   border-radius: 6px;
@@ -147,11 +165,13 @@
   border-radius: 999px;
   font-size: 0.85rem;
 }
+
 .badge--active {
   background: rgba(107, 142, 90, 0.18);
   color: var(--color-success);
   border: 1px solid rgba(107, 142, 90, 0.25);
 }
+
 .badge--inactive {
   background: rgba(196, 69, 54, 0.06);
   color: var(--color-danger);
@@ -170,11 +190,14 @@
   margin-top: var(--space-md);
 }
 
-/* ensure lucide icons have good contrast and focus */
-.users-table button lucide-icon {
-  color: var(--color-on-surface);
-}
-.users-table button:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

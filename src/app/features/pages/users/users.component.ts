@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { LucideAngularModule, Trash2 } from 'lucide-angular';
+import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
 import { DebounceInputDirective } from '@app/shared/directives';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { User } from '@app/models';
@@ -31,6 +31,7 @@ export class Users {
   private readonly dialog = inject(Dialog);
 
   readonly Trash2 = Trash2;
+  readonly Pencil = Pencil;
 
   // base state
   private readonly users = signal<User[]>([]);
@@ -141,6 +142,30 @@ export class Users {
       this.sortState.set({ field, dir: 1 });
     }
     this.setPage(1, this.pageState().per_page, false);
+  }
+
+  ariaSort(field: SortField): 'ascending' | 'descending' | 'none' {
+    const { field: currentField, dir } = this.sortState();
+    if (currentField !== field) {
+      return 'none';
+    }
+
+    return dir === 1 ? 'ascending' : 'descending';
+  }
+
+  sortIndicator(field: SortField): 'asc' | 'desc' | null {
+    const { field: currentField, dir } = this.sortState();
+    if (currentField !== field) {
+      return null;
+    }
+
+    return dir === 1 ? 'asc' : 'desc';
+  }
+
+  sortButtonLabel(field: SortField, label: string): string {
+    const { field: currentField, dir } = this.sortState();
+    const nextDir = currentField === field && dir === 1 ? 'descending' : 'ascending';
+    return `Sort ${label} ${nextDir}`;
   }
 
   setPage(page: number, per_page: number, pushUrl = true): void {

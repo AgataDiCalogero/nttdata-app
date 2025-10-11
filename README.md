@@ -22,7 +22,7 @@ Single-page Angular application built on top of the public GoREST API to manage 
   - Shared navbar with theme toggle, navigation, and logout state awareness
   - Centralised typed services (`UsersApiService`, `PostsApiService`) now grouped under `src/app/services`
 - **User management**
-  - Debounced search, sorting, and client-side pagination synced with query params
+  - Debounced search, keyboard-accessible sorting (aria-sort) and client-side pagination synced with query params
   - Responsive modal/drawer for create/edit with validation and error mapping (422/429)
   - Delete confirmation dialog with optimistic UI update and toast feedback
 - **Post management**
@@ -32,19 +32,29 @@ Single-page Angular application built on top of the public GoREST API to manage 
   - Post creation modal/drawer with validation, feedback toasts, and roster preload
   - Post deletion workflow with confirmation dialog, loading guard, and automatic refresh
 - **User detail**
-  - Full profile view plus the user’s posts, each with inline comment loading/creation
+  - Full profile view plus the user's posts, each with inline comment loading/creation
 - **UX polish**
   - Accessible focus styles, WCAG-friendly palette, 8pt spacing system
-  - Toast notifications for all success/error states
+  - Toast notifications with deduplication, polite live region, and Escape-to-dismiss support
 - **Workflow**
   - Husky hooks: lint-staged on pre-commit, full lint/test/build on pre-push
   - Shared Prettier config (HTML included) and modern ESLint setup for Angular 20
 
-## Backlog (per project requirements)
+## Refactoring Status
 
-- [ ] Unit test suite covering services, guards, and components (≥60% coverage)
-- [ ] Evaluate additional module boundaries and advanced lazy loading
-- [ ] Prepare the final presentation deck (PDF) once the scope stabilises
+- **Phase 0 - Foundations**: complete (CI workflow, PR template, architecture ADR in place).
+- **Phase 1 - Accessibility & Error UX**: toast system updated; lists/controls audit still pending for posts/comments.
+- **Phase 2 - Performance & State**: outstanding (OnPush coverage, signal migration, posts route decomposition).
+- **Phase 3 - Design System**: outstanding (central SCSS utilities, color-mix fallbacks sweep, NgOptimizedImage adoption).
+- **Phase 4 - Testing >=60%**: outstanding (service/guard/component specs and coverage gate).
+
+## Remaining Work
+
+- Build the automated test suite to reach >=60% statement coverage and enforce the CI gate.
+- Finish the lists & controls audit (posts/comments views) to guarantee semantic `<li>` usage and native controls everywhere.
+- Complete performance/state refactors (`ChangeDetectionStrategy.OnPush`, signal migration, posts feature split).
+- Consolidate shared styling utilities and apply color-mix fallbacks across all feature styles; switch static assets to `NgOptimizedImage`.
+- Prepare the final presentation deck (PDF) once scope stabilises.
 
 ## Local Setup
 
@@ -98,7 +108,7 @@ npm run test:ci # headless Chrome run (pre-push hook)
 
 ## Contribution Notes
 
-- All API calls pass through the shared interceptors—stick to relative URLs.
+- All API calls pass through the shared interceptors; stick to relative URLs.
 - Manage session tokens exclusively via `AuthService`.
 - Prefer standalone components and lazy routing for new pages.
 - Keep user-facing copy in English, and run `npm run lint` before every commit.
