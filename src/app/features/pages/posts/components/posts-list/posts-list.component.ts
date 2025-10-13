@@ -8,6 +8,7 @@ import { PostCardComponent } from '../post-card/post-card.component';
   selector: 'app-posts-list',
   imports: [CommonModule, PostCardComponent],
   templateUrl: './posts-list.component.html',
+  styleUrls: ['./posts-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsListComponent {

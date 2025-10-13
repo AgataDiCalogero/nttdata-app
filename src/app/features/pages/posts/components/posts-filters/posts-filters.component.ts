@@ -8,6 +8,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   selector: 'app-posts-filters',
   imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './posts-filters.component.html',
+  styleUrls: ['./posts-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsFiltersComponent {
