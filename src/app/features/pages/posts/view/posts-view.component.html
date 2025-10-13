@@ -18,26 +18,12 @@
     </button>
   </header>
   <div class="posts-toolbar">
-    <form
-      class="posts-filters"
-      [formGroup]="searchForm"
-      (submit)="$event.preventDefault()"
-      aria-label="Search filters"
-    >
-      <input
-        type="search"
-        formControlName="title"
-        placeholder="Search by title"
-        aria-label="Search by title"
-      />
-      <select formControlName="userId" aria-label="Filter by author">
-        <option [ngValue]="0">All authors</option>
-        @for (user of userOptions; track user.id) {
-          <option [ngValue]="user.id">{{ user.name }}</option>
-        }
-      </select>
-      <button type="button" appButton variant="ghost" (click)="resetFilters.emit()">Reset</button>
-    </form>
+    <app-posts-filters
+      [searchForm]="searchForm"
+      [userOptions]="userOptions"
+      (create)="createPost.emit()"
+      (reset)="resetFilters.emit()"
+    ></app-posts-filters>
     <div class="posts-toolbar__summary">
       <span>{{ postsCount }} posts displayed</span>
     </div>
@@ -58,21 +44,15 @@
       </div>
     } @else {
       @if (posts.length) {
-        <div class="posts-list">
-          @for (post of posts; track trackPostById($index, post)) {
-            <div class="post-wrapper">
-              <app-post-card
-                [post]="post"
-                [interactive]="true"
-                padding="spacious"
-                [isDeleting]="isDeleting(post.id)"
-                [comments]="commentsFor(post.id) ?? null"
-                (delete)="deletePost.emit(post)"
-                (toggleComments)="toggleComments.emit(post.id)"
-              ></app-post-card>
-            </div>
-          }
-        </div>
+        <app-posts-list
+          [posts]="posts"
+          [commentsMap]="commentsMap"
+          [commentsLoading]="commentsLoading"
+          [deletingId]="deletingId"
+          (deletePost)="deletePost.emit($event)"
+          (toggleComments)="toggleComments.emit($event)"
+          (commentCreated)="commentCreated.emit($event)"
+        ></app-posts-list>
       } @else {
         <div class="state state--empty">
           <p class="state__title">No posts available for the current filters.</p>

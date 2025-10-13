@@ -1,24 +1,6 @@
 <header class="users-header">
   <h1>Users</h1>
-  <div class="users-header__actions">
-    <input
-      type="search"
-      class="users-search"
-      placeholder="Search name or email"
-      aria-label="Search users by name or email"
-      appDebounceInput
-      (debounced)="onSearch($event)"
-    />
-    <button
-      appButton
-      variant="primary"
-      class="btn"
-      (click)="openNewUserModal()"
-      aria-label="Create new user"
-    >
-      + New User
-    </button>
-  </div>
+  <app-user-filters (search)="onSearch($event)" (create)="openNewUserModal()"></app-user-filters>
 </header>
 @if (displayed(); as data) {
   @if (loading()) {
@@ -36,120 +18,11 @@
     } @else {
       @if (data.total > 0) {
         <div>
-          <table class="users-table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col" class="sortable" [attr.aria-sort]="ariaSort('name')">
-                  <button
-                    type="button"
-                    class="users-table__sort"
-                    (click)="toggleSort('name')"
-                    [attr.aria-label]="sortButtonLabel('name', 'Name')"
-                  >
-                    <span>Name</span>
-                    @if (sortIndicator('name'); as indicator) {
-                      @switch (indicator) {
-                        @case ('asc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true"
-                            >&#9650;</span
-                          >
-                        }
-                        @case ('desc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true"
-                            >&#9660;</span
-                          >
-                        }
-                      }
-                    }
-                  </button>
-                </th>
-                <th scope="col" class="sortable" [attr.aria-sort]="ariaSort('email')">
-                  <button
-                    type="button"
-                    class="users-table__sort"
-                    (click)="toggleSort('email')"
-                    [attr.aria-label]="sortButtonLabel('email', 'Email')"
-                  >
-                    <span>Email</span>
-                    @if (sortIndicator('email'); as indicator) {
-                      @switch (indicator) {
-                        @case ('asc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true"
-                            >&#9650;</span
-                          >
-                        }
-                        @case ('desc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true"
-                            >&#9660;</span
-                          >
-                        }
-                      }
-                    }
-                  </button>
-                </th>
-                <th scope="col" class="sortable" [attr.aria-sort]="ariaSort('status')">
-                  <button
-                    type="button"
-                    class="users-table__sort"
-                    (click)="toggleSort('status')"
-                    [attr.aria-label]="sortButtonLabel('status', 'Status')"
-                  >
-                    <span>Status</span>
-                    @if (sortIndicator('status'); as indicator) {
-                      @switch (indicator) {
-                        @case ('asc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true"
-                            >&#9650;</span
-                          >
-                        }
-                        @case ('desc') {
-                          <span class="users-table__sort-indicator" aria-hidden="true"
-                            >&#9660;</span
-                          >
-                        }
-                      }
-                    }
-                  </button>
-                </th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (user of data.items; track trackById($index, user)) {
-                <tr>
-                  <td data-column="ID">{{ user.id }}</td>
-                  <td data-column="Name">{{ user.name }}</td>
-                  <td data-column="Email">{{ user.email }}</td>
-                  <td data-column="Status">
-                    <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
-                  </td>
-                  <td class="actions" data-column="Actions">
-                    <button
-                      type="button"
-                      class="action-button"
-                      (click)="openEditUserModal(user.id)"
-                      title="Edit user"
-                      aria-label="Edit {{ user.name }}"
-                    >
-                      <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
-                      <span class="visually-hidden">Edit</span>
-                    </button>
-                    <button
-                      type="button"
-                      class="action-button"
-                      (click)="onDelete(user)"
-                      title="Delete user"
-                      aria-label="Delete {{ user.name }}"
-                    >
-                      <lucide-icon [img]="Trash2" aria-hidden="true"></lucide-icon>
-                      <span class="visually-hidden">Delete</span>
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          <app-user-list
+            [items]="data.items"
+            (edit)="openEditUserModal($event)"
+            (delete)="onDelete($event)"
+          ></app-user-list>
           <div class="users-pagination">
             <button
               appButton

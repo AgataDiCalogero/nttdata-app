@@ -5,6 +5,8 @@ import { Dialog } from '@angular/cdk/dialog';
 import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
 import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { UserFiltersComponent } from './user-filters/user-filters.component';
+import { UserListComponent } from './user-list/user-list.component';
 import { UsersApiService } from '@app/services/users/users-api.service';
 import type { User } from '@app/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
@@ -25,6 +27,8 @@ type SortField = 'name' | 'email' | 'status';
     LucideAngularModule,
     DebounceInputDirective,
     ButtonComponent,
+    UserFiltersComponent,
+    UserListComponent,
   ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],

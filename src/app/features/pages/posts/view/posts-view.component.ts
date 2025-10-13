@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
+import { PostsFiltersComponent } from './posts-filters.component';
+import { PostsListComponent } from './posts-list.component';
 import type { Comment, Post, User } from '@app/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
@@ -17,6 +19,8 @@ import { PostCardComponent } from '../post-card/post-card.component';
     ButtonComponent,
     CardComponent,
     PostCardComponent,
+    PostsFiltersComponent,
+    PostsListComponent,
   ],
   templateUrl: './posts-view.component.html',
   styleUrls: ['./posts.component.scss'],

@@ -1,0 +1,13 @@
+<div class="user-filters">
+  <input
+    type="search"
+    class="users-search"
+    placeholder="Search name or email"
+    aria-label="Search users by name or email"
+    appDebounceInput
+    (debounced)="onDebounced($event)"
+  />
+  <button appButton variant="primary" (click)="onCreate()" aria-label="Create new user">
+    + New User
+  </button>
+</div>
