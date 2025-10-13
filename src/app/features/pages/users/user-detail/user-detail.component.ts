@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { UsersApiService } from '@app/services/users/users-api.service';
-import { PostsApiService } from '@app/services/posts/posts-api.service';
-import type { User, Post, Comment } from '@app/models';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import type { User, Post, Comment } from '@/app/shared/models';
 import { CommentForm } from '@/app/shared/comments/comment-form/comment-form.component';
 
 @Component({

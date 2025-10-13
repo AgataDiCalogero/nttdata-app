@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
-import type { User } from '@app/models';
+import type { User } from '@/app/shared/models';
 
 @Component({
   standalone: true,

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import type { Post, Comment, CreatePost, CreateComment, PaginationMeta } from '@app/models';
+import type { Post, Comment, CreatePost, CreateComment, PaginationMeta } from '@/app/shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {

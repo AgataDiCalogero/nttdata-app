@@ -4,7 +4,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
 import { LucideAngularModule, MessageSquare, Trash2 } from 'lucide-angular';
 import { CommentForm } from '@app/shared/comments/comment-form/comment-form.component';
-import type { Post, Comment } from '@app/models';
+import type { Post, Comment } from '@/app/shared/models';
 
 @Component({
   selector: 'app-post-card',

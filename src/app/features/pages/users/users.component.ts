@@ -7,8 +7,8 @@ import { DebounceInputDirective } from '@app/shared/directives/debounce-input.di
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
-import { UsersApiService } from '@app/services/users/users-api.service';
-import type { User } from '@app/models';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import type { User } from '@/app/shared/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { UserForm } from './user-form/user-form.component';
 import {

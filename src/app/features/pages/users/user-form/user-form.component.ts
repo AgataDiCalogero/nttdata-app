@@ -11,8 +11,8 @@ import {
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { UsersApiService } from '@app/services/users/users-api.service';
-import type { CreateUser, UpdateUser, User, UserStatus } from '@app/models';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';

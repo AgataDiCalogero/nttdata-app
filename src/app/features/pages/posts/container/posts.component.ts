@@ -8,7 +8,7 @@ import {
   DeleteConfirmComponent,
   type DeleteConfirmData,
 } from '../../../../shared/dialog/delete-confirm/delete-confirm.component';
-import type { Post, Comment } from '@app/models';
+import type { Post, Comment } from '@/app/shared/models';
 
 @Component({
   selector: 'app-posts',

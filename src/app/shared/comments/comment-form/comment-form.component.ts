@@ -11,8 +11,8 @@ import { CommonModule } from '@angular/common';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PostsApiService } from '@app/services/posts/posts-api.service';
-import type { Comment, CreateComment } from '@app/models';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import type { Comment, CreateComment } from '@/app/shared/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 

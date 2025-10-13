@@ -2,9 +2,9 @@ import { Injectable, DestroyRef, computed, inject, signal } from '@angular/core'
 import { FormBuilder } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap, catchError, of } from 'rxjs';
-import type { Comment, PaginationMeta, Post, User } from '@app/models';
-import { PostsApiService } from '@app/services/posts/posts-api.service';
-import { UsersApiService } from '@app/services/users/users-api.service';
+import type { Comment, PaginationMeta, Post, User } from '@/app/shared/models';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 interface PostFilters {

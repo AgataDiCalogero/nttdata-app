@@ -1,0 +1,16 @@
+<ul class="posts-list">
+  @for (post of posts; track post.id) {
+    <li class="post-wrapper">
+      <app-post-card
+        [post]="post"
+        [interactive]="true"
+        padding="spacious"
+        [isDeleting]="isDeleting(post.id)"
+        [comments]="commentsFor(post.id) ?? null"
+        (delete)="deletePost.emit(post)"
+        (toggleComments)="toggleComments.emit(post.id)"
+        (commentCreated)="commentCreated.emit({ postId: post.id, comment: $any($event) })"
+      ></app-post-card>
+    </li>
+  }
+</ul>
