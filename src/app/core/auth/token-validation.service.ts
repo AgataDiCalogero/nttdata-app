@@ -32,6 +32,8 @@ export class TokenValidationService {
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${normalized}`,
+      // Opt-out of global error handling in the error interceptor for this request
+      'X-Skip-Global-Error': '1',
     });
     const params = new HttpParams().set('per_page', '1');
 

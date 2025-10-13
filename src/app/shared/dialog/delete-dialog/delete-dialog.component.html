@@ -1,8 +1,8 @@
-<div class="dialog-backdrop" role="dialog" aria-modal="true">
+<dialog class="dialog-backdrop" open aria-modal="true">
   <div class="dialog">
     <h3>Confirm Deletion</h3>
     <p>
-      Are you sure you want to delete <strong>{{ entityName }}</strong
+      Are you sure you want to delete <strong>{{ entityName() }}</strong
       >?
     </p>
 
@@ -11,4 +11,4 @@
       <button (click)="onConfirm()" class="danger" aria-label="Confirm deletion">Delete</button>
     </div>
   </div>
-</div>
+</dialog>

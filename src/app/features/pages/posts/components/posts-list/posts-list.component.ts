@@ -56,4 +56,8 @@ export class PostsListComponent {
   onViewAuthor(post: Post): void {
     this.viewAuthor.emit(post.user_id);
   }
+
+  trackPostById(_index: number, post: Post): number {
+    return post.id;
+  }
 }

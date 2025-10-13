@@ -1,21 +1,23 @@
-<div class="posts-list" role="list">
-  @for (post of posts; track post.id) {
-    <div class="post-wrapper" role="listitem">
-      <app-post-card
-        [post]="post"
-        [interactive]="true"
-        padding="spacious"
-        [isDeleting]="isDeleting(post.id)"
-        [comments]="commentsFor(post.id) ?? null"
-        [commentsLoading]="commentsAreLoading(post.id)"
-        (delete)="deletePost.emit(post)"
-        (toggleComments)="toggleComments.emit(post.id)"
-        (commentCreated)="onCommentCreated(post.id, $event)"
-        (commentUpdated)="onCommentUpdated(post.id, $event)"
-        (edit)="onEditPost(post)"
-        (viewAuthor)="onViewAuthor(post)"
-        [authorName]="authorName(post) ?? ('User #' + post.user_id)"
-      ></app-post-card>
-    </div>
-  }
-</div>
+<ul class="posts-list">
+  <template>
+    @for (post of posts(); track post.id) {
+      <li class="post-wrapper">
+        <app-post-card
+          [post]="post"
+          [interactive]="true"
+          padding="spacious"
+          [isDeleting]="isDeleting(post.id)"
+          [comments]="commentsFor(post.id) ?? null"
+          [commentsLoading]="commentsAreLoading(post.id)"
+          (delete)="deletePost.emit(post)"
+          (toggleComments)="toggleComments.emit(post.id)"
+          (commentCreated)="onCommentCreated(post.id, $event)"
+          (commentUpdated)="onCommentUpdated(post.id, $event)"
+          (edit)="onEditPost(post)"
+          (viewAuthor)="onViewAuthor(post)"
+          [authorName]="authorName(post) ?? 'User #' + post.user_id"
+        ></app-post-card>
+      </li>
+    }
+  </template>
+</ul>

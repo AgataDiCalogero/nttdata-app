@@ -4,8 +4,8 @@ import { isPlatformBrowser } from '@angular/common';
 // Authentication service managing user tokens with SSR safety
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private platformId = inject(PLATFORM_ID);
-  private tokenSignal = signal<string | null>(null);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly tokenSignal = signal<string | null>(null);
 
   constructor() {
     // Load saved token from localStorage (browser only)

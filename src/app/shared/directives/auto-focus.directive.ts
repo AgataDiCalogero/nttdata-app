@@ -1,4 +1,4 @@
-import { Directive, ElementRef, afterNextRender, inject, input } from '@angular/core';
+import { Directive, ElementRef, inject, input } from '@angular/core';
 
 @Directive({
   selector: '[appAutoFocus]',
@@ -11,25 +11,17 @@ export class AutoFocusDirective {
   readonly enabled = input<boolean | ''>(true, { alias: 'appAutoFocus' });
 
   constructor() {
-    // afterNextRender(() => {
     const v = this.enabled();
     const isEnabled = v === '' ? true : Boolean(v);
     if (!isEnabled) return;
-    // Attempt focus with a small delay to ensure visibility
+
+    // Use a microtask to ensure the element is attached and visible
     setTimeout(() => {
-      this.el.nativeElement.focus?.();
+      try {
+        this.el.nativeElement.focus?.();
+      } catch {
+        // ignore in non-browser or unavailable focus environments
+      }
     }, 0);
-    // });
   }
-
-
-    afterNextRender(() => {
-    const v = this.enabled();
-    const isEnabled = v === '' ? true : Boolean(v);
-    if (!isEnabled) return;
-    // Attempt focus with a small delay to ensure visibility
-    setTimeout(() => {
-      this.el.nativeElement.focus?.();
-    }, 0);
-    });
 }

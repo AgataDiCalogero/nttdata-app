@@ -1,5 +1,5 @@
 <div class="user-list">
-  @for (user of items; track trackById($index, user)) {
+  @for (user of items(); track trackById($index, user)) {
     <div class="user-card">
       <div class="user-card__avatar">{{ initials(user) }}</div>
 

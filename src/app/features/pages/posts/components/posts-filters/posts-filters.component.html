@@ -1,4 +1,4 @@
-<form class="posts-filters" [formGroup]="searchForm" (submit)="$event.preventDefault()">
+<form class="posts-filters" [formGroup]="searchForm()" (submit)="$event.preventDefault()">
   <input
     type="search"
     formControlName="title"
@@ -7,7 +7,7 @@
   />
   <select formControlName="userId" aria-label="Filter by author">
     <option [ngValue]="0">All authors</option>
-    @for (user of userOptions; track user.id) {
+    @for (user of userOptions(); track user.id) {
       <option [ngValue]="user.id">{{ user.name }}</option>
     }
   </select>

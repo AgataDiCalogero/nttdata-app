@@ -24,6 +24,7 @@ export const errorInterceptor: HttpInterceptorFn = (
   const router = inject(Router);
   const auth = inject(AuthService);
   const toast = inject(ToastService);
+  const skipGlobal = req.headers.has('X-Skip-Global-Error');
 
   return next(req).pipe(
     // Retry only on rate-limit using RxJS retry config
@@ -47,9 +48,14 @@ export const errorInterceptor: HttpInterceptorFn = (
         error instanceof HttpErrorResponse ? error : new HttpErrorResponse({ error, status: 0 });
 
       (httpError as HttpErrorResponse & { uiError?: UiError }).uiError = mapped;
+      // If the request opted out of global error handling, rethrow after attaching uiError
+      if (skipGlobal) {
+        return throwError(() => httpError);
+      }
 
       switch (mapped.kind) {
         case 'unauthorized':
+          // Clear token and redirect to login for authenticated requests
           auth.clearToken();
           toast.show('warning', mapped.message, 4000);
           router.navigate(['/login']).catch(() => {});

@@ -19,43 +19,43 @@
   </header>
   <div class="posts-toolbar">
     <app-posts-filters
-      [searchForm]="searchForm"
-      [userOptions]="userOptions"
+      [searchForm]="searchForm()"
+      [userOptions]="userOptions()"
       (createPost)="createPost.emit()"
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
     <div class="posts-toolbar__summary">
-      <span>{{ postsCount }} posts displayed</span>
+      <span>{{ postsCount() }} posts displayed</span>
     </div>
   </div>
   <section class="posts-content">
-    @if (loading) {
-      <div class="posts-list posts-list--skeleton" role="list">
-        <div role="listitem" aria-hidden="true">
+    @if (loading()) {
+      <ul class="posts-list posts-list--skeleton">
+        <li aria-hidden="true">
           <app-card class="posts-card" [skeleton]="true"></app-card>
-        </div>
-        <div role="listitem" aria-hidden="true">
+        </li>
+        <li aria-hidden="true">
           <app-card class="posts-card" [skeleton]="true"></app-card>
-        </div>
-        <div role="listitem" aria-hidden="true">
+        </li>
+        <li aria-hidden="true">
           <app-card class="posts-card" [skeleton]="true"></app-card>
-        </div>
-      </div>
-    } @else if (error) {
+        </li>
+      </ul>
+    } @else if (error()) {
       <div class="state state--error">
-        <p class="state__title">{{ error }}</p>
+        <p class="state__title">{{ error() }}</p>
         <div class="state__actions">
           <button appButton variant="primary" type="button" (click)="refresh.emit()">Retry</button>
         </div>
       </div>
     } @else {
-      @if (posts.length) {
+      @if (posts().length) {
         <app-posts-list
-          [posts]="posts"
-          [commentsMap]="commentsMap"
-          [commentsLoading]="commentsLoading"
-          [deletingId]="deletingId"
-          [userLookup]="userLookup"
+          [posts]="posts()"
+          [commentsMap]="commentsMap()"
+          [commentsLoading]="commentsLoading()"
+          [deletingId]="deletingId()"
+          [userLookup]="userLookup()"
           (deletePost)="deletePost.emit($event)"
           (toggleComments)="toggleComments.emit($event)"
           (commentCreated)="commentCreated.emit($event)"
@@ -75,26 +75,26 @@
       }
     }
   </section>
-  @if (hasPagination) {
+  @if (hasPagination()) {
     <div class="posts-pagination" aria-label="Posts pagination">
       <div class="posts-pagination__controls">
-        @if (currentPage > 1) {
+        @if (currentPage() > 1) {
           <button
             appButton
             variant="ghost"
             type="button"
-            (click)="changePage.emit(currentPage - 1)"
+            (click)="changePage.emit(currentPage() - 1)"
           >
             Previous
           </button>
         }
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        @if (currentPage < totalPages) {
+        <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+        @if (currentPage() < totalPages()) {
           <button
             appButton
             variant="ghost"
             type="button"
-            (click)="changePage.emit(currentPage + 1)"
+            (click)="changePage.emit(currentPage() + 1)"
           >
             Next
           </button>
@@ -104,10 +104,10 @@
         <label for="per-page-select">Per page</label
         ><select
           id="per-page-select"
-          [value]="currentPerPage"
+          [value]="currentPerPage()"
           (change)="changePerPage.emit(+$any($event.target).value)"
         >
-          @for (size of perPageOptions; track size) {
+          @for (size of perPageOptions(); track size) {
             <option [value]="size">{{ size }}</option>
           }
         </select>
