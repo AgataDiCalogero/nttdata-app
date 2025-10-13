@@ -2,7 +2,16 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import type { User } from '@/app/shared/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { LucideAngularModule, Eye, Pencil, Trash2 } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Eye,
+  Pencil,
+  Trash2,
+  Check,
+  X,
+  Mail,
+  User as UserIcon,
+} from 'lucide-angular';
 
 @Component({
   standalone: true,
@@ -16,6 +25,10 @@ export class UserListComponent {
   readonly Eye = Eye;
   readonly Pencil = Pencil;
   readonly Trash2 = Trash2;
+  readonly Check = Check;
+  readonly X = X;
+  readonly Mail = Mail;
+  readonly UserIcon = UserIcon;
 
   @Input() items: User[] = [];
 
@@ -39,5 +52,9 @@ export class UserListComponent {
   onDelete(user: User, event: Event): void {
     event.stopPropagation();
     this.delete.emit(user);
+  }
+
+  genderOf(user: User): string | undefined {
+    return (user as unknown as { gender?: string }).gender || undefined;
   }
 }

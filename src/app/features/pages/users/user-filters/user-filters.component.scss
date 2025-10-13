@@ -5,10 +5,26 @@
   flex: 1 1 auto;
 }
 
+.users-search__wrap {
+  position: relative;
+  flex: 1 1 480px;
+}
+
+.users-search__icon {
+  position: absolute;
+  left: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
 .users-search {
   flex: 1 1 480px;
   min-width: 220px;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 22px);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);
   background: var(--color-surface);

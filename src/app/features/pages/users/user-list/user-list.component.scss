@@ -13,7 +13,9 @@
   background: var(--color-surface);
   border: 1px solid var(--border-mix-60);
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   cursor: pointer;
 
   &:hover {
@@ -52,35 +54,66 @@
     color: var(--color-on-surface);
   }
 
-  &__email {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--color-muted);
-    word-break: break-word;
-  }
+  /* Email now lives in its own row below header */
 
   &__status {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2xs);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: none;
     padding: 2px 8px;
     border-radius: var(--radius-full);
-    background: var(--alpha-accent-08);
+    background: rgba(16, 185, 129, 0.15);
+    color: #20d6a0;
 
     &::before {
       content: '';
       width: 8px;
       height: 8px;
       border-radius: var(--radius-full);
-      background: var(--color-success);
+      background: currentColor;
     }
 
     &--inactive::before {
-      background: var(--color-danger);
+      background: #ef4444;
     }
+    &--inactive {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef7979;
+    }
+    lucide-icon {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    line-height: 1.35;
+
+    lucide-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-muted);
+      flex-shrink: 0;
+    }
+    .email-text {
+      display: inline;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__divider {
+    margin: var(--space-md) 0 var(--space-sm);
+    border: none;
+    border-top: 1px solid var(--border-mix-60);
   }
 
   &__footer {
@@ -89,19 +122,22 @@
   }
 
   &__actions {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
     gap: var(--space-sm);
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    align-items: center;
 
     button {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: var(--space-2xs);
-
-      .label {
-        white-space: nowrap;
-      }
+    }
+    [data-variant='danger'] {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: var(--radius-lg);
     }
   }
 

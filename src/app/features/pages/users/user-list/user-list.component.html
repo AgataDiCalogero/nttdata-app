@@ -7,33 +7,44 @@
         </div>
         <div class="user-card__meta">
           <h3 class="user-card__name">{{ user.name || 'Unnamed user' }}</h3>
-          <p class="user-card__email">{{ user.email }}</p>
         </div>
         <span class="user-card__status user-card__status--{{ user.status }}">
-          {{ user.status | titlecase }}
+          <lucide-icon
+            [img]="user.status === 'active' ? Check : X"
+            aria-hidden="true"
+          ></lucide-icon>
+          {{ user.status }}
         </span>
       </div>
 
+      <div class="user-card__row">
+        <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
+        <span class="email-text">{{ user.email }}</span>
+      </div>
+      
+
+      <hr class="user-card__divider" />
+
       <div class="user-card__footer">
-        <div class="user-card__actions">
-          <button appButton variant="ghost" size="sm" type="button" (click)="onView(user)">
+        <div class="user-card__actions user-card__actions--split">
+          <button appButton variant="secondary" type="button" (click)="onView(user)">
             <lucide-icon [img]="Eye" aria-hidden="true"></lucide-icon>
             <span class="label">View</span>
           </button>
-          <button appButton variant="ghost" size="sm" type="button" (click)="onEdit(user, $event)">
+          <button appButton variant="secondary" type="button" (click)="onEdit(user, $event)">
             <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
             <span class="label">Edit</span>
           </button>
           <button
             appButton
-            variant="ghost"
-            size="sm"
+            variant="danger"
             type="button"
+            [iconOnly]="true"
             class="user-card__action--danger"
             (click)="onDelete(user, $event)"
+            aria-label="Delete user"
           >
             <lucide-icon [img]="Trash2" aria-hidden="true"></lucide-icon>
-            <span class="label">Delete</span>
           </button>
         </div>
       </div>
