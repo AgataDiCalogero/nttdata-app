@@ -21,7 +21,7 @@ import { CardComponent } from '@app/shared/ui/card/card.component';
     PostsListComponent,
   ],
   templateUrl: './posts-view.component.html',
-  styleUrls: ['./posts.component.scss'],
+  styleUrls: ['./posts-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsViewComponent {

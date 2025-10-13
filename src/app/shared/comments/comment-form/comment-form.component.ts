@@ -24,13 +24,14 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   styleUrls: ['./comment-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentForm {
+export class CommentFormComponent {
   private readonly fb = inject(FormBuilder);
   private readonly postsApi = inject(PostsApiService);
   private readonly toast = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly postId = input.required<number>();
+  readonly placeholder = input<string>('Share your thoughts...');
   readonly created = output<Comment>();
 
   readonly submitting = signal(false);

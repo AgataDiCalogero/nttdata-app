@@ -1,0 +1,61 @@
+<div class="post-comments">
+  <div class="post-comments__header">
+    <h4>{{ comments?.length || 0 }} {{ comments?.length === 1 ? 'Comment' : 'Comments' }}</h4>
+  </div>
+
+  <div class="post-comments__list">
+    @if (!comments || comments.length === 0) {
+      <app-comment-form [postId]="postId" (created)="onCommentCreated($event)"></app-comment-form>
+    }
+
+    @if (comments && comments.length > 0) {
+      <div class="comments-list">
+        @for (comment of comments; track comment.id) {
+          <div class="comment-item" [class.comment-item--new]="isNewComment(comment.id)">
+            <div class="comment-content">
+              <div class="comment-author">
+                <strong>{{ comment.name || 'Anonymous' }}</strong>
+                <span class="comment-email">{{ comment.email }}</span>
+              </div>
+              <p class="comment-body">{{ comment.body }}</p>
+              <div class="comment-actions">
+                <button
+                  type="button"
+                  class="comment-action-button"
+                  (click)="onLikeComment(comment)"
+                  [class.liked]="isLiked(comment.id)"
+                >
+                  <lucide-icon [img]="Heart" [size]="14"></lucide-icon>
+                  {{ getLikesCount(comment.id) }}
+                </button>
+                <button
+                  type="button"
+                  class="comment-action-button"
+                  (click)="toggleReplyForm(comment)"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+
+            <!-- Reply form -->
+            <div *ngIf="showRepliesForm === comment.id" class="comment-reply-form">
+              <app-comment-form
+                [postId]="postId"
+                placeholder="Write a reply..."
+                (created)="onReplyCreated($event)"
+              ></app-comment-form>
+            </div>
+
+            <!-- For future: nested replies will be implemented when Comment model supports it -->
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Load more button -->
+    <div *ngIf="hasMoreComments" class="comments-load-more">
+      <button type="button" (click)="loadMoreComments()">Load more comments</button>
+    </div>
+  </div>
+</div>

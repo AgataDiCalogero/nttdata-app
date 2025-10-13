@@ -5,3 +5,4 @@ export * from './components/posts-filters/posts-filters.component';
 export * from './components/posts-list/posts-list.component';
 export * from './components/post-card/post-card.component';
 export * from './components/post-form/post-form.component';
+export * from './components/post-comments/post-comments.component';

@@ -46,7 +46,7 @@
       id="comment-body"
       formControlName="body"
       rows="4"
-      placeholder="Share your contribution..."
+      [placeholder]="placeholder()"
       [disabled]="submitting()"
       [attr.aria-invalid]="form.controls.body.invalid && form.controls.body.touched ? 'true' : null"
       maxlength="500"
@@ -71,9 +71,9 @@
       {{ submitting() ? 'Publishing...' : 'Post comment' }}
     </button>
   </div>
-  @if (submitError()) {
+  @if (submitError(); as error) {
     <app-alert variant="error" [dismissible]="true" (dismissed)="submitError.set(null)">
-      {{ submitError() }}
+      {{ error }}
     </app-alert>
   }
 </form>

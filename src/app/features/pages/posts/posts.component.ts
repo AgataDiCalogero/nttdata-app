@@ -7,7 +7,7 @@ import { PostForm } from './components/post-form/post-form.component';
 import {
   DeleteConfirmComponent,
   type DeleteConfirmData,
-} from '../../../../shared/dialog/delete-confirm/delete-confirm.component';
+} from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import type { Post, Comment } from '@/app/shared/models';
 
 @Component({

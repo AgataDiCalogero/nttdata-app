@@ -1,6 +1,9 @@
 <header class="users-header">
   <h1>Users</h1>
-  <app-user-filters (search)="onSearch($event)" (create)="openNewUserModal()"></app-user-filters>
+  <app-user-filters
+    (searchChange)="onSearch($event)"
+    (create)="openNewUserModal()"
+  ></app-user-filters>
 </header>
 @if (displayed(); as data) {
   @if (loading()) {

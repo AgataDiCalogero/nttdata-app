@@ -3,13 +3,12 @@ import { ChangeDetectionStrategy, Component, EventEmitter, input, Output } from 
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
 import { LucideAngularModule, MessageSquare, Trash2 } from 'lucide-angular';
-import { CommentForm } from '@app/shared/comments/comment-form/comment-form.component';
 import type { Post, Comment } from '@/app/shared/models';
 
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, ButtonComponent, CardComponent, CommentForm],
+  imports: [CommonModule, LucideAngularModule, ButtonComponent, CardComponent],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

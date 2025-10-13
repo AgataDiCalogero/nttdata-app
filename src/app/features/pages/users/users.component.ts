@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
-import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
@@ -25,7 +24,6 @@ type SortField = 'name' | 'email' | 'status';
     CommonModule,
     RouterModule,
     LucideAngularModule,
-    DebounceInputDirective,
     ButtonComponent,
     UserFiltersComponent,
     UserListComponent,

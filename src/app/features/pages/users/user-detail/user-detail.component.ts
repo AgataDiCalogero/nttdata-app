@@ -4,20 +4,20 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import type { User, Post, Comment } from '@/app/shared/models';
-import { CommentForm } from '@/app/shared/comments/comment-form/comment-form.component';
+import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
 
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, CommentForm],
+  imports: [CommonModule, RouterModule, CommentFormComponent],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetail {
-  private route = inject(ActivatedRoute);
-  private usersApi = inject(UsersApiService);
-  private postsApi = inject(PostsApiService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly usersApi = inject(UsersApiService);
+  private readonly postsApi = inject(PostsApiService);
 
   loading = signal(true);
   error = signal<string | null>(null);

@@ -180,3 +180,35 @@
     border-radius: var(--radius-none);
   }
 }
+
+// Button variant mixins (used by components expecting mixin helpers)
+@mixin button-primary {
+  background: var(--gradient-primary);
+  color: var(--color-on-accent);
+  border: 1px solid var(--border-accent-emphasis);
+  box-shadow: var(--shadow-button-primary);
+
+  &:hover {
+    box-shadow: var(--shadow-button-primary-hover);
+  }
+
+  &:focus-visible {
+    box-shadow: var(--shadow-button-primary-focus);
+  }
+}
+
+@mixin button-secondary {
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border-color: var(--border-mix-60);
+  color: var(--color-on-surface);
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+    border-color: var(--btn-secondary-border-hover);
+  }
+
+  &:focus-visible {
+    border-color: var(--focus-ring);
+    box-shadow: var(--shadow-focus);
+  }
+}

@@ -11,11 +11,11 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   imports: [CommonModule, DebounceInputDirective, ButtonComponent],
 })
 export class UserFiltersComponent {
-  @Output() readonly search = new EventEmitter<string>();
+  @Output() readonly searchChange = new EventEmitter<string>();
   @Output() readonly create = new EventEmitter<void>();
 
   onDebounced(value: string): void {
-    this.search.emit(value ?? '');
+    this.searchChange.emit(value ?? '');
   }
 
   onCreate(): void {
