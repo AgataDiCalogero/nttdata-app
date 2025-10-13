@@ -9,7 +9,7 @@
         [comments]="commentsFor(post.id) ?? null"
         (delete)="deletePost.emit(post)"
         (toggleComments)="toggleComments.emit(post.id)"
-        (commentCreated)="commentCreated.emit({ postId: post.id, comment: $any($event) })"
+        (commentCreated)="onCommentCreated(post.id, $event)"
       ></app-post-card>
     </li>
   }

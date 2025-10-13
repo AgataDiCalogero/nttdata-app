@@ -7,7 +7,6 @@ import { PostsListComponent } from './posts-list.component';
 import type { Comment, Post, User } from '@/app/shared/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
-import { PostCardComponent } from '../post-card/post-card.component';
 
 @Component({
   selector: 'app-posts-view',
@@ -18,7 +17,6 @@ import { PostCardComponent } from '../post-card/post-card.component';
     LucideAngularModule,
     ButtonComponent,
     CardComponent,
-    PostCardComponent,
     PostsFiltersComponent,
     PostsListComponent,
   ],

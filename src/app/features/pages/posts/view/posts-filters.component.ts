@@ -14,14 +14,14 @@ export class PostsFiltersComponent {
   @Input({ required: true }) searchForm!: FormGroup;
   @Input() userOptions: { id: number; name?: string }[] = [];
 
-  @Output() create = new EventEmitter<void>();
-  @Output() reset = new EventEmitter<void>();
+  @Output() createPost = new EventEmitter<void>();
+  @Output() resetFilters = new EventEmitter<void>();
 
   onCreate(): void {
-    this.create.emit();
+    this.createPost.emit();
   }
 
   onReset(): void {
-    this.reset.emit();
+    this.resetFilters.emit();
   }
 }

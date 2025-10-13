@@ -27,4 +27,8 @@ export class PostsListComponent {
   commentsFor(postId: number): Comment[] | undefined {
     return this.commentsMap[postId];
   }
+
+  onCommentCreated(postId: number, comment: Comment): void {
+    this.commentCreated.emit({ postId, comment });
+  }
 }

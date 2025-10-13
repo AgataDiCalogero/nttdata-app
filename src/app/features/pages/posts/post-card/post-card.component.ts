@@ -27,6 +27,7 @@ export class PostCardComponent {
 
   @Output() readonly delete = new EventEmitter<void>();
   @Output() readonly toggleComments = new EventEmitter<void>();
+  @Output() readonly commentCreated = new EventEmitter<Comment>();
 
   // Text expansion state
   isExpanded = false;
@@ -74,5 +75,10 @@ export class PostCardComponent {
 
   toggleExpansion(): void {
     this.isExpanded = !this.isExpanded;
+  }
+
+  onInternalCommentCreated(comment: Comment): void {
+    // Re-emit to parent components with typed Comment
+    this.commentCreated.emit(comment);
   }
 }

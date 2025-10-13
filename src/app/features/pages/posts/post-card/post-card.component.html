@@ -107,7 +107,10 @@
       }
 
       <div class="comment-form-wrapper">
-        <app-comment-form [postId]="p!.id" (created)="toggleComments.emit()"></app-comment-form>
+        <app-comment-form
+          [postId]="p!.id"
+          (created)="onInternalCommentCreated($event)"
+        ></app-comment-form>
       </div>
     </div>
   }

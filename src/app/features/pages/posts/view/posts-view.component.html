@@ -21,8 +21,8 @@
     <app-posts-filters
       [searchForm]="searchForm"
       [userOptions]="userOptions"
-      (create)="createPost.emit()"
-      (reset)="resetFilters.emit()"
+      (createPost)="createPost.emit()"
+      (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
     <div class="posts-toolbar__summary">
       <span>{{ postsCount }} posts displayed</span>
@@ -30,11 +30,17 @@
   </div>
   <section class="posts-content">
     @if (loading) {
-      <ul class="posts-list posts-list--skeleton">
-        <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
-        <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
-        <li aria-hidden="true"><app-card class="posts-card" [skeleton]="true"></app-card></li>
-      </ul>
+      <div class="posts-list posts-list--skeleton" role="list">
+        <div role="listitem" aria-hidden="true">
+          <app-card class="posts-card" [skeleton]="true"></app-card>
+        </div>
+        <div role="listitem" aria-hidden="true">
+          <app-card class="posts-card" [skeleton]="true"></app-card>
+        </div>
+        <div role="listitem" aria-hidden="true">
+          <app-card class="posts-card" [skeleton]="true"></app-card>
+        </div>
+      </div>
     } @else if (error) {
       <div class="state state--error">
         <p class="state__title">{{ error }}</p>
