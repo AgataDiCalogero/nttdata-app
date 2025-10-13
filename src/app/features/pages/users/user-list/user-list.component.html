@@ -18,11 +18,11 @@
         <div class="user-card__actions">
           <button appButton variant="ghost" size="sm" type="button" (click)="onView(user)">
             <lucide-icon [img]="Eye" aria-hidden="true"></lucide-icon>
-            View
+            <span class="label">View</span>
           </button>
           <button appButton variant="ghost" size="sm" type="button" (click)="onEdit(user, $event)">
             <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
-            Edit
+            <span class="label">Edit</span>
           </button>
           <button
             appButton
@@ -33,7 +33,7 @@
             (click)="onDelete(user, $event)"
           >
             <lucide-icon [img]="Trash2" aria-hidden="true"></lucide-icon>
-            Delete
+            <span class="label">Delete</span>
           </button>
         </div>
       </div>

@@ -9,15 +9,19 @@
 .appearance-switcher__trigger {
   @include mixins.flex-row(var(--space-sm));
   padding: calc(var(--space-xs) + 2px) var(--space-md);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-2xl);
   position: relative;
   z-index: 60;
   color: inherit;
   cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border-mix-60);
   @include mixins.transition-group((transform, box-shadow));
 
   &:hover {
     transform: translateY(-2px);
+    background: var(--alpha-accent-06);
+    border-color: var(--alpha-accent-18);
   }
 
   &:focus-visible {
@@ -54,14 +58,14 @@
   min-width: 180px;
   background: var(--color-surface);
   color: var(--color-on-surface);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-2xl);
   border: 1px solid var(--border-mix-60);
   padding: var(--space-sm);
   box-shadow: var(--shadow-xl);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   @include mixins.flex-column(var(--space-xs));
-  z-index: 50;
+  z-index: 110;
 
   /* Più opaco */
   @supports (background: color-mix(in srgb, var(--color-surface) 95%, transparent)) {

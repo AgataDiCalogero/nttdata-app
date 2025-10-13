@@ -4,6 +4,7 @@
   @include flex-row(var(--space-lg), center, space-between);
   flex-wrap: wrap;
   margin-bottom: var(--space-xl);
+  gap: var(--space-lg);
 
   h1 {
     margin: 0;

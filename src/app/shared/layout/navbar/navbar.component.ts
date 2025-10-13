@@ -7,19 +7,27 @@ import {
   signal,
   computed,
   PLATFORM_ID,
+  effect,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { DOCUMENT, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { LucideAngularModule, LogOut } from 'lucide-angular';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter, map, startWith, tap } from 'rxjs';
 
 // Main application navbar with navigation and authentication
 @Component({
   selector: 'app-navbar',
-  imports: [RouterModule, NgOptimizedImage, AppearanceSwitcherComponent, ButtonComponent],
+  imports: [
+    RouterModule,
+    NgOptimizedImage,
+    AppearanceSwitcherComponent,
+    ButtonComponent,
+    LucideAngularModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,7 +60,11 @@ export class Navbar implements OnInit, OnDestroy {
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
 
+  // export icon for template binding
+  readonly LogOut = LogOut;
+
   private resizeHandler: (() => void) | null = null;
+  private keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
   logout(): void {
     this.auth.clearToken();
@@ -120,6 +132,40 @@ export class Navbar implements OnInit, OnDestroy {
     } catch {
       // Defensive: some test environments may throw when adding global listeners
       this.resizeHandler = null;
+    }
+
+    // Attach Escape key listener when menu is open and focus first element inside nav
+    if (this.isBrowser) {
+      const handler = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          this.closeMenu();
+        }
+      };
+      this.keydownHandler = handler;
+
+      // use a tiny polling effect - attach/remove based on menuOpen
+      effect(() => {
+        if (!this.menuOpen()) {
+          try {
+            this.document?.removeEventListener('keydown', handler);
+          } catch {
+            void 0; // ignore errors when removing handler in non-browser/test envs
+          }
+          return;
+        }
+
+        try {
+          this.document?.addEventListener('keydown', handler);
+
+          const nav = this.document?.getElementById('main-nav');
+          const first = nav?.querySelector('a, button') as HTMLElement | null;
+          if (first) {
+            first.focus();
+          }
+        } catch {
+          void 0; // ignore DOM errors in non-browser/test envs
+        }
+      });
     }
   }
 
