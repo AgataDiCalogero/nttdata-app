@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import type { User, CreateUser, UpdateUser } from '@/app/shared/models';
+import { map, type Observable } from 'rxjs';
+import type { User, CreateUser, UpdateUser, ListResponse } from '@/app/shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
@@ -13,14 +13,16 @@ export class UsersApiService {
     per_page?: number;
     name?: string;
     email?: string;
-  }): Observable<User[]> {
+  }): Observable<ListResponse<User>> {
     let httpParams = new HttpParams();
     if (params?.page) httpParams = httpParams.set('page', String(params.page));
     if (params?.per_page) httpParams = httpParams.set('per_page', String(params.per_page));
     if (params?.name) httpParams = httpParams.set('name', params.name);
     if (params?.email) httpParams = httpParams.set('email', params.email);
 
-    return this.http.get<User[]>(this.base, { params: httpParams });
+    return this.http
+      .get<User[]>(this.base, { params: httpParams })
+      .pipe(map((items) => ({ items: items ?? [] })));
   }
 
   getById(id: number): Observable<User> {

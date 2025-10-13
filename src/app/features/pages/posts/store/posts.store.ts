@@ -238,9 +238,12 @@ export class PostsStore {
           this.error.set(null);
           return this.postsApi.list(params).pipe(
             tap((result) => {
-              this.posts.set(result.data ?? []);
-              this.pagination.set(result.pagination);
               this.loading.set(false);
+              if (!result) {
+                return;
+              }
+              this.posts.set(result.items ?? []);
+              this.pagination.set(result.pagination ?? null);
             }),
             catchError((err) => {
               console.error('Failed to load posts:', err);
@@ -260,8 +263,8 @@ export class PostsStore {
       .list({ per_page: 50 })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (users) => {
-          const list = users ?? [];
+        next: ({ items }) => {
+          const list = items ?? [];
           this.userOptions.set(list);
           const lookup = list.reduce<Record<number, string>>((acc, user) => {
             acc[user.id] = user.name ?? `User #${user.id}`;

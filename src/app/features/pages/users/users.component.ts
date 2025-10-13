@@ -125,8 +125,8 @@ export class Users {
     this.loading.set(true);
     this.error.set(null);
     this.api.list().subscribe({
-      next: (list) => {
-        this.users.set(list ?? []);
+      next: ({ items }) => {
+        this.users.set(items ?? []);
         this.loading.set(false);
       },
       error: (err) => {

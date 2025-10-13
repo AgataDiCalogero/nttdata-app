@@ -58,7 +58,7 @@ export class UserDetail {
 
   private loadUserPosts(userId: number): void {
     this.postsApi.list({ user_id: userId, per_page: 50 }).subscribe({
-      next: (result) => this.posts.set(result.data ?? []),
+      next: ({ items }) => this.posts.set(items ?? []),
       error: (err) => {
         console.error('Failed to load posts for user:', err);
         this.error.set('Unable to load user posts');

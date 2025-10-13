@@ -1,7 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import type { Post, Comment, CreatePost, CreateComment, PaginationMeta } from '@/app/shared/models';
+import { map, type Observable } from 'rxjs';
+import type {
+  Post,
+  Comment,
+  CreatePost,
+  CreateComment,
+  PaginationMeta,
+  ListResponse,
+} from '@/app/shared/models';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {
@@ -13,7 +20,7 @@ export class PostsApiService {
     per_page?: number;
     user_id?: number;
     title?: string;
-  }): Observable<{ data: Post[]; pagination: PaginationMeta }> {
+  }): Observable<ListResponse<Post>> {
     let httpParams = new HttpParams();
     if (params?.page) httpParams = httpParams.set('page', String(params.page));
     if (params?.per_page) httpParams = httpParams.set('per_page', String(params.per_page));
@@ -44,7 +51,7 @@ export class PostsApiService {
     return this.http.post<Comment>(`${this.base}/${postId}/comments`, payload);
   }
 
-  private mapResponse(resp: HttpResponse<Post[]>): { data: Post[]; pagination: PaginationMeta } {
+  private mapResponse(resp: HttpResponse<Post[]>): ListResponse<Post> {
     const data = resp.body ?? [];
     const totalHeader = Number(resp.headers.get('X-Pagination-Total')) || 0;
     const limitHeader = Number(resp.headers.get('X-Pagination-Limit')) || 0;
@@ -55,14 +62,16 @@ export class PostsApiService {
     const limit = limitHeader || data.length || 1;
     const computedPages = pagesHeader || (total && limit ? Math.ceil(total / limit) : 1);
 
+    const pagination: PaginationMeta = {
+      total,
+      pages: computedPages || 1,
+      page: Math.max(1, pageHeader),
+      limit,
+    };
+
     return {
-      data,
-      pagination: {
-        total,
-        pages: computedPages || 1,
-        page: Math.max(1, pageHeader),
-        limit,
-      },
+      items: data,
+      pagination,
     };
   }
 }

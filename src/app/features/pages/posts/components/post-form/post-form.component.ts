@@ -64,8 +64,8 @@ export class PostForm {
       .list({ per_page: 50 })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (users) => {
-          this.users.set(users ?? []);
+        next: ({ items }) => {
+          this.users.set(items ?? []);
           this.loadingUsers.set(false);
         },
         error: (err) => {
