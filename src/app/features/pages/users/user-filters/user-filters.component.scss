@@ -17,8 +17,8 @@
   left: var(--space-md);
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: 16px; /* slightly smaller */
+  height: 16px;
   color: var(--color-muted);
   pointer-events: none;
 }
@@ -26,7 +26,7 @@
 .users-search {
   width: 100%;
   min-width: 0;
-  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 22px);
+  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 26px); /* more room between icon and text */
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);
   background: var(--color-surface);

@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
+  overflow: visible; /* prevent clipping of dropdowns/popovers */
   @include smooth-transition(background, 0.3s, ease-in-out);
 
   h1 {
@@ -56,10 +57,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1 1 0;
-    min-width: 0; /* allow center nav to shrink so controls stay visible */
+    flex: 0 1 auto; /* shrink to content so it doesn't take full width */
+    margin-inline: auto; /* center between brand and controls */
+    min-width: 0; /* allow shrinking if needed */
     z-index: 10;
-    flex-wrap: wrap; /* allow nav items to wrap to multiple lines */
+    flex-wrap: nowrap; /* keep a single line */
   }
 
   nav {
@@ -67,7 +69,8 @@
     gap: var(--space-xs);
     max-width: 100%;
     justify-content: center;
-    flex-wrap: wrap; /* ensure links don't overflow and instead wrap */
+    flex-wrap: nowrap; /* single line nav for cleaner header */
+    white-space: nowrap;
     a {
       color: var(--color-accent);
       text-decoration: none;
@@ -99,6 +102,7 @@
     align-items: center;
     gap: var(--space-sm);
     flex: 0 0 auto; /* don't shrink controls */
+    margin-left: auto; /* push to the right */
     margin-left: var(--space-sm);
     padding-right: var(--space-xs);
     z-index: 90;

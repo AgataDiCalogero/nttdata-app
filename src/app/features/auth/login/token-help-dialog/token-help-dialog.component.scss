@@ -4,8 +4,8 @@
   @include mixins.flex-column(var(--space-lg));
   max-width: 28rem;
   padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
-  /* Make surface less transparent (more solid) to match mock */
-  background: color-mix(in srgb, var(--color-surface) 94%, rgba(0, 0, 0, 0.02));
+  /* Make surface fully opaque to prevent seeing the page underneath */
+  background: var(--color-surface-solid);
   color: var(--color-on-surface);
   border-radius: var(--radius-xl);
   border: 1px solid rgba(255, 255, 255, 0.03);
