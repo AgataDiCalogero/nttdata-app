@@ -1,13 +1,62 @@
 @use '../../../../styles/mixins' as *;
 
 .users-header {
-  @include flex-row(var(--space-lg), center, space-between);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-xl);
-  gap: var(--space-lg);
+  @include flex-row(var(--space-lg), flex-start, space-between);
+  flex-wrap: nowrap;
+  margin-bottom: var(--space-lg);
+  gap: var(--space-md);
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    flex: 1 1 auto;
+    min-width: 0; /* allow children to shrink and avoid overflow */
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto; /* keep right column fixed size */
+  }
 
   h1 {
     margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+  }
+
+  .users-subtitle {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  .users-search {
+    margin-top: var(--space-md);
+    max-width: 100%;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .new-user {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: 10px 18px;
+    border-radius: var(--radius-lg);
+    white-space: nowrap;
+  }
+
+  /* Small screens: stack header so search is full width above the button */
+  @media (max-width: 680px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+
+    &__right {
+      align-self: flex-end;
+    }
   }
 }
 
@@ -73,4 +122,3 @@
     text-align: center;
   }
 }
-

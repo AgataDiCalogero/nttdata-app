@@ -79,12 +79,26 @@
   </div>
 
   <div class="form-actions user-form__actions">
+    <!-- Primary action moved to the right in the mock; we'll render Cancel first and Create second
+         but style them so Create appears on the right visually and both stretch on mobile. -->
+    <button
+      appButton
+      variant="ghost"
+      type="button"
+      (click)="cancel()"
+      [disabled]="submitting()"
+      class="user-form__btn user-form__btn--cancel"
+    >
+      Cancel
+    </button>
+
     <button
       appButton
       variant="primary"
       type="submit"
       [loading]="submitting()"
       [disabled]="form.invalid || isLoading() || submitting()"
+      class="user-form__btn user-form__btn--create"
     >
       @if (submitting()) {
         Saving&hellip;
@@ -93,9 +107,6 @@
       } @else {
         Create
       }
-    </button>
-    <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-      Cancel
     </button>
   </div>
 

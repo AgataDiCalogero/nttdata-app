@@ -7,11 +7,25 @@
   </header>
 
   <ol class="token-help__steps">
-    <li>Visit the official GoRest site and sign in with your account.</li>
     <li>
-      Select <strong>Get Your Access Token</strong> in the dashboard to create a new personal token.
+      <span class="token-help__stepnum">1</span>
+      <div class="token-help__text">
+        Visit the official GoRest site and sign in with your account.
+      </div>
     </li>
-    <li>Copy the generated token and paste it into the "Access token" field on this page.</li>
+    <li>
+      <span class="token-help__stepnum">2</span>
+      <div class="token-help__text">
+        Select <strong>Get Your Access Token</strong> in the dashboard to create a new personal
+        token.
+      </div>
+    </li>
+    <li>
+      <span class="token-help__stepnum">3</span>
+      <div class="token-help__text">
+        Copy the generated token and paste it into the "Access token" field on this page.
+      </div>
+    </li>
   </ol>
 
   <footer class="token-help__footer">
@@ -19,6 +33,7 @@
       appButton
       variant="outline"
       size="lg"
+      class="token-help__btn token-help__btn--outline"
       [href]="gorestUrl"
       target="_blank"
       rel="noopener noreferrer"
@@ -30,6 +45,7 @@
       appButton
       variant="primary"
       size="lg"
+      class="token-help__btn token-help__btn--primary"
       type="button"
       (click)="close()"
       aria-label="Close the token help message"

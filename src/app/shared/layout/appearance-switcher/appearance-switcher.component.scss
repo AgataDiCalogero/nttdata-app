@@ -11,7 +11,7 @@
   padding: calc(var(--space-xs) + 2px) var(--space-md);
   border-radius: var(--radius-2xl);
   position: relative;
-  z-index: 60;
+  z-index: 220; /* raise above navbar controls so trigger is visible */
   color: inherit;
   cursor: pointer;
   background: transparent;
@@ -56,50 +56,77 @@
   right: 0;
   top: calc(100% + 0.6rem);
   min-width: 180px;
-  background: var(--color-surface);
+  /* use a solid surface to avoid any light rim showing */
+  background: var(--color-surface-solid);
   color: var(--color-on-surface);
   border-radius: var(--radius-2xl);
-  border: 1px solid var(--border-mix-60);
-  padding: var(--space-sm);
-  box-shadow: var(--shadow-xl);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  /* remove inner white-ish border to match mock */
+  border: none;
+  padding: var(--space-md);
+  /* remove frosted rim and use a darker subtle shadow to avoid white edge */
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  /* Extra properties to prevent any light rim or pseudo-elements from showing */
+  background-clip: padding-box !important;
+  outline: none !important;
   @include mixins.flex-column(var(--space-xs));
   z-index: 110;
 
   /* Più opaco */
-  @supports (background: color-mix(in srgb, var(--color-surface) 95%, transparent)) {
-    background: color-mix(in srgb, var(--color-surface) 95%, transparent);
-  }
+  /* avoid color-mix fallbacks here to keep panel visually consistent */
 }
 
 .appearance-switcher__options {
-  @include mixins.flex-row(var(--space-xs));
-  justify-content: stretch;
+  display: grid;
+  /* stack vertically to match mock (Light above Dark) */
+  grid-template-columns: 1fr;
+  gap: var(--space-xs);
+  align-items: stretch;
 
   > * {
-    flex: 1;
+    width: 100%;
   }
 }
 
+/* Remove default fieldset border and any stray outlines/pseudo-elements that draw the white frame */
+.appearance-switcher__options,
+.appearance-switcher__options fieldset,
+.appearance-switcher__options legend {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+.appearance-switcher__panel,
+.appearance-switcher__panel *,
+.appearance-switcher__panel *::before,
+.appearance-switcher__panel *::after {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .appearance-option {
-  @include mixins.flex-column(var(--space-xs));
+  /* left-aligned row for icon + label; switch will sit to the right */
+  @include mixins.flex-row(var(--space-xs));
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
-  padding: var(--space-sm);
-  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: calc(var(--radius-lg) + 2px);
   border: 2px solid transparent;
   background: transparent;
   color: var(--color-on-surface);
   cursor: pointer;
   font-weight: 500;
   font-size: 0.8rem;
-  text-align: center;
+  text-align: left;
   @include mixins.transition-group((background, border-color, transform));
 
   &:hover {
-    background: var(--alpha-accent-12);
+    background: color-mix(in srgb, var(--color-surface-solid) 88%, rgba(255, 255, 255, 0.02));
     transform: translateY(-1px);
   }
 
@@ -108,14 +135,19 @@
   }
 
   &--active {
-    background: var(--alpha-accent-18);
+    /* active option: orange border with a darker filled surface and glow */
+    background: color-mix(in srgb, var(--color-surface-solid) 84%, rgba(0, 0, 0, 0.25));
     border-color: var(--color-accent);
     transform: none;
+    box-shadow:
+      0 8px 24px rgba(249, 115, 22, 0.08),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 
     .appearance-option__icon {
-      background: var(--alpha-accent-14);
+      background: transparent;
       color: var(--color-accent);
-      box-shadow: 0 0 0 4px var(--alpha-accent-06);
+      box-shadow: none;
+      border: 1px solid rgba(249, 115, 22, 0.28);
     }
   }
 
@@ -161,6 +193,46 @@
   .appearance-option--toggle & {
     font-size: 0.85rem;
   }
+
+  /* ensure label sits to the right of the icon */
+  margin-left: var(--space-sm);
+}
+
+/* Toggle pill for Reading mode */
+.appearance-option__switch {
+  margin-left: auto;
+  width: 44px;
+  height: 26px;
+  border-radius: 999px;
+  position: relative;
+  /* visible off-state background */
+  background: var(--alpha-white-12);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  @include mixins.transition-group((background, border-color));
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-on-surface);
+    box-shadow: var(--shadow-xs);
+    @include mixins.transition-group(transform, background);
+    transform: translateX(0);
+  }
+
+  &[data-on='true'] {
+    background: linear-gradient(180deg, rgba(249, 115, 22, 0.12), rgba(249, 115, 22, 0.06));
+    border-color: var(--color-accent);
+
+    &::after {
+      transform: translateX(18px);
+      background: var(--color-accent);
+    }
+  }
 }
 
 .appearance-switcher__section {
@@ -170,7 +242,7 @@
 
 .appearance-switcher__divider {
   height: 1px;
-  background: var(--border-mix-60);
+  background: color-mix(in srgb, var(--border-mix-60) 60%, transparent);
   margin: var(--space-xs) 0;
 }
 
@@ -224,7 +296,7 @@
   }
 
   .appearance-switcher__options {
-    flex-direction: row;
+    grid-template-columns: 1fr;
     gap: var(--space-xs);
   }
 
@@ -240,4 +312,12 @@
 body.reading-mode .appearance-switcher__panel {
   background: var(--color-surface);
   color: var(--color-on-surface);
+}
+/* Remove any stray pseudo-elements inside the panel that could draw a rim. */
+.appearance-switcher__panel::before,
+.appearance-switcher__panel::after,
+.appearance-switcher__panel *::before,
+.appearance-switcher__panel *::after {
+  display: none !important;
+  content: none !important;
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
-import { LucideAngularModule, Palette, Sun, Moon, BookOpenCheck } from 'lucide-angular';
+import { LucideAngularModule, Sun, Moon, BookOpenCheck } from 'lucide-angular';
 import { ThemeService } from '@app/core/theme/theme.service';
 import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
 import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
@@ -16,7 +16,6 @@ export class AppearanceSwitcherComponent {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly themeService = inject(ThemeService);
 
-  readonly Palette = Palette;
   readonly Sun = Sun;
   readonly Moon = Moon;
   readonly BookOpenCheck = BookOpenCheck;

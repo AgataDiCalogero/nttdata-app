@@ -4,9 +4,9 @@
   width: 100%;
   padding-block: var(--space-lg);
   text-align: center;
-  background: var(--gradient-accent-soft);
-  border-top: 1px solid var(--border-accent-soft);
-  font-size: 0.875rem;
+  background: transparent; /* keep app chrome subtle */
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+  font-size: 0.95rem;
   margin-top: auto;
 }
 
@@ -23,13 +23,13 @@
 @include tablet-up {
   .app-footer__inner {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center; /* center content on tablet+ */
     gap: var(--space-md);
   }
 }
 
 .app-footer__link {
-  color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.6); /* soft muted text */
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid transparent;
@@ -37,12 +37,16 @@
 }
 
 .app-footer__link:hover {
-  color: var(--color-accent-light);
-  border-color: var(--border-accent-strong);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .app-footer__link:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
   border-radius: var(--radius-xs);
+}
+
+.app-footer__author {
+  color: var(--color-accent);
+  font-weight: 700;
 }

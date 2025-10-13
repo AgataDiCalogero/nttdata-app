@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
+import { LucideAngularModule, Trash2, Pencil, Plus } from 'lucide-angular';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
@@ -41,6 +41,7 @@ export class Users {
 
   readonly Trash2 = Trash2;
   readonly Pencil = Pencil;
+  readonly Plus = Plus;
 
   // base state
   private readonly users = signal<User[]>([]);

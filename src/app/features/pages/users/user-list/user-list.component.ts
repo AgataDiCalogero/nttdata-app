@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import type { User } from '@/app/shared/models';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import {
   LucideAngularModule,
   Eye,
@@ -18,7 +17,7 @@ import {
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, ButtonComponent, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {
@@ -52,6 +51,17 @@ export class UserListComponent {
   onDelete(user: User, event: Event): void {
     event.stopPropagation();
     this.delete.emit(user);
+  }
+
+  /**
+   * Compute up to two-character initials for the avatar display.
+   */
+  initials(user?: User): string {
+    const name = user && typeof user.name === 'string' ? user.name.trim() : '';
+    if (!name) return '#';
+    const parts = name.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return ((parts[0][0] || '') + (parts[1][0] || '')).toUpperCase();
   }
 
   genderOf(user: User): string | undefined {

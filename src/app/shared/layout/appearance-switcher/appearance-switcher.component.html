@@ -17,10 +17,8 @@
     aria-label="Open appearance settings"
   >
     <span class="appearance-switcher__icon">
-      <lucide-icon [img]="Palette" aria-hidden="true"></lucide-icon>
+      <lucide-icon [img]="isLight() ? Sun : Moon" aria-hidden="true"></lucide-icon>
     </span>
-    <span class="appearance-switcher__current">Theme</span>
-    <span class="appearance-switcher__chevron" aria-hidden="true"></span>
   </button>
 
   @if (menuOpen()) {
@@ -84,6 +82,7 @@
             <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           </span>
           <span class="appearance-option__label">Reading mode</span>
+          <span class="appearance-option__switch" [attr.data-on]="isReadingMode()"></span>
         </button>
       </div>
     </div>

@@ -59,6 +59,7 @@
     flex: 1 1 0;
     min-width: 0; /* allow center nav to shrink so controls stay visible */
     z-index: 10;
+    flex-wrap: wrap; /* allow nav items to wrap to multiple lines */
   }
 
   nav {
@@ -66,6 +67,7 @@
     gap: var(--space-xs);
     max-width: 100%;
     justify-content: center;
+    flex-wrap: wrap; /* ensure links don't overflow and instead wrap */
     a {
       color: var(--color-accent);
       text-decoration: none;
@@ -97,11 +99,13 @@
     align-items: center;
     gap: var(--space-sm);
     flex: 0 0 auto; /* don't shrink controls */
-  margin-left: var(--space-sm);
-  padding-right: var(--space-xs);
+    margin-left: var(--space-sm);
+    padding-right: var(--space-xs);
     z-index: 90;
+    overflow: visible; /* ensure popovers aren't clipped */
     app-appearance-switcher {
       display: inline-flex;
+      overflow: visible;
     }
 
     app-appearance-switcher .appearance-switcher__panel {

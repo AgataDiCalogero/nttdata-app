@@ -4,6 +4,8 @@
   @include flex-center;
   min-height: calc(100vh - 72px);
   padding: clamp(var(--space-md), 4vw, var(--space-xxl));
+  box-sizing: border-box;
+  width: 100%;
 
   .login-card {
     width: 100%;
@@ -16,7 +18,8 @@
 
     @include mobile {
       padding: var(--space-md);
-      max-width: 100%;
+      max-width: calc(100% - 2 * var(--layout-gutter-tight));
+      margin-inline: auto;
     }
   }
 
@@ -65,6 +68,7 @@
   .login-form {
     @include flex-column(var(--space-lg));
     width: 100%;
+    min-width: 0;
   }
 
   .form-group {

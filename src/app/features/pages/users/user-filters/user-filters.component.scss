@@ -3,11 +3,13 @@
   gap: var(--space-sm);
   align-items: center;
   flex: 1 1 auto;
+  min-width: 0; /* allow flex children to shrink properly */
 }
 
 .users-search__wrap {
   position: relative;
-  flex: 1 1 480px;
+  flex: 1 1 100%;
+  min-width: 0;
 }
 
 .users-search__icon {
@@ -22,8 +24,8 @@
 }
 
 .users-search {
-  flex: 1 1 480px;
-  min-width: 220px;
+  width: 100%;
+  min-width: 0;
   padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 22px);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);

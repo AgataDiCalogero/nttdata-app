@@ -160,6 +160,15 @@ select:focus-visible {
   background: var(--overlay-backdrop-soft);
 }
 
+/* Token help dialog: stronger backdrop and pane rules so page underneath isn't visible */
+.cdk-overlay-pane.token-help-dialog {
+  z-index: 1200 !important; /* sit above app chrome */
+}
+
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
+  background: rgba(2, 6, 23, 0.75) !important; /* darken overlay */
+}
+
 .user-form-modal {
   border-radius: var(--radius-xl);
   overflow: hidden;
