@@ -121,6 +121,10 @@ export class Users {
     return Math.max(1, Math.ceil(total / perPage));
   }
 
+  isChildRouteActive(): boolean {
+    return this.router.url !== '/users';
+  }
+
   goToDetail(userId: number): void {
     this.router.navigate(['/users', userId]).catch(() => {});
   }

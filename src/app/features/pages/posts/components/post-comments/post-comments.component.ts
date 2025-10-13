@@ -9,30 +9,42 @@ import {
   Output,
   signal,
 } from '@angular/core';
+import { Dialog } from '@angular/cdk/dialog';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import type { Comment as ModelComment } from '@/app/shared/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { LucideAngularModule, Pencil, X } from 'lucide-angular';
-import type { Comment } from '@/app/shared/models';
+import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
+import {
+  DeleteConfirmComponent,
+  type DeleteConfirmData,
+} from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
   selector: 'app-post-comments',
-  imports: [CommonModule, CommentFormComponent, ReactiveFormsModule, ButtonComponent, LucideAngularModule],
+  imports: [
+    CommonModule,
+    CommentFormComponent,
+    ReactiveFormsModule,
+    ButtonComponent,
+    LucideAngularModule,
+  ],
   templateUrl: './post-comments.component.html',
   styleUrls: ['./post-comments.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCommentsComponent {
-  @Input() comments: Comment[] | null = null;
+  @Input() comments: ModelComment[] | null = null;
   @Input() loading = false;
   @Input() postId = 0;
 
-  @Output() commentCreated = new EventEmitter<Comment>();
-  @Output() commentUpdated = new EventEmitter<Comment>();
+  @Output() commentCreated = new EventEmitter<ModelComment>();
+  @Output() commentUpdated = new EventEmitter<ModelComment>();
+  @Output() commentDeleted = new EventEmitter<number>();
 
   private readonly fb = inject(FormBuilder);
   private readonly postsApi = inject(PostsApiService);
@@ -41,6 +53,54 @@ export class PostCommentsComponent {
 
   readonly Pencil = Pencil;
   readonly X = X;
+  readonly Trash2 = Trash2;
+  private readonly dialog = inject(Dialog);
+  readonly deletingId = signal<number | null>(null);
+  readonly deleteError = signal<string | null>(null);
+  deleteComment(comment: ModelComment): void {
+    const data: DeleteConfirmData = {
+      title: 'Delete Comment',
+      message: `Are you sure you want to delete this comment? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+    };
+    const ref = this.dialog.open(DeleteConfirmComponent, {
+      width: '400px',
+      maxWidth: '90vw',
+      backdropClass: 'blurred-backdrop',
+      panelClass: 'user-form-modal',
+      ariaLabel: 'Delete comment confirmation',
+      autoFocus: true,
+      restoreFocus: true,
+      data,
+    });
+    ref.closed.subscribe((confirmed) => {
+      if (!confirmed) return;
+      this.deletingId.set(comment.id);
+      this.deleteError.set(null);
+      this.postsApi
+        .deleteComment(comment.id)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.toast.show('success', 'Comment deleted');
+            this.commentDeleted.emit(comment.id);
+            this.deletingId.set(null);
+          },
+          error: (err) => {
+            this.deletingId.set(null);
+            console.error('Failed to delete comment', err);
+            if (err?.status === 429) {
+              this.deleteError.set('Too many attempts. Please wait and retry.');
+              this.toast.show('error', 'Too many attempts. Please wait and retry.');
+            } else {
+              this.deleteError.set('Unable to delete this comment right now.');
+              this.toast.show('error', 'Unable to delete this comment right now.');
+            }
+          },
+        });
+    });
+  }
 
   readonly editingId = signal<number | null>(null);
   readonly submittingEdit = signal(false);
@@ -50,7 +110,7 @@ export class PostCommentsComponent {
     body: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
   });
 
-  startEdit(comment: Comment): void {
+  startEdit(comment: ModelComment): void {
     this.editingId.set(comment.id);
     this.editError.set(null);
     this.editForm.reset({ body: comment.body });
@@ -62,7 +122,7 @@ export class PostCommentsComponent {
     this.editForm.reset();
   }
 
-  saveEdit(comment: Comment): void {
+  saveEdit(comment: ModelComment): void {
     if (this.editForm.invalid || this.submittingEdit()) {
       this.editForm.markAllAsTouched();
       return;
@@ -81,7 +141,7 @@ export class PostCommentsComponent {
       .updateComment(comment.id, { body: trimmed })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (updated) => {
+        next: (updated: ModelComment) => {
           this.toast.show('success', 'Comment updated');
           this.commentUpdated.emit(updated);
           this.submittingEdit.set(false);
@@ -101,11 +161,11 @@ export class PostCommentsComponent {
       });
   }
 
-  trackByCommentId(_index: number, comment: Comment): number {
+  trackByCommentId(_index: number, comment: ModelComment): number {
     return comment.id;
   }
 
-  onCommentCreated(comment: Comment): void {
+  onCommentCreated(comment: ModelComment): void {
     this.commentCreated.emit(comment);
   }
 }

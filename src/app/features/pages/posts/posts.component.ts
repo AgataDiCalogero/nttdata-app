@@ -9,6 +9,8 @@ import {
   type DeleteConfirmData,
 } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import type { Post, Comment } from '@/app/shared/models';
+// Dialog result shape used by PostForm dialog
+type DialogResult = { status: 'created' | 'updated'; post?: Post };
 
 @Component({
   selector: 'app-posts',
@@ -37,6 +39,8 @@ export class Posts {
       this.syncQueryParams(page, perPage);
     });
   }
+
+  // (DialogResult type declared at module scope)
 
   get searchForm() {
     return this.store.searchForm;
@@ -137,7 +141,10 @@ export class Posts {
           this.store.setPage(1);
           this.store.refresh();
         } else if (result.status === 'updated') {
-          this.store.onPostUpdated(result.post);
+          const r = result as DialogResult;
+          if (r.post) {
+            this.store.onPostUpdated(r.post);
+          }
         }
       }
     });
@@ -190,8 +197,11 @@ export class Posts {
 
     ref.closed.subscribe((result) => {
       if (result && typeof result === 'object' && 'status' in result) {
+        const r = result as DialogResult;
         if (result.status === 'updated') {
-          this.store.onPostUpdated(result.post);
+          if (r.post) {
+            this.store.onPostUpdated(r.post);
+          }
         } else if (result.status === 'created') {
           this.store.setPage(1);
           this.store.refresh();

@@ -61,6 +61,10 @@ export class PostsApiService {
     return this.http.patch<Comment>(`/comments/${commentId}`, payload);
   }
 
+  deleteComment(commentId: number): Observable<void> {
+    return this.http.delete<void>(`/comments/${commentId}`);
+  }
+
   private mapResponse(resp: HttpResponse<Post[]>): ListResponse<Post> {
     const data = resp.body ?? [];
     const totalHeader = Number(resp.headers.get('X-Pagination-Total')) || 0;

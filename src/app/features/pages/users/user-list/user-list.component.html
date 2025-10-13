@@ -3,7 +3,7 @@
     <article class="user-card" role="listitem" (click)="onView(user)">
       <div class="user-card__header">
         <div class="user-card__avatar" aria-hidden="true">
-          {{ user.name?.slice(0, 2).toUpperCase() || '#' }}
+          {{ (user.name || '').slice(0, 2).toUpperCase() || '#' }}
         </div>
         <div class="user-card__meta">
           <h3 class="user-card__name">{{ user.name || 'Unnamed user' }}</h3>
@@ -16,23 +16,11 @@
 
       <div class="user-card__footer">
         <div class="user-card__actions">
-          <button
-            appButton
-            variant="ghost"
-            size="sm"
-            type="button"
-            (click)="onView(user)"
-          >
+          <button appButton variant="ghost" size="sm" type="button" (click)="onView(user)">
             <lucide-icon [img]="Eye" aria-hidden="true"></lucide-icon>
             View
           </button>
-          <button
-            appButton
-            variant="ghost"
-            size="sm"
-            type="button"
-            (click)="onEdit(user, $event)"
-          >
+          <button appButton variant="ghost" size="sm" type="button" (click)="onEdit(user, $event)">
             <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
             Edit
           </button>

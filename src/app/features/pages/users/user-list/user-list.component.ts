@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import type { User } from '@/app/shared/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { LucideAngularModule, Eye, Pencil, Trash2 } from 'lucide-angular';
@@ -10,7 +9,7 @@ import { LucideAngularModule, Eye, Pencil, Trash2 } from 'lucide-angular';
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, RouterLink, ButtonComponent, LucideAngularModule],
+  imports: [CommonModule, ButtonComponent, LucideAngularModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {

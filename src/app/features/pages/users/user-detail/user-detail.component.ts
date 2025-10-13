@@ -118,6 +118,19 @@ export class UserDetail {
     });
   }
 
+  onCommentDeleted(postId: number, commentId: number): void {
+    this.commentsMap.update((state) => {
+      const current = state[postId];
+      if (!current) {
+        return state;
+      }
+      return {
+        ...state,
+        [postId]: current.filter((existing) => existing.id !== commentId),
+      };
+    });
+  }
+
   trackPostId(_idx: number, post: Post): number {
     return post.id;
   }

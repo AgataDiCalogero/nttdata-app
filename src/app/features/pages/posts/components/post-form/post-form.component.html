@@ -78,7 +78,7 @@
         maxlength="500"
       ></textarea>
       <div class="field-hint">
-        <span>{{ form.controls.body.value?.length ?? 0 }}/500</span>
+        <span>{{ (form.controls.body.value || '').length }}/500</span>
         @if (bodyInvalid) {
           <p class="field-error">Please describe the post with at least 20 characters.</p>
         }

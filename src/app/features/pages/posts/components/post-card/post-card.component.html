@@ -4,7 +4,7 @@
   @let commentsList = comments();
   @let commentsVisible = commentsList !== null || commentsLoading();
   @let commentCount = commentsList?.length ?? 0;
-  @let author = authorName() ?? (postModel ? ('User #' + postModel.user_id) : 'Unknown author');
+  @let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
 
   <div card-header class="posts-card__header">
     <button type="button" class="posts-card__author" (click)="onAuthorClick()">
@@ -85,10 +85,11 @@
     <app-post-comments
       class="posts-card__comments"
       [postId]="postModel.id"
-      [comments]="commentsList ?? []"
+      [comments]="$any(commentsList) ?? []"
       [loading]="commentsLoading()"
-      (commentCreated)="onInternalCommentCreated($event)"
-      (commentUpdated)="onInternalCommentUpdated($event)"
+      (commentCreated)="onInternalCommentCreated($any($event))"
+      (commentUpdated)="onInternalCommentUpdated($any($event))"
+      (commentDeleted)="onInternalCommentDeleted($any($event))"
     ></app-post-comments>
   }
 </app-card>

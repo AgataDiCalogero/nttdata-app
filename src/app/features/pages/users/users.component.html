@@ -1,59 +1,65 @@
-<header class="users-header">
-  <h1>Users</h1>
-  <app-user-filters
-    (searchChange)="onSearch($event)"
-    (create)="openNewUserModal()"
-  ></app-user-filters>
-</header>
-@if (displayed(); as data) {
-  @if (loading()) {
-    <div class="users-skeleton">
-      @for (i of [1, 2, 3, 4, 5]; track i) {
-        <div class="users-skeleton__row" aria-hidden="true"></div>
-      }
-    </div>
-  } @else {
-    @if (error()) {
-      <div class="users-error">
-        <p>{{ error() }}</p>
-        <button appButton variant="ghost" class="btn" (click)="loadUsers()">Retry</button>
+@if (isChildRouteActive()) {
+  <!-- Show child routes (user detail, user form) -->
+  <router-outlet></router-outlet>
+} @else {
+  <!-- Show users list -->
+  <header class="users-header">
+    <h1>Users</h1>
+    <app-user-filters
+      (searchChange)="onSearch($event)"
+      (create)="openNewUserModal()"
+    ></app-user-filters>
+  </header>
+  @if (displayed(); as data) {
+    @if (loading()) {
+      <div class="users-skeleton">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <div class="users-skeleton__row" aria-hidden="true"></div>
+        }
       </div>
     } @else {
-      @if (data.total > 0) {
-        <div>
-          <app-user-list
-            [items]="data.items"
-            (view)="goToDetail($event)"
-            (edit)="openEditUserModal($event)"
-            (delete)="onDelete($event)"
-          ></app-user-list>
-          <div class="users-pagination">
-            <button
-              appButton
-              variant="secondary"
-              class="btn"
-              [disabled]="currentPage().page <= 1"
-              (click)="setPage(currentPage().page - 1, currentPage().per_page)"
-            >
-              Prev
-            </button>
-            <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
-            <button
-              appButton
-              variant="secondary"
-              class="btn"
-              [disabled]="currentPage().page >= totalPages(data.total)"
-              (click)="setPage(currentPage().page + 1, currentPage().per_page)"
-            >
-              Next
-            </button>
-          </div>
+      @if (error()) {
+        <div class="users-error">
+          <p>{{ error() }}</p>
+          <button appButton variant="ghost" class="btn" (click)="loadUsers()">Retry</button>
         </div>
       } @else {
-        <div class="users-empty">
-          <p>No users found.</p>
-          <a appButton variant="primary" routerLink="/users/new">Create first user</a>
-        </div>
+        @if (data.total > 0) {
+          <div>
+            <app-user-list
+              [items]="data.items"
+              (view)="goToDetail($event)"
+              (edit)="openEditUserModal($event)"
+              (delete)="onDelete($event)"
+            ></app-user-list>
+            <div class="users-pagination">
+              <button
+                appButton
+                variant="secondary"
+                class="btn"
+                [disabled]="currentPage().page <= 1"
+                (click)="setPage(currentPage().page - 1, currentPage().per_page)"
+              >
+                Prev
+              </button>
+              <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
+              <button
+                appButton
+                variant="secondary"
+                class="btn"
+                [disabled]="currentPage().page >= totalPages(data.total)"
+                (click)="setPage(currentPage().page + 1, currentPage().per_page)"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="users-empty">
+            <p>No users found.</p>
+            <a appButton variant="primary" routerLink="/users/new">Create first user</a>
+          </div>
+        }
       }
     }
   }
