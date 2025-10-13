@@ -1,62 +1,81 @@
 <section class="user-detail">
+  <div class="user-detail__top">
+    <a routerLink="/users" class="user-detail__back" appButton variant="ghost">
+      ← Back to users
+    </a>
+  </div>
+
   @if (loading()) {
-    <div class="loading">Loading...</div>
-  } @else {
-    <div>
-      @if (error()) {
-        <div class="error">{{ error() }}</div>
-      }
-      @if (user()) {
-        <div class="profile">
-          <h2>{{ user()?.name }}</h2>
-          <div class="info">
-            <div>Email: {{ user()?.email }}</div>
-            <div>Gender: {{ user()?.gender }}</div>
-            <div>Status: {{ user()?.status }}</div>
-          </div>
+    <div class="user-detail__state state state--loading">
+      <p class="state__title">Loading user details…</p>
+    </div>
+  } @else if (error()) {
+    <div class="user-detail__state state state--error" role="alert">
+      <p class="state__title">{{ error() }}</p>
+      <div class="state__actions">
+        <a routerLink="/users" appButton variant="primary">Back to list</a>
+      </div>
+    </div>
+  } @else if (user(); as detail) {
+    <article class="user-card">
+      <div class="user-card__avatar" aria-hidden="true">
+        {{ detail.name?.slice(0, 2).toUpperCase() }}
+      </div>
+      <div class="user-card__meta">
+        <h1 class="user-card__name">{{ detail.name }}</h1>
+        <p class="user-card__email">
+          <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
+          <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
+        </p>
+        <div class="user-card__badges">
+          <span class="user-card__badge">
+            <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
+            {{ detail.gender || 'Not specified' }}
+          </span>
+          <span class="user-card__badge user-card__badge--status">
+            {{ detail.status | titlecase }}
+          </span>
+        </div>
+      </div>
+      <div class="user-card__summary">
+        <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
+        <span>
+          {{ posts().length }}
+          {{ posts().length === 1 ? 'post shared' : 'posts shared' }}
+        </span>
+      </div>
+    </article>
+
+    <section class="user-posts" aria-labelledby="user-posts-title">
+      <header class="user-posts__header">
+        <h2 id="user-posts-title">Posts from {{ detail.name }}</h2>
+        <p class="user-posts__subtitle">
+          Browse the ideas and reports submitted by this citizen. Comments can be opened inline.
+        </p>
+      </header>
+
+      @if (posts().length === 0) {
+        <div class="user-detail__state state state--empty">
+          <p class="state__title">No posts published yet.</p>
+        </div>
+      } @else {
+        <div class="user-posts__grid">
+          @for (post of posts(); track trackPostId($index, post)) {
+            <app-post-card
+              [post]="post"
+              [interactive]="true"
+              padding="spacious"
+              [allowManage]="false"
+              [comments]="commentsFor(post.id) ?? null"
+              [commentsLoading]="commentsAreLoading(post.id)"
+              [authorName]="detail.name"
+              (toggleComments)="onToggleComments(post.id)"
+              (commentCreated)="onCommentCreated(post.id, $event)"
+              (commentUpdated)="onCommentUpdated(post.id, $event)"
+            ></app-post-card>
+          }
         </div>
       }
-      <section class="user-posts">
-        <h3>User posts</h3>
-        @if (posts().length) {
-          @for (p of posts(); track p.id) {
-            <div class="post-item">
-              <h4>{{ p.title }}</h4>
-              <p>{{ p.body }}</p>
-              <button type="button" (click)="toggleComments(p.id)">
-                {{ commentsMap()[p.id] ? 'Hide comments' : 'Show comments' }}
-              </button>
-              @if (commentsMap()[p.id]) {
-                <div class="comments">
-                  @if (commentsLoading()[p.id]) {
-                    <div class="loading">Loading comments...</div>
-                  } @else {
-                    @if (commentsMap()[p.id].length) {
-                      <div>
-                        @for (c of commentsMap()[p.id]; track c.id) {
-                          <div>
-                            <strong>{{ c.name }}</strong> (<em>{{ c.email }}</em
-                            >)
-                            <p>{{ c.body }}</p>
-                          </div>
-                        }
-                      </div>
-                    } @else {
-                      <div class="empty">No comments available yet.</div>
-                    }
-                  }
-                  <app-comment-form
-                    [postId]="p.id"
-                    (created)="onCommentCreated(p.id, $event)"
-                  ></app-comment-form>
-                </div>
-              }
-            </div>
-          }
-        } @else {
-          <div class="empty">No posts available</div>
-        }
-      </section>
-    </div>
+    </section>
   }
 </section>

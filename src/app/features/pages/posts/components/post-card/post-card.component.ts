@@ -22,6 +22,7 @@ export class PostCardComponent {
   readonly comments = input<Comment[] | null | undefined>(null);
   readonly commentsLoading = input(false);
   readonly authorName = input<string | null>(null);
+  readonly allowManage = input(true);
 
   readonly Trash2 = Trash2;
   readonly MessageSquare = MessageSquare;
@@ -30,6 +31,7 @@ export class PostCardComponent {
   @Output() readonly delete = new EventEmitter<void>();
   @Output() readonly toggleComments = new EventEmitter<void>();
   @Output() readonly edit = new EventEmitter<void>();
+  @Output() readonly viewAuthor = new EventEmitter<number>();
   @Output() readonly commentCreated = new EventEmitter<Comment>();
   @Output() readonly commentUpdated = new EventEmitter<Comment>();
 
@@ -64,5 +66,12 @@ export class PostCardComponent {
 
   onInternalCommentUpdated(comment: Comment): void {
     this.commentUpdated.emit(comment);
+  }
+
+  onAuthorClick(): void {
+    const current = this.post();
+    if (current) {
+      this.viewAuthor.emit(current.user_id);
+    }
   }
 }

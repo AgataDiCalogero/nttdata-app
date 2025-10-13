@@ -1,24 +1,44 @@
-import { ChangeDetectionStrategy, Component, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Trash2, Pencil } from 'lucide-angular';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import type { User } from '@/app/shared/models';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { LucideAngularModule, Eye, Pencil, Trash2 } from 'lucide-angular';
 
 @Component({
   standalone: true,
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, RouterLink, ButtonComponent, LucideAngularModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {
+  readonly Eye = Eye;
   readonly Pencil = Pencil;
   readonly Trash2 = Trash2;
+
   @Input() items: User[] = [];
+
+  @Output() readonly view = new EventEmitter<number>();
   @Output() readonly edit = new EventEmitter<number>();
   @Output() readonly delete = new EventEmitter<User>();
 
-  trackById(_idx: number, item: User): number {
+  trackById(_index: number, item: User): number {
     return item.id;
+  }
+
+  onView(user: User): void {
+    this.view.emit(user.id);
+  }
+
+  onEdit(user: User, event: Event): void {
+    event.stopPropagation();
+    this.edit.emit(user.id);
+  }
+
+  onDelete(user: User, event: Event): void {
+    event.stopPropagation();
+    this.delete.emit(user);
   }
 }

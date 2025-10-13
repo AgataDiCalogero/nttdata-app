@@ -3,11 +3,11 @@
   @let deleting = isDeleting();
   @let commentsList = comments();
   @let commentsVisible = commentsList !== null || commentsLoading();
-  @let hasComments = Array.isArray(commentsList);
+  @let commentCount = commentsList?.length ?? 0;
   @let author = authorName() ?? (postModel ? ('User #' + postModel.user_id) : 'Unknown author');
 
   <div card-header class="posts-card__header">
-    <div class="posts-card__author">
+    <button type="button" class="posts-card__author" (click)="onAuthorClick()">
       <div class="posts-card__avatar" aria-hidden="true">
         {{ author.charAt(0).toUpperCase() }}
       </div>
@@ -15,35 +15,37 @@
         <h3 class="posts-card__title">{{ postModel?.title }}</h3>
         <span class="posts-card__subtitle">Shared by {{ author }}</span>
       </div>
-    </div>
+    </button>
 
-    <div class="posts-card__actions">
-      <button
-        appButton
-        variant="ghost"
-        size="sm"
-        type="button"
-        class="posts-card__action"
-        (click)="edit.emit()"
-        aria-label="Edit post {{ postModel?.title }}"
-      >
-        <lucide-icon [img]="Pencil"></lucide-icon>
-        Edit
-      </button>
-      <button
-        appButton
-        variant="ghost"
-        size="sm"
-        type="button"
-        class="posts-card__action posts-card__action--danger"
-        (click)="delete.emit()"
-        [disabled]="deleting"
-        aria-label="Delete post {{ postModel?.title }}"
-      >
-        <lucide-icon [img]="Trash2"></lucide-icon>
-        Delete
-      </button>
-    </div>
+    @if (allowManage()) {
+      <div class="posts-card__actions">
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          class="posts-card__action"
+          (click)="edit.emit()"
+          aria-label="Edit post {{ postModel?.title }}"
+        >
+          <lucide-icon [img]="Pencil"></lucide-icon>
+          Edit
+        </button>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          class="posts-card__action posts-card__action--danger"
+          (click)="delete.emit()"
+          [disabled]="deleting"
+          aria-label="Delete post {{ postModel?.title }}"
+        >
+          <lucide-icon [img]="Trash2"></lucide-icon>
+          Delete
+        </button>
+      </div>
+    }
   </div>
 
   <div card-body class="posts-card__body">
@@ -73,8 +75,8 @@
     >
       <lucide-icon [img]="MessageSquare"></lucide-icon>
       {{ commentsVisible ? 'Hide comments' : 'View comments' }}
-      @if (hasComments && commentsList) {
-        <span class="posts-card__comment-count">({{ commentsList.length }})</span>
+      @if (commentCount > 0) {
+        <span class="posts-card__comment-count">({{ commentCount }})</span>
       }
     </button>
   </div>

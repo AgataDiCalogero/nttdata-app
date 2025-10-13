@@ -1,43 +1,54 @@
-<table class="users-table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Status</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (user of items; track trackById($index, user)) {
-      <tr>
-        <td data-column="ID">{{ user.id }}</td>
-        <td data-column="Name">{{ user.name }}</td>
-        <td data-column="Email">{{ user.email }}</td>
-        <td data-column="Status">
-          <span class="badge badge--{{ user.status }}">{{ user.status }}</span>
-        </td>
-        <td class="actions">
+<div class="user-grid" role="list">
+  @for (user of items; track trackById($index, user)) {
+    <article class="user-card" role="listitem" (click)="onView(user)">
+      <div class="user-card__header">
+        <div class="user-card__avatar" aria-hidden="true">
+          {{ user.name?.slice(0, 2).toUpperCase() || '#' }}
+        </div>
+        <div class="user-card__meta">
+          <h3 class="user-card__name">{{ user.name || 'Unnamed user' }}</h3>
+          <p class="user-card__email">{{ user.email }}</p>
+        </div>
+        <span class="user-card__status user-card__status--{{ user.status }}">
+          {{ user.status | titlecase }}
+        </span>
+      </div>
+
+      <div class="user-card__footer">
+        <div class="user-card__actions">
           <button
+            appButton
+            variant="ghost"
+            size="sm"
             type="button"
-            class="action-button"
-            (click)="edit.emit(user.id)"
-            aria-label="Edit {{ user.name }}"
+            (click)="onView(user)"
+          >
+            <lucide-icon [img]="Eye" aria-hidden="true"></lucide-icon>
+            View
+          </button>
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            (click)="onEdit(user, $event)"
           >
             <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
-            <span class="visually-hidden">Edit</span>
+            Edit
           </button>
           <button
+            appButton
+            variant="ghost"
+            size="sm"
             type="button"
-            class="action-button"
-            (click)="delete.emit(user)"
-            aria-label="Delete {{ user.name }}"
+            class="user-card__action--danger"
+            (click)="onDelete(user, $event)"
           >
             <lucide-icon [img]="Trash2" aria-hidden="true"></lucide-icon>
-            <span class="visually-hidden">Delete</span>
+            Delete
           </button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+        </div>
+      </div>
+    </article>
+  }
+</div>

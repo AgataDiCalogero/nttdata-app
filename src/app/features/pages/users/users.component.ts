@@ -121,6 +121,10 @@ export class Users {
     return Math.max(1, Math.ceil(total / perPage));
   }
 
+  goToDetail(userId: number): void {
+    this.router.navigate(['/users', userId]).catch(() => {});
+  }
+
   loadUsers(): void {
     this.loading.set(true);
     this.error.set(null);

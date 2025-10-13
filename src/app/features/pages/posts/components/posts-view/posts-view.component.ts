@@ -51,6 +51,7 @@ export class PostsViewComponent {
   @Output() changePage = new EventEmitter<number>();
   @Output() changePerPage = new EventEmitter<number>();
   @Output() editPost = new EventEmitter<Post>();
+  @Output() viewAuthor = new EventEmitter<number>();
 
   readonly Plus = Plus;
 
@@ -76,6 +77,10 @@ export class PostsViewComponent {
 
   onCommentUpdated(postId: number, comment: Comment): void {
     this.commentUpdated.emit({ postId, comment });
+  }
+
+  onViewAuthor(userId: number): void {
+    this.viewAuthor.emit(userId);
   }
 
   trackPostById(_index: number, post: Post): number {

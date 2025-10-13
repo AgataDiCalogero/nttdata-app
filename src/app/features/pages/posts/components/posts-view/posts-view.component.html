@@ -61,6 +61,7 @@
           (commentCreated)="commentCreated.emit($event)"
           (commentUpdated)="onCommentUpdated($event.postId, $event.comment)"
           (editPost)="onEditPost($event)"
+          (viewAuthor)="onViewAuthor($event)"
         ></app-posts-list>
       } @else {
         <div class="state state--empty">

@@ -233,6 +233,10 @@ export class Posts {
     this.store.onCommentUpdated(event.postId, event.comment);
   }
 
+  handleViewAuthor(userId: number): void {
+    this.router.navigate(['/users', userId]).catch(() => {});
+  }
+
   handleChangePage(page: number): void {
     this.store.setPage(page);
   }

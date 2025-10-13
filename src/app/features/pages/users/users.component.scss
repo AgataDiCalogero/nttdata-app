@@ -1,252 +1,75 @@
-@use '../../../../styles/mixins';
-
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--space-md);
-  font-size: 0.95rem;
-
-  th,
-  td {
-    border: 1px solid var(--border-mix-60);
-    padding: var(--space-sm) var(--space-md);
-    text-align: left;
-  }
-
-  th {
-    /* fallback before color-mix for broader browser support */
-    background: var(--table-header-bg);
-    background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
-    color: var(--color-on-primary);
-    padding: var(--space-sm) var(--space-md);
-  }
-
-  tr:nth-child(even) {
-    background: var(--table-row-even-bg);
-    background: color-mix(in srgb, var(--color-surface) 50%, var(--color-bg));
-  }
-
-  tbody tr:hover {
-    background: var(--table-row-hover-bg);
-    cursor: pointer;
-  }
-
-  tbody tr.selected {
-    background: var(--table-row-selected-bg);
-    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
-    outline: 2px solid var(--table-row-selected-outline);
-  }
-}
-
-.users-table__sort {
-  @include mixins.flex-row(var(--space-xs));
-  justify-content: space-between;
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: inherit;
-  font: inherit;
-  padding: 0;
-  cursor: pointer;
-  @include mixins.transition-group(color, 0.2s);
-
-  &:hover {
-    color: var(--color-accent-dark, var(--color-accent));
-  }
-
-  &:focus-visible {
-    @include mixins.focus-ring;
-  }
-}
-
-.users-table__sort-indicator {
-  font-size: 0.75rem;
-  line-height: 1;
-}
-
-.actions {
-  @include mixins.button-group(var(--space-sm), flex-end, wrap);
-}
-
-.action-button {
-  @include mixins.flex-center(var(--space-2xs));
-  background: transparent;
-  border: none;
-  padding: var(--space-xs);
-  border-radius: var(--radius-xs);
-  cursor: pointer;
-  @include mixins.transition-group((background, color));
-
-  lucide-icon {
-    width: var(--space-lg);
-    height: var(--space-lg);
-    color: var(--color-on-surface);
-
-    svg {
-      width: 100%;
-      height: 100%;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-    }
-  }
-
-  &:hover {
-    background: var(--table-action-hover-bg);
-
-    lucide-icon {
-      color: var(--color-danger);
-    }
-  }
-
-  &:focus-visible {
-    @include mixins.focus-ring;
-    background: var(--table-action-focus-bg);
-  }
-}
+@use '../../../../styles/mixins' as *;
 
 .users-header {
-  @include mixins.flex-row(var(--space-md));
-  justify-content: space-between;
-}
+  @include flex-row(var(--space-lg), center, space-between);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xl);
 
-/* Use global .btn styles from styles/_buttons.scss to ensure consistency */
-
-.users-header__actions {
-  @include mixins.button-group(var(--space-sm), flex-end, wrap);
-}
-
-.users-search {
-  padding: 0.4rem 0.6rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  @include mixins.transition-group(border-color, 0.2s);
-
-  &:focus-visible {
-    border-color: var(--focus-ring);
-    box-shadow: var(--shadow-focus);
+  h1 {
+    margin: 0;
   }
 }
 
-.badge {
-  display: inline-block;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-full);
-  font-size: 0.85rem;
+.users-skeleton {
+  display: grid;
+  gap: var(--space-sm);
+
+  &__row {
+    height: 72px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(
+      90deg,
+      var(--skeleton-tint-02, rgba(255, 255, 255, 0.08)),
+      var(--skeleton-tint-04, rgba(255, 255, 255, 0.16)),
+      var(--skeleton-tint-02, rgba(255, 255, 255, 0.08))
+    );
+    animation: shimmer 1.5s infinite;
+  }
 }
 
-.badge--active {
-  background: var(--badge-active-bg);
-  color: var(--color-success);
-  border: 1px solid var(--badge-active-border);
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
 }
 
-.badge--inactive {
-  background: var(--badge-inactive-bg);
-  color: var(--color-danger);
-  border: 1px solid var(--badge-inactive-border);
-}
-
-.skeleton td {
-  background: linear-gradient(90deg, var(--skeleton-tint-02), var(--skeleton-tint-04));
-  height: 36px;
+.users-error,
+.users-empty {
+  @include flex-column(var(--space-sm));
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-mix-60);
+  background: var(--color-surface);
+  text-align: center;
 }
 
 .users-pagination {
-  @include mixins.button-group(var(--space-sm), space-between, wrap);
-  margin-top: var(--space-md);
-}
+  @include flex-row(var(--space-sm), center, space-between);
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-@include mixins.mobile {
-  .users-header {
-    @include mixins.flex-column(var(--space-sm));
-    align-items: stretch;
-    gap: var(--space-sm);
+  span {
+    font-weight: 600;
   }
+}
 
-  .users-header__actions {
-    width: 100%;
-    justify-content: stretch;
+@include mobile {
+  .users-header {
+    @include flex-column(var(--space-md));
+    align-items: stretch;
 
-    .btn {
-      width: 100%;
-      justify-content: center;
+    h1 {
+      text-align: center;
     }
   }
 
   .users-pagination {
-    align-items: stretch;
+    flex-direction: column;
     gap: var(--space-sm);
-
-    span {
-      text-align: center;
-      width: 100%;
-    }
-  }
-
-  .users-table {
-    display: grid;
-    gap: var(--space-sm);
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .users-table thead {
-    display: none;
-  }
-
-  .users-table tbody {
-    display: grid;
-    gap: var(--space-sm);
-  }
-
-  .users-table tbody tr {
-    display: grid;
-    gap: var(--space-xs);
-    padding: var(--space-md);
-    border: 1px solid var(--border-mix-60);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .users-table tbody td {
-    border: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: 0.9rem;
-  }
-
-  .users-table tbody td::before {
-    content: attr(data-column);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--color-muted);
-  }
-
-  .actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .action-button {
-    padding: var(--space-xs);
+    text-align: center;
   }
 }
+

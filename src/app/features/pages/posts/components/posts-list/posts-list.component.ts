@@ -23,6 +23,7 @@ export class PostsListComponent {
   @Output() commentCreated = new EventEmitter<{ postId: number; comment: Comment }>();
   @Output() commentUpdated = new EventEmitter<{ postId: number; comment: Comment }>();
   @Output() editPost = new EventEmitter<Post>();
+  @Output() viewAuthor = new EventEmitter<number>();
 
   isDeleting(postId: number): boolean {
     return this.deletingId === postId;
@@ -50,5 +51,9 @@ export class PostsListComponent {
 
   commentsAreLoading(postId: number): boolean {
     return Boolean(this.commentsLoading[postId]);
+  }
+
+  onViewAuthor(post: Post): void {
+    this.viewAuthor.emit(post.user_id);
   }
 }

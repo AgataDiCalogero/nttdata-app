@@ -23,6 +23,7 @@
         <div>
           <app-user-list
             [items]="data.items"
+            (view)="goToDetail($event)"
             (edit)="openEditUserModal($event)"
             (delete)="onDelete($event)"
           ></app-user-list>

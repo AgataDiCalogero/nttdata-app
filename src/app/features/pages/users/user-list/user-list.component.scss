@@ -1,9 +1,97 @@
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
 }
-.users-table th,
-.users-table td {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+
+.user-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--border-mix-60);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &__header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-md);
+    align-items: center;
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  &__name {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--color-on-surface);
+  }
+
+  &__email {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    word-break: break-word;
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    &::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--color-success);
+    }
+
+    &--inactive::before {
+      background: var(--color-danger);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+  }
+
+  &__action--danger {
+    color: var(--color-danger);
+  }
 }

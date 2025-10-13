@@ -26,7 +26,6 @@
 
     <!-- Form -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form" novalidate>
-      @let tokenCtrl = tokenControl;
       @let tokenError = tokenErrorMessage();
 
       <div class="form-group" [class.is-invalid]="showTokenInvalidState()">
