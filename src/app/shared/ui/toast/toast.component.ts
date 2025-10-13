@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AfterViewChecked, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { ToastService } from './toast.service';
 
@@ -17,12 +17,27 @@ import { ToastService } from './toast.service';
     '(document:keydown.escape)': 'handleEscape($event)',
   },
 })
-export class ToastComponent {
+export class ToastComponent implements AfterViewChecked {
   private readonly toastService = inject(ToastService);
   readonly toasts = this.toastService.messages;
 
   dismiss(id: string): void {
     this.toastService.dismiss(id);
+  }
+
+  // Focus the most recent toast for screen reader users when a new toast appears.
+  // We keep this minimal to avoid layout thrashing; the template sets `tabindex="-1"` on toasts.
+  ngAfterViewChecked(): void {
+    try {
+      const container = document.querySelector('.toast-list');
+      if (!container) return;
+      const latest = container.querySelector<HTMLElement>('[data-toast-id]:last-child');
+      if (latest) {
+        latest.focus();
+      }
+    } catch {
+      // Defensive: DOM may be unavailable in some render targets
+    }
   }
 
   /**

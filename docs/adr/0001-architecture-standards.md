@@ -1,26 +1,21 @@
-# 0001 – Architecture Standards (Angular 20)
+# 0001 - Architecture standards
 
-## Status
-
-Accepted
+Status: Proposed
 
 ## Context
 
-The project targets Angular 20 with standalone components and zoneless change detection. We need explicit standards so contributors and automation can enforce consistent, maintainable architecture.
+This repository follows modern Angular patterns with a focus on Signals, standalone components, and accessibility.
 
-## Decision
+## Decisions
 
-- Standalone components everywhere (no NgModules unless required by third parties).
-- Prefer signals (`signal`, `computed`, `effect`, `input`, `output`) for local state; use RxJS only for shared or asynchronous streams.
-- Apply `ChangeDetectionStrategy.OnPush` by default and rely on host metadata instead of `@HostBinding`/`@HostListener`.
-- Configure routing with `loadComponent`/`loadChildren` and functional guards/resolvers using `inject()`.
-- Keep HTTP concerns centralized: API prefix, auth, and error interceptors wired through `provideHttpClient`.
-- Enforce accessibility: English-only copy, semantic landmarks, `aria-live="polite"` for async status (toasts/alerts), and native controls with visible focus.
-- Use SCSS tokens under `src/styles/`, follow the 8pt spacing scale, and provide RGBA fallbacks before `color-mix()` declarations.
+- Use Signals for local component state and `computed()` for derived state.
+- Prefer standalone components where possible.
+- Set `ChangeDetectionStrategy.OnPush` on UI components and shell (App, Navbar, Footer).
+- Do not use `@HostBinding` / `@HostListener` — use `host` metadata in `@Component`.
+- Centralise HTTP error handling via an interceptor and `mapHttpError` utility.
+- Use accessible patterns for transient UI such as toasts/alerts (role="status", aria-live).
 
 ## Consequences
 
-- Components remain small and focused (split when exceeding ~300 LOC).
-- Error handling and toast UX stay consistent across features.
-- Performance remains predictable under zoneless change detection thanks to signals and OnPush.
-- Tooling (lint, CI, PR template) can verify deviations quickly, reducing review overhead.
+- Consistent app behaviour for errors, toasts, and state.
+- Better accessibility and predictable change detection behavior.

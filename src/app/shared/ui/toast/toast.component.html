@@ -1,8 +1,8 @@
-<div class="toast-list">
+<div class="toast-list" aria-atomic="true">
   @for (toast of toasts(); track toast.id) {
-    <div class="toast toast--{{ toast.type }}">
-      <output class="toast__text" aria-live="polite">{{ toast.text }}</output
-      ><button
+    <div class="toast toast--{{ toast.type }}" tabindex="-1" attr.data-toast-id="{{ toast.id }}">
+      <output class="toast__text" aria-live="polite">{{ toast.text }}</output>
+      <button
         type="button"
         class="toast__close"
         (click)="dismiss(toast.id)"
