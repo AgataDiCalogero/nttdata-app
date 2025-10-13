@@ -2,7 +2,10 @@
 
 :host {
   --card-bg: var(--alpha-white-94);
-  --card-bg: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  /* Prefer color-mix when available for theme-aware surface blends */
+  @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
+    --card-bg: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  }
   --card-border: var(--border-mix-65);
   --card-shadow: var(--shadow-lg);
   --card-radius: var(--radius-card);
@@ -39,14 +42,18 @@
 }
 
 :host(.card--subtle) {
-  --card-bg: var(--alpha-white-85);
-  --card-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  --card-bg: var(--alpha-85, rgba(255, 255, 255, 0.85));
+  @supports (background: color-mix(in srgb, var(--color-surface) 85%, transparent)) {
+    --card-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  }
   --card-shadow: var(--shadow-md);
 }
 
 :host(.card--frosted) {
-  --card-bg: var(--alpha-white-70);
-  --card-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  --card-bg: var(--alpha-70, rgba(255, 255, 255, 0.7));
+  @supports (background: color-mix(in srgb, var(--color-surface) 70%, transparent)) {
+    --card-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  }
   -webkit-backdrop-filter: blur(22px);
   backdrop-filter: blur(22px);
   border: 1px solid var(--alpha-border-slate);
@@ -54,7 +61,9 @@
 
 :host(.card--danger) {
   --card-border: var(--color-danger-border-strong);
-  --card-border: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  @supports (border-color: color-mix(in srgb, var(--color-danger) 40%, transparent)) {
+    --card-border: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  }
   --card-shadow: var(--shadow-xl);
 }
 

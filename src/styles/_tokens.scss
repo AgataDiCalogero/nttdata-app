@@ -115,13 +115,18 @@
 
   /* ===== GRADIENTS ===== */
   /* Button gradients */
-  --gradient-primary: linear-gradient(135deg, #fba94a 0%, #f97316 45%, #d65a08 100%);
+  /* Use semantic accent colors to make gradients theme-aware */
+  --gradient-primary: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent-light) 30%, var(--color-accent) 70%),
+    var(--color-accent)
+  );
 
   /* Toast/notification gradients */
-  --gradient-success: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  --gradient-error: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  --gradient-info: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  --gradient-warning: linear-gradient(135deg, #facc15 0%, #d97706 100%);
+  --gradient-success: linear-gradient(135deg, var(--color-success-light), var(--color-success));
+  --gradient-error: linear-gradient(135deg, var(--color-danger), var(--color-danger-dark));
+  --gradient-info: linear-gradient(135deg, var(--color-info), var(--color-info-dark));
+  --gradient-warning: linear-gradient(135deg, var(--color-warning), var(--color-warning-text-dark));
 }
 
 /* Light theme overrides for shadows */

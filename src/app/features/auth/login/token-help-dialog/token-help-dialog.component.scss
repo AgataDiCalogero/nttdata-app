@@ -8,8 +8,8 @@
   background: var(--color-surface-solid);
   color: var(--color-on-surface);
   border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.6);
+  border: 1px solid var(--alpha-03);
+  box-shadow: var(--shadow-xxl);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 
@@ -89,17 +89,20 @@
   }
 
   .token-help__btn--outline {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--alpha-03);
     color: var(--color-on-surface);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--alpha-04);
     box-shadow: none;
   }
 
   .token-help__btn--primary {
-    background: linear-gradient(180deg, rgba(249, 115, 22, 1), rgba(249, 88, 15, 1));
-    color: white;
+    background: var(
+      --gradient-primary,
+      linear-gradient(180deg, var(--color-accent), var(--color-accent-dark))
+    );
+    color: var(--color-on-accent, white);
     border: none;
-    box-shadow: 0 8px 22px rgba(249, 88, 15, 0.18);
+    box-shadow: var(--shadow-accent);
   }
 
   @include mixins.mobile {

@@ -76,17 +76,36 @@
   --alpha-overlay-dark: rgba(0, 0, 0, 0.6); /* backdrop overlay */
   --alpha-overlay-medium: rgba(0, 0, 0, 0.5); /* mobile nav overlay */
   --alpha-overlay-light: rgba(0, 0, 0, 0.05); /* subtle hover */
-  --alpha-white-94: rgba(255, 255, 255, 0.94); /* card backgrounds */
-  --alpha-white-85: rgba(255, 255, 255, 0.85);
-  --alpha-white-70: rgba(255, 255, 255, 0.7);
-  --alpha-white-60: rgba(255, 255, 255, 0.6);
-  --alpha-white-50: rgba(255, 255, 255, 0.5);
-  --alpha-white-45: rgba(255, 255, 255, 0.45);
-  --alpha-white-28: rgba(255, 255, 255, 0.28);
-  --alpha-white-08: rgba(255, 255, 255, 0.08);
-  --alpha-white-15: rgba(255, 255, 255, 0.15);
-  --alpha-white-12: rgba(255, 255, 255, 0.12);
-  --alpha-white-0: rgba(255, 255, 255, 0);
+
+  /* Canonical white alpha tokens (single source-of-truth) */
+  --alpha-94: rgba(255, 255, 255, 0.94);
+  --alpha-85: rgba(255, 255, 255, 0.85);
+  --alpha-70: rgba(255, 255, 255, 0.7);
+  --alpha-60: rgba(255, 255, 255, 0.6);
+  --alpha-50: rgba(255, 255, 255, 0.5);
+  --alpha-45: rgba(255, 255, 255, 0.45);
+  --alpha-28: rgba(255, 255, 255, 0.28);
+  --alpha-15: rgba(255, 255, 255, 0.15);
+  --alpha-12: rgba(255, 255, 255, 0.12);
+  --alpha-08: rgba(255, 255, 255, 0.08);
+  --alpha-06: rgba(255, 255, 255, 0.06);
+  --alpha-04: rgba(255, 255, 255, 0.04);
+  --alpha-03: rgba(255, 255, 255, 0.03);
+  --alpha-02: rgba(255, 255, 255, 0.02);
+  --alpha-0: rgba(255, 255, 255, 0);
+
+  /* Backwards-compatible aliases (keep older names working) */
+  --alpha-white-94: var(--alpha-94);
+  --alpha-white-85: var(--alpha-85);
+  --alpha-white-70: var(--alpha-70);
+  --alpha-white-60: var(--alpha-60);
+  --alpha-white-50: var(--alpha-50);
+  --alpha-white-45: var(--alpha-45);
+  --alpha-white-28: var(--alpha-28);
+  --alpha-white-15: var(--alpha-15);
+  --alpha-white-12: var(--alpha-12);
+  --alpha-white-08: var(--alpha-08);
+  --alpha-white-0: var(--alpha-0);
   --alpha-border-slate: rgba(148, 163, 184, 0.55); /* frosted glass border */
   --surface-mix-92: rgba(255, 255, 255, 0.92);
   --alpha-accent-18: rgba(249, 165, 76, 0.18); /* accent outline */

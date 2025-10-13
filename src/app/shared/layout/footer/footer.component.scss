@@ -5,7 +5,7 @@
   padding-block: var(--space-lg);
   text-align: center;
   background: transparent; /* keep app chrome subtle */
-  border-top: 1px solid rgba(255, 255, 255, 0.02);
+  border-top: 1px solid var(--alpha-02);
   font-size: 0.95rem;
   margin-top: auto;
 }
@@ -29,7 +29,7 @@
 }
 
 .app-footer__link {
-  color: rgba(255, 255, 255, 0.6); /* soft muted text */
+  color: var(--color-muted);
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid transparent;
@@ -37,7 +37,11 @@
 }
 
 .app-footer__link:hover {
-  color: rgba(255, 255, 255, 0.78);
+  /* prefer a slightly stronger on-surface for hover when supported */
+  color: var(--color-muted);
+  @supports (color: color-mix(in srgb, var(--color-on-surface) 78%, transparent)) {
+    color: color-mix(in srgb, var(--color-on-surface) 78%, transparent);
+  }
 }
 
 .app-footer__link:focus-visible {

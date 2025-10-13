@@ -8,30 +8,33 @@
   display: flex;
   gap: 1.25rem;
   padding: 1.75rem;
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: var(--color-surface-solid, #1f2937);
+  border: 1px solid var(--color-border);
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--shadow-md);
   }
 
   &__avatar {
     width: 64px;
     height: 64px;
     border-radius: 14px;
-    background: linear-gradient(135deg, #f97316, #fb923c);
-    color: #ffffff;
+    background: var(
+      --gradient-primary,
+      linear-gradient(135deg, var(--color-accent), var(--color-accent-light))
+    );
+    color: var(--color-on-accent, #ffffff);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
     font-weight: 700;
     flex-shrink: 0;
-    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.25);
+    box-shadow: var(--shadow-accent-soft);
   }
 
   &__content {
@@ -46,7 +49,7 @@
     margin: 0;
     font-size: 1.25rem;
     font-weight: 600;
-    color: #f1f5f9;
+    color: var(--color-on-surface, #f1f5f9);
     line-height: 1.4;
   }
 
@@ -67,15 +70,15 @@
     }
 
     &--active {
-      background: rgba(34, 197, 94, 0.15);
-      color: #4ade80;
-      border: 1px solid rgba(74, 222, 128, 0.3);
+      background: var(--state-success-bg);
+      color: var(--color-success);
+      border: 1px solid var(--color-success-border);
     }
 
     &--inactive {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border: 1px solid rgba(248, 113, 113, 0.3);
+      background: var(--state-error-bg);
+      color: var(--color-danger);
+      border: 1px solid var(--color-danger-border);
     }
   }
 
@@ -90,7 +93,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem; /* icons a bit farther from text */
-    color: #94a3b8;
+    color: var(--color-muted, #9ca3af);
     font-size: 0.9375rem;
     line-height: 1.5;
 
@@ -98,7 +101,7 @@
       width: 16px; /* reduce meta icon size */
       height: 16px;
       flex-shrink: 0;
-      color: #64748b;
+      color: var(--color-muted, #64748b);
     }
 
     span {
@@ -135,27 +138,41 @@
 
     &--view,
     &--edit {
-      background: #2d3748;
-      color: #e2e8f0;
-      border: 1px solid #475569;
+      background: var(--color-surface);
+      color: var(--color-on-surface);
+      border: 1px solid var(--border-mix-60);
 
       &:hover {
-        background: #3d4a5c;
-        border-color: #64748b;
+        /* prefer color-mix when available */
+        /* use canonical alpha tokens: fallback to --alpha-02 (~0.02) for subtle hover */
+        background: var(--hover-surface, var(--alpha-02));
+        @supports (
+          background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--alpha-overlay-light))
+        ) {
+          background: color-mix(
+            in srgb,
+            var(--color-surface-solid) 88%,
+            var(--alpha-overlay-light)
+          );
+        }
+        border-color: var(--color-muted, #64748b);
       }
     }
 
     &--delete {
-      background: rgba(239, 68, 68, 0.12);
-      color: #f87171;
+      background: var(--color-danger-bg, rgba(239, 68, 68, 0.1));
+      color: var(--color-danger, #f87171);
       padding: 0.625rem;
       flex: 0 0 auto;
       min-width: 46px;
-      border: 1px solid rgba(248, 113, 113, 0.2);
+      border: 1px solid var(--color-danger-border-strong, rgba(248, 113, 113, 0.2));
 
       &:hover {
-        background: rgba(239, 68, 68, 0.2);
-        border-color: rgba(248, 113, 113, 0.35);
+        background: var(--danger-hover, var(--state-error-bg, rgba(239, 68, 68, 0.12)));
+        @supports (background: color-mix(in srgb, var(--color-danger) 12%, transparent)) {
+          background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+        }
+        border-color: var(--color-danger-border-strong, rgba(248, 113, 113, 0.35));
       }
 
       span {

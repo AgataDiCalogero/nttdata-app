@@ -64,7 +64,7 @@
   border: none;
   padding: var(--space-md);
   /* remove frosted rim and use a darker subtle shadow to avoid white edge */
-  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  box-shadow: var(--shadow-xl, 0 10px 30px rgba(2, 6, 23, 0.6));
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   /* Extra properties to prevent any light rim or pseudo-elements from showing */
@@ -126,7 +126,7 @@
   @include mixins.transition-group((background, border-color, transform));
 
   &:hover {
-    background: color-mix(in srgb, var(--color-surface-solid) 88%, rgba(255, 255, 255, 0.02));
+    background: var(--alpha-02);
     transform: translateY(-1px);
   }
 
@@ -136,18 +136,17 @@
 
   &--active {
     /* active option: orange border with a darker filled surface and glow */
-    background: color-mix(in srgb, var(--color-surface-solid) 84%, rgba(0, 0, 0, 0.25));
+    /* slightly stronger surface overlay mapped to canonical token approximating 0.25 */
+    background: var(--alpha-28);
     border-color: var(--color-accent);
     transform: none;
-    box-shadow:
-      0 8px 24px rgba(249, 115, 22, 0.08),
-      inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-accent-soft, 0 8px 24px rgba(249, 115, 22, 0.08));
 
     .appearance-option__icon {
       background: transparent;
       color: var(--color-accent);
       box-shadow: none;
-      border: 1px solid rgba(249, 115, 22, 0.28);
+      border: 1px solid var(--alpha-accent-28);
     }
   }
 
@@ -206,8 +205,8 @@
   border-radius: 999px;
   position: relative;
   /* visible off-state background */
-  background: var(--alpha-white-12);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--alpha-12, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--alpha-06, rgba(255, 255, 255, 0.06));
   @include mixins.transition-group((background, border-color));
 
   &::after {
@@ -225,7 +224,19 @@
   }
 
   &[data-on='true'] {
-    background: linear-gradient(180deg, rgba(249, 115, 22, 0.12), rgba(249, 115, 22, 0.06));
+    /* fallback linear gradient using tokenized mixes */
+    background: linear-gradient(
+      180deg,
+      var(--alpha-accent-12, rgba(249, 115, 22, 0.12)),
+      var(--alpha-accent-06)
+    );
+    @supports (background: color-mix(in srgb, var(--color-accent) 12%, transparent)) {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-accent) 12%, transparent),
+        color-mix(in srgb, var(--color-accent) 6%, transparent)
+      );
+    }
     border-color: var(--color-accent);
 
     &::after {
