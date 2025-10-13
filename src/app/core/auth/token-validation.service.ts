@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
+import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
 
 export type TokenValidationErrorCode =
   | 'empty'
@@ -39,56 +40,48 @@ export class TokenValidationService {
 
     return this.http.get('/users', { headers, params, observe: 'response' }).pipe(
       map(() => ({ success: true as const })),
-      catchError((error: unknown) => of(this.mapError(error))),
+      catchError((error: unknown) => of(this.mapUiErrorToResult(mapHttpError(error)))),
     );
   }
 
-  private mapError(error: unknown): TokenValidationResult {
-    if (!(error instanceof HttpErrorResponse)) {
-      return {
-        success: false,
-        code: 'unknown',
-        message: 'Unable to verify the token right now. Please try again.',
-      };
-    }
+  private mapUiErrorToResult(uiError: UiError): TokenValidationResult {
+    const defaultMessage = 'Unable to verify the token right now. Please try again.';
+    const maybeMsg = uiError as unknown as Record<string, unknown>;
+    const message: string =
+      typeof maybeMsg?.message === 'string' ? maybeMsg.message : defaultMessage;
 
-    if (error.status === 0) {
-      return {
-        success: false,
-        code: 'network',
-        message: 'Network unreachable. Check your connection and try again.',
-      };
+    switch (uiError.kind) {
+      case 'network':
+        return {
+          success: false,
+          code: 'network',
+          message,
+        };
+      case 'unauthorized':
+        return {
+          success: false,
+          code: 'unauthorized',
+          message:
+            'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
+        };
+      case 'rate-limit':
+        return {
+          success: false,
+          code: 'rate_limited',
+          message,
+        };
+      case 'forbidden':
+        return {
+          success: false,
+          code: 'unauthorized',
+          message,
+        };
+      default:
+        return {
+          success: false,
+          code: 'unknown',
+          message,
+        };
     }
-
-    if (error.status === 401 || error.status === 403) {
-      return {
-        success: false,
-        code: 'unauthorized',
-        message:
-          'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
-      };
-    }
-
-    if (error.status === 429) {
-      return {
-        success: false,
-        code: 'rate_limited',
-        message: 'Too many attempts. Wait a few seconds before trying again.',
-      };
-    }
-
-    if (error.status >= 500) {
-      return {
-        success: false,
-        code: 'server',
-        message: 'GoRest is temporarily unavailable. Please retry in a moment.',
-      };
-    }
-
-    return {
-      success: false,
-      code: 'unknown',
-      message: 'Unable to verify the token right now. Please try again.',
-    };
   }
 }
