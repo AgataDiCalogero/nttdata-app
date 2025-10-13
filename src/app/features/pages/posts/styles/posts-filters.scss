@@ -1,4 +1,4 @@
-@use '../../../../../../styles/mixins' as mixins;
+@use '../../../../../styles/mixins' as mixins;
 
 .posts-header {
   @include mixins.flex-row(var(--space-lg), flex-start, space-between);

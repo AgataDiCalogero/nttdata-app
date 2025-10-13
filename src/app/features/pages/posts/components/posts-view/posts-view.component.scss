@@ -1,7 +1,6 @@
 @use '../../../../../../styles/mixins' as *;
 @use '../../styles/posts-card.scss';
 @use '../../styles/posts-filters.scss';
-@use '../../styles/posts-comments.scss';
 
 .posts-page {
   @include flex-column(var(--space-lg));

@@ -7,6 +7,7 @@ export interface Post {
 }
 
 export type CreatePost = Omit<Post, 'id'>;
+export type UpdatePost = Partial<CreatePost>;
 
 export interface Comment {
   id: number;
@@ -17,3 +18,4 @@ export interface Comment {
 }
 
 export type CreateComment = Omit<Comment, 'id' | 'post_id'>;
+export type UpdateComment = Partial<Omit<Comment, 'id' | 'post_id'>>;

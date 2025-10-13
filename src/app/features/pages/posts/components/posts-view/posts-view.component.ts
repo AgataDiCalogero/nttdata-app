@@ -39,6 +39,7 @@ export class PostsViewComponent {
   @Input() hasPagination = false;
   @Input() deletingId: number | null = null;
   @Input() postsCount = 0;
+  @Input() userLookup: Record<number, string> = {};
 
   @Output() createPost = new EventEmitter<void>();
   @Output() resetFilters = new EventEmitter<void>();
@@ -46,8 +47,10 @@ export class PostsViewComponent {
   @Output() toggleComments = new EventEmitter<number>();
   @Output() deletePost = new EventEmitter<Post>();
   @Output() commentCreated = new EventEmitter<{ postId: number; comment: Comment }>();
+  @Output() commentUpdated = new EventEmitter<{ postId: number; comment: Comment }>();
   @Output() changePage = new EventEmitter<number>();
   @Output() changePerPage = new EventEmitter<number>();
+  @Output() editPost = new EventEmitter<Post>();
 
   readonly Plus = Plus;
 
@@ -65,6 +68,14 @@ export class PostsViewComponent {
 
   onCommentCreated(postId: number, comment: Comment): void {
     this.commentCreated.emit({ postId, comment });
+  }
+
+  onEditPost(post: Post): void {
+    this.editPost.emit(post);
+  }
+
+  onCommentUpdated(postId: number, comment: Comment): void {
+    this.commentUpdated.emit({ postId, comment });
   }
 
   trackPostById(_index: number, post: Post): number {

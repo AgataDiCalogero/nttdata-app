@@ -55,9 +55,12 @@
           [commentsMap]="commentsMap"
           [commentsLoading]="commentsLoading"
           [deletingId]="deletingId"
+          [userLookup]="userLookup"
           (deletePost)="deletePost.emit($event)"
           (toggleComments)="toggleComments.emit($event)"
           (commentCreated)="commentCreated.emit($event)"
+          (commentUpdated)="onCommentUpdated($event.postId, $event.comment)"
+          (editPost)="onEditPost($event)"
         ></app-posts-list>
       } @else {
         <div class="state state--empty">

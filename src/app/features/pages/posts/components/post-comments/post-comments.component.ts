@@ -1,13 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  signal,
+} from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
-import { LucideAngularModule, Heart } from 'lucide-angular';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { LucideAngularModule, Pencil, X } from 'lucide-angular';
 import type { Comment } from '@/app/shared/models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
   selector: 'app-post-comments',
-  imports: [CommonModule, CommentFormComponent, LucideAngularModule],
+  imports: [CommonModule, CommentFormComponent, ReactiveFormsModule, ButtonComponent, LucideAngularModule],
   templateUrl: './post-comments.component.html',
   styleUrls: ['./post-comments.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,78 +32,80 @@ export class PostCommentsComponent {
   @Input() postId = 0;
 
   @Output() commentCreated = new EventEmitter<Comment>();
+  @Output() commentUpdated = new EventEmitter<Comment>();
 
-  readonly Heart = Heart;
+  private readonly fb = inject(FormBuilder);
+  private readonly postsApi = inject(PostsApiService);
+  private readonly toast = inject(ToastService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  showReplies: number | null = null;
-  showRepliesForm: number | null = null;
-  likesMap = new Map<number, number>();
-  newCommentIds = new Set<number>();
-  hasMoreComments = false;
+  readonly Pencil = Pencil;
+  readonly X = X;
 
-  isLiked(commentId: number): boolean {
-    return (this.likesMap.get(commentId) || 0) > 0;
+  readonly editingId = signal<number | null>(null);
+  readonly submittingEdit = signal(false);
+  readonly editError = signal<string | null>(null);
+
+  readonly editForm = this.fb.nonNullable.group({
+    body: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
+  });
+
+  startEdit(comment: Comment): void {
+    this.editingId.set(comment.id);
+    this.editError.set(null);
+    this.editForm.reset({ body: comment.body });
   }
 
-  getLikesCount(commentId: number): number {
-    return this.likesMap.get(commentId) || 0;
+  cancelEdit(): void {
+    this.editingId.set(null);
+    this.editError.set(null);
+    this.editForm.reset();
   }
 
-  isNewComment(commentId: number): boolean {
-    return this.newCommentIds.has(commentId);
-  }
-
-  onLikeComment(comment: Comment): void {
-    const currentLikes = this.likesMap.get(comment.id) || 0;
-    const newLikes = currentLikes > 0 ? 0 : 1;
-    this.likesMap.set(comment.id, newLikes);
-  }
-
-  toggleReplyForm(comment: Comment): void {
-    if (this.showRepliesForm === comment.id) {
-      this.showRepliesForm = null;
-    } else {
-      this.showRepliesForm = comment.id;
+  saveEdit(comment: Comment): void {
+    if (this.editForm.invalid || this.submittingEdit()) {
+      this.editForm.markAllAsTouched();
+      return;
     }
+
+    const trimmed = this.editForm.controls.body.value.trim();
+    if (!trimmed || trimmed === comment.body) {
+      this.cancelEdit();
+      return;
+    }
+
+    this.submittingEdit.set(true);
+    this.editError.set(null);
+
+    this.postsApi
+      .updateComment(comment.id, { body: trimmed })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (updated) => {
+          this.toast.show('success', 'Comment updated');
+          this.commentUpdated.emit(updated);
+          this.submittingEdit.set(false);
+          this.cancelEdit();
+        },
+        error: (err) => {
+          console.error('Failed to update comment', err);
+          this.submittingEdit.set(false);
+          if (err?.status === 422) {
+            this.editError.set('Comment content is not valid. Please revise and try again.');
+          } else if (err?.status === 429) {
+            this.editError.set('Too many attempts. Please wait a moment and retry.');
+          } else {
+            this.editError.set('Unable to update this comment right now.');
+          }
+        },
+      });
   }
 
-  onCommentCreated($event: Comment): void {
-    const newComment: Comment = {
-      ...$event,
-      id: Date.now(), // Temporary ID for new comments
-      post_id: this.postId,
-    };
-
-    this.newCommentIds.add(newComment.id);
-    this.commentCreated.emit(newComment);
-  }
-
-  onReplyCreated($event: Comment): void {
-    const newReply: Comment = {
-      ...$event,
-      id: Date.now(),
-      post_id: this.postId,
-    };
-
-    // For now, just emit the reply as a regular comment
-    // In a real implementation, you'd handle nested comments differently
-    this.newCommentIds.add(newReply.id);
-    this.commentCreated.emit(newReply);
-
-    // Hide reply form
-    this.showRepliesForm = null;
-  }
-
-  onNestedCommentCreated(event: Comment): void {
-    this.commentCreated.emit(event);
-  }
-
-  loadMoreComments(): void {
-    // Implement pagination logic
-    this.hasMoreComments = false; // Temporary
-  }
-
-  trackByCommentId(index: number, comment: Comment): number {
+  trackByCommentId(_index: number, comment: Comment): number {
     return comment.id;
+  }
+
+  onCommentCreated(comment: Comment): void {
+    this.commentCreated.emit(comment);
   }
 }

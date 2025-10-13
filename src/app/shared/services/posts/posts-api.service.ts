@@ -6,6 +6,8 @@ import type {
   Comment,
   CreatePost,
   CreateComment,
+  UpdatePost,
+  UpdateComment,
   PaginationMeta,
   ListResponse,
 } from '@/app/shared/models';
@@ -39,6 +41,10 @@ export class PostsApiService {
     return this.http.post<Post>(this.base, payload);
   }
 
+  update(id: number, payload: UpdatePost): Observable<Post> {
+    return this.http.patch<Post>(`${this.base}/${id}`, payload);
+  }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/${id}`);
   }
@@ -49,6 +55,10 @@ export class PostsApiService {
 
   createComment(postId: number, payload: CreateComment): Observable<Comment> {
     return this.http.post<Comment>(`${this.base}/${postId}/comments`, payload);
+  }
+
+  updateComment(commentId: number, payload: UpdateComment): Observable<Comment> {
+    return this.http.patch<Comment>(`/comments/${commentId}`, payload);
   }
 
   private mapResponse(resp: HttpResponse<Post[]>): ListResponse<Post> {

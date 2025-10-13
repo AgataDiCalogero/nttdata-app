@@ -1,7 +1,7 @@
 <section class="post-form">
   <header class="post-form__header">
-    <h2>Create a new post</h2>
-    <p>Share ideas or reports to help improve the city.</p>
+    <h2>{{ dialogTitle() }}</h2>
+    <p>{{ dialogSubtitle() }}</p>
   </header>
 
   @if (loadingUsers() && !users().length) {
@@ -78,7 +78,7 @@
         maxlength="500"
       ></textarea>
       <div class="field-hint">
-        <span>{{ form.controls.body.value.length }}/500</span>
+        <span>{{ form.controls.body.value?.length ?? 0 }}/500</span>
         @if (bodyInvalid) {
           <p class="field-error">Please describe the post with at least 20 characters.</p>
         }
@@ -96,7 +96,7 @@
         [loading]="submitting()"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
-        {{ submitting() ? 'Saving...' : 'Create post' }}
+        {{ submitting() ? 'Saving...' : submitLabel() }}
       </button>
     </div>
   </form>

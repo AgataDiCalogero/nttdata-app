@@ -66,6 +66,10 @@ export class Posts {
     return this.store.commentsLoading();
   }
 
+  get userLookup() {
+    return this.store.userLookup();
+  }
+
   get perPageOptions() {
     return this.store.perPageOptions;
   }
@@ -128,9 +132,13 @@ export class Posts {
     });
 
     ref.closed.subscribe((result) => {
-      if (result === 'success') {
-        this.store.setPage(1);
-        this.store.refresh();
+      if (result && typeof result === 'object' && 'status' in result) {
+        if (result.status === 'created') {
+          this.store.setPage(1);
+          this.store.refresh();
+        } else if (result.status === 'updated') {
+          this.store.onPostUpdated(result.post);
+        }
       }
     });
   }
@@ -145,6 +153,51 @@ export class Posts {
 
   handleToggleComments(postId: number): void {
     this.store.toggleComments(postId);
+  }
+
+  handleEditPost(post: Post): void {
+    const isMobile = window.innerWidth < 640;
+    const baseConfig = isMobile
+      ? {
+          position: { right: '0', top: '0' },
+          height: '100%',
+          width: '480px',
+          maxWidth: '100vw',
+          panelClass: 'slide-in-drawer',
+          backdropClass: 'blurred-backdrop',
+          ariaLabel: `Edit post ${post.title}`,
+          autoFocus: true,
+          restoreFocus: true,
+          closeOnNavigation: true,
+          disableClose: false,
+        }
+      : {
+          width: '620px',
+          maxWidth: '90vw',
+          backdropClass: 'blurred-backdrop',
+          panelClass: 'user-form-modal',
+          ariaLabel: `Edit post ${post.title}`,
+          autoFocus: true,
+          restoreFocus: true,
+          closeOnNavigation: true,
+          disableClose: false,
+        };
+
+    const ref = this.dialog.open(PostForm, {
+      ...baseConfig,
+      data: { users: this.store.userOptions(), post },
+    });
+
+    ref.closed.subscribe((result) => {
+      if (result && typeof result === 'object' && 'status' in result) {
+        if (result.status === 'updated') {
+          this.store.onPostUpdated(result.post);
+        } else if (result.status === 'created') {
+          this.store.setPage(1);
+          this.store.refresh();
+        }
+      }
+    });
   }
 
   handleDeletePost(post: Post): void {
@@ -174,6 +227,10 @@ export class Posts {
 
   handleCommentCreated(event: { postId: number; comment: Comment }): void {
     this.store.onCommentCreated(event.postId, event.comment);
+  }
+
+  handleCommentUpdated(event: { postId: number; comment: Comment }): void {
+    this.store.onCommentUpdated(event.postId, event.comment);
   }
 
   handleChangePage(page: number): void {

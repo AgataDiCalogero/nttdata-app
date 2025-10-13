@@ -153,6 +153,21 @@ export class PostsStore {
     });
   }
 
+  onCommentUpdated(postId: number, comment: Comment): void {
+    this.commentsMap.update((state) => {
+      const current = state[postId];
+      if (!current) {
+        return state;
+      }
+      const next = current.map((existing) => (existing.id === comment.id ? comment : existing));
+      return { ...state, [postId]: next };
+    });
+  }
+
+  onPostUpdated(updated: Post): void {
+    this.posts.update((list) => list.map((post) => (post.id === updated.id ? updated : post)));
+  }
+
   initializePaging(page: number, perPage: number): void {
     const sanitizedPerPage = Math.max(1, perPage);
     const sanitizedPage = Math.max(1, page);

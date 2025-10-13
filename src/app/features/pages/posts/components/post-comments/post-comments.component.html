@@ -1,61 +1,105 @@
-<div class="post-comments">
-  <div class="post-comments__header">
-    <h4>{{ comments?.length || 0 }} {{ comments?.length === 1 ? 'Comment' : 'Comments' }}</h4>
-  </div>
+<section class="post-comments">
+  <app-comment-form
+    class="post-comments__composer"
+    [postId]="postId"
+    placeholder="Write a comment..."
+    (created)="onCommentCreated($event)"
+  ></app-comment-form>
 
-  <div class="post-comments__list">
-    @if (!comments || comments.length === 0) {
-      <app-comment-form [postId]="postId" (created)="onCommentCreated($event)"></app-comment-form>
-    }
+  <div class="post-comments__divider" role="presentation"></div>
 
-    @if (comments && comments.length > 0) {
-      <div class="comments-list">
-        @for (comment of comments; track comment.id) {
-          <div class="comment-item" [class.comment-item--new]="isNewComment(comment.id)">
-            <div class="comment-content">
-              <div class="comment-author">
-                <strong>{{ comment.name || 'Anonymous' }}</strong>
-                <span class="comment-email">{{ comment.email }}</span>
-              </div>
-              <p class="comment-body">{{ comment.body }}</p>
-              <div class="comment-actions">
-                <button
-                  type="button"
-                  class="comment-action-button"
-                  (click)="onLikeComment(comment)"
-                  [class.liked]="isLiked(comment.id)"
-                >
-                  <lucide-icon [img]="Heart" [size]="14"></lucide-icon>
-                  {{ getLikesCount(comment.id) }}
-                </button>
-                <button
-                  type="button"
-                  class="comment-action-button"
-                  (click)="toggleReplyForm(comment)"
-                >
-                  Reply
-                </button>
-              </div>
-            </div>
-
-            <!-- Reply form -->
-            <div *ngIf="showRepliesForm === comment.id" class="comment-reply-form">
-              <app-comment-form
-                [postId]="postId"
-                placeholder="Write a reply..."
-                (created)="onReplyCreated($event)"
-              ></app-comment-form>
-            </div>
-
-            <!-- For future: nested replies will be implemented when Comment model supports it -->
-          </div>
-        }
-      </div>
-    }
-
-    <!-- Load more button -->
-    <div *ngIf="hasMoreComments" class="comments-load-more">
-      <button type="button" (click)="loadMoreComments()">Load more comments</button>
+  @if (loading) {
+    <div class="post-comments__loading" aria-live="polite">
+      Loading comments…
     </div>
-  </div>
-</div>
+  } @else if (!comments || comments.length === 0) {
+    <div class="post-comments__empty state state--empty state--compact">
+      Be the first to start the conversation.
+    </div>
+  } @else {
+    <div class="post-comments__list" role="list">
+      @for (comment of comments; track trackByCommentId($index, comment)) {
+        @let isEditing = editingId() === comment.id;
+        <article class="post-comments__item" role="listitem">
+          <header class="post-comments__item-header">
+            <div class="post-comments__avatar" aria-hidden="true">
+              {{ comment.name.charAt(0).toUpperCase() }}
+            </div>
+            <div class="post-comments__meta">
+              <span class="post-comments__author">{{ comment.name || 'Anonymous' }}</span>
+              <span class="post-comments__email">{{ comment.email }}</span>
+            </div>
+            <div class="post-comments__item-actions">
+              @if (!isEditing) {
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="startEdit(comment)"
+                  aria-label="Edit comment from {{ comment.name }}"
+                >
+                  <lucide-icon [img]="Pencil"></lucide-icon>
+                  Edit
+                </button>
+              } @else {
+                <button
+                  appButton
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  (click)="cancelEdit()"
+                  aria-label="Cancel editing comment from {{ comment.name }}"
+                >
+                  <lucide-icon [img]="X"></lucide-icon>
+                  Cancel
+                </button>
+              }
+            </div>
+          </header>
+
+          <div class="post-comments__body">
+            @if (isEditing) {
+              <form
+                class="post-comments__edit-form"
+                [formGroup]="editForm"
+                (ngSubmit)="saveEdit(comment)"
+              >
+                <textarea
+                  class="form-textarea"
+                  formControlName="body"
+                  rows="3"
+                  placeholder="Update your comment"
+                  [disabled]="submittingEdit()"
+                  [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
+                ></textarea>
+                <div class="post-comments__edit-actions">
+                  <button
+                    appButton
+                    variant="primary"
+                    size="sm"
+                    type="submit"
+                    [loading]="submittingEdit()"
+                  >
+                    Save
+                  </button>
+                  <button appButton variant="ghost" size="sm" type="button" (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                </div>
+                @if (editError()) {
+                  <p class="field-error">{{ editError() }}</p>
+                }
+              </form>
+            } @else {
+              <p class="post-comments__text">
+                {{ comment.body }}
+              </p>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
+

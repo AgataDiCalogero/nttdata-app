@@ -7,9 +7,13 @@
         padding="spacious"
         [isDeleting]="isDeleting(post.id)"
         [comments]="commentsFor(post.id) ?? null"
+        [commentsLoading]="commentsAreLoading(post.id)"
         (delete)="deletePost.emit(post)"
         (toggleComments)="toggleComments.emit(post.id)"
         (commentCreated)="onCommentCreated(post.id, $event)"
+        (commentUpdated)="onCommentUpdated(post.id, $event)"
+        (edit)="onEditPost(post)"
+        [authorName]="authorName(post) ?? ('User #' + post.user_id)"
       ></app-post-card>
     </li>
   }

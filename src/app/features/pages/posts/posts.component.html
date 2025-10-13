@@ -6,6 +6,7 @@
   [posts]="posts"
   [commentsMap]="commentsMap"
   [commentsLoading]="commentsLoading"
+  [userLookup]="userLookup"
   [perPageOptions]="perPageOptions"
   [currentPage]="currentPage"
   [totalPages]="totalPages"
@@ -18,7 +19,9 @@
   (refresh)="handleRefresh()"
   (toggleComments)="handleToggleComments($event)"
   (deletePost)="handleDeletePost($event)"
+  (editPost)="handleEditPost($event)"
   (commentCreated)="handleCommentCreated($event)"
+  (commentUpdated)="handleCommentUpdated($event)"
   (changePage)="handleChangePage($event)"
   (changePerPage)="handleChangePerPage($event)"
 ></app-posts-view>

@@ -1,110 +1,92 @@
 <app-card class="posts-card" [interactive]="interactive()" [padding]="padding()">
-  @let p = post();
+  @let postModel = post();
   @let deleting = isDeleting();
-  @let c = comments() ?? null;
+  @let commentsList = comments();
+  @let commentsVisible = commentsList !== null || commentsLoading();
+  @let hasComments = Array.isArray(commentsList);
+  @let author = authorName() ?? (postModel ? ('User #' + postModel.user_id) : 'Unknown author');
 
-  <div card-header>
-    <div class="card__title posts-card__title">
-      <h3>{{ p?.title }}</h3>
-      <span class="card__meta">Author: {{ p?.user_id }}</span>
+  <div card-header class="posts-card__header">
+    <div class="posts-card__author">
+      <div class="posts-card__avatar" aria-hidden="true">
+        {{ author.charAt(0).toUpperCase() }}
+      </div>
+      <div class="posts-card__author-meta">
+        <h3 class="posts-card__title">{{ postModel?.title }}</h3>
+        <span class="posts-card__subtitle">Shared by {{ author }}</span>
+      </div>
     </div>
 
-    <div class="card__actions">
+    <div class="posts-card__actions">
       <button
         appButton
         variant="ghost"
         size="sm"
         type="button"
-        class="posts-card__delete"
+        class="posts-card__action"
+        (click)="edit.emit()"
+        aria-label="Edit post {{ postModel?.title }}"
+      >
+        <lucide-icon [img]="Pencil"></lucide-icon>
+        Edit
+      </button>
+      <button
+        appButton
+        variant="ghost"
+        size="sm"
+        type="button"
+        class="posts-card__action posts-card__action--danger"
         (click)="delete.emit()"
         [disabled]="deleting"
-        aria-label="Delete {{ p?.title }}"
+        aria-label="Delete post {{ postModel?.title }}"
       >
         <lucide-icon [img]="Trash2"></lucide-icon>
+        Delete
       </button>
     </div>
   </div>
 
-  <div card-body>
-    <div class="post-content">
-      <p class="post-content__text" [attr.aria-expanded]="isExpanded">
-        @if (!isExpanded && shouldTruncate()) {
-          {{ previewText() }}
-        } @else {
-          {{ p?.body }}
-        }
-      </p>
-
-      @if (shouldTruncate()) {
-        <button type="button" class="post-content__toggle" (click)="toggleExpansion()">
-          {{ isExpanded ? 'Show less' : 'Read more' }}
-        </button>
+  <div card-body class="posts-card__body">
+    <p class="posts-card__content" [attr.aria-expanded]="isExpanded">
+      @if (!isExpanded && shouldTruncate()) {
+        {{ previewText() }}
+      } @else {
+        {{ postModel?.body }}
       }
-    </div>
+    </p>
+
+    @if (shouldTruncate()) {
+      <button type="button" class="posts-card__toggle" (click)="toggleExpansion()">
+        {{ isExpanded ? 'Show less' : 'Show more' }}
+      </button>
+    }
   </div>
 
-  <div card-footer>
+  <div card-footer class="posts-card__footer">
     <button
       appButton
       variant="ghost"
       type="button"
+      class="posts-card__comment-toggle"
       (click)="toggleComments.emit()"
-      [attr.aria-expanded]="c ? 'true' : 'false'"
+      [attr.aria-expanded]="commentsVisible ? 'true' : 'false'"
     >
       <lucide-icon [img]="MessageSquare"></lucide-icon>
-      {{ c ? 'Hide comments' : 'Show comments' }}
+      {{ commentsVisible ? 'Hide comments' : 'View comments' }}
+      @if (hasComments && commentsList) {
+        <span class="posts-card__comment-count">({{ commentsList.length }})</span>
+      }
     </button>
   </div>
 
-  @if (c) {
-    <div class="post-comments">
-      @if (c.length === 0) {
-        <div class="state state--empty state--compact">No comments available yet.</div>
-      } @else {
-        <div class="comments-section">
-          <h4 class="comments-section__title">Comments</h4>
-          <div class="comments-list">
-            @for (comment of c; track comment.id) {
-              <div class="comment-item">
-                <div class="comment-item__avatar">
-                  <div class="avatar">{{ comment.name.charAt(0).toUpperCase() }}</div>
-                </div>
-                <div class="comment-item__content">
-                  <div class="comment-bubble">
-                    <div class="comment-bubble__header">
-                      <strong class="comment-bubble__author">{{ comment.name }}</strong>
-                    </div>
-                    <p
-                      class="comment-bubble__text"
-                      [attr.aria-expanded]="isCommentExpanded(comment.id)"
-                    >
-                      @if (
-                        !isCommentExpanded(comment.id) && shouldTruncateText(comment.body, 120)
-                      ) {
-                        {{ preview(comment.body, 120) }}
-                      } @else {
-                        {{ comment.body }}
-                      }
-                    </p>
-                    @if (shouldTruncateText(comment.body, 120)) {
-                      <button
-                        type="button"
-                        class="comment-toggle"
-                        (click)="toggleCommentExpansion(comment.id)"
-                      >
-                        {{ isCommentExpanded(comment.id) ? 'Show less' : 'Read more' }}
-                      </button>
-                    }
-                  </div>
-                  <div class="comment-item__meta">
-                    <span class="comment-meta__email">{{ comment.email }}</span>
-                  </div>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      }
-    </div>
+  @if (commentsVisible && postModel) {
+    <app-post-comments
+      class="posts-card__comments"
+      [postId]="postModel.id"
+      [comments]="commentsList ?? []"
+      [loading]="commentsLoading()"
+      (commentCreated)="onInternalCommentCreated($event)"
+      (commentUpdated)="onInternalCommentUpdated($event)"
+    ></app-post-comments>
   }
 </app-card>

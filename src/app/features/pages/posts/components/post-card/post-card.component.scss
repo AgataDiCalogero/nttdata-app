@@ -3,69 +3,88 @@
 .posts-card {
   --card-padding-x: var(--space-xl);
   --card-padding-y: var(--space-lg);
+  display: flex;
+  flex-direction: column;
   gap: var(--space-md);
 
+  &__header {
+    @include flex-row(var(--space-md), center, space-between);
+    flex-wrap: wrap;
+  }
+
+  &__author {
+    @include flex-row(var(--space-md), center);
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  &__author-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    min-width: 0;
+  }
+
   &__title {
-    h3 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 600;
-      line-height: 1.4;
-      color: var(--color-on-surface);
-    }
-  }
-
-  &__delete {
-    color: var(--color-danger);
-
-    &:hover:not(:disabled) {
-      background: var(--color-danger-bg);
-      border-color: var(--color-danger-border);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    lucide-icon {
-      width: 1rem;
-      height: 1rem;
-    }
-  }
-}
-
-.post-content {
-  position: relative;
-
-  &__text {
     margin: 0;
-    line-height: var(--post-line-height);
+    font-size: 1.1rem;
+    font-weight: 600;
     color: var(--color-on-surface);
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    line-height: 1.3;
+    word-break: break-word;
   }
 
-  &--truncated {
-    .post-content__text {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: var(--post-preview-lines);
-      line-clamp: var(--post-preview-lines);
-      overflow: hidden;
-      max-height: var(--post-preview-height);
+  &__subtitle {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+
+  &__actions {
+    @include flex-row(var(--space-xs));
+    flex-shrink: 0;
+  }
+
+  &__action {
+    gap: var(--space-2xs);
+
+    &--danger {
+      color: var(--color-danger);
     }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  &__content {
+    margin: 0;
+    color: var(--color-on-surface);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   &__toggle {
-    display: inline-flex;
-    align-items: center;
-    margin-top: var(--space-xs);
-    padding: var(--space-xs) 0;
-    background: transparent;
+    align-self: flex-start;
+    padding: 0;
     border: none;
+    background: none;
     color: var(--color-accent);
-    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     @include transition-group(color);
@@ -78,133 +97,42 @@
     &:focus-visible {
       outline: 2px solid var(--color-accent);
       outline-offset: 2px;
-      border-radius: var(--radius-sm);
+    }
+  }
+
+  &__footer {
+    @include flex-row(var(--space-sm), center, space-between);
+    flex-wrap: wrap;
+  }
+
+  &__comment-toggle {
+    gap: var(--space-xs);
+  }
+
+  &__comment-count {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+
+  &__comments {
+    border-top: 1px solid var(--comment-border);
+    padding-top: var(--space-md);
+    display: block;
+  }
+}
+
+@include mobile {
+  .posts-card {
+    --card-padding-x: var(--space-lg);
+    --card-padding-y: var(--space-lg);
+
+    &__header {
+      align-items: flex-start;
+    }
+
+    &__author {
+      align-items: flex-start;
     }
   }
 }
 
-.card__actions {
-  display: flex;
-  gap: var(--space-xs);
-}
-
-.card__meta {
-  font-size: 0.8rem;
-  color: var(--color-muted);
-  margin-top: var(--space-2xs);
-}
-
-// Comments styles in Facebook style
-.post-comments {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--comment-border);
-}
-
-.comments-section {
-  &__title {
-    margin: 0 0 var(--space-md) 0;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-on-surface);
-  }
-}
-
-.comments-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  @include flex-column(var(--space-md));
-}
-
-.comment-item {
-  @include flex-row(var(--space-sm));
-  align-items: flex-start;
-
-  &__avatar {
-    flex-shrink: 0;
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: var(--radius-full);
-      background: var(--color-accent);
-      color: var(--color-on-accent);
-      @include flex-center;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-  }
-
-  &__content {
-    flex: 1;
-    min-width: 0; // Prevents flex item from overflowing
-  }
-
-  &__meta {
-    margin-top: var(--space-2xs);
-    padding-left: var(--space-sm);
-  }
-}
-
-.comment-bubble {
-  background: var(--comment-bg);
-  border: 1px solid var(--comment-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-sm) var(--space-md);
-  position: relative;
-
-  // Facebook-style speech bubble tail
-  &::before {
-    content: '';
-    position: absolute;
-    left: -6px;
-    top: 12px;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 6px 6px 6px 0;
-    border-color: transparent var(--comment-border) transparent transparent;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: -5px;
-    top: 12px;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 6px 6px 6px 0;
-    border-color: transparent var(--comment-bg) transparent transparent;
-  }
-
-  &__header {
-    margin-bottom: var(--space-xs);
-  }
-
-  &__author {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-on-surface);
-  }
-
-  &__text {
-    margin: 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: var(--color-on-surface);
-    word-wrap: break-word;
-  }
-}
-
-.comment-meta__email {
-  font-size: 0.75rem;
-  color: var(--color-muted);
-}
-
-.comment-form-wrapper {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--comment-border);
-}

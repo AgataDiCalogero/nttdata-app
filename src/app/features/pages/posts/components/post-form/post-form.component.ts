@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
@@ -6,9 +6,19 @@ import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import type { CreatePost, User } from '@/app/shared/models';
+import type { CreatePost, Post, UpdatePost, User } from '@/app/shared/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+
+interface PostFormDialogData {
+  users?: User[];
+  post?: Post;
+}
+
+interface PostFormResult {
+  status: 'created' | 'updated';
+  post: Post;
+}
 
 @Component({
   selector: 'app-post-form',
@@ -23,11 +33,12 @@ export class PostForm {
   private readonly postsApi = inject(PostsApiService);
   private readonly usersApi = inject(UsersApiService);
   private readonly toast = inject(ToastService);
-  private readonly dialogRef = inject(DialogRef<'success' | 'cancel'>);
+  private readonly dialogRef = inject(DialogRef<PostFormResult | 'cancel'>);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly dialogData = inject<{ users?: User[] }>(DIALOG_DATA, { optional: true });
+  private readonly dialogData = inject<PostFormDialogData | null>(DIALOG_DATA, { optional: true });
 
   readonly users = signal<User[]>(this.dialogData?.users ?? []);
+  private readonly editablePost = signal<Post | null>(this.dialogData?.post ?? null);
   readonly loadingUsers = signal(false);
   readonly loadError = signal<string | null>(null);
   readonly submitting = signal(false);
@@ -51,7 +62,39 @@ export class PostForm {
     body: this.bodyControl,
   });
 
+  readonly isEdit = computed(() => this.editablePost() !== null);
+  readonly dialogTitle = computed(() => (this.isEdit() ? 'Edit post' : 'Create a new post'));
+  readonly dialogSubtitle = computed(() =>
+    this.isEdit()
+      ? 'Update the title, author, or content of this post.'
+      : 'Share ideas or reports to help improve the city.',
+  );
+  readonly submitLabel = computed(() => (this.isEdit() ? 'Save changes' : 'Create post'));
+
   constructor() {
+    const post = this.editablePost();
+    if (post) {
+      this.form.patchValue({
+        userId: post.user_id,
+        title: post.title,
+        body: post.body,
+      });
+
+      if (!this.users().some((user) => user.id === post.user_id)) {
+        this.usersApi
+          .getById(post.user_id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (user) => {
+              this.users.update((list) => [...list, user]);
+            },
+            error: () => {
+              // Ignore errors: the select will still bind to the existing value.
+            },
+          });
+      }
+    }
+
     if (!this.users().length) {
       this.fetchUsers();
     }
@@ -106,15 +149,22 @@ export class PostForm {
     this.submitting.set(true);
     this.dialogRef.disableClose = true;
 
-    this.postsApi
-      .create(payload)
+    const existing = this.editablePost();
+    const request$ = existing
+      ? this.postsApi.update(existing.id, payload as UpdatePost)
+      : this.postsApi.create(payload);
+
+    request$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (post) => {
           this.submitting.set(false);
           this.dialogRef.disableClose = false;
-          this.toast.show('success', 'Post created successfully');
-          this.dialogRef.close('success');
+          this.toast.show('success', existing ? 'Post updated successfully' : 'Post created successfully');
+          this.dialogRef.close({
+            status: existing ? 'updated' : 'created',
+            post,
+          });
         },
         error: (err) => {
           console.error('Failed to create post:', err);

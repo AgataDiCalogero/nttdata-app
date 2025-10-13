@@ -25,39 +25,31 @@
     <p class="subtitle">Enter your access token to continue.</p>
 
     <!-- Form -->
-    <form (ngSubmit)="onSubmit()" class="login-form">
-      <div class="form-group">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+      @let tokenCtrl = tokenControl;
+      @let tokenError = tokenErrorMessage();
+
+      <div class="form-group" [class.is-invalid]="showTokenInvalidState()">
         <label for="token" class="form-label">Access token</label>
         <input
           type="password"
           id="token"
-          [(ngModel)]="token"
-          name="token"
+          formControlName="token"
           placeholder="Paste your personal access token"
           class="form-input"
           [disabled]="loading()"
           autocomplete="off"
-          required
+          [attr.aria-invalid]="showTokenInvalidState() ? 'true' : 'false'"
+          [attr.aria-describedby]="tokenError ? tokenErrorId : null"
         />
+
+        @if (tokenError) {
+          <p class="field-error" [id]="tokenErrorId" role="alert">{{ tokenError }}</p>
+        }
       </div>
 
-      @if (errorMessage(); as error) {
-        <app-alert variant="error" [dismissible]="true" (dismissed)="errorMessage.set(null)">
-          <svg
-            alert-icon
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="10" cy="10" r="8"></circle>
-            <line x1="10" y1="6" x2="10" y2="10"></line>
-            <line x1="10" y1="13" x2="10.01" y2="13"></line>
-          </svg>
-          {{ error }}
-        </app-alert>
+      @if (submissionMessage(); as message) {
+        <p class="form-error" role="alert">{{ message }}</p>
       }
 
       <button
@@ -66,7 +58,7 @@
         variant="primary"
         [fullWidth]="true"
         [loading]="loading()"
-        [disabled]="loading()"
+        [disabled]="loading() || form.invalid"
       >
         Sign in
       </button>
