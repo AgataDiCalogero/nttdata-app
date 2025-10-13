@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -11,10 +11,9 @@ export class DeleteDialog {
    * TODO: usare signal
    */
   // Entity name to show in the dialog (e.g. user name)
-  @Input() entityName: string = '';
+  readonly entityName = input('' as string);
 
-  // Emit true when confirm, false when cancel
-  @Output() confirmDelete = new EventEmitter<boolean>();
+  readonly confirmDelete = output<boolean>();
 
   // Confirm action
   onConfirm() {

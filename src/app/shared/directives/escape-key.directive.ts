@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Output } from '@angular/core';
+import { Directive, output } from '@angular/core';
 
 @Directive({
   selector: '[appEscapeKey]',
@@ -8,7 +8,7 @@ import { Directive, EventEmitter, Output } from '@angular/core';
   },
 })
 export class EscapeKeyDirective {
-  @Output() appEscapeKey = new EventEmitter<void>();
+  readonly appEscapeKey = output<void>();
 
   onEscape(): void {
     this.appEscapeKey.emit();

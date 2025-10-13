@@ -3,10 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  EventEmitter,
   inject,
-  Input,
-  Output,
+  input,
+  output,
   signal,
 } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
@@ -38,13 +37,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCommentsComponent {
-  @Input() comments: ModelComment[] | null = null;
-  @Input() loading = false;
-  @Input() postId = 0;
+  readonly comments = input(null as ModelComment[] | null);
+  readonly loading = input(false);
+  readonly postId = input(0);
 
-  @Output() commentCreated = new EventEmitter<ModelComment>();
-  @Output() commentUpdated = new EventEmitter<ModelComment>();
-  @Output() commentDeleted = new EventEmitter<number>();
+  readonly commentCreated = output<ModelComment>();
+  readonly commentUpdated = output<ModelComment>();
+  readonly commentDeleted = output<number>();
 
   private readonly fb = inject(FormBuilder);
   private readonly postsApi = inject(PostsApiService);

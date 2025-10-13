@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
@@ -25,46 +25,46 @@ import { CardComponent } from '@app/shared/ui/card/card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsViewComponent {
-  @Input({ required: true }) searchForm!: FormGroup;
-  @Input() userOptions: User[] = [];
-  @Input() loading = false;
-  @Input() error: string | null = null;
-  @Input() posts: Post[] = [];
-  @Input() commentsMap: Record<number, Comment[] | undefined> = {};
-  @Input() commentsLoading: Record<number, boolean> = {};
-  @Input() perPageOptions: number[] = [];
-  @Input() currentPage = 1;
-  @Input() totalPages = 1;
-  @Input() currentPerPage = 10;
-  @Input() hasPagination = false;
-  @Input() deletingId: number | null = null;
-  @Input() postsCount = 0;
-  @Input() userLookup: Record<number, string> = {};
+  readonly searchForm = input(null as unknown as FormGroup);
+  readonly userOptions = input([] as User[]);
+  readonly loading = input(false);
+  readonly error = input(null as string | null);
+  readonly posts = input([] as Post[]);
+  readonly commentsMap = input({} as Record<number, Comment[] | undefined>);
+  readonly commentsLoading = input({} as Record<number, boolean>);
+  readonly perPageOptions = input([] as number[]);
+  readonly currentPage = input(1);
+  readonly totalPages = input(1);
+  readonly currentPerPage = input(10);
+  readonly hasPagination = input(false);
+  readonly deletingId = input(null as number | null);
+  readonly postsCount = input(0);
+  readonly userLookup = input({} as Record<number, string>);
 
-  @Output() createPost = new EventEmitter<void>();
-  @Output() resetFilters = new EventEmitter<void>();
-  @Output() refresh = new EventEmitter<void>();
-  @Output() toggleComments = new EventEmitter<number>();
-  @Output() deletePost = new EventEmitter<Post>();
-  @Output() commentCreated = new EventEmitter<{ postId: number; comment: Comment }>();
-  @Output() commentUpdated = new EventEmitter<{ postId: number; comment: Comment }>();
-  @Output() changePage = new EventEmitter<number>();
-  @Output() changePerPage = new EventEmitter<number>();
-  @Output() editPost = new EventEmitter<Post>();
-  @Output() viewAuthor = new EventEmitter<number>();
+  readonly createPost = output<void>();
+  readonly resetFilters = output<void>();
+  readonly refresh = output<void>();
+  readonly toggleComments = output<number>();
+  readonly deletePost = output<Post>();
+  readonly commentCreated = output<{ postId: number; comment: Comment }>();
+  readonly commentUpdated = output<{ postId: number; comment: Comment }>();
+  readonly changePage = output<number>();
+  readonly changePerPage = output<number>();
+  readonly editPost = output<Post>();
+  readonly viewAuthor = output<number>();
 
   readonly Plus = Plus;
 
   isDeleting(postId: number): boolean {
-    return this.deletingId === postId;
+    return this.deletingId() === postId;
   }
 
   commentsFor(postId: number): Comment[] | undefined {
-    return this.commentsMap[postId];
+    return this.commentsMap()[postId];
   }
 
   commentsAreLoading(postId: number): boolean {
-    return Boolean(this.commentsLoading[postId]);
+    return Boolean(this.commentsLoading()[postId]);
   }
 
   onCommentCreated(postId: number, comment: Comment): void {

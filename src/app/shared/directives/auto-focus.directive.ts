@@ -11,14 +11,25 @@ export class AutoFocusDirective {
   readonly enabled = input<boolean | ''>(true, { alias: 'appAutoFocus' });
 
   constructor() {
-    afterNextRender(() => {
-      const v = this.enabled();
-      const isEnabled = v === '' ? true : Boolean(v);
-      if (!isEnabled) return;
-      // Attempt focus with a small delay to ensure visibility
-      setTimeout(() => {
-        this.el.nativeElement.focus?.();
-      }, 0);
-    });
+    // afterNextRender(() => {
+    const v = this.enabled();
+    const isEnabled = v === '' ? true : Boolean(v);
+    if (!isEnabled) return;
+    // Attempt focus with a small delay to ensure visibility
+    setTimeout(() => {
+      this.el.nativeElement.focus?.();
+    }, 0);
+    // });
   }
+
+
+    afterNextRender(() => {
+    const v = this.enabled();
+    const isEnabled = v === '' ? true : Boolean(v);
+    if (!isEnabled) return;
+    // Attempt focus with a small delay to ensure visibility
+    setTimeout(() => {
+      this.el.nativeElement.focus?.();
+    }, 0);
+    });
 }

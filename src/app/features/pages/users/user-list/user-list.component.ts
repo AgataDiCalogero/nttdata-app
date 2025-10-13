@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import type { User } from '@/app/shared/models';
 import {
   LucideAngularModule,
@@ -29,11 +29,11 @@ export class UserListComponent {
   readonly Mail = Mail;
   readonly UserIcon = UserIcon;
 
-  @Input() items: User[] = [];
+  readonly items = input([] as User[]);
 
-  @Output() readonly view = new EventEmitter<number>();
-  @Output() readonly edit = new EventEmitter<number>();
-  @Output() readonly delete = new EventEmitter<User>();
+  readonly view = output<number>();
+  readonly edit = output<number>();
+  readonly delete = output<User>();
 
   trackById(_index: number, item: User): number {
     return item.id;

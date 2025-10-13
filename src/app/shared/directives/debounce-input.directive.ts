@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Output, input, effect, signal } from '@angular/core';
+import { Directive, output, input, effect, signal } from '@angular/core';
 
 @Directive({
   selector: '[appDebounceInput]',
@@ -8,10 +8,10 @@ import { Directive, EventEmitter, Output, input, effect, signal } from '@angular
   },
 })
 export class DebounceInputDirective {
-  readonly ms = input<number | ''>(300, { alias: 'appDebounceInput' });
+  readonly ms = input(300 as number | '', { alias: 'appDebounceInput' });
   private readonly valueSig = signal<string>('');
 
-  @Output() debounced = new EventEmitter<string>();
+  readonly debounced = output<string>();
 
   constructor() {
     effect((onCleanup) => {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
@@ -12,11 +12,11 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsFiltersComponent {
-  @Input({ required: true }) searchForm!: FormGroup;
-  @Input() userOptions: { id: number; name?: string }[] = [];
+  readonly searchForm = input(null as unknown as FormGroup);
+  readonly userOptions = input([] as { id: number; name?: string }[]);
 
-  @Output() createPost = new EventEmitter<void>();
-  @Output() resetFilters = new EventEmitter<void>();
+  readonly createPost = output<void>();
+  readonly resetFilters = output<void>();
 
   onCreate(): void {
     this.createPost.emit();

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, input } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -15,8 +15,8 @@ export class UserFiltersComponent {
   readonly Search = Search;
   readonly Plus = Plus;
   readonly showCreate = input(true);
-  @Output() readonly searchChange = new EventEmitter<string>();
-  @Output() readonly create = new EventEmitter<void>();
+  readonly searchChange = output<string>();
+  readonly create = output<void>();
 
   onDebounced(value: string): void {
     this.searchChange.emit(value ?? '');

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Output, inject } from '@angular/core';
+import { Directive, ElementRef, output, inject } from '@angular/core';
 
 @Directive({
   selector: '[appClickOutside]',
@@ -10,7 +10,7 @@ import { Directive, ElementRef, EventEmitter, Output, inject } from '@angular/co
 export class ClickOutsideDirective {
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  @Output() appClickOutside = new EventEmitter<MouseEvent>();
+  readonly appClickOutside = output<MouseEvent>();
 
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as Node | null;

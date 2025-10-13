@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
 import { LucideAngularModule, MessageSquare, Pencil, Trash2 } from 'lucide-angular';
@@ -21,26 +21,25 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCardComponent {
-  readonly post = input<Post>();
+  readonly post = input(null as unknown as Post);
   readonly interactive = input(false);
-  readonly padding = input<'none' | 'compact' | 'default' | 'spacious'>('default');
+  readonly padding = input('default' as 'none' | 'compact' | 'default' | 'spacious');
   readonly isDeleting = input(false);
-  readonly comments = input<ModelComment[] | null | undefined>(null);
+  readonly comments = input(null as ModelComment[] | null | undefined);
   readonly commentsLoading = input(false);
-  readonly authorName = input<string | null>(null);
+  readonly authorName = input(null as string | null);
   readonly allowManage = input(true);
-
   readonly Trash2 = Trash2;
   readonly MessageSquare = MessageSquare;
   readonly Pencil = Pencil;
 
-  @Output() readonly delete = new EventEmitter<void>();
-  @Output() readonly toggleComments = new EventEmitter<void>();
-  @Output() readonly edit = new EventEmitter<void>();
-  @Output() readonly viewAuthor = new EventEmitter<number>();
-  @Output() readonly commentCreated = new EventEmitter<ModelComment>();
-  @Output() readonly commentUpdated = new EventEmitter<ModelComment>();
-  @Output() readonly commentDeleted = new EventEmitter<number>();
+  readonly delete = output<void>();
+  readonly toggleComments = output<void>();
+  readonly edit = output<void>();
+  readonly viewAuthor = output<number>();
+  readonly commentCreated = output<ModelComment>();
+  readonly commentUpdated = output<ModelComment>();
+  readonly commentDeleted = output<number>();
 
   isExpanded = false;
 
