@@ -198,11 +198,13 @@
 }
 
 @mixin button-secondary {
+  background: rgba(31, 41, 55, 0.7);
   background: color-mix(in srgb, var(--color-surface) 70%, transparent);
   border-color: var(--border-mix-60);
   color: var(--color-on-surface);
 
   &:hover {
+    background: rgba(31, 41, 55, 0.85);
     background: color-mix(in srgb, var(--color-surface) 85%, transparent);
     border-color: var(--btn-secondary-border-hover);
   }

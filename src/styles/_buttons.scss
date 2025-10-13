@@ -177,11 +177,13 @@
 }
 
 .btn--secondary {
+  background: rgba(31, 41, 55, 0.7);
   background: color-mix(in srgb, var(--color-surface) 70%, transparent);
   border-color: var(--border-mix-60);
   color: var(--color-on-surface);
 
   &:hover {
+    background: rgba(31, 41, 55, 0.85);
     background: color-mix(in srgb, var(--color-surface) 85%, transparent);
     /* Use CSS variable that falls back for browsers without color-mix support */
     border-color: var(--btn-secondary-border-hover);
@@ -215,6 +217,7 @@
   }
 
   &:active {
+    background: rgba(249, 115, 22, 0.9);
     background: color-mix(in srgb, var(--color-accent) 90%, var(--color-black));
   }
 }
@@ -236,11 +239,13 @@
 }
 
 .btn--danger {
+  background: rgba(239, 68, 68, 0.12);
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
   border: 1px solid var(--color-danger);
   color: var(--color-danger);
 
   &:hover {
+    background: rgba(239, 68, 68, 0.2);
     background: color-mix(in srgb, var(--color-danger) 20%, transparent);
     border-color: var(--color-danger);
     color: var(--color-on-primary);
@@ -248,6 +253,7 @@
   }
 
   &:active {
+    background: rgba(220, 38, 38, 0.28);
     background: color-mix(in srgb, var(--color-danger) 28%, transparent);
   }
 

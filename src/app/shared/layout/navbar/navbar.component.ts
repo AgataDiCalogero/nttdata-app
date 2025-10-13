@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
@@ -19,7 +19,7 @@ import { filter, map, startWith, tap } from 'rxjs';
 // Main application navbar with navigation and authentication
 @Component({
   selector: 'app-navbar',
-  imports: [RouterModule, AppearanceSwitcherComponent, ButtonComponent],
+  imports: [RouterModule, NgOptimizedImage, AppearanceSwitcherComponent, ButtonComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
