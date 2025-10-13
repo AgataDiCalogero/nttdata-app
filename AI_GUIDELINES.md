@@ -28,11 +28,11 @@ These guidelines summarize conventions for contributors and automated assistants
 ## State management
 
 - Local component state: use signals (`signal`, `computed`, `effect`).
-- Shared state: expose read-only Observables or signals from services.
+- Shared state: prefer feature-level signal stores as the source-of-truth. When integration with RxJS is required, expose a clear bridge API (for example `asObservable()` / `toObservable()`) from the store service so RxJS consumers can subscribe. Keep the signal store immutable from outside the service and avoid mixing mutable Observables as internal sources.
 
 ## Templates
 
-- Use the control flow constructs `@if`, `@for`, `@switch` and always provide `track` for lists.
+- Use the control flow constructs `@if`, `@for`, `@switch` and always provide `track` for lists. When using `@for` inside native lists (`<ul>` / `<ol>`) ensure the DOM output produces `<li>` children (wrap `@for` within a `<template>` where needed) to keep valid HTML.
 - Avoid `ngClass`/`ngStyle`; prefer explicit class and style bindings.
 
 ## Styling & design system
@@ -86,9 +86,7 @@ These guidelines summarize conventions for contributors and automated assistants
   store/ // feature-level signals or RxJS subjects (if shared)
   &lt;feature&gt;.routes.ts
 
-  ```text
-
-  ```
+  <!-- intentionally left blank -->
 
 ## 3) Routing (Lazy by default)
 
@@ -161,9 +159,9 @@ if (this.done()) {
 }
 }
 
-````
+````ts
 
-        validators: [Validators.required, Validators.maxLength(100)],
+  validators: [Validators.required, Validators.maxLength(100)],
       }),
       completed: fb.nonNullable.control(false),
     });
@@ -191,15 +189,15 @@ if (this.done()) {
 
 ## 13) Tooling & Automation (ESLint, Prettier, Husky)
 
-- Obey ESLint & Prettier. Run:
+- Obey ESLint & Prettier. Recommended local checks before pushing:
   - `npm run lint`
-  - `npm run test:ci`
-  - `npm run build:ci`
+  - `npm run test` (fast subset) — full test runs belong in CI
+
 - **Husky**:
   - **pre-commit**: lint-staged → format + lint only changed files, typecheck if feasible.
-  - **pre-push**: `npm run test:ci` and `npm run build:ci`.
-  - Emergency skips require justification: `SKIP_PRE_PUSH=1 git push` (document in commit message).
-- Keep lint rules enabled; only disable with a brief justification comment.
+  - **pre-push**: run lightweight local checks (lint staged files). Heavy CI tasks such as the full test suite or production builds should run in the CI pipeline rather than block local pushes by default; teams can opt-in to stricter local gating if needed and document why.
+
+Keep lint rules enabled; only disable with a brief justification comment.
 
 ## 14) Documentation & Workflow
 

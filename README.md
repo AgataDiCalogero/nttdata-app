@@ -21,16 +21,10 @@ A polished Angular single‑page application that integrates with the public GoR
 - Angular 20 (standalone, OnPush, Signals)
 - Router with lazy loaded features and guard‑protected routes
 - Interceptors: API prefix, Auth (Bearer), Error mapping
-- UI: Angular CDK Dialog, lucide‑angular icons
-- Tooling: ESLint + Prettier, Karma + Jasmine, Husky + lint‑staged
-
-## Getting started (Windows)
-
-Prerequisites
 
 # NTT DATA Angular App
 
-A polished Angular single‑page application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases modern Angular patterns: standalone components, Signals for state, SSR hydration, accessibility, and a themed UI.
+A polished Angular single-page application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases modern Angular patterns: standalone components, Signals for state, SSR hydration, accessibility, and a themed UI.
 
 ## Features
 
@@ -39,15 +33,15 @@ A polished Angular single‑page application that integrates with the public GoR
 - Users: list, view details, create, update, delete
 - Posts: list with filters (title, author), pagination, inline comments load/create, delete
 - Consistent design system (buttons, cards, toasts, loaders) and light/dark theme
-- Accessibility‑minded templates and focus management
+- Accessibility-minded templates and focus management
 
 ## Tech stack
 
-- Angular 20 (standalone, OnPush, Signals)
-- Router with lazy loaded features and guard‑protected routes
+- Angular 20+ (standalone, OnPush, Signals)
+- Router with lazy loaded features and guard-protected routes
 - Interceptors: API prefix, Auth (Bearer), Error mapping
-- UI: Angular CDK Dialog, lucide‑angular icons
-- Tooling: ESLint + Prettier, Karma + Jasmine, Husky + lint‑staged
+- UI: Angular CDK Dialog, lucide-angular icons
+- Tooling: ESLint + Prettier, Karma + Jasmine, Husky + lint-staged
 
 ## Getting started (Windows)
 
@@ -63,7 +57,7 @@ Install dependencies
 npm install
 ```
 
-Run locally
+Run locally (development server)
 
 ```bat
 npm start
@@ -71,19 +65,14 @@ npm start
 
 Open <http://localhost:4200> and paste your token on first access. The token is persisted in localStorage until logout.
 
-Build for production
-
-```bat
-npm run build
-```
-
-Run lint and tests
+Lightweight checks
 
 ```bat
 npm run lint
 npm test
-npm run test:ci
 ```
+
+Full test runs and production builds are intended to run in CI; local developers should avoid running heavy production builds on every change.
 
 ## Configuration
 
@@ -99,10 +88,11 @@ API base URL is defined in `src/environments/*.ts` (see `baseUrl`). Interceptors
 
 ## Conventions
 
-- Use `input()`/`output()` helpers, Signals for local state, and `ChangeDetectionStrategy.OnPush`
-- Prefer new template control flow (`@if`, `@for`) and explicit `track`
-- Inside `<ul>/<ol>/<select>`, wrap `@for` in a native `<template>` element to keep valid children (`li`/`option`) and ensure clean hydration
-- Host bindings/listeners go in the `host` block of decorators
+- Use `input()`/`output()` helpers, Signals for local state, and `ChangeDetectionStrategy.OnPush`.
+- Prefer control flow `@if`/`@for` in templates and always provide `track` for lists.
+- Prefer feature-level signal stores. When RxJS interoperability is required expose a minimal bridge (e.g. `asObservable()` / `toObservable()`), keeping the signal store as the source-of-truth.
+- Inside `<ul>/<ol>/<select>`, ensure `@for` produces valid child elements (`<li>`/`<option>`) — wrapping `@for` output in `<template>` is acceptable.
+- Host bindings/listeners go in the `host` block of decorators.
 
 ## Accessibility
 
@@ -113,7 +103,7 @@ API base URL is defined in `src/environments/*.ts` (see `baseUrl`). Interceptors
 ## Scripts
 
 - `npm start` – dev server
-- `npm run build` – production build
+- `npm run build` – production build (intended for CI)
 - `npm run lint` – linting
 - `npm test` – unit tests (interactive)
 - `npm run test:ci` – unit tests (headless)

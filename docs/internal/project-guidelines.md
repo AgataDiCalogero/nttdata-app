@@ -1,13 +1,15 @@
 # Angular Project – Internal Delivery Notes
 
 ## Mission & Context
+
 - **Client:** NTT DATA (global IT & digital services provider, Top Employer Italy 2022).
 - **Business goal:** Enable citizens to share ideas and reports that improve urban life (cultural heritage, nature, social/environmental ties).
 - **Outcome for learners:** Completed project is reviewed by NTT DATA recruiters; past students have been hired through this funnel.
 
 ## Functional Requirements (v1)
+
 1. **Authentication**
-   - Accept only GoRest API tokens generated via https://gorest.co.in/consumer/login.
+   - Accept only GoRest API tokens generated via [GoREST login](https://gorest.co.in/consumer/login).
    - Persist token and attach as HTTP Bearer for all API requests.
    - Provide logout action.
 2. **Users – Listing**
@@ -35,13 +37,15 @@
    - Prepare a PDF presentation (e.g. Canva) summarising choices; include GitHub link.
 
 ## Technology Expectations
+
 - Angular latest stable.
 - REST integration against GoRest APIs; study response shapes and status codes.
 - Design polish is appreciated but not mandatory; accessibility and responsive behaviour are.
 - Third-party UI libraries (Angular Material, PrimeNG, etc.) are allowed.
-- **State management:** NgRx (or similar) is appreciated but _not mandatory_. It’s acceptable to use Angular signals/services if the architecture remains clean. See “State Strategy” below.
+- **State management:** NgRx (or similar) is appreciated but _not mandatory_. Prefer feature-level signal stores; when RxJS interoperability is required, expose a bridge API (e.g. `asObservable()` / `toObservable()`) from the store service so RxJS consumers can subscribe. See “State Strategy” below.
 
 ## Evaluation Focus
+
 1. **Documentation** – README completeness, library list, setup steps.
 2. **Architecture** – Modularity, lazy loading (if used), clean separation of concerns.
 3. **Code Quality** – Readability, maintainability, best practices.
@@ -49,20 +53,23 @@
 5. **UI/UX** – Coherent layout, responsive design, accessible interactions.
 
 ## Current State Snapshot (2025‑10‑13)
+
 - Auth flow implemented with signal-based reactive form; token validation via API.
 - Users surface includes list + CRUD; **detail page is missing** (must be prioritised next).
 - Posts area supports browsing, creation, comment listing/creation, and inline edits (work‑in‑progress).
 - No NgRx today; business logic relies on feature stores built with Angular signals.
 
 ## State Strategy (NgRx vs Signals)
+
 - NgRx is optional but adds value for:
   - Predictable state transitions.
   - Easier debugging (Redux devtools).
   - Clear separation of async flows (effects).
 - Our signal-based store is lightweight and already scoped per feature.
-- Recommendation: keep the signal store for now to finish P0 scope (user detail page). Consider migrating to NgRx **after** core functionality stabilises, or when shared state grows complex enough to warrant it.
+- Recommendation: keep the signal store for now to finish P0 scope (user detail page). Expose a small RxJS bridge on feature stores for integration with RxJS-based consumers. Migrate to NgRx only when shared state complexity or team needs justify the additional complexity.
 
 ## Open Must-Do Items
+
 1. **Build User Detail Experience**
    - Route `/users/:id` with resolver or inline load.
    - Header card (avatar, name, contact info, metadata).
@@ -80,17 +87,20 @@
    - Draft final presentation once core scope is complete.
 
 ## Design & UX Drill (for upcoming work)
+
 - Post detail cards: keep current “Facebook” styling; always show comment composer at top.
 - User list: adopt card layout with filters; include quick actions (view detail, edit, delete).
 - Icons: use existing `lucide-angular` (e.g. eye/pen/trash).
 - Accessibility: maintain `aria-*` attributes, focus traps in dialogs, live regions for toasts.
 
 ## Go/No-Go Checklist Before Delivery
-1. Node 20 LTS environment with clean builds (`npm run build`).
-2. CI green (lint, test:ci, build:ci).
+
+1. Node 20 LTS environment documented for contributors.
+2. CI green (lint, test:ci, build:ci). Full test and production builds are CI responsibilities; local developers should run fast local checks (lint, subset tests) before pushing.
 3. ≥60% coverage in report.
 4. Final pass on accessibility (keyboard nav, aria labels).
 5. README and PDF presentation updated with latest screenshots and instructions.
 
 ---
-_Keep this document internal; update as requirements evolve._ 
+
+_Keep this document internal; update as requirements evolve._

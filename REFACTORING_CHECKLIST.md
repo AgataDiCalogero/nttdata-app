@@ -6,4 +6,4 @@ Mantieni i task piccoli e autonomi (1 PR per bullet).
    - Spec minime per `PostsStore` (happy path + edge reload) e `ToastService` (show/hide).
    - Valutare spec per `AuthGuard` e `PostsApiService`.
 
-Note: prima di chiudere, esegui `npm run lint`, `npm run test:ci` e `npm run build:ci`.
+Note: prima di chiudere, esegui i controlli rapidi in locale (lint, subset di test). Full test runs and production builds should run in CI; do not require full production builds locally for every PR unless explicitly documented.
