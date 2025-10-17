@@ -111,6 +111,10 @@
   --alpha-accent-18: rgba(249, 165, 76, 0.18); /* accent outline */
   --alpha-accent-08: rgba(249, 165, 76, 0.08); /* accent hover background */
   --alpha-accent-06: rgba(249, 165, 76, 0.06); /* accent subtle background */
+  /* Additional commonly-used accent/info/success alpha tokens */
+  --alpha-accent-12: rgba(249, 115, 22, 0.12); /* accent mid alpha */
+  --alpha-info-15: rgba(59, 130, 246, 0.15); /* info / blue subtle overlay */
+  --alpha-success-12: rgba(16, 185, 129, 0.12); /* success subtle overlay */
   --table-header-bg: rgba(31, 91, 187, 0.12); /* table header fallback */
   --table-row-even-bg: rgba(17, 17, 17, 0.03); /* zebra alternate row */
   --table-row-hover-bg: rgba(176, 141, 87, 0.08);

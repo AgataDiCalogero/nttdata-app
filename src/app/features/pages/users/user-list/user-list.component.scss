@@ -8,7 +8,7 @@
   display: flex;
   gap: 1.25rem;
   padding: 1.75rem;
-  background: var(--color-surface-solid, #1f2937);
+  background: var(--color-surface-solid);
   border: 1px solid var(--color-border);
   border-radius: 16px;
   box-shadow: var(--shadow-sm);
@@ -27,7 +27,7 @@
       --gradient-primary,
       linear-gradient(135deg, var(--color-accent), var(--color-accent-light))
     );
-    color: var(--color-on-accent, #ffffff);
+    color: var(--color-on-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +49,7 @@
     margin: 0;
     font-size: 1.25rem;
     font-weight: 600;
-    color: var(--color-on-surface, #f1f5f9);
+    color: var(--color-on-surface);
     line-height: 1.4;
   }
 
@@ -93,7 +93,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem; /* icons a bit farther from text */
-    color: var(--color-muted, #9ca3af);
+    color: var(--color-muted);
     font-size: 0.9375rem;
     line-height: 1.5;
 
@@ -101,7 +101,7 @@
       width: 16px; /* reduce meta icon size */
       height: 16px;
       flex-shrink: 0;
-      color: var(--color-muted, #64748b);
+      color: var(--color-muted);
     }
 
     span {
@@ -155,24 +155,24 @@
             var(--alpha-overlay-light)
           );
         }
-        border-color: var(--color-muted, #64748b);
+        border-color: var(--color-muted);
       }
     }
 
     &--delete {
-      background: var(--color-danger-bg, rgba(239, 68, 68, 0.1));
-      color: var(--color-danger, #f87171);
+      background: var(--color-danger-bg);
+      color: var(--color-danger);
       padding: 0.625rem;
       flex: 0 0 auto;
       min-width: 46px;
-      border: 1px solid var(--color-danger-border-strong, rgba(248, 113, 113, 0.2));
+      border: 1px solid var(--color-danger-border-strong);
 
       &:hover {
-        background: var(--danger-hover, var(--state-error-bg, rgba(239, 68, 68, 0.12)));
+        background: var(--danger-hover, var(--state-error-bg));
         @supports (background: color-mix(in srgb, var(--color-danger) 12%, transparent)) {
           background: color-mix(in srgb, var(--color-danger) 12%, transparent);
         }
-        border-color: var(--color-danger-border-strong, rgba(248, 113, 113, 0.35));
+        border-color: var(--color-danger-border-strong);
       }
 
       span {

@@ -79,7 +79,7 @@
       @include transition-group((background, color), 0.18s);
       &:hover {
         color: var(--color-on-accent);
-        background: var(--accent-hover, var(--alpha-accent-08, rgba(249, 165, 76, 0.08)));
+        background: var(--accent-hover);
       }
       &:focus-visible {
         @include focus-ring;
@@ -88,7 +88,7 @@
     }
     a.active {
       /* prefer color-mix when supported, otherwise use a token fallback */
-      background: var(--accent-active, var(--alpha-accent-18, rgba(249, 165, 76, 0.18)));
+      background: var(--accent-active);
       @supports (background: color-mix(in srgb, var(--color-accent) 18%, transparent)) {
         background: color-mix(in srgb, var(--color-accent) 18%, transparent);
       }

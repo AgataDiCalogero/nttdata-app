@@ -205,8 +205,8 @@
   border-radius: 999px;
   position: relative;
   /* visible off-state background */
-  background: var(--alpha-12, rgba(255, 255, 255, 0.12));
-  border: 1px solid var(--alpha-06, rgba(255, 255, 255, 0.06));
+  background: var(--alpha-12);
+  border: 1px solid var(--alpha-06);
   @include mixins.transition-group((background, border-color));
 
   &::after {
@@ -225,11 +225,7 @@
 
   &[data-on='true'] {
     /* fallback linear gradient using tokenized mixes */
-    background: linear-gradient(
-      180deg,
-      var(--alpha-accent-12, rgba(249, 115, 22, 0.12)),
-      var(--alpha-accent-06)
-    );
+    background: linear-gradient(180deg, var(--alpha-accent-12), var(--alpha-accent-06));
     @supports (background: color-mix(in srgb, var(--color-accent) 12%, transparent)) {
       background: linear-gradient(
         180deg,
