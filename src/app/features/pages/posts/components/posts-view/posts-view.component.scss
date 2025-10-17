@@ -14,9 +14,46 @@
     padding-block: var(--space-xl);
     padding-inline: var(--layout-gutter-tight);
   }
+
+  &__header {
+    @include flex-row(var(--space-md), center, space-between);
+    flex-wrap: wrap;
+  }
+
+  &__heading {
+    @include flex-column(var(--space-xxs));
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(1.6rem, 2vw + 1rem, 2.2rem);
+  }
+
+  &__count {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  &__actions {
+    @include button-group(var(--space-sm), flex-end);
+  }
+
+  &__alert {
+    margin-block: var(--space-md);
+  }
+
+  &__loader {
+    @include flex-center();
+    margin-block: var(--space-xl);
+  }
 }
 
 .post-wrapper {
   @include flex-column(var(--space-sm));
   width: 100%;
+}
+
+.posts-pagination {
+  margin-top: var(--space-lg);
 }

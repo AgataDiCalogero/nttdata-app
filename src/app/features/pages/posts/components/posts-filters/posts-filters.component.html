@@ -6,7 +6,7 @@
     aria-label="Search by title"
   />
   <app-select
-    [control]="searchForm().get('userId')"
+    [control]="$any(searchForm().get('userId'))"
     [options]="userSelectOptions()"
     [placeholder]="'All authors'"
   ></app-select>

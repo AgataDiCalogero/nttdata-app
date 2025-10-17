@@ -2,10 +2,6 @@
 
 :host {
   --card-bg: var(--alpha-white-94);
-  /* Prefer color-mix when available for theme-aware surface blends */
-  @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
-    --card-bg: color-mix(in srgb, var(--color-surface) 94%, transparent);
-  }
   --card-border: var(--border-mix-65);
   --card-shadow: var(--shadow-lg);
   --card-radius: var(--radius-card);
@@ -20,6 +16,11 @@
   box-shadow: var(--card-shadow);
   color: var(--color-on-surface);
   @include mixins.transition-group((transform, box-shadow, background, border-color));
+
+  /* Prefer color-mix when available for theme-aware surface blends */
+  @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
+    --card-bg: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  }
 }
 
 :host(.card--interactive) {
@@ -44,28 +45,28 @@
 :host(.card--subtle) {
   /* Use canonical alpha token */
   --card-bg: var(--alpha-85);
+  --card-shadow: var(--shadow-md);
   @supports (background: color-mix(in srgb, var(--color-surface) 85%, transparent)) {
     --card-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
   }
-  --card-shadow: var(--shadow-md);
 }
 
 :host(.card--frosted) {
   --card-bg: var(--alpha-70);
-  @supports (background: color-mix(in srgb, var(--color-surface) 70%, transparent)) {
-    --card-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
-  }
   -webkit-backdrop-filter: blur(22px);
   backdrop-filter: blur(22px);
   border: 1px solid var(--alpha-border-slate);
+  @supports (background: color-mix(in srgb, var(--color-surface) 70%, transparent)) {
+    --card-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  }
 }
 
 :host(.card--danger) {
   --card-border: var(--color-danger-border-strong);
+  --card-shadow: var(--shadow-xl);
   @supports (border-color: color-mix(in srgb, var(--color-danger) 40%, transparent)) {
     --card-border: color-mix(in srgb, var(--color-danger) 40%, transparent);
   }
-  --card-shadow: var(--shadow-xl);
 }
 
 :host(.card--compact) {

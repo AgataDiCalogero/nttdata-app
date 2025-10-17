@@ -1,0 +1,28 @@
+@forward 'mixins';
+
+// Navbar specific mixins
+@use 'mixins' as *;
+
+@mixin navbar-link {
+  @include flex-row(var(--space-sm));
+  color: inherit;
+  text-decoration: none;
+  @include smooth-transition(transform);
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@mixin navbar-link-active {
+  /* prefer color-mix when supported, otherwise use a token fallback */
+  background: var(--accent-active);
+  color: var(--color-on-accent);
+  padding: var(--space-xs) var(--space-sm);
+  @supports (background: color-mix(in srgb, var(--color-accent) 18%, transparent)) {
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  }
+  @include radius('sm');
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

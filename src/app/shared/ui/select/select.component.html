@@ -1,16 +1,34 @@
-<select
-  class="select"
-  [class.select--compact]="variant() === 'compact'"
-  [id]="id()"
-  [formControl]="control()"
-  [disabled]="disabled()"
-  [required]="required()"
-  (change)="onChange($event)"
->
-  @if (placeholder()) {
-    <option value="" disabled>{{ placeholder() }}</option>
-  }
-  @for (option of options(); track option.value) {
-    <option [value]="$any(option.value)">{{ option.label }}</option>
-  }
-</select>
+@if (control()) {
+  <select
+    class="select"
+    [class.select--compact]="variant() === 'compact'"
+    [id]="id()"
+    [formControl]="$any(control())"
+    [disabled]="disabled()"
+    [required]="required()"
+    (change)="onChange($event)"
+  >
+    @if (placeholder()) {
+      <option value="" disabled>{{ placeholder() }}</option>
+    }
+    @for (option of options(); track option.value) {
+      <option [value]="$any(option.value)">{{ option.label }}</option>
+    }
+  </select>
+} @else {
+  <select
+    class="select"
+    [class.select--compact]="variant() === 'compact'"
+    [id]="id()"
+    [disabled]="disabled()"
+    [required]="required()"
+    (change)="onChange($event)"
+  >
+    @if (placeholder()) {
+      <option value="" disabled>{{ placeholder() }}</option>
+    }
+    @for (option of options(); track option.value) {
+      <option [value]="$any(option.value)">{{ option.label }}</option>
+    }
+  </select>
+}

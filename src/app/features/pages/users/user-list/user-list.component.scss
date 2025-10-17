@@ -146,6 +146,7 @@
         /* prefer color-mix when available */
         /* use canonical alpha tokens: fallback to --alpha-02 (~0.02) for subtle hover */
         background: var(--hover-surface, var(--alpha-02));
+        border-color: var(--color-muted);
         @supports (
           background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--alpha-overlay-light))
         ) {
@@ -155,7 +156,6 @@
             var(--alpha-overlay-light)
           );
         }
-        border-color: var(--color-muted);
       }
     }
 
@@ -169,10 +169,10 @@
 
       &:hover {
         background: var(--danger-hover, var(--state-error-bg));
+        border-color: var(--color-danger-border-strong);
         @supports (background: color-mix(in srgb, var(--color-danger) 12%, transparent)) {
           background: color-mix(in srgb, var(--color-danger) 12%, transparent);
         }
-        border-color: var(--color-danger-border-strong);
       }
 
       span {

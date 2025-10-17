@@ -219,13 +219,14 @@
     border-radius: 50%;
     background: var(--color-on-surface);
     box-shadow: var(--shadow-xs);
-    @include mixins.transition-group(transform, background);
     transform: translateX(0);
+    @include mixins.transition-group(transform, background);
   }
 
   &[data-on='true'] {
     /* fallback linear gradient using tokenized mixes */
     background: linear-gradient(180deg, var(--alpha-accent-12), var(--alpha-accent-06));
+    border-color: var(--color-accent);
     @supports (background: color-mix(in srgb, var(--color-accent) 12%, transparent)) {
       background: linear-gradient(
         180deg,
@@ -233,7 +234,6 @@
         color-mix(in srgb, var(--color-accent) 6%, transparent)
       );
     }
-    border-color: var(--color-accent);
 
     &::after {
       transform: translateX(18px);

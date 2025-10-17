@@ -1,7 +1,6 @@
-import { inject, computed } from '@angular/core';
+import { inject, computed, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
-import { Type } from '@angular/core';
 import type { User, DeleteConfirmData } from '@/app/shared/models';
 import type { SortField, UsersService } from './users.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';

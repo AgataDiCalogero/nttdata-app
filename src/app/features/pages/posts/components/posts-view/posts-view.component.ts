@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
+import type { Comment, Post, User } from '@/app/shared/models';
+import { SelectComponent } from '@app/shared/ui/select/select.component';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
 import { PostsListComponent } from '../posts-list/posts-list.component';
-import type { Comment, Post, User } from '@/app/shared/models';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { CardComponent } from '@app/shared/ui/card/card.component';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
-import { SelectComponent } from '@app/shared/ui/select/select.component';
 
 @Component({
   selector: 'app-posts-view',
@@ -17,10 +17,10 @@ import { SelectComponent } from '@app/shared/ui/select/select.component';
     CommonModule,
     ReactiveFormsModule,
     LucideAngularModule,
-    ButtonComponent,
-    CardComponent,
-    AlertComponent,
     SelectComponent,
+    ButtonComponent,
+    LoaderComponent,
+    AlertComponent,
     PostsFiltersComponent,
     PostsListComponent,
   ],

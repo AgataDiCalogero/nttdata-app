@@ -1,4 +1,5 @@
-/* Centralized design tokens and semantic color variables */
+/* Centralized design tokens - SEMANTIC FIRST approach */
+/* Reduced from 120+ to 35 core tokens for maintainability */
 /* Default (dark) theme variables live under :root; light theme overrides live under .light-theme */
 
 :root {
@@ -72,71 +73,13 @@
   --color-bg-input-dark-focus: rgba(17, 24, 39, 0.7); /* darker on focus */
   --color-accent-light-alpha: rgba(249, 115, 22, 0.35);
 
-  /* ===== COMMON ALPHA VALUES (for consistency) ===== */
-  --alpha-overlay-dark: rgba(0, 0, 0, 0.6); /* backdrop overlay */
-  --alpha-overlay-medium: rgba(0, 0, 0, 0.5); /* mobile nav overlay */
-  --alpha-overlay-light: rgba(0, 0, 0, 0.05); /* subtle hover */
-
-  /* Canonical white alpha tokens (single source-of-truth) */
-  --alpha-94: rgba(255, 255, 255, 0.94);
-  --alpha-85: rgba(255, 255, 255, 0.85);
-  --alpha-70: rgba(255, 255, 255, 0.7);
-  --alpha-60: rgba(255, 255, 255, 0.6);
-  --alpha-50: rgba(255, 255, 255, 0.5);
-  --alpha-45: rgba(255, 255, 255, 0.45);
-  --alpha-28: rgba(255, 255, 255, 0.28);
-  --alpha-15: rgba(255, 255, 255, 0.15);
-  --alpha-12: rgba(255, 255, 255, 0.12);
-  --alpha-08: rgba(255, 255, 255, 0.08);
-  --alpha-06: rgba(255, 255, 255, 0.06);
-  --alpha-04: rgba(255, 255, 255, 0.04);
-  --alpha-03: rgba(255, 255, 255, 0.03);
-  --alpha-02: rgba(255, 255, 255, 0.02);
-  --alpha-0: rgba(255, 255, 255, 0);
-
-  /* Backwards-compatible aliases (keep older names working) */
-  --alpha-white-94: var(--alpha-94);
-  --alpha-white-85: var(--alpha-85);
-  --alpha-white-70: var(--alpha-70);
-  --alpha-white-60: var(--alpha-60);
-  --alpha-white-50: var(--alpha-50);
-  --alpha-white-45: var(--alpha-45);
-  --alpha-white-28: var(--alpha-28);
-  --alpha-white-15: var(--alpha-15);
-  --alpha-white-12: var(--alpha-12);
-  --alpha-white-08: var(--alpha-08);
-  --alpha-white-0: var(--alpha-0);
-  --alpha-border-slate: rgba(148, 163, 184, 0.55); /* frosted glass border */
-  --surface-mix-92: rgba(255, 255, 255, 0.92);
-  --alpha-accent-18: rgba(249, 165, 76, 0.18); /* accent outline */
-  --alpha-accent-08: rgba(249, 165, 76, 0.08); /* accent hover background */
-  --alpha-accent-06: rgba(249, 165, 76, 0.06); /* accent subtle background */
-  /* Additional commonly-used accent/info/success alpha tokens */
-  --alpha-accent-12: rgba(249, 115, 22, 0.12); /* accent mid alpha */
-  --alpha-info-15: rgba(59, 130, 246, 0.15); /* info / blue subtle overlay */
-  --alpha-success-12: rgba(16, 185, 129, 0.12); /* success subtle overlay */
-  --table-header-bg: rgba(31, 91, 187, 0.12); /* table header fallback */
-  --table-row-even-bg: rgba(17, 17, 17, 0.03); /* zebra alternate row */
-  --table-row-hover-bg: rgba(176, 141, 87, 0.08);
-  --table-row-selected-bg: rgba(176, 141, 87, 0.1);
-  --table-row-selected-outline: rgba(176, 141, 87, 0.18);
-  --table-action-hover-bg: rgba(176, 141, 87, 0.15);
-  --table-action-focus-bg: rgba(176, 141, 87, 0.2);
-  --badge-active-bg: rgba(107, 142, 90, 0.18);
-  --badge-active-border: rgba(107, 142, 90, 0.25);
-  --badge-inactive-bg: rgba(196, 69, 54, 0.06);
-  --badge-inactive-border: rgba(196, 69, 54, 0.12);
-  --skeleton-tint-02: rgba(255, 255, 255, 0.02);
-  --skeleton-tint-04: rgba(255, 255, 255, 0.04);
-  --state-surface-bg: rgba(15, 23, 42, 0.04);
-  --state-surface-border: rgba(148, 163, 184, 0.4);
-  --state-error-bg: rgba(248, 113, 113, 0.12);
-  --state-error-border: rgba(239, 68, 68, 0.28);
-  --state-loading-bg: rgba(59, 130, 246, 0.08);
-  --state-loading-border: rgba(59, 130, 246, 0.18);
-  --state-empty-bg: rgba(148, 163, 184, 0.08);
-  --state-success-bg: rgba(34, 197, 94, 0.12);
-  --state-success-border: rgba(34, 197, 94, 0.24);
+  /* ===== ESSENTIAL ALPHA VALUES ===== */
+  --alpha-overlay-dark: rgba(0, 0, 0, 0.6); /* modal backdrops */
+  --alpha-overlay-light: rgba(0, 0, 0, 0.05); /* hover states */
+  --alpha-surface: rgba(255, 255, 255, 0.85); /* surface alpha */
+  --alpha-border: rgba(55, 65, 81, 0.5); /* border transparency */
+  --alpha-focus: rgba(249, 115, 22, 0.3); /* focus ring alpha */
+  --skeleton-tint: rgba(255, 255, 255, 0.04); /* skeleton animation */
 
   /* Button sizing tokens (centralized for consistency) */
   --btn-height-sm: 2.5rem; /* 40px */
@@ -153,57 +96,9 @@
 
   /* Semantic mix variables (fallbacks). Components should use these. */
   --accent-hover: var(--fallback-accent-hover-rgba);
-  --border-mix-60: var(--fallback-border-rgba);
+  --border-mix: var(--fallback-border-rgba);
   --surface-backdrop: var(--fallback-surface-backdrop);
-  --focus-ring-mix: rgba(249, 115, 22, 0.3);
-  --shadow-brand-filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.35)); /* brand logo focus */
-  --reading-highlight-color: rgba(249, 165, 76, 0.18);
-  --reading-border-color: rgba(222, 191, 152, 0.55);
-  --reading-shadow-elevation: 0 28px 60px -30px rgba(100, 72, 19, 0.45);
-  --reading-focus-ring-color: #f6aa4f;
-  --reading-focus-ring-mix-color: rgba(246, 170, 79, 0.38);
-  --reading-accent-hover-color: rgba(246, 170, 79, 0.16);
-  --reading-surface-backdrop-color: rgba(255, 244, 226, 0.75);
-  --reading-gradient-top: radial-gradient(
-    circle at top,
-    rgba(255, 214, 178, 0.28),
-    transparent 58%
-  );
-  --reading-glow-primary: rgba(249, 165, 76, 0.22);
-  --reading-glow-secondary: rgba(250, 202, 107, 0.2);
-  --reading-light-color-primary: #fef6eb;
-  --reading-light-color-on-primary: #2f261c;
-  --reading-light-bg: #fdf3e0;
-  --reading-light-bg-secondary: #f8ead2;
-  --reading-light-surface: rgba(255, 249, 240, 0.95);
-  --reading-light-surface-solid: #fff8ec;
-  --reading-light-on-surface: #2c2620;
-  --reading-light-muted: #7b6b5a;
-  --reading-light-shadow: 0 24px 60px -32px rgba(120, 72, 16, 0.4);
-  --reading-dark-color-primary: #1e1a16;
-  --reading-dark-color-on-primary: #f5ede3;
-  --reading-dark-bg: #221e1a;
-  --reading-dark-bg-secondary: #2b251f;
-  --reading-dark-surface: rgba(44, 36, 30, 0.92);
-  --reading-dark-surface-solid: #2a241f;
-  --reading-dark-on-surface: #f4e7d9;
-  --reading-dark-border: rgba(239, 198, 137, 0.26);
-  --reading-dark-muted: rgba(244, 215, 184, 0.72);
-  --reading-dark-shadow: 0 28px 70px -30px rgba(0, 0, 0, 0.55);
-  --reading-dark-surface-backdrop: rgba(46, 38, 32, 0.9);
-  --overlay-backdrop-soft: rgba(0, 0, 0, 0.3);
-  --gradient-accent-ambient: linear-gradient(
-    135deg,
-    rgba(249, 165, 76, 0.12),
-    rgba(255, 255, 255, 0.03)
-  );
-  --gradient-accent-active: linear-gradient(
-    135deg,
-    rgba(249, 165, 76, 0.18),
-    rgba(249, 138, 22, 0.08)
-  );
-  --shadow-accent-ambient: 0 18px 40px -22px rgba(249, 165, 76, 0.18);
-  --alpha-accent-40: rgba(249, 165, 76, 0.4);
+  --focus-mix: rgba(249, 115, 22, 0.3);
 
   /* 8pt Grid Spacing System */
   --space-unit: 8px;
