@@ -57,6 +57,9 @@
   }
 
   /* Firefox scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-outline) var(--color-surface-container-low);
+  @supports not (-webkit-appearance: none) {
+    /* Only apply these in browsers that support the non-webkit scrollbar properties (Firefox) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-outline) var(--color-surface-container-low);
+  }
 }

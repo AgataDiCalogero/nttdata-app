@@ -8,6 +8,8 @@ import {
   computed,
   PLATFORM_ID,
   effect,
+  Injector,
+  runInInjectionContext,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -41,6 +43,7 @@ export class Navbar implements OnInit, OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly injector = inject(Injector);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   private readonly routerEvents$ = this.router.events.pipe(
@@ -103,7 +106,7 @@ export class Navbar implements OnInit, OnDestroy {
           const handler = this.resizeHandler;
           if (handler) {
             (
-              window as unknown as {
+              globalThis as unknown as {
                 removeEventListener(type: string, listener: (...args: unknown[]) => void): void;
               }
             ).removeEventListener('resize', handler);
@@ -115,7 +118,6 @@ export class Navbar implements OnInit, OnDestroy {
       }
     }
   }
-
   ngOnInit(): void {
     if (!this.isBrowser) return;
     // Attach window resize listener at runtime only on the browser.
@@ -124,7 +126,7 @@ export class Navbar implements OnInit, OnDestroy {
       const handler = this.resizeHandler;
       if (handler) {
         (
-          window as unknown as {
+          globalThis as unknown as {
             addEventListener(type: string, listener: (...args: unknown[]) => void): void;
           }
         ).addEventListener('resize', handler);
@@ -134,7 +136,6 @@ export class Navbar implements OnInit, OnDestroy {
       this.resizeHandler = null;
     }
 
-    // Attach Escape key listener when menu is open and focus first element inside nav
     if (this.isBrowser) {
       const handler = (e: KeyboardEvent) => {
         if (e.key === 'Escape' || e.key === 'Esc') {
@@ -144,27 +145,31 @@ export class Navbar implements OnInit, OnDestroy {
       this.keydownHandler = handler;
 
       // use a tiny polling effect - attach/remove based on menuOpen
-      effect(() => {
-        if (!this.menuOpen()) {
+      // effect() must run in an Angular injection context. Use runInInjectionContext
+      // with the current injector so this works when invoked at runtime here.
+      runInInjectionContext(this.injector, () => {
+        effect(() => {
+          if (!this.menuOpen()) {
+            try {
+              this.document?.removeEventListener('keydown', handler);
+            } catch {
+              void 0; // ignore errors when removing handler in non-browser/test envs
+            }
+            return;
+          }
+
           try {
-            this.document?.removeEventListener('keydown', handler);
+            this.document?.addEventListener('keydown', handler);
+
+            const nav = this.document?.getElementById('main-nav');
+            const first = nav?.querySelector('a, button') as HTMLElement | null;
+            if (first) {
+              first.focus();
+            }
           } catch {
-            void 0; // ignore errors when removing handler in non-browser/test envs
+            void 0; // ignore DOM errors in non-browser/test envs
           }
-          return;
-        }
-
-        try {
-          this.document?.addEventListener('keydown', handler);
-
-          const nav = this.document?.getElementById('main-nav');
-          const first = nav?.querySelector('a, button') as HTMLElement | null;
-          if (first) {
-            first.focus();
-          }
-        } catch {
-          void 0; // ignore DOM errors in non-browser/test envs
-        }
+        });
       });
     }
   }
