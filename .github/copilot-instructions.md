@@ -1,3 +1,4 @@
+````instructions
 You are an expert in TypeScript, Angular, and scalable web application development. You write maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
 ## TypeScript Best Practices
@@ -54,3 +55,94 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## NgRx Signal Store Guidelines
+
+### Overview
+NgRx Signal Store is a state management solution for Angular applications built on Angular's reactive signals. It provides a simpler, more efficient alternative to traditional NgRx Store by leveraging signals for reactivity and TypeScript's type inference for type safety. When implementing NgRx Signal Store, follow the Lightweight Port and Adapter Pattern based on Hexagonal Architecture to ensure modularity, testability, and separation of concerns.
+
+### Key Concepts
+- **Hexagonal Architecture (Ports and Adapters)**: Isolate core business logic from external systems using interfaces (ports) for interactions and adapters for implementations. This enhances modularity, testability, and flexibility.
+- **Type Inference**: Leverage TypeScript's type inference to reduce boilerplate, enhance readability, and ensure type safety without explicit type definitions.
+- **Signals Integration**: Use Angular signals for reactive state management, avoiding traditional observables and actions where possible.
+
+### Implementation Guidelines
+- **Define Ports as Interfaces**: Create interfaces that define the contract for state management services. These ports represent the business logic interface.
+- **Implement Adapters with Signal Store**: Use `signalStore` with `withState` and `withMethods` to create adapters that satisfy the port interfaces. Use the `satisfies` operator to ensure type compatibility without overriding inferred types.
+- **Injection Utilities**: Provide convenient injection tokens and functions for dependency injection. Use `InjectionToken` and provider functions to inject adapters under ports.
+- **Avoid Boilerplate**: Rely on type inference; do not explicitly define types unless necessary. Keep implementations lightweight and focused.
+- **State Transformations**: Use `patchState` for updates, maintain pure and predictable transformations. Prefer `update` or `set` over `mutate` on signals.
+- **Integration in Components**: Inject services using the provided utilities and use signals directly in components with `ChangeDetectionStrategy.OnPush`.
+
+### Code Examples
+
+#### Defining a Port Interface
+```typescript
+export interface FruitService {
+  fruits: Signal<Fruit[]>;
+  loadFruits(): void;
+}
+```
+
+#### Implementing an Adapter with Signal Store
+```typescript
+import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
+import { Type } from '@angular/core';
+
+const FruitServiceAdapter = signalStore(
+  withState({ fruits: [] as Fruit[] }),
+  withMethods((store) => ({
+    loadFruits: async () => {
+      const fruits = await fetch('https://api.example.com/fruits').then(res => res.json());
+      patchState(store, { fruits });
+    },
+  }))
+) satisfies Type<FruitService>;
+```
+
+#### Injection Utilities
+```typescript
+import { InjectionToken, Provider, inject } from '@angular/core';
+
+const fruitServiceInjectionToken = new InjectionToken<FruitService>('fruits-service');
+
+export function provideFruitService(): Provider {
+  return {
+    provide: fruitServiceInjectionToken,
+    useClass: FruitServiceAdapter,
+  };
+}
+
+export function injectFruitService(): FruitService {
+  return inject(fruitServiceInjectionToken);
+}
+```
+
+#### Usage in Components
+```typescript
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  template: ``,
+  providers: [provideFruitService()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class App {
+  private fruitService = injectFruitService();
+
+  constructor() {
+    this.fruitService.loadFruits();
+  }
+}
+```
+
+### Best Practices
+- Combine with Hexagonal Architecture for clear boundaries between business logic and infrastructure.
+- Ensure adapters fully implement ports using `satisfies` to maintain type inference benefits.
+- Use standalone components and lazy loading for feature routes.
+- Test adapters independently from components to leverage improved testability.
+- Reference resources: [Angular Signals](https://angular.love/en/angular-signals-a-new-feature-in-angular-16), [Signal Store](https://angular.love/en/breakthrough-in-state-management-discover-the-simplicity-of-signal-store-part-1), [Hexagonal Architecture](https://angular.love/ports-and-adapters-vs-hexagonal-architecture-is-it-the-same-pattern).
+
+### Final Thoughts
+This approach combines NgRx Signal Store's simplicity with Hexagonal Architecture's modularity, providing a type-safe, maintainable state management solution. Implement with minimal code, focusing on separation of concerns and reactive paradigms.
+````
