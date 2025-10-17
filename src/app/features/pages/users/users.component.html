@@ -32,10 +32,16 @@
       </div>
     } @else {
       @if (error()) {
-        <div class="users-error">
-          <p>{{ error() }}</p>
-          <button appButton variant="ghost" class="btn" (click)="loadUsers()">Retry</button>
-        </div>
+        <app-alert variant="error" [dismissible]="true" (dismissed)="clearError()">
+          <div class="users-alert-content">
+            <p>{{ error() }}</p>
+            <div class="users-alert-actions">
+              <button appButton variant="ghost" size="sm" (click)="usersService.loadUsers()">
+                Retry
+              </button>
+            </div>
+          </div>
+        </app-alert>
       } @else {
         @if (data.total > 0) {
           <div>

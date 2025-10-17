@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
@@ -7,6 +7,8 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
 import type { Comment, Post, User } from '@/app/shared/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CardComponent } from '@app/shared/ui/card/card.component';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
+import { SelectComponent } from '@app/shared/ui/select/select.component';
 
 @Component({
   selector: 'app-posts-view',
@@ -17,6 +19,8 @@ import { CardComponent } from '@app/shared/ui/card/card.component';
     LucideAngularModule,
     ButtonComponent,
     CardComponent,
+    AlertComponent,
+    SelectComponent,
     PostsFiltersComponent,
     PostsListComponent,
   ],
@@ -54,6 +58,10 @@ export class PostsViewComponent {
   readonly viewAuthor = output<number>();
 
   readonly Plus = Plus;
+
+  readonly perPageSelectOptions = computed(() =>
+    this.perPageOptions().map((size) => ({ value: size, label: size.toString() })),
+  );
 
   isDeleting(postId: number): boolean {
     return this.deletingId() === postId;

@@ -5,7 +5,7 @@
   </header>
 
   @if (loadingUsers() && !users().length) {
-    <div class="post-form__loading">Loading authors list...</div>
+    <app-loader [text]="'Loading authors list...'"></app-loader>
   }
 
   @if (loadError()) {
@@ -30,20 +30,14 @@
   <form class="form post-form__body" [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-field">
       <label class="form-label" for="post-user">Author</label>
-      <select
-        class="form-select"
+      <app-select
         id="post-user"
-        formControlName="userId"
+        [control]="form.controls.userId"
+        [options]="userOptions()"
         [disabled]="submitting() || loadingUsers() || !users().length"
-        [attr.aria-invalid]="userIdInvalid ? 'true' : null"
-      >
-        <option [ngValue]="0">Select author</option>
-        @for (user of users(); track user.id) {
-          <option [ngValue]="user.id">{{ user.name }} (ID {{ user.id }})</option>
-        }
-      </select>
+      ></app-select>
       @if (userIdInvalid) {
-        <p class="field-error">Please select a valid author.</p>
+        <app-alert variant="error" padding="compact">Please select a valid author.</app-alert>
       }
     </div>
 
@@ -61,7 +55,9 @@
         maxlength="120"
       />
       @if (titleInvalid) {
-        <p class="field-error">Title must be at least 5 characters long.</p>
+        <app-alert variant="error" padding="compact"
+          >Title must be at least 5 characters long.</app-alert
+        >
       }
     </div>
 
@@ -80,7 +76,9 @@
       <div class="field-hint">
         <span>{{ (form.controls.body.value || '').length }}/500</span>
         @if (bodyInvalid) {
-          <p class="field-error">Please describe the post with at least 20 characters.</p>
+          <app-alert variant="error" padding="compact"
+            >Please describe the post with at least 20 characters.</app-alert
+          >
         }
       </div>
     </div>

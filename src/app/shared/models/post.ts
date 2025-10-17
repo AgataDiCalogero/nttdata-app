@@ -19,3 +19,16 @@ export interface Comment {
 
 export type CreateComment = Omit<Comment, 'id' | 'post_id'>;
 export type UpdateComment = Partial<Omit<Comment, 'id' | 'post_id'>>;
+
+export interface PostFilters {
+  title: string | null;
+  userId: number | null;
+}
+
+export interface QueryCriteria {
+  page: number;
+  per_page: number;
+  title?: string;
+  user_id?: number;
+  reload: number;
+}

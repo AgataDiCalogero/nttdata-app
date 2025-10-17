@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import type { User } from '@/app/shared/models';
+import { ButtonComponent } from '@/app/shared/ui/button/button.component';
 import {
   LucideAngularModule,
   Eye,
@@ -17,7 +18,7 @@ import {
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {

@@ -2,13 +2,10 @@ import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/cor
 import { Dialog } from '@angular/cdk/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
-import { PostsStore } from './store/posts.store';
+import { providePostsService, injectPostsService } from './store/posts.inject';
 import { PostForm } from './components/post-form/post-form.component';
-import {
-  DeleteConfirmComponent,
-  type DeleteConfirmData,
-} from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
-import type { Post, Comment } from '@/app/shared/models';
+import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import type { Post, Comment, DeleteConfirmData } from '@/app/shared/models';
 // Dialog result shape used by PostForm dialog
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
 
@@ -18,10 +15,10 @@ type DialogResult = { status: 'created' | 'updated'; post?: Post };
   imports: [PostsViewComponent],
   templateUrl: './posts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PostsStore],
+  providers: [providePostsService()],
 })
 export class Posts {
-  private readonly store = inject(PostsStore);
+  private readonly store = injectPostsService();
   private readonly dialog = inject(Dialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -43,7 +40,7 @@ export class Posts {
   // (DialogResult type declared at module scope)
 
   get searchForm() {
-    return this.store.searchForm;
+    return this.store.searchForm();
   }
 
   get userOptions() {
@@ -75,7 +72,7 @@ export class Posts {
   }
 
   get perPageOptions() {
-    return this.store.perPageOptions;
+    return this.store.perPageOptions();
   }
 
   get currentPage() {

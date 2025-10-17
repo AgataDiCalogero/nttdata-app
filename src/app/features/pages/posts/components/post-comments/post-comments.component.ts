@@ -12,14 +12,13 @@ import { Dialog } from '@angular/cdk/dialog';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import type { Comment as ModelComment } from '@/app/shared/models';
+import type { Comment as ModelComment, DeleteConfirmData } from '@/app/shared/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
+import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
-import {
-  DeleteConfirmComponent,
-  type DeleteConfirmData,
-} from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -30,6 +29,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     CommentFormComponent,
     ReactiveFormsModule,
     ButtonComponent,
+    AlertComponent,
+    LoaderComponent,
     LucideAngularModule,
   ],
   templateUrl: './post-comments.component.html',

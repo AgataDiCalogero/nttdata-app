@@ -23,16 +23,28 @@
         </div>
 
         <div class="user-card__buttons">
-          <button class="btn btn--view" (click)="$event.stopPropagation(); onView(user)">
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            (click)="$event.stopPropagation(); onView(user)"
+          >
             <lucide-icon [img]="Eye"></lucide-icon>
             <span>View</span>
           </button>
-          <button class="btn btn--edit" (click)="$event.stopPropagation(); onEdit(user, $event)">
+          <button
+            appButton
+            variant="outline"
+            size="sm"
+            (click)="$event.stopPropagation(); onEdit(user, $event)"
+          >
             <lucide-icon [img]="Pencil"></lucide-icon>
             <span>Edit</span>
           </button>
           <button
-            class="btn btn--delete"
+            appButton
+            variant="danger"
+            size="sm"
             (click)="$event.stopPropagation(); onDelete(user, $event)"
             aria-label="Delete user"
           >

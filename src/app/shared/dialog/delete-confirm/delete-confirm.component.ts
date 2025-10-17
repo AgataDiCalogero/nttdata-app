@@ -2,13 +2,7 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-
-export interface DeleteConfirmData {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-}
+import { DeleteConfirmData } from '../../models';
 
 @Component({
   selector: 'app-delete-confirm',

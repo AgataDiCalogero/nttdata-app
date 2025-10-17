@@ -9,11 +9,13 @@
   <hr class="post-comments__divider" />
 
   @if (loading()) {
-    <div class="post-comments__loading" aria-live="polite">Loading comments…</div>
+    <app-loader [text]="'Loading comments…'"></app-loader>
   } @else if (!comments || comments.length === 0) {
-    <div class="post-comments__empty state state--empty state--compact">
-      Be the first to start the conversation.
-    </div>
+    <app-alert variant="info">
+      <div class="post-comments-empty">
+        <p>Be the first to start the conversation.</p>
+      </div>
+    </app-alert>
   } @else {
     <ul class="post-comments__list">
       <li *ngFor="let comment of comments(); trackBy: trackByCommentId" class="post-comments__item">
@@ -97,7 +99,9 @@
                 </button>
               </div>
               @if (editError()) {
-                <p class="field-error">{{ editError() }}</p>
+                <app-alert variant="error" padding="compact">
+                  {{ editError() }}
+                </app-alert>
               }
             </form>
           } @else {

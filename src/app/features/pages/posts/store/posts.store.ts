@@ -1,295 +1,338 @@
-import { Injectable, DestroyRef, computed, inject, signal } from '@angular/core';
+import { inject, signal, computed, DestroyRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap, catchError, of } from 'rxjs';
-import type { Comment, PaginationMeta, Post, User } from '@/app/shared/models';
+import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
+import { Type } from '@angular/core';
+import type {
+  Comment,
+  PaginationMeta,
+  Post,
+  User,
+  PostFilters,
+  QueryCriteria,
+} from '@/app/shared/models';
+import type { PostsService } from './posts.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { mapHttpError } from '@/app/shared/utils/error-mapper';
 
-interface PostFilters {
-  title: string | null;
-  userId: number | null;
-}
-
-interface QueryCriteria {
+// Definisci il tipo per lo state interno (solo ciò che serve per il funzionamento, non pubblico)
+interface PostsState {
+  posts: Post[];
+  pagination: PaginationMeta | null;
+  commentsMap: Record<number, Comment[]>;
+  commentsLoading: Record<number, boolean>;
+  userOptions: User[];
+  userLookup: Record<number, string>;
+  deletingId: number | null;
+  loading: boolean;
+  error: string | null;
+  // Signals privati per filtri, page, ecc.
+  filters: PostFilters;
   page: number;
-  per_page: number;
-  title?: string;
-  user_id?: number;
-  reload: number;
+  perPage: number;
+  reloadToken: number;
 }
 
-@Injectable()
-export class PostsStore {
-  private readonly postsApi = inject(PostsApiService);
-  private readonly usersApi = inject(UsersApiService);
-  private readonly toast = inject(ToastService);
-  private readonly fb = inject(FormBuilder);
-  private readonly destroyRef = inject(DestroyRef);
+// Crea l'adapter Signal Store
+export const PostsStoreAdapter = signalStore(
+  // Stato iniziale generico
+  withState<PostsState>({
+    posts: [],
+    pagination: null,
+    commentsMap: {},
+    commentsLoading: {},
+    userOptions: [],
+    userLookup: {},
+    deletingId: null,
+    loading: false,
+    error: null,
+    filters: { title: null, userId: null },
+    page: 1,
+    perPage: 10,
+    reloadToken: 0,
+  }),
 
-  readonly perPageOptions = [5, 10, 20];
+  // Computed per queryCriteria e altri derivati
+  withComputed((store) => ({
+    queryCriteria: computed<QueryCriteria>(() => ({
+      page: store.page(),
+      per_page: store.perPage(),
+      title: store.filters().title ?? undefined,
+      user_id: store.filters().userId ?? undefined,
+      reload: store.reloadToken(),
+    })),
+    hasPagination: computed(() => {
+      const meta = store.pagination();
+      return Boolean(meta && meta.pages > 1);
+    }),
+    currentPage: computed(() => store.pagination()?.page ?? store.page()),
+    totalPages: computed(() => store.pagination()?.pages ?? 1),
+    currentPerPage: computed(() => store.pagination()?.limit ?? store.perPage()),
+    postsCount: computed(() => store.posts().length),
+  })),
 
-  readonly loading = signal(false);
-  readonly error = signal<string | null>(null);
-  readonly posts = signal<Post[]>([]);
-  readonly pagination = signal<PaginationMeta | null>(null);
-  readonly commentsMap = signal<Record<number, Comment[]>>({});
-  readonly commentsLoading = signal<Record<number, boolean>>({});
-  readonly userOptions = signal<User[]>([]);
-  readonly userLookup = signal<Record<number, string>>({});
-  readonly deletingId = signal<number | null>(null);
+  // Methods per tutte le operazioni
+  withMethods((store) => {
+    const postsApi = inject(PostsApiService);
+    const usersApi = inject(UsersApiService);
+    const toast = inject(ToastService);
+    const fb = inject(FormBuilder);
+    const destroyRef = inject(DestroyRef);
 
-  private readonly filters = signal<PostFilters>({ title: null, userId: null });
-  private readonly page = signal(1);
-  private readonly perPage = signal(10);
-  private readonly reloadToken = signal(0);
-
-  readonly queryCriteria = computed<QueryCriteria>(() => ({
-    page: this.page(),
-    per_page: this.perPage(),
-    title: this.filters().title ?? undefined,
-    user_id: this.filters().userId ?? undefined,
-    reload: this.reloadToken(),
-  }));
-
-  readonly searchForm = this.fb.nonNullable.group({
-    title: this.fb.nonNullable.control(''),
-    userId: this.fb.nonNullable.control(0),
-  });
-
-  readonly hasPagination = computed(() => {
-    const meta = this.pagination();
-    return Boolean(meta && meta.pages > 1);
-  });
-
-  readonly currentPage = computed(() => this.pagination()?.page ?? this.page());
-  readonly totalPages = computed(() => this.pagination()?.pages ?? 1);
-  readonly currentPerPage = computed(() => this.pagination()?.limit ?? this.perPage());
-  readonly postsCount = computed(() => this.posts().length);
-
-  constructor() {
-    this.setupSearchForm();
-    this.loadUsersForFilter();
-    this.setupPostsStream();
-  }
-
-  setTitleFilter(value: string): void {
-    const title = value.trim();
-    this.filters.update((state) => ({ ...state, title: title.length ? title : null }));
-  }
-
-  setUserFilter(userId: number): void {
-    this.filters.update((state) => ({
-      ...state,
-      userId: userId > 0 ? userId : null,
-    }));
-  }
-
-  resetFilters(): void {
-    this.searchForm.reset({ title: '', userId: 0 });
-    this.filters.set({ title: null, userId: null });
-    this.setPage(1);
-  }
-
-  refresh(): void {
-    this.reloadToken.update((token) => token + 1);
-  }
-
-  setPage(page: number): void {
-    const totalPages = Math.max(this.totalPages(), 1);
-    const next = Math.max(1, Math.min(page, totalPages));
-    this.page.set(next);
-  }
-
-  changePerPage(perPage: number): void {
-    const sanitized = Math.max(1, perPage);
-    if (sanitized === this.perPage()) {
-      return;
-    }
-    this.perPage.set(sanitized);
-    this.setPage(1);
-  }
-
-  commentsFor(postId: number): Comment[] | undefined {
-    return this.commentsMap()[postId];
-  }
-
-  commentsAreLoading(postId: number): boolean {
-    return Boolean(this.commentsLoading()[postId]);
-  }
-
-  toggleComments(postId: number): void {
-    const loaded = this.commentsMap()[postId];
-    if (loaded) {
-      const copy = { ...this.commentsMap() };
-      delete copy[postId];
-      this.commentsMap.set(copy);
-      return;
-    }
-
-    this.commentsLoading.update((state) => ({ ...state, [postId]: true }));
-    this.postsApi
-      .listComments(postId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (comments) => {
-          this.commentsMap.update((state) => ({ ...state, [postId]: comments ?? [] }));
-        },
-        error: (err) => {
-          console.error('Failed to load comments:', err);
-          this.toast.show('error', 'Unable to load comments. Please retry.');
-        },
-        complete: () => {
-          this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
-        },
-      });
-  }
-
-  onCommentCreated(postId: number, comment: Comment): void {
-    this.commentsMap.update((state) => {
-      const current = state[postId] ?? [];
-      return { ...state, [postId]: [comment, ...current] };
+    // Form per search
+    const searchForm = fb.nonNullable.group({
+      title: fb.nonNullable.control(''),
+      userId: fb.nonNullable.control(0),
     });
-  }
 
-  onCommentUpdated(postId: number, comment: Comment): void {
-    this.commentsMap.update((state) => {
-      const current = state[postId];
-      if (!current) {
-        return state;
-      }
-      const next = current.map((existing) => (existing.id === comment.id ? comment : existing));
-      return { ...state, [postId]: next };
-    });
-  }
+    // Setup iniziale
+    const setupSearchForm = () => {
+      searchForm.controls.title.valueChanges
+        .pipe(
+          debounceTime(300),
+          map((value) => value.trim()),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe((value) => {
+          patchState(store, (state) => ({
+            filters: { ...state.filters, title: value.length ? value : null },
+          }));
+          patchState(store, { page: 1 });
+        });
 
-  onPostUpdated(updated: Post): void {
-    this.posts.update((list) => list.map((post) => (post.id === updated.id ? updated : post)));
-  }
+      searchForm.controls.userId.valueChanges
+        .pipe(distinctUntilChanged(), takeUntilDestroyed(destroyRef))
+        .subscribe((value) => {
+          patchState(store, (state) => ({
+            filters: { ...state.filters, userId: value > 0 ? value : null },
+          }));
+          patchState(store, { page: 1 });
+        });
+    };
 
-  initializePaging(page: number, perPage: number): void {
-    const sanitizedPerPage = Math.max(1, perPage);
-    const sanitizedPage = Math.max(1, page);
-    const needsReload = sanitizedPerPage !== this.perPage() || sanitizedPage !== this.page();
-    this.perPage.set(sanitizedPerPage);
-    this.page.set(sanitizedPage);
-    if (needsReload) {
-      this.refresh();
-    }
-  }
+    const setupPostsStream = () => {
+      toObservable(store.queryCriteria)
+        .pipe(
+          map((criteria) => {
+            const params: Record<string, unknown> = {
+              page: criteria.page,
+              per_page: criteria.per_page,
+            };
+            if (criteria.title) params.title = criteria.title;
+            if (criteria.user_id) params.user_id = criteria.user_id;
+            return params;
+          }),
+          switchMap((params) => {
+            patchState(store, { loading: true, error: null });
+            return postsApi.list(params).pipe(
+              tap((result) => {
+                patchState(store, {
+                  loading: false,
+                  posts: result?.items ?? [],
+                  pagination: result?.pagination ?? null,
+                });
+              }),
+              catchError((err) => {
+                console.error('Failed to load posts:', err);
+                patchState(store, { error: mapHttpError(err).message, loading: false });
+                return of(null);
+              }),
+            );
+          }),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe();
+    };
 
-  isDeleting(postId: number): boolean {
-    return this.deletingId() === postId;
-  }
+    const loadUsersForFilter = () => {
+      usersApi
+        .list({ per_page: 50 })
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe({
+          next: ({ items }) => {
+            const list = items ?? [];
+            const lookup = list.reduce<Record<number, string>>((acc, user) => {
+              acc[user.id] = user.name ?? `User #${user.id}`;
+              return acc;
+            }, {});
+            patchState(store, { userOptions: list, userLookup: lookup });
+          },
+          error: (err) => {
+            console.error('Failed to load users for filters:', err);
+          },
+        });
+    };
 
-  deletePost(post: Post): void {
-    const shouldGoPrev =
-      this.posts().length <= 1 && this.currentPage() > 1 && this.totalPages() > 1;
+    // Inizializza
+    setupSearchForm();
+    loadUsersForFilter();
+    setupPostsStream();
 
-    this.deletingId.set(post.id);
-    this.postsApi
-      .delete(post.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.deletingId.set(null);
-          this.posts.update((list) => list.filter((item) => item.id !== post.id));
-          this.pagination.update((meta) => {
-            if (!meta) return meta;
-            const total = Math.max(meta.total - 1, 0);
-            const limit = meta.limit || this.perPage();
-            const pages = Math.max(1, Math.ceil(total / (limit || 1)));
-            return { ...meta, total, pages };
-          });
-          this.toast.show('success', 'Post deleted');
-          if (shouldGoPrev) {
-            this.setPage(this.currentPage() - 1);
-          }
-          this.refresh();
-        },
-        error: (err) => {
-          console.error('Failed to delete post:', err);
-          this.deletingId.set(null);
-          this.toast.show('error', 'Unable to delete post. Please retry.');
-        },
-      });
-  }
+    return {
+      // Signals pubblici (esposti dal port)
+      loading: store.loading,
+      error: store.error,
+      posts: store.posts,
+      pagination: store.pagination,
+      commentsMap: store.commentsMap,
+      commentsLoading: store.commentsLoading,
+      userOptions: store.userOptions,
+      userLookup: store.userLookup,
+      deletingId: store.deletingId,
+      searchForm: signal(searchForm), // Form come signal
+      perPageOptions: signal([5, 10, 20]),
 
-  private setupSearchForm(): void {
-    this.searchForm.controls.title.valueChanges
-      .pipe(
-        debounceTime(300),
-        map((value) => value.trim()),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe((value) => {
-        this.setTitleFilter(value);
-        this.setPage(1);
-      });
+      // Computed pubblici
+      hasPagination: store.hasPagination,
+      currentPage: store.currentPage,
+      totalPages: store.totalPages,
+      currentPerPage: store.currentPerPage,
+      postsCount: store.postsCount,
 
-    this.searchForm.controls.userId.valueChanges
-      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.setUserFilter(Number(value));
-        this.setPage(1);
-      });
-  }
+      // Methods pubblici
+      initializePaging(page: number, perPage: number): void {
+        const sanitizedPerPage = Math.max(1, perPage);
+        const sanitizedPage = Math.max(1, page);
+        const needsReload = sanitizedPerPage !== store.perPage() || sanitizedPage !== store.page();
+        patchState(store, { perPage: sanitizedPerPage, page: sanitizedPage });
+        if (needsReload) {
+          patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
+        }
+      },
 
-  private setupPostsStream(): void {
-    toObservable(this.queryCriteria)
-      .pipe(
-        map((criteria) => {
-          const params: Record<string, unknown> = {
-            page: criteria.page,
-            per_page: criteria.per_page,
-          };
-          if (criteria.title) params.title = criteria.title;
-          if (criteria.user_id) params.user_id = criteria.user_id;
-          return params;
-        }),
-        switchMap((params) => {
-          this.loading.set(true);
-          this.error.set(null);
-          return this.postsApi.list(params).pipe(
-            tap((result) => {
-              this.loading.set(false);
-              if (!result) {
-                return;
+      setPage(page: number): void {
+        const totalPages = Math.max(store.totalPages(), 1);
+        const next = Math.max(1, Math.min(page, totalPages));
+        patchState(store, { page: next });
+      },
+
+      refresh(): void {
+        patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
+      },
+
+      resetFilters(): void {
+        searchForm.reset({ title: '', userId: 0 });
+        patchState(store, { filters: { title: null, userId: null }, page: 1 });
+      },
+
+      deletePost(post: Post): void {
+        const shouldGoPrev =
+          store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
+
+        patchState(store, { deletingId: post.id });
+        postsApi
+          .delete(post.id)
+          .pipe(takeUntilDestroyed(destroyRef))
+          .subscribe({
+            next: () => {
+              patchState(store, (state) => ({
+                deletingId: null,
+                posts: state.posts.filter((item) => item.id !== post.id),
+                pagination: state.pagination
+                  ? {
+                      ...state.pagination,
+                      total: Math.max(state.pagination.total - 1, 0),
+                      pages: Math.max(
+                        1,
+                        Math.ceil(
+                          (state.pagination.total - 1) /
+                            (state.pagination.limit || store.perPage()),
+                        ),
+                      ),
+                    }
+                  : null,
+              }));
+              toast.show('success', 'Post deleted');
+              if (shouldGoPrev) {
+                patchState(store, (state) => ({ page: state.page - 1 }));
               }
-              this.posts.set(result.items ?? []);
-              this.pagination.set(result.pagination ?? null);
-            }),
-            catchError((err) => {
-              console.error('Failed to load posts:', err);
-              this.error.set('Unable to load posts');
-              this.loading.set(false);
-              return of(null);
-            }),
-          );
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe();
-  }
+              patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
+            },
+            error: (err) => {
+              console.error('Failed to delete post:', err);
+              patchState(store, { deletingId: null });
+              toast.show('error', mapHttpError(err).message);
+            },
+          });
+      },
 
-  private loadUsersForFilter(): void {
-    this.usersApi
-      .list({ per_page: 50 })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: ({ items }) => {
-          const list = items ?? [];
-          this.userOptions.set(list);
-          const lookup = list.reduce<Record<number, string>>((acc, user) => {
-            acc[user.id] = user.name ?? `User #${user.id}`;
-            return acc;
-          }, {});
-          this.userLookup.set(lookup);
-        },
-        error: (err) => {
-          console.error('Failed to load users for filters:', err);
-        },
-      });
-  }
-}
+      toggleComments(postId: number): void {
+        const loaded = store.commentsMap()[postId];
+        if (loaded) {
+          patchState(store, (state) => {
+            const copy = { ...state.commentsMap };
+            delete copy[postId];
+            return { commentsMap: copy };
+          });
+          return;
+        }
+
+        patchState(store, (state) => ({
+          commentsLoading: { ...state.commentsLoading, [postId]: true },
+        }));
+        postsApi
+          .listComments(postId)
+          .pipe(takeUntilDestroyed(destroyRef))
+          .subscribe({
+            next: (comments) => {
+              patchState(store, (state) => ({
+                commentsMap: { ...state.commentsMap, [postId]: comments ?? [] },
+              }));
+            },
+            error: (err) => {
+              console.error('Failed to load comments:', err);
+              toast.show('error', mapHttpError(err).message);
+            },
+            complete: () => {
+              patchState(store, (state) => ({
+                commentsLoading: { ...state.commentsLoading, [postId]: false },
+              }));
+            },
+          });
+      },
+
+      onCommentCreated(postId: number, comment: Comment): void {
+        patchState(store, (state) => ({
+          commentsMap: {
+            ...state.commentsMap,
+            [postId]: [comment, ...(state.commentsMap[postId] ?? [])],
+          },
+        }));
+      },
+
+      onCommentUpdated(postId: number, comment: Comment): void {
+        patchState(store, (state) => {
+          const current = state.commentsMap[postId];
+          if (!current) return state;
+          return {
+            commentsMap: {
+              ...state.commentsMap,
+              [postId]: current.map((existing) =>
+                existing.id === comment.id ? comment : existing,
+              ),
+            },
+          };
+        });
+      },
+
+      onPostUpdated(updated: Post): void {
+        patchState(store, (state) => ({
+          posts: state.posts.map((post) => (post.id === updated.id ? updated : post)),
+        }));
+      },
+
+      changePerPage(perPage: number): void {
+        const sanitized = Math.max(1, perPage);
+        if (sanitized === store.perPage()) return;
+        patchState(store, { perPage: sanitized, page: 1 });
+      },
+
+      setFilters(filters: PostFilters): void {
+        patchState(store, { filters, page: 1 });
+      },
+    };
+  }),
+) satisfies Type<PostsService>;

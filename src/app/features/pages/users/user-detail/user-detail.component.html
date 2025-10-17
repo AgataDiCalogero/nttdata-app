@@ -4,16 +4,16 @@
   </div>
 
   @if (loading()) {
-    <div class="user-detail__state state state--loading">
-      <p class="state__title">Loading user details…</p>
-    </div>
+    <app-loader [text]="'Loading user details…'"></app-loader>
   } @else if (error()) {
-    <div class="user-detail__state state state--error" role="alert">
-      <p class="state__title">{{ error() }}</p>
-      <div class="state__actions">
-        <a routerLink="/users" appButton variant="primary">Back to list</a>
+    <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
+      <div class="user-detail-alert-content">
+        <p>{{ error() }}</p>
+        <div class="user-detail-alert-actions">
+          <a routerLink="/users" appButton variant="ghost" size="sm">Back to list</a>
+        </div>
       </div>
-    </div>
+    </app-alert>
   } @else if (user(); as detail) {
     <article class="user-card">
       <div class="user-card__avatar" aria-hidden="true">
@@ -53,9 +53,11 @@
       </header>
 
       @if (posts().length === 0) {
-        <div class="user-detail__state state state--empty">
-          <p class="state__title">No posts published yet.</p>
-        </div>
+        <app-alert variant="info">
+          <div class="user-posts-empty">
+            <p>No posts published yet.</p>
+          </div>
+        </app-alert>
       } @else {
         <div class="user-posts__grid">
           @for (post of posts(); track trackPostId($index, post)) {

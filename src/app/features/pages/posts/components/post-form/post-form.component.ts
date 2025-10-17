@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
@@ -8,6 +15,8 @@ import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, Post, UpdatePost, User } from '@/app/shared/models';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
+import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 
 interface PostFormDialogData {
@@ -23,7 +32,14 @@ interface PostFormResult {
 @Component({
   selector: 'app-post-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, AlertComponent, AutoFocusDirective],
+  imports: [
+    ReactiveFormsModule,
+    ButtonComponent,
+    AlertComponent,
+    LoaderComponent,
+    SelectComponent,
+    AutoFocusDirective,
+  ],
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,6 +86,14 @@ export class PostForm {
       : 'Share ideas or reports to help improve the city.',
   );
   readonly submitLabel = computed(() => (this.isEdit() ? 'Save changes' : 'Create post'));
+
+  readonly userOptions = computed(() => [
+    { value: 0 as const, label: 'Select author' },
+    ...this.users().map((user) => ({
+      value: user.id,
+      label: `${user.name} (ID ${user.id})`,
+    })),
+  ]);
 
   constructor() {
     const post = this.editablePost();
@@ -154,33 +178,34 @@ export class PostForm {
       ? this.postsApi.update(existing.id, payload as UpdatePost)
       : this.postsApi.create(payload);
 
-    request$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (post) => {
-          this.submitting.set(false);
-          this.dialogRef.disableClose = false;
-          this.toast.show('success', existing ? 'Post updated successfully' : 'Post created successfully');
-          this.dialogRef.close({
-            status: existing ? 'updated' : 'created',
-            post,
-          });
-        },
-        error: (err) => {
-          console.error('Failed to create post:', err);
-          this.submitting.set(false);
-          this.dialogRef.disableClose = false;
-          const status = err?.status;
-          if (status === 422) {
-            this.toast.show('error', 'Invalid data. Please review the fields.');
-            this.titleControl.setErrors({ api: true });
-          } else if (status === 429) {
-            this.toast.show('error', 'Too many requests. Please try again later.');
-          } else {
-            this.toast.show('error', 'Unable to create the post. Please retry.');
-          }
-        },
-      });
+    request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (post) => {
+        this.submitting.set(false);
+        this.dialogRef.disableClose = false;
+        this.toast.show(
+          'success',
+          existing ? 'Post updated successfully' : 'Post created successfully',
+        );
+        this.dialogRef.close({
+          status: existing ? 'updated' : 'created',
+          post,
+        });
+      },
+      error: (err) => {
+        console.error('Failed to create post:', err);
+        this.submitting.set(false);
+        this.dialogRef.disableClose = false;
+        const status = err?.status;
+        if (status === 422) {
+          this.toast.show('error', 'Invalid data. Please review the fields.');
+          this.titleControl.setErrors({ api: true });
+        } else if (status === 429) {
+          this.toast.show('error', 'Too many requests. Please try again later.');
+        } else {
+          this.toast.show('error', 'Unable to create the post. Please retry.');
+        }
+      },
+    });
   }
 
   retryLoadUsers(): void {

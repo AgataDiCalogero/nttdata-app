@@ -6,12 +6,22 @@ import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import type { User, Post, Comment } from '@/app/shared/models';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import { ButtonComponent } from '@/app/shared/ui/button/button.component';
+import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
+import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
 import { LucideAngularModule, Mail, User as UserIcon, MessageSquare } from 'lucide-angular';
 
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonComponent, PostCardComponent, LucideAngularModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ButtonComponent,
+    AlertComponent,
+    LoaderComponent,
+    PostCardComponent,
+    LucideAngularModule,
+  ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

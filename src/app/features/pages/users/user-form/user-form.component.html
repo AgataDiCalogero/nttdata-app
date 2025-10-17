@@ -19,7 +19,7 @@
       [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched ? 'true' : null"
     />
     @if (form.controls.name.touched && form.controls.name.invalid) {
-      <p class="form-error">Please enter at least 2 characters.</p>
+      <app-alert variant="error" padding="compact">Please enter at least 2 characters.</app-alert>
     }
   </div>
 
@@ -36,46 +36,38 @@
       "
     />
     @if (form.controls.email.touched && form.controls.email.invalid) {
-      <p class="form-error">Invalid email address.</p>
+      <app-alert variant="error" padding="compact">Invalid email address.</app-alert>
     }
     @if (emailError()) {
-      <p class="form-error">{{ emailError() }}</p>
+      <app-alert variant="error" padding="compact">{{ emailError() }}</app-alert>
     }
   </div>
 
   <div class="form-field">
     <label class="form-label" for="gender">Gender</label>
-    <select
-      class="form-select"
+    <app-select
       id="gender"
-      formControlName="gender"
-      [attr.aria-invalid]="
-        form.controls.gender.invalid && form.controls.gender.touched ? 'true' : null
-      "
-    >
-      @for (opt of ['male', 'female']; track opt) {
-        <option [value]="opt">{{ opt }}</option>
-      }
-    </select>
+      [control]="form.controls.gender"
+      [options]="[
+        { value: 'male', label: 'male' },
+        { value: 'female', label: 'female' },
+      ]"
+    ></app-select>
     @if (form.controls.gender.touched && form.controls.gender.invalid) {
-      <p class="form-error">Please select a gender.</p>
+      <app-alert variant="error" padding="compact">Please select a gender.</app-alert>
     }
   </div>
 
   <div class="form-field">
     <label class="form-label" for="status">Status</label>
-    <select
-      class="form-select"
+    <app-select
       id="status"
-      formControlName="status"
-      [attr.aria-invalid]="
-        form.controls.status.invalid && form.controls.status.touched ? 'true' : null
-      "
-    >
-      @for (option of ['active', 'inactive']; track option) {
-        <option [value]="option">{{ option }}</option>
-      }
-    </select>
+      [control]="form.controls.status"
+      [options]="[
+        { value: 'active', label: 'active' },
+        { value: 'inactive', label: 'inactive' },
+      ]"
+    ></app-select>
   </div>
 
   <div class="form-actions user-form__actions">

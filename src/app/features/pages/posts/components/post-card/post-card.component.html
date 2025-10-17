@@ -58,7 +58,14 @@
     </p>
 
     @if (shouldTruncate()) {
-      <button type="button" class="posts-card__toggle" (click)="toggleExpansion()">
+      <button
+        appButton
+        variant="ghost"
+        size="sm"
+        type="button"
+        class="posts-card__toggle"
+        (click)="toggleExpansion()"
+      >
         {{ isExpanded ? 'Show less' : 'Show more' }}
       </button>
     }
