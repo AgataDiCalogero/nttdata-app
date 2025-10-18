@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 export type SelectVariant = 'default' | 'compact';
 
@@ -8,7 +9,7 @@ export type SelectVariant = 'default' | 'compact';
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent {
@@ -19,6 +20,7 @@ export class SelectComponent {
   readonly disabled = input(false);
   readonly required = input(false);
   readonly id = input<string>('');
+  readonly label = input<string>('');
 
   readonly selectionChange = output<string>();
 
