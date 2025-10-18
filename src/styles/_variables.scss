@@ -117,9 +117,61 @@
   --layout-wide-width: 1440px;
   --layout-gutter: clamp(var(--space-md), 3vw, var(--space-xl));
   --layout-gutter-tight: clamp(var(--space-sm), 2vw, var(--space-lg));
-}
 
+  /* ===== Reading mode tokens (defaults) ===== */
+  /* These are used when body.reading-mode is applied and can be overridden by light/dark reading blocks */
+  --reading-gradient-top: radial-gradient(
+    circle at 10% 80%,
+    rgba(249, 115, 22, 0.035),
+    transparent 35%
+  );
+  --reading-glow-primary: rgba(249, 115, 22, 0.08);
+  --reading-glow-secondary: rgba(234, 88, 12, 0.05);
+
+  --reading-highlight-color: rgba(255, 250, 240, 0.8); /* warm paper highlight */
+  --reading-border-color: rgba(0, 0, 0, 0.04);
+  --reading-shadow-elevation: 0 8px 26px rgba(2, 6, 23, 0.12);
+  --reading-focus-ring-color: rgba(249, 115, 22, 0.14);
+  --reading-focus-ring-mix-color: rgba(249, 115, 22, 0.06);
+  --reading-accent-hover-color: rgba(249, 115, 22, 0.06);
+  --reading-surface-backdrop-color: rgba(0, 0, 0, 0.02);
+
+  /* Light reading defaults */
+  --reading-light-color-primary: #ffffff;
+  --reading-light-color-on-primary: #0b1220;
+  --reading-light-bg: #fff8f0; /* warmer cream */
+  --reading-light-bg-secondary: #fff3e8;
+  --reading-light-surface: #fffaf6;
+  --reading-light-surface-solid: #ffffff;
+  --reading-light-on-surface: #0b1220;
+  --reading-light-muted: #6b6b6b;
+  --reading-light-shadow: 0 10px 36px rgba(17, 24, 39, 0.06);
+
+  /* Dark reading defaults */
+  --reading-dark-color-primary: #0b1220;
+  --reading-dark-color-on-primary: #f8f7f5;
+  --reading-dark-bg: #0f1724;
+  --reading-dark-bg-secondary: #0b1220;
+  --reading-dark-surface: rgba(17, 24, 39, 0.7);
+  --reading-dark-surface-solid: rgba(17, 24, 39, 0.9);
+  --reading-dark-on-surface: #e6e6e6;
+  --reading-dark-muted: #9aa4b2;
+  --reading-dark-shadow: 0 12px 38px rgba(2, 6, 23, 0.5);
+  --reading-dark-border: rgba(255, 255, 255, 0.04);
+  --reading-dark-surface-backdrop: rgba(255, 255, 255, 0.02);
+}
 .light-theme {
+  --reading-gradient-top: radial-gradient(
+    circle at 15% 75%,
+    rgba(249, 115, 22, 0.06),
+    transparent 40%
+  );
+  --reading-glow-primary: rgba(249, 115, 22, 0.12);
+  --reading-glow-secondary: rgba(234, 88, 12, 0.08);
+  --reading-light-bg: #fff7f0;
+  --reading-light-bg-secondary: #fff3ea;
+  --reading-light-surface: #fff8f4;
+  --reading-light-on-surface: #08121b;
   --color-primary: #ffffff; /* white surface */
   --color-on-primary: #111827; /* gray-900 text on light */
   --color-bg: #fff7ed; /* orange-50 background */

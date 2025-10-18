@@ -171,25 +171,10 @@ export const PostsStoreAdapter = signalStore(
     setupPostsStream();
 
     return {
-      // Signals pubblici (esposti dal port)
-      loading: store.loading,
-      error: store.error,
-      posts: store.posts,
-      pagination: store.pagination,
-      commentsMap: store.commentsMap,
-      commentsLoading: store.commentsLoading,
-      userOptions: store.userOptions,
-      userLookup: store.userLookup,
-      deletingId: store.deletingId,
-      searchForm: signal(searchForm), // Form come signal
+      // Expose only custom signals and methods. Do NOT re-return store members
+      // (they are already exposed by signalStore and re-declaring them causes override errors).
+      searchForm: signal(searchForm), // Form as signal
       perPageOptions: signal([5, 10, 20]),
-
-      // Computed pubblici
-      hasPagination: store.hasPagination,
-      currentPage: store.currentPage,
-      totalPages: store.totalPages,
-      currentPerPage: store.currentPerPage,
-      postsCount: store.postsCount,
 
       // Methods pubblici
       initializePaging(page: number, perPage: number): void {

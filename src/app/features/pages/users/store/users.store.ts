@@ -293,18 +293,6 @@ export const UsersStoreAdapter = signalStore(
     setupInitialState();
 
     return {
-      // Signals pubblici (esposti dal port)
-      users: store.users,
-      loading: store.loading,
-      error: store.error,
-      deletingId: store.deletingId,
-      searchTerm: store.searchTerm,
-      sortState: store.sortState,
-      pageState: store.pageState,
-
-      // Computed pubblici
-      displayed: store.displayed,
-
       // Methods pubblici
       loadUsers,
       onSearch,

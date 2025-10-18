@@ -116,11 +116,12 @@ body.reading-mode::after {
   opacity: 0.28;
 }
 
-.light-theme body::before {
+/* Ensure pseudo-elements target the body when theme class is applied to body */
+body.light-theme::before {
   opacity: 0.3;
 }
 
-.light-theme body::after {
+body.light-theme::after {
   opacity: 0.25;
 }
 
