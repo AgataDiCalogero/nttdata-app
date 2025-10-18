@@ -17,7 +17,7 @@
     aria-label="Open appearance settings"
   >
     <span class="appearance-switcher__icon">
-      <lucide-icon [img]="isLight() ? Sun : Moon" aria-hidden="true"></lucide-icon>
+      <lucide-icon [img]="currentIcon()" aria-hidden="true"></lucide-icon>
     </span>
   </button>
 
@@ -39,12 +39,15 @@
             aria-checked="false"
             [attr.aria-checked]="isLight() ? 'true' : 'false'"
             (click)="setTheme('light')"
-            aria-label="Light theme"
+            [attr.aria-label]="isLight() ? 'Light theme (current)' : 'Switch to light theme'"
           >
             <span class="appearance-option__icon">
               <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Light</span>
+            @if (isLight()) {
+              <span class="appearance-option__check" aria-hidden="true">✓</span>
+            }
           </button>
 
           <button
@@ -55,12 +58,15 @@
             aria-checked="false"
             [attr.aria-checked]="!isLight() ? 'true' : 'false'"
             (click)="setTheme('dark')"
-            aria-label="Dark theme"
+            [attr.aria-label]="!isLight() ? 'Dark theme (current)' : 'Switch to dark theme'"
           >
             <span class="appearance-option__icon">
               <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Dark</span>
+            @if (!isLight()) {
+              <span class="appearance-option__check" aria-hidden="true">✓</span>
+            }
           </button>
         </fieldset>
       </div>
@@ -76,12 +82,20 @@
           role="menuitemcheckbox"
           aria-checked="false"
           [attr.aria-checked]="isReadingMode() ? 'true' : 'false'"
-          aria-label="Toggle reading mode"
+          [attr.aria-label]="isReadingMode() ? 'Disable reading mode' : 'Enable reading mode'"
         >
           <span class="appearance-option__icon">
             <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           </span>
-          <span class="appearance-option__label">Reading mode</span>
+          <span class="appearance-option__label">
+            Reading mode
+            <span
+              class="appearance-option__status"
+              [class.appearance-option__status--active]="isReadingMode()"
+            >
+              {{ isReadingMode() ? 'On' : 'Off' }}
+            </span>
+          </span>
           <span class="appearance-option__switch" [attr.data-on]="isReadingMode()"></span>
         </button>
       </div>

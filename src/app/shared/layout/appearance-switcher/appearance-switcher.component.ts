@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  computed,
+} from '@angular/core';
 import { LucideAngularModule, Sun, Moon, BookOpenCheck } from 'lucide-angular';
 import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
 import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
@@ -23,6 +30,14 @@ export class AppearanceSwitcherComponent {
   readonly theme = this.themeService.theme;
   readonly isLight = this.themeService.isLightTheme;
   readonly isReadingMode = this.themeService.isReadingMode;
+
+  // Computed signal for the current icon based on theme and reading mode
+  readonly currentIcon = computed(() => {
+    if (this.isReadingMode()) {
+      return this.BookOpenCheck;
+    }
+    return this.isLight() ? this.Sun : this.Moon;
+  });
 
   private readonly menuState = signal(false);
   readonly menuOpen = this.menuState.asReadonly();

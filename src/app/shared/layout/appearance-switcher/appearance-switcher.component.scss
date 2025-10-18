@@ -109,7 +109,7 @@
 }
 
 .appearance-option {
-  /* left-aligned row for icon + label; switch will sit to the right */
+  /* left-aligned row for icon + label; check will sit to the right */
   @include mixins.flex-row(var(--space-xs));
   align-items: center;
   justify-content: flex-start;
@@ -191,10 +191,36 @@
 
   .appearance-option--toggle & {
     font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
   }
 
   /* ensure label sits to the right of the icon */
   margin-left: var(--space-sm);
+}
+
+.appearance-option__status {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-sm);
+  background: var(--alpha-08);
+  color: var(--color-on-surface-variant);
+  @include mixins.transition-group((background, color));
+
+  &--active {
+    background: var(--alpha-accent-12);
+    color: var(--color-accent);
+  }
+}
+
+.appearance-option__check {
+  margin-left: auto;
+  color: var(--color-accent);
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
 /* Toggle pill for Reading mode */
