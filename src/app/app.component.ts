@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/layout/navbar/navbar.component';
-import { ToastComponent } from './shared/ui/toast';
+import { ToastComponent } from './shared/ui';
 import { FooterComponent } from './shared/layout/footer/footer.component';
 
 @Component({

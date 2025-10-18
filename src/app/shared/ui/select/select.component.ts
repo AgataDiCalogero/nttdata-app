@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -23,6 +23,20 @@ export class SelectComponent {
   readonly label = input<string>('');
 
   readonly selectionChange = output<string>();
+
+  constructor() {
+    effect(() => {
+      const ctrl = this.control();
+      const dis = this.disabled();
+      if (ctrl) {
+        if (dis) {
+          ctrl.disable();
+        } else {
+          ctrl.enable();
+        }
+      }
+    });
+  }
 
   onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;

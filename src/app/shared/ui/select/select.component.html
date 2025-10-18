@@ -9,7 +9,6 @@
     title="Select option"
     [attr.aria-label]="placeholder() || label() || 'Select option'"
     [formControl]="$any(control())"
-    [disabled]="disabled()"
     [required]="required()"
     (change)="onChange($event)"
   >
