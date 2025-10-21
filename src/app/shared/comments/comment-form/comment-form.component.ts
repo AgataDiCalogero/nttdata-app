@@ -20,8 +20,8 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   selector: 'app-comment-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ButtonComponent, AlertComponent],
-  templateUrl: './comment-form.html',
-  styleUrls: ['./comment-form.scss'],
+  templateUrl: './comment-form.component.html',
+  styleUrls: ['./comment-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentFormComponent {
