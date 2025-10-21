@@ -15,7 +15,7 @@
   color: inherit;
   cursor: pointer;
   background: transparent;
-  border: 1px solid var(--border-mix-60);
+  border: 0.0625rem solid var(--border-mix-60);
   @include mixins.transition-group((transform, box-shadow));
 
   &:hover {
@@ -209,29 +209,29 @@
 /* Toggle pill for Reading mode */
 .appearance-option__switch {
   margin-left: auto;
-  width: 44px;
-  height: 26px;
-  border-radius: 999px;
+  width: 2.75rem;
+  height: 1.625rem;
+  border-radius: var(--radius-full);
   position: relative;
   /* visible off-state background: light orange (off) so toggle is always present */
   /* fallback background and border (safe) */
   background: var(--alpha-accent-06, var(--alpha-12));
-  border: 1px solid var(--alpha-06);
+  border: 0.0625rem solid var(--alpha-06);
 
   /* apply nicer tint when color-mix is supported */
   @supports (color: color-mix(in srgb, var(--color-accent) 6%, transparent)) {
     background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
-    border: 1px solid color-mix(in srgb, var(--color-accent) 8%, var(--alpha-06));
+    border: 0.0625rem solid color-mix(in srgb, var(--color-accent) 0.08, var(--alpha-06));
   }
   @include mixins.transition-group((background, border-color));
 
   &::after {
     content: '';
     position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 20px;
-    height: 20px;
+    top: 0.1875rem;
+    left: 0.1875rem;
+    width: 1.25rem;
+    height: 1.25rem;
     border-radius: 50%;
     background: var(--color-on-surface);
     box-shadow: var(--shadow-xs);
@@ -259,7 +259,7 @@
     }
 
     &::after {
-      transform: translateX(18px);
+      transform: translateX(1.125rem);
       background: color-mix(in srgb, var(--color-accent) 80%, var(--color-on-surface));
     }
   }
@@ -271,20 +271,20 @@
 }
 
 .appearance-switcher__divider {
-  height: 1px;
+  height: 0.0625rem;
   background: color-mix(in srgb, var(--border-mix-60) 60%, transparent);
   margin: var(--space-xs) 0;
 }
 
 [data-open='true'] {
   .appearance-switcher__chevron {
-    transform: rotate(-135deg) translateY(2px);
+    transform: rotate(-135deg) translateY(0.125rem);
   }
 
   .appearance-switcher__trigger {
     background: var(--alpha-accent-06);
     border-color: var(--alpha-accent-18);
-    transform: translateY(-1px);
+    transform: translateY(-0.0625rem);
   }
 
   .appearance-switcher__current {
@@ -301,7 +301,7 @@
   .appearance-switcher__trigger {
     padding: var(--space-xs);
     border-radius: var(--radius-full);
-    border-width: 1px;
+    border-width: 0.0625rem;
     gap: 0;
 
     .appearance-switcher__current,
@@ -319,7 +319,7 @@
     right: 0;
     top: calc(100% + 0.6rem);
     transform: translateX(0);
-    width: min(320px, calc(100vw - var(--space-xl)));
+    width: min(20rem, calc(100vw - var(--space-xl)));
     border-radius: var(--radius-2xl);
     padding: var(--space-md);
     @include mixins.shadow('xl');
