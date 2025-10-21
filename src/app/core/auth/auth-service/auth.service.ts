@@ -19,6 +19,11 @@ export class AuthService {
     return this.tokenSignal.asReadonly();
   }
 
+  isAuthenticated(): boolean {
+    const current = this.tokenSignal();
+    return typeof current === 'string' && current.trim().length > 0;
+  }
+
   setToken(token: string) {
     // Save token to localStorage (browser only)
     if (isPlatformBrowser(this.platformId)) {
