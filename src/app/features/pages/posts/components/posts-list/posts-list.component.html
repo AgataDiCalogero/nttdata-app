@@ -1,19 +1,21 @@
 <ul class="posts-list">
-  <li class="post-wrapper" *ngFor="let post of posts(); trackBy: trackPostById">
-    <app-post-card
-      [post]="post"
-      [interactive]="true"
-      padding="spacious"
-      [isDeleting]="isDeleting(post.id)"
-      [comments]="commentsFor(post.id) ?? null"
-      [commentsLoading]="commentsAreLoading(post.id)"
-      (delete)="deletePost.emit(post)"
-      (toggleComments)="toggleComments.emit(post.id)"
-      (commentCreated)="onCommentCreated(post.id, $event)"
-      (commentUpdated)="onCommentUpdated(post.id, $event)"
-      (edit)="onEditPost(post)"
-      (viewAuthor)="onViewAuthor(post)"
-      [authorName]="authorName(post) ?? 'User #' + post.user_id"
-    ></app-post-card>
-  </li>
+  @for (post of posts(); track trackPostById; let i = $index) {
+    <li class="post-wrapper">
+      <app-post-card
+        [post]="post"
+        [interactive]="true"
+        padding="spacious"
+        [isDeleting]="isDeleting(post.id)"
+        [comments]="commentsFor(post.id) ?? null"
+        [commentsLoading]="commentsAreLoading(post.id)"
+        (delete)="deletePost.emit(post)"
+        (toggleComments)="toggleComments.emit(post.id)"
+        (commentCreated)="onCommentCreated(post.id, $event)"
+        (commentUpdated)="onCommentUpdated(post.id, $event)"
+        (edit)="onEditPost(post)"
+        (viewAuthor)="onViewAuthor(post)"
+        [authorName]="authorName(post) ?? 'User #' + post.user_id"
+      ></app-post-card>
+    </li>
+  }
 </ul>

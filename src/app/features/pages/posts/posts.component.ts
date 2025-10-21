@@ -6,6 +6,7 @@ import { providePostsService, injectPostsService } from './store/posts.inject';
 import { PostForm } from './components/post-form/post-form.component';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import type { Post, Comment, DeleteConfirmData } from '@/app/shared/models';
+import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 // Dialog result shape used by PostForm dialog
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
 
@@ -18,10 +19,11 @@ type DialogResult = { status: 'created' | 'updated'; post?: Post };
   providers: [providePostsService()],
 })
 export class Posts {
-  private readonly store = injectPostsService();
+  protected readonly store = injectPostsService();
   private readonly dialog = inject(Dialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly dialogLayouts = inject(ResponsiveDialogService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
 
@@ -39,98 +41,15 @@ export class Posts {
 
   // (DialogResult type declared at module scope)
 
-  get searchForm() {
-    return this.store.searchForm();
-  }
-
-  get userOptions() {
-    return this.store.userOptions();
-  }
-
-  get loading() {
-    return this.store.loading();
-  }
-
-  get error() {
-    return this.store.error();
-  }
-
-  get posts() {
-    return this.store.posts();
-  }
-
-  get commentsMap() {
-    return this.store.commentsMap();
-  }
-
-  get commentsLoading() {
-    return this.store.commentsLoading();
-  }
-
-  get userLookup() {
-    return this.store.userLookup();
-  }
-
-  get perPageOptions() {
-    return this.store.perPageOptions();
-  }
-
-  get currentPage() {
-    return this.store.currentPage();
-  }
-
-  get totalPages() {
-    return this.store.totalPages();
-  }
-
-  get currentPerPage() {
-    return this.store.currentPerPage();
-  }
-
-  get hasPagination() {
-    return this.store.hasPagination();
-  }
-
-  get deletingId() {
-    return this.store.deletingId();
-  }
-
-  get postsCount() {
-    return this.store.postsCount();
-  }
-
   handleCreatePost(): void {
-    const isMobile = window.innerWidth < 640;
-    const baseConfig = isMobile
-      ? {
-          position: { right: '0', top: '0' },
-          height: '100%',
-          width: '480px',
-          maxWidth: '100vw',
-          panelClass: 'slide-in-drawer',
-          backdropClass: 'blurred-backdrop',
-          ariaLabel: 'New post',
-          autoFocus: true,
-          restoreFocus: true,
-          closeOnNavigation: true,
-          disableClose: false,
-        }
-      : {
-          width: '620px',
-          maxWidth: '90vw',
-          backdropClass: 'blurred-backdrop',
-          panelClass: 'user-form-modal',
-          ariaLabel: 'New post',
-          autoFocus: true,
-          restoreFocus: true,
-          closeOnNavigation: true,
-          disableClose: false,
-        };
-
-    const ref = this.dialog.open(PostForm, {
-      ...baseConfig,
-      data: { users: this.store.userOptions() },
-    });
+    const ref = this.dialog.open(
+      PostForm,
+      this.dialogLayouts.form({
+        ariaLabel: 'New post',
+        desktop: { width: '620px' },
+        data: { users: this.store.userOptions() },
+      }),
+    );
 
     ref.closed.subscribe((result) => {
       if (result && typeof result === 'object' && 'status' in result) {
@@ -160,37 +79,14 @@ export class Posts {
   }
 
   handleEditPost(post: Post): void {
-    const isMobile = window.innerWidth < 640;
-    const baseConfig = isMobile
-      ? {
-          position: { right: '0', top: '0' },
-          height: '100%',
-          width: '480px',
-          maxWidth: '100vw',
-          panelClass: 'slide-in-drawer',
-          backdropClass: 'blurred-backdrop',
-          ariaLabel: `Edit post ${post.title}`,
-          autoFocus: true,
-          restoreFocus: true,
-          closeOnNavigation: true,
-          disableClose: false,
-        }
-      : {
-          width: '620px',
-          maxWidth: '90vw',
-          backdropClass: 'blurred-backdrop',
-          panelClass: 'user-form-modal',
-          ariaLabel: `Edit post ${post.title}`,
-          autoFocus: true,
-          restoreFocus: true,
-          closeOnNavigation: true,
-          disableClose: false,
-        };
-
-    const ref = this.dialog.open(PostForm, {
-      ...baseConfig,
-      data: { users: this.store.userOptions(), post },
-    });
+    const ref = this.dialog.open(
+      PostForm,
+      this.dialogLayouts.form({
+        ariaLabel: `Edit post ${post.title}`,
+        desktop: { width: '620px' },
+        data: { users: this.store.userOptions(), post },
+      }),
+    );
 
     ref.closed.subscribe((result) => {
       if (result && typeof result === 'object' && 'status' in result) {

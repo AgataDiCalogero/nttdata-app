@@ -29,21 +29,21 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsViewComponent {
-  readonly searchForm = input(null as unknown as FormGroup);
-  readonly userOptions = input([] as User[]);
-  readonly loading = input(false);
-  readonly error = input(null as string | null);
-  readonly posts = input([] as Post[]);
-  readonly commentsMap = input({} as Record<number, Comment[] | undefined>);
-  readonly commentsLoading = input({} as Record<number, boolean>);
-  readonly perPageOptions = input([] as number[]);
-  readonly currentPage = input(1);
-  readonly totalPages = input(1);
-  readonly currentPerPage = input(10);
-  readonly hasPagination = input(false);
-  readonly deletingId = input(null as number | null);
-  readonly postsCount = input(0);
-  readonly userLookup = input({} as Record<number, string>);
+  readonly searchForm = input.required<FormGroup>();
+  readonly userOptions = input.required<User[]>();
+  readonly loading = input.required<boolean>();
+  readonly error = input<string | null>(null);
+  readonly posts = input.required<Post[]>();
+  readonly commentsMap = input.required<Record<number, Comment[] | undefined>>();
+  readonly commentsLoading = input.required<Record<number, boolean>>();
+  readonly perPageOptions = input.required<number[]>();
+  readonly currentPage = input.required<number>();
+  readonly totalPages = input.required<number>();
+  readonly currentPerPage = input.required<number>();
+  readonly hasPagination = input.required<boolean>();
+  readonly deletingId = input<number | null>(null);
+  readonly postsCount = input.required<number>();
+  readonly userLookup = input.required<Record<number, string>>();
 
   readonly createPost = output<void>();
   readonly resetFilters = output<void>();

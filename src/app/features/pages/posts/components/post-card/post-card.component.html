@@ -92,11 +92,11 @@
     <app-post-comments
       class="posts-card__comments"
       [postId]="postModel.id"
-      [comments]="$any(commentsList) ?? []"
+      [comments]="commentsList ?? []"
       [loading]="commentsLoading()"
-      (commentCreated)="onInternalCommentCreated($any($event))"
-      (commentUpdated)="onInternalCommentUpdated($any($event))"
-      (commentDeleted)="onInternalCommentDeleted($any($event))"
+      (commentCreated)="onInternalCommentCreated($event)"
+      (commentUpdated)="onInternalCommentUpdated($event)"
+      (commentDeleted)="onInternalCommentDeleted($event)"
     ></app-post-comments>
   }
 </app-card>

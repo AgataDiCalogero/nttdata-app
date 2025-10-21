@@ -9,6 +9,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { UserForm } from '../user-form/user-form.component';
 import { DeleteConfirmComponent } from '../../../../shared/dialog/delete-confirm/delete-confirm.component';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
+import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 
 // Definisci il tipo per lo state interno (solo ciò che serve per il funzionamento, non pubblico)
 interface UsersState {
@@ -77,6 +78,7 @@ export const UsersStoreAdapter = signalStore(
     const router = inject(Router);
     const route = inject(ActivatedRoute);
     const dialog = inject(Dialog);
+    const dialogLayouts = inject(ResponsiveDialogService);
 
     // Setup iniziale
     const setupInitialState = () => {
@@ -162,34 +164,13 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const openNewUserModal = () => {
-      const isMobile = window.innerWidth < 640;
-      const config = isMobile
-        ? {
-            position: { right: '0', top: '0' },
-            height: '100%',
-            width: '480px',
-            maxWidth: '100vw',
-            panelClass: 'slide-in-drawer',
-            backdropClass: 'blurred-backdrop',
-            ariaLabel: 'New user',
-            autoFocus: true,
-            restoreFocus: true,
-            closeOnNavigation: true,
-            disableClose: false,
-          }
-        : {
-            width: '600px',
-            maxWidth: '90vw',
-            backdropClass: 'blurred-backdrop',
-            panelClass: 'user-form-modal',
-            ariaLabel: 'New user',
-            autoFocus: true,
-            restoreFocus: true,
-            closeOnNavigation: true,
-            disableClose: false,
-          };
-
-      const ref = dialog.open(UserForm, config);
+      const ref = dialog.open(
+        UserForm,
+        dialogLayouts.form({
+          ariaLabel: 'New user',
+          desktop: { width: '600px' },
+        }),
+      );
       ref.closed.subscribe((result) => {
         if (result === 'success') {
           loadUsers();
@@ -200,36 +181,14 @@ export const UsersStoreAdapter = signalStore(
     const openEditUserModal = (userId: number) => {
       usersApi.getById(userId).subscribe({
         next: (user) => {
-          const isMobile = window.innerWidth < 640;
-          const config = isMobile
-            ? {
-                position: { right: '0', top: '0' },
-                height: '100%',
-                width: '480px',
-                maxWidth: '100vw',
-                panelClass: 'slide-in-drawer',
-                backdropClass: 'blurred-backdrop',
-                ariaLabel: 'Edit user',
-                autoFocus: true,
-                restoreFocus: true,
-                closeOnNavigation: true,
-                disableClose: false,
-                data: { user },
-              }
-            : {
-                width: '600px',
-                maxWidth: '90vw',
-                backdropClass: 'blurred-backdrop',
-                panelClass: 'user-form-modal',
-                ariaLabel: 'Edit user',
-                autoFocus: true,
-                restoreFocus: true,
-                closeOnNavigation: true,
-                disableClose: false,
-                data: { user },
-              };
-
-          const ref = dialog.open(UserForm, config);
+          const ref = dialog.open(
+            UserForm,
+            dialogLayouts.form({
+              ariaLabel: 'Edit user',
+              desktop: { width: '600px' },
+              data: { user },
+            }),
+          );
           ref.closed.subscribe((result) => {
             if (result === 'success') {
               loadUsers();

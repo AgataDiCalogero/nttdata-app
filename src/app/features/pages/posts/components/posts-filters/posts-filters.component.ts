@@ -13,8 +13,8 @@ import { SelectComponent } from '@app/shared/ui/select/select.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsFiltersComponent {
-  readonly searchForm = input(null as unknown as FormGroup);
-  readonly userOptions = input([] as { id: number; name?: string }[]);
+  readonly searchForm = input.required<FormGroup>();
+  readonly userOptions = input<{ id: number; name?: string }[]>([]);
 
   readonly userSelectOptions = computed(() => [
     { value: 0 as const, label: 'All authors' },

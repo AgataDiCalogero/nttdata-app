@@ -18,7 +18,8 @@
     </app-alert>
   } @else {
     <ul class="post-comments__list">
-      <li *ngFor="let comment of comments(); trackBy: trackByCommentId" class="post-comments__item">
+      @for (comment of comments(); track trackByCommentId) {
+        <li class="post-comments__item">
         @let isEditing = editingId() === comment.id;
         <header class="post-comments__item-header">
           <div class="post-comments__avatar" aria-hidden="true">
@@ -110,7 +111,8 @@
             </p>
           }
         </div>
-      </li>
+        </li>
+      }
     </ul>
   }
 </section>

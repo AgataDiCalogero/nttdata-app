@@ -21,13 +21,13 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCardComponent {
-  readonly post = input(null as unknown as Post);
+  readonly post = input.required<Post>();
   readonly interactive = input(false);
-  readonly padding = input('default' as 'none' | 'compact' | 'default' | 'spacious');
+  readonly padding = input<'none' | 'compact' | 'default' | 'spacious'>('default');
   readonly isDeleting = input(false);
-  readonly comments = input(null as ModelComment[] | null | undefined);
+  readonly comments = input<ModelComment[] | null | undefined>(undefined);
   readonly commentsLoading = input(false);
-  readonly authorName = input(null as string | null);
+  readonly authorName = input<string | null>(null);
   readonly allowManage = input(true);
   readonly Trash2 = Trash2;
   readonly MessageSquare = MessageSquare;

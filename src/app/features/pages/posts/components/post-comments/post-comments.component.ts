@@ -38,9 +38,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCommentsComponent {
-  readonly comments = input(null as ModelComment[] | null);
+  readonly comments = input<ModelComment[] | null | undefined>(null);
   readonly loading = input(false);
-  readonly postId = input(0);
+  readonly postId = input.required<number>();
 
   readonly commentCreated = output<ModelComment>();
   readonly commentUpdated = output<ModelComment>();
