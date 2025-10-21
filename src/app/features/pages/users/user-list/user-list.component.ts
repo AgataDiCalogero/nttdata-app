@@ -40,17 +40,18 @@ export class UserListComponent {
     return item.id;
   }
 
-  onView(user: User): void {
+  onView(user: User, event?: Event): void {
+    event?.stopPropagation();
     this.view.emit(user.id);
   }
 
-  onEdit(user: User, event: Event): void {
-    event.stopPropagation();
+  onEdit(user: User, event?: Event): void {
+    event?.stopPropagation();
     this.edit.emit(user.id);
   }
 
-  onDelete(user: User, event: Event): void {
-    event.stopPropagation();
+  onDelete(user: User, event?: Event): void {
+    event?.stopPropagation();
     this.delete.emit(user);
   }
 

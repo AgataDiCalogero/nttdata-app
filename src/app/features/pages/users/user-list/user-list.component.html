@@ -4,30 +4,32 @@
       <div class="user-card__avatar">{{ initials(user) }}</div>
 
       <div class="user-card__content">
-        <h3 class="user-card__name">{{ user.name || 'Unnamed user' }}</h3>
+        <div class="user-card__header">
+          <h3 class="user-card__name">{{ user.name || 'Unnamed user' }}</h3>
 
-        <span class="user-card__badge user-card__badge--{{ user.status }}">
-          <lucide-icon [img]="user.status === 'active' ? Check : X"></lucide-icon>
-          {{ user.status }}
-        </span>
+          <span class="user-card__badge user-card__badge--{{ user.status }}">
+            <lucide-icon [img]="user.status === 'active' ? Check : X"></lucide-icon>
+            {{ user.status }}
+          </span>
+        </div>
 
-        <div class="user-card__meta">
-          <div class="user-card__meta-item">
+        <div class="user-card__details">
+          <div class="user-card__detail">
             <lucide-icon [img]="Mail"></lucide-icon>
             <span>{{ user.email }}</span>
           </div>
-          <div class="user-card__meta-item">
+          <div class="user-card__detail">
             <lucide-icon [img]="UserIcon"></lucide-icon>
             <span>{{ user.gender || '-' }}</span>
           </div>
         </div>
 
-        <div class="user-card__buttons">
+        <div class="user-card__actions">
           <button
             appButton
             variant="ghost"
             size="sm"
-            (click)="$event.stopPropagation(); onView(user)"
+            (click)="onView(user, $event)"
           >
             <lucide-icon [img]="Eye"></lucide-icon>
             <span>View</span>
@@ -36,7 +38,7 @@
             appButton
             variant="outline"
             size="sm"
-            (click)="$event.stopPropagation(); onEdit(user, $event)"
+            (click)="onEdit(user, $event)"
           >
             <lucide-icon [img]="Pencil"></lucide-icon>
             <span>Edit</span>
@@ -45,7 +47,7 @@
             appButton
             variant="danger"
             size="sm"
-            (click)="$event.stopPropagation(); onDelete(user, $event)"
+            (click)="onDelete(user, $event)"
             aria-label="Delete user"
           >
             <lucide-icon [img]="Trash2"></lucide-icon>
