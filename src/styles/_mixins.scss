@@ -162,22 +162,28 @@
 
 // Border radius helpers
 @mixin radius($size: 'md') {
+  $radius-token: null;
+
   @if $size == 'xs' {
-    border-radius: var(--radius-xs);
+    $radius-token: var(--radius-xs);
   } @else if $size == 'sm' {
-    border-radius: var(--radius-sm);
+    $radius-token: var(--radius-sm);
   } @else if $size == 'md' {
-    border-radius: var(--radius-md);
+    $radius-token: var(--radius-md);
   } @else if $size == 'lg' {
-    border-radius: var(--radius-lg);
+    $radius-token: var(--radius-lg);
   } @else if $size == 'xl' {
-    border-radius: var(--radius-xl);
+    $radius-token: var(--radius-xl);
   } @else if $size == '2xl' {
-    border-radius: var(--radius-2xl);
+    $radius-token: var(--radius-2xl);
   } @else if $size == 'full' {
-    border-radius: var(--radius-full);
+    $radius-token: var(--radius-full);
   } @else if $size == 'none' {
-    border-radius: var(--radius-none);
+    $radius-token: var(--radius-none);
+  }
+
+  @if $radius-token != null {
+    border-radius: $radius-token;
   }
 }
 

@@ -18,7 +18,7 @@
     </app-alert>
   } @else {
     <ul class="post-comments__list">
-      @for (comment of comments(); track trackByCommentId) {
+      @for (comment of comments(); track trackByCommentId($index, comment)) {
         <li class="post-comments__item">
         @let isEditing = editingId() === comment.id;
         <header class="post-comments__item-header">

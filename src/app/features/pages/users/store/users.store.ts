@@ -158,12 +158,10 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const setPage = (page: number, per_page: number, pushUrl = true) => {
-      const next = buildPaginatedUsers(
-        store.users(),
-        store.searchTerm(),
-        store.sortState(),
-        { page, per_page },
-      );
+      const next = buildPaginatedUsers(store.users(), store.searchTerm(), store.sortState(), {
+        page,
+        per_page,
+      });
 
       patchState(store, {
         pageState: { page: next.page, per_page: next.per_page },
@@ -179,13 +177,11 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const openNewUserModal = () => {
-      const ref = dialog.open(
-        UserForm,
-        dialogLayouts.form({
-          ariaLabel: 'New user',
-          desktop: { width: '600px' },
-        }),
-      );
+      const config = dialogLayouts.form<void, 'success' | 'cancel', UserForm>({
+        ariaLabel: 'New user',
+        desktop: { width: '600px' },
+      });
+      const ref = dialog.open<'success' | 'cancel', void, UserForm>(UserForm, config);
       ref.closed.subscribe((result) => {
         if (result === 'success') {
           loadUsers();
@@ -196,14 +192,12 @@ export const UsersStoreAdapter = signalStore(
     const openEditUserModal = (userId: number) => {
       usersApi.getById(userId).subscribe({
         next: (user) => {
-          const ref = dialog.open(
-            UserForm,
-            dialogLayouts.form({
-              ariaLabel: 'Edit user',
-              desktop: { width: '600px' },
-              data: { user },
-            }),
-          );
+          const config = dialogLayouts.form<{ user: User }, 'success' | 'cancel', UserForm>({
+            ariaLabel: 'Edit user',
+            desktop: { width: '600px' },
+            data: { user },
+          });
+          const ref = dialog.open<'success' | 'cancel', { user: User }, UserForm>(UserForm, config);
           ref.closed.subscribe((result) => {
             if (result === 'success') {
               loadUsers();
@@ -223,7 +217,7 @@ export const UsersStoreAdapter = signalStore(
         message: `Are you sure you want to delete ${user.name}? This action cannot be undone.`,
         confirmText: 'Delete',
         cancelText: 'Cancel',
-        inProgressText: 'Deleting…',
+        inProgressText: 'Deleting...',
         errorMessage: 'Unable to delete user right now. Please try again.',
         confirmAction: () => {
           patchState(store, { deletingId: user.id });

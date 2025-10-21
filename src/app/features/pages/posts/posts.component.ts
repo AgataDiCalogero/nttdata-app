@@ -5,10 +5,11 @@ import { PostsViewComponent } from './components/posts-view/posts-view.component
 import { providePostsService, injectPostsService } from './store/posts.inject';
 import { PostForm } from './components/post-form/post-form.component';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
-import type { Post, Comment, DeleteConfirmData } from '@/app/shared/models';
+import type { Post, Comment, DeleteConfirmData, User } from '@/app/shared/models';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 // Dialog result shape used by PostForm dialog
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
+type PostFormDialogData = { users: User[]; post?: Post };
 
 @Component({
   selector: 'app-posts',
@@ -42,14 +43,12 @@ export class Posts {
   // (DialogResult type declared at module scope)
 
   handleCreatePost(): void {
-    const ref = this.dialog.open(
-      PostForm,
-      this.dialogLayouts.form({
-        ariaLabel: 'New post',
-        desktop: { width: '620px' },
-        data: { users: this.store.userOptions() },
-      }),
-    );
+    const config = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
+      ariaLabel: 'New post',
+      desktop: { width: '620px' },
+      data: { users: this.store.userOptions() },
+    });
+    const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(PostForm, config);
 
     ref.closed.subscribe((result) => {
       if (result && typeof result === 'object' && 'status' in result) {
@@ -79,14 +78,12 @@ export class Posts {
   }
 
   handleEditPost(post: Post): void {
-    const ref = this.dialog.open(
-      PostForm,
-      this.dialogLayouts.form({
-        ariaLabel: `Edit post ${post.title}`,
-        desktop: { width: '620px' },
-        data: { users: this.store.userOptions(), post },
-      }),
-    );
+    const config = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
+      ariaLabel: `Edit post ${post.title}`,
+      desktop: { width: '620px' },
+      data: { users: this.store.userOptions(), post },
+    });
+    const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(PostForm, config);
 
     ref.closed.subscribe((result) => {
       if (result && typeof result === 'object' && 'status' in result) {
@@ -109,7 +106,7 @@ export class Posts {
       message: `Are you sure you want to delete "${post.title}"? This action cannot be undone.`,
       confirmText: 'Delete',
       cancelText: 'Cancel',
-      inProgressText: 'Deleting…',
+      inProgressText: 'Deleting...',
       errorMessage: 'Unable to delete this post right now. Please try again.',
       confirmAction: () => this.store.deletePostRequest(post),
     };

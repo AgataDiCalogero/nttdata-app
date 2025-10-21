@@ -63,11 +63,12 @@ export class PostCommentsComponent {
       message: `Are you sure you want to delete this comment? This action cannot be undone.`,
       confirmText: 'Delete',
       cancelText: 'Cancel',
-      inProgressText: 'Deleting…',
+      inProgressText: 'Deleting...',
       errorMessage: 'Unable to delete this comment right now.',
       confirmAction: () => {
         this.deletingId.set(comment.id);
         return this.postsApi.deleteComment(comment.id).pipe(
+          takeUntilDestroyed(this.destroyRef),
           tap({
             next: () => {
               this.toast.show('success', 'Comment deleted');

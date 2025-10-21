@@ -1,5 +1,5 @@
 <ul class="posts-list">
-  @for (post of posts(); track trackPostById; let i = $index) {
+  @for (post of posts(); track trackPostById($index, post)) {
     <li class="post-wrapper">
       <app-post-card
         [post]="post"

@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  inject,
-  signal,
-  computed,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
@@ -27,7 +21,7 @@ export class DeleteConfirmComponent {
   readonly errorMessage = signal<string | null>(null);
   readonly confirmLabel = computed(() => {
     if (this.submitting()) {
-      return this.data.inProgressText ?? 'Deleting…';
+      return this.data.inProgressText ?? 'Deleting...';
     }
     return this.data.confirmText ?? 'Delete';
   });
@@ -57,7 +51,10 @@ export class DeleteConfirmComponent {
       const fallback =
         this.data.errorMessage ?? 'Unable to complete this action right now. Please retry.';
       const derived =
-        typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string'
+        typeof err === 'object' &&
+        err !== null &&
+        'message' in err &&
+        typeof err.message === 'string'
           ? err.message
           : fallback;
       this.errorMessage.set(derived || fallback);

@@ -126,7 +126,8 @@
   @include mixins.transition-group((background, border-color, transform));
 
   &:hover {
-    background: var(--alpha-02);
+    /* lighter mid-orange hover for both active and inactive (between not-active and active) */
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
     transform: translateY(-1px);
   }
 
@@ -161,25 +162,30 @@
 
 .appearance-option__icon {
   @include mixins.flex-center;
-  width: 1.8rem;
-  height: 1.8rem;
+  /* Make all emoji/icon containers the same fixed size so icons align perfectly */
+  width: 2rem;
+  height: 2rem;
   border-radius: var(--radius-full);
   @include mixins.transition-group(all);
 
   lucide-icon {
+    /* force consistent icon size inside the container */
     width: 1.2rem;
     height: 1.2rem;
+    display: block;
+    line-height: 1;
   }
 
   .appearance-option--toggle & {
     /* keep the same container width as regular options so labels align */
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2rem;
+    height: 2rem;
     margin-right: var(--space-xs);
 
     lucide-icon {
-      width: 1rem;
-      height: 1rem;
+      /* keep the icon visual size same as others for uniformity */
+      width: 1.2rem;
+      height: 1.2rem;
     }
   }
 }
@@ -208,9 +214,16 @@
   height: 26px;
   border-radius: 999px;
   position: relative;
-  /* visible off-state background */
-  background: var(--alpha-12);
+  /* visible off-state background: light orange (off) so toggle is always present */
+  /* fallback background and border (safe) */
+  background: var(--alpha-accent-06, var(--alpha-12));
   border: 1px solid var(--alpha-06);
+
+  /* apply nicer tint when color-mix is supported */
+  @supports (color: color-mix(in srgb, var(--color-accent) 6%, transparent)) {
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 8%, var(--alpha-06));
+  }
   @include mixins.transition-group((background, border-color));
 
   &::after {
@@ -228,20 +241,27 @@
   }
 
   &[data-on='true'] {
-    /* fallback linear gradient using tokenized mixes */
-    background: linear-gradient(180deg, var(--alpha-accent-12), var(--alpha-accent-06));
+    /* active/on state: stronger accent gradient and knob colored with accent */
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent) 20%, transparent),
+      color-mix(in srgb, var(--color-accent) 10%, transparent)
+    );
     border-color: var(--color-accent);
+    @supports (color: color-mix(in srgb, var(--color-accent) 60%, transparent)) {
+      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    }
     @supports (background: color-mix(in srgb, var(--color-accent) 12%, transparent)) {
       background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-accent) 12%, transparent),
-        color-mix(in srgb, var(--color-accent) 6%, transparent)
+        color-mix(in srgb, var(--color-accent) 20%, transparent),
+        color-mix(in srgb, var(--color-accent) 10%, transparent)
       );
     }
 
     &::after {
       transform: translateX(18px);
-      background: var(--color-accent);
+      background: color-mix(in srgb, var(--color-accent) 80%, var(--color-on-surface));
     }
   }
 }
