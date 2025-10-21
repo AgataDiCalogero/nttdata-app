@@ -38,7 +38,7 @@ export class ResponsiveDialogService {
     const sharedConfig = this.mergeConfig(sharedDefaults, options.shared);
     const desktopBase: ResponsiveDialogConfig<TData, R, C> = {
       ...sharedConfig,
-      width: '600px',
+      width: '37.5rem',
       maxWidth: '90vw',
       panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'user-form-modal'),
     };
@@ -47,7 +47,7 @@ export class ResponsiveDialogService {
     const mobileBase: ResponsiveDialogConfig<TData, R, C> = {
       ...sharedConfig,
       height: '100%',
-      width: '480px',
+      width: '30rem',
       maxWidth: '100vw',
       panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'slide-in-drawer'),
       positionStrategy: this.overlay.position().global().top('0').right('0'),
