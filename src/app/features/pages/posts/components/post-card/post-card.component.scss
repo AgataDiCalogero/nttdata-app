@@ -36,8 +36,9 @@
   color: var(--color-on-accent);
   font-weight: 600;
   font-size: 1.1rem;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: var(--shadow-sm);
 }
 

@@ -40,9 +40,14 @@
 }
 
 @mixin grid-stack($min-width: 280px, $gap: var(--space-lg)) {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: $gap;
+
+  > * {
+    flex: 1 1 $min-width;
+    min-width: $min-width;
+  }
 }
 
 // Card/surface styles

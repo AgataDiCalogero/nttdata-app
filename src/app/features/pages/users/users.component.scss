@@ -61,7 +61,8 @@
 }
 
 .users-skeleton {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-sm);
 
   &__row {

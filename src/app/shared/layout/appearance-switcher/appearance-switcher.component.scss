@@ -78,9 +78,8 @@
 }
 
 .appearance-switcher__options {
-  display: grid;
-  /* stack vertically to match mock (Light above Dark) */
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-xs);
   align-items: stretch;
 
@@ -327,8 +326,6 @@
   }
 
   .appearance-switcher__options {
-    grid-template-columns: 1fr;
-    gap: var(--space-xs);
   }
 
   .appearance-option {

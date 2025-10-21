@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   Injector,
   OnDestroy,
   OnInit,
@@ -11,7 +12,7 @@ import {
   runInInjectionContext,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { DOCUMENT, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
@@ -19,7 +20,7 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { LucideAngularModule, LogOut } from 'lucide-angular';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { filter, map, startWith, tap } from 'rxjs';
+import { filter } from 'rxjs';
 
 // Main application navbar with navigation and authentication
 @Component({
@@ -45,34 +46,17 @@ export class Navbar implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly desktopQuery = '(min-width: 640px)';
 
-  private readonly routerEvents$ = this.router.events.pipe(
-    filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-    tap(() => {
-      if (this.menuOpen()) {
-        this.closeMenu(false);
-      }
-    }),
-    map((event) => event.urlAfterRedirects.startsWith('/login')),
-    startWith(this.router.url.startsWith('/login')),
-  );
-
-  readonly isLoginRoute = toSignal(this.routerEvents$, {
-    initialValue: this.router.url.startsWith('/login'),
-  });
+  readonly isLoginRoute = signal(this.router.url.startsWith('/login'));
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
-  readonly isDesktop = this.isBrowser
-    ? toSignal(
-        this.breakpointObserver
-          .observe(this.desktopQuery)
-          .pipe(map((state) => state.matches)),
-        { initialValue: this.breakpointObserver.isMatched(this.desktopQuery) },
-      )
-    : signal(false);
+  readonly isDesktop = signal(
+    this.isBrowser ? this.breakpointObserver.isMatched(this.desktopQuery) : false,
+  );
 
   // export icon for template binding
   readonly LogOut = LogOut;
@@ -90,14 +74,11 @@ export class Navbar implements OnInit, OnDestroy {
     this.updateBodyScroll();
   }
 
-  closeMenu(updateUrl = true): void {
+  closeMenu(): void {
     if (!this.menuOpen()) return;
     this.menuOpen.set(false);
     if (this.isBrowser) {
       this.updateBodyScroll();
-    }
-    if (updateUrl) {
-      // no-op placeholder for future focus management
     }
   }
 
@@ -114,8 +95,24 @@ export class Navbar implements OnInit, OnDestroy {
       }
     }
   }
+
   ngOnInit(): void {
     if (!this.isBrowser) return;
+
+    this.breakpointObserver
+      .observe(this.desktopQuery)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((state) => this.isDesktop.set(state.matches));
+
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((event) => {
+        this.isLoginRoute.set(event.urlAfterRedirects.startsWith('/login'));
+        this.closeMenu();
+      });
 
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' || e.key === 'Esc') {
@@ -124,12 +121,10 @@ export class Navbar implements OnInit, OnDestroy {
     };
     this.keydownHandler = handler;
 
-    // effect() must run in an Angular injection context. Use runInInjectionContext
-    // with the current injector so this works when invoked at runtime here.
     runInInjectionContext(this.injector, () => {
       effect(() => {
         if (this.isDesktop() && this.menuOpen()) {
-          this.closeMenu(false);
+          this.closeMenu();
         }
       });
 

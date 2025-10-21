@@ -22,8 +22,8 @@
 }
 
 .user-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-lg);
   padding: var(--space-xl);
   border-radius: var(--radius-xl);
@@ -39,15 +39,18 @@
     color: var(--color-on-accent);
     font-weight: 700;
     font-size: 1.6rem;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: var(--shadow-accent-soft);
+    flex: 0 0 72px;
   }
 
   &__meta {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
+    flex: 1 1 240px;
   }
 
   &__name {
@@ -108,8 +111,8 @@
   }
 
   @media (min-width: 768px) {
-    grid-template-columns: auto 1fr auto;
     align-items: center;
+    justify-content: space-between;
   }
 }
 
@@ -130,8 +133,13 @@
   }
 
   &__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-lg);
+
+    > * {
+      flex: 1 1 320px;
+      min-width: 320px;
+    }
   }
 }

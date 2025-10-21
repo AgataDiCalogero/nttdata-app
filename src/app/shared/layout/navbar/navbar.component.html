@@ -1,5 +1,5 @@
 <header class="app-navbar">
-  <a class="brand" routerLink="/" aria-label="NTT Data Home">
+  <div class="brand">
     <img
       ngSrc="assets/logo.svg"
       alt="NTT Data"
@@ -9,7 +9,7 @@
       priority
     />
     <h1>NTT Data App</h1>
-  </a>
+  </div>
   <div class="nav-wrapper">
     <nav id="main-nav" role="navigation" aria-label="Main navigation">
       @if (!isLogged() && !isLoginRoute()) {
@@ -51,7 +51,6 @@
     <div
       class="mobile-overlay"
       (click)="closeMenu()"
-      (keydown)="closeMenu()"
       aria-hidden="true"
       tabindex="-1"
     ></div>

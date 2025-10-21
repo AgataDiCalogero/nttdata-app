@@ -64,8 +64,9 @@
     color: var(--color-on-accent);
     font-weight: 600;
     font-size: 0.9rem;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
 
@@ -134,4 +135,3 @@
     }
   }
 }
-
