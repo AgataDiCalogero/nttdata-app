@@ -20,11 +20,11 @@
   gap: var(--space-md);
 
   > * {
-    flex: 1 1 200px;
-    min-width: 200px;
+    flex: 1 1 clamp(12rem, 45%, 18rem);
+    min-width: clamp(12rem, 45%, 18rem);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 48rem) {
     flex-direction: column;
 
     > * {
@@ -41,13 +41,13 @@
 }
 
 .comment-form__scrollable {
-  max-height: 400px;
+  max-height: 25rem;
   overflow-y: auto;
   padding-right: var(--space-sm);
 
   /* Custom scrollbar for webkit browsers */
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0.25rem;
   }
 
   &::-webkit-scrollbar-track {

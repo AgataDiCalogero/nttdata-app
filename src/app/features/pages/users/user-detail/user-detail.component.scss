@@ -16,7 +16,7 @@
   }
 
   &__state {
-    max-width: 640px;
+    max-width: 40rem;
     margin-inline: auto;
   }
 }
@@ -32,8 +32,8 @@
   box-shadow: var(--shadow-md);
 
   &__avatar {
-    width: 72px;
-    height: 72px;
+    width: 4.5rem;
+    height: 4.5rem;
     border-radius: var(--radius-full);
     background: var(--color-accent);
     color: var(--color-on-accent);
@@ -43,14 +43,14 @@
     align-items: center;
     justify-content: center;
     box-shadow: var(--shadow-accent-soft);
-    flex: 0 0 72px;
+    flex: 0 0 4.5rem;
   }
 
   &__meta {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
-    flex: 1 1 240px;
+    flex: 1 1 clamp(15rem, 50%, 24rem);
   }
 
   &__name {
@@ -110,7 +110,7 @@
     width: fit-content;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 48rem) {
     align-items: center;
     justify-content: space-between;
   }
@@ -138,8 +138,8 @@
     gap: var(--space-lg);
 
     > * {
-      flex: 1 1 320px;
-      min-width: 320px;
+      flex: 1 1 clamp(18rem, 48%, 30rem);
+      min-width: clamp(18rem, 48%, 30rem);
     }
   }
 }

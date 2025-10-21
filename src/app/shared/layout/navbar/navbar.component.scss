@@ -9,7 +9,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: var(--space-sm) var(--layout-gutter);
-  min-height: 64px;
+  min-height: 4rem;
   background: var(--color-primary);
   color: var(--color-on-primary);
   @include flex-row(var(--space-md), center, space-between);
@@ -32,8 +32,8 @@
     text-decoration: none;
 
     &__logo {
-      width: 36px;
-      height: 36px;
+      width: 2.25rem;
+      height: 2.25rem;
     }
 
     h1 {
@@ -107,21 +107,21 @@
 
     .logout-btn {
       @include flex-row(var(--space-xs), center);
-      padding: 8px 12px;
-      min-height: 40px;
-      border-radius: 10px;
+      padding: 0.5rem 0.75rem;
+      min-height: 2.5rem;
+      border-radius: 0.625rem;
       background: transparent;
       color: var(--color-on-primary);
       font-weight: 600;
 
       svg {
-        width: 18px;
-        height: 18px;
+        width: 1.125rem;
+        height: 1.125rem;
         flex-shrink: 0;
       }
 
       &:hover {
-        transform: translateY(-1px);
+        transform: translateY(-0.0625rem);
         background: var(--alpha-accent-06);
       }
     }

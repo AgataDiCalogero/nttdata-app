@@ -12,19 +12,19 @@
   padding: 1.75rem;
   background: var(--color-surface-solid);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-0.125rem);
     box-shadow: var(--shadow-md);
   }
 
   &__avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 14px;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius-lg);
     background: var(
       --gradient-primary,
       linear-gradient(135deg, var(--color-accent), var(--color-accent-light))
@@ -75,8 +75,8 @@
     margin-bottom: 0.25rem;
 
     lucide-icon {
-      width: 12px; /* smaller status icon */
-      height: 12px;
+      width: 0.75rem; /* smaller status icon */
+      height: 0.75rem;
     }
 
     &--active {
@@ -99,8 +99,8 @@
     margin-bottom: 0.5rem;
 
     > * {
-      flex: 1 1 200px;
-      min-width: 200px;
+      flex: 1 1 clamp(12rem, 45%, 20rem);
+      min-width: clamp(12rem, 45%, 20rem);
     }
 
     @include mobile {
@@ -121,8 +121,8 @@
     line-height: 1.5;
 
     lucide-icon {
-      width: 16px; /* reduce meta icon size */
-      height: 16px;
+      width: 1rem; /* reduce meta icon size */
+      height: 1rem;
       flex-shrink: 0;
       color: var(--color-muted);
     }
@@ -161,7 +161,7 @@
     gap: 0.625rem; /* slightly more space between icon and label */
     padding: 0.625rem 1rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     font-size: 0.9375rem;
     font-weight: 500;
     cursor: pointer;
@@ -169,8 +169,8 @@
     flex: 0 0 auto;
 
     lucide-icon {
-      width: 16px; /* smaller icons for buttons */
-      height: 16px;
+      width: 1rem; /* smaller icons for buttons */
+      height: 1rem;
     }
 
     &--view,
@@ -201,7 +201,7 @@
       color: var(--color-danger);
       padding: 0.625rem;
       flex: 0 0 auto;
-      min-width: 46px;
+      min-width: 2.875rem;
       border: 1px solid var(--color-danger-border-strong);
 
       &:hover {
@@ -217,8 +217,8 @@
       }
 
       lucide-icon {
-        width: 16px;
-        height: 16px;
+        width: 1rem;
+        height: 1rem;
       }
     }
   }
