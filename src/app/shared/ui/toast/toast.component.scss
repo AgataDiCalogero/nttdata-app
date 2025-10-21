@@ -23,15 +23,15 @@
   box-shadow: var(--shadow-toast);
   color: var(--color-white);
   @include mixins.flex-row(var(--space-sm));
-  min-width: 280px;
-  max-width: 400px;
+  min-width: 17.5rem;
+  max-width: 25rem;
   pointer-events: auto;
   animation: toast-slide-in 0.3s ease-out;
   outline: none;
   @include mixins.transition-group(all);
 
   &:hover {
-    transform: translateX(-4px);
+    transform: translateX(-0.25rem);
     box-shadow: var(--shadow-toast-hover);
   }
 }
@@ -63,8 +63,8 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-white);
-    outline-offset: 2px;
+    outline: 0.125rem solid var(--color-white);
+    outline-offset: 0.125rem;
     opacity: 1;
     box-shadow: var(--shadow-toast-focus);
   }

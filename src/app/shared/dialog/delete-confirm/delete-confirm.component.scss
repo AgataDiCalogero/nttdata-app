@@ -3,7 +3,7 @@
 :host {
   display: block;
   padding: clamp(var(--space-md), 3vw, var(--space-xl));
-  max-width: 480px;
+  max-width: 30rem;
 }
 
 .delete-confirm {
@@ -28,7 +28,7 @@ h2 {
   @include mixins.button-group(var(--space-sm), flex-end, wrap);
   margin-top: var(--space-sm);
   padding-top: var(--space-md);
-  border-top: 1px solid var(--border-mix-60);
+  border-top: 0.0625rem solid var(--border-mix-60);
 }
 
 .delete-confirm__status {
