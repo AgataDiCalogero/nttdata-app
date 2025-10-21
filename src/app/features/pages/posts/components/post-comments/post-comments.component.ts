@@ -20,6 +20,7 @@ import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -56,15 +57,38 @@ export class PostCommentsComponent {
   readonly Trash2 = Trash2;
   private readonly dialog = inject(Dialog);
   readonly deletingId = signal<number | null>(null);
-  readonly deleteError = signal<string | null>(null);
   deleteComment(comment: ModelComment): void {
     const data: DeleteConfirmData = {
       title: 'Delete Comment',
       message: `Are you sure you want to delete this comment? This action cannot be undone.`,
       confirmText: 'Delete',
       cancelText: 'Cancel',
+      inProgressText: 'Deleting…',
+      errorMessage: 'Unable to delete this comment right now.',
+      confirmAction: () => {
+        this.deletingId.set(comment.id);
+        return this.postsApi.deleteComment(comment.id).pipe(
+          tap({
+            next: () => {
+              this.toast.show('success', 'Comment deleted');
+              this.commentDeleted.emit(comment.id);
+              this.deletingId.set(null);
+            },
+            error: (err) => {
+              this.deletingId.set(null);
+              console.error('Failed to delete comment', err);
+              const message =
+                err?.status === 429
+                  ? 'Too many attempts. Please wait and retry.'
+                  : 'Unable to delete this comment right now.';
+              this.toast.show('error', message);
+              throw new Error(message);
+            },
+          }),
+        );
+      },
     };
-    const ref = this.dialog.open(DeleteConfirmComponent, {
+    this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       maxWidth: '90vw',
       backdropClass: 'blurred-backdrop',
@@ -73,32 +97,6 @@ export class PostCommentsComponent {
       autoFocus: true,
       restoreFocus: true,
       data,
-    });
-    ref.closed.subscribe((confirmed) => {
-      if (!confirmed) return;
-      this.deletingId.set(comment.id);
-      this.deleteError.set(null);
-      this.postsApi
-        .deleteComment(comment.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: () => {
-            this.toast.show('success', 'Comment deleted');
-            this.commentDeleted.emit(comment.id);
-            this.deletingId.set(null);
-          },
-          error: (err) => {
-            this.deletingId.set(null);
-            console.error('Failed to delete comment', err);
-            if (err?.status === 429) {
-              this.deleteError.set('Too many attempts. Please wait and retry.');
-              this.toast.show('error', 'Too many attempts. Please wait and retry.');
-            } else {
-              this.deleteError.set('Unable to delete this comment right now.');
-              this.toast.show('error', 'Unable to delete this comment right now.');
-            }
-          },
-        });
     });
   }
 

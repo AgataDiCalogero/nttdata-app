@@ -1,6 +1,7 @@
 import { Signal } from '@angular/core';
 import type { Post, Comment, User, PaginationMeta, PostFilters } from '@/app/shared/models';
 import type { FormGroup } from '@angular/forms';
+import type { Observable } from 'rxjs';
 
 export interface PostsService {
   // Signals pubblici
@@ -27,6 +28,7 @@ export interface PostsService {
   refresh(): void;
   resetFilters(): void;
   deletePost(post: Post): void;
+  deletePostRequest(post: Post): Observable<void>;
   toggleComments(postId: number): void;
   onPostUpdated(post: Post): void;
   onCommentCreated(postId: number, comment: Comment): void;

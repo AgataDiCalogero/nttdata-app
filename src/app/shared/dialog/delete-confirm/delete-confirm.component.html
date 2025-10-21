@@ -2,12 +2,32 @@
   <h2>{{ data.title }}</h2>
   <p class="delete-confirm__message">{{ data.message }}</p>
 
+  @if (errorMessage()) {
+    <app-alert variant="error" padding="compact" class="delete-confirm__status">
+      {{ errorMessage() }}
+    </app-alert>
+  }
+
   <div class="delete-confirm__actions">
-    <button type="button" appButton variant="secondary" class="btn" (click)="cancel()">
+    <button
+      type="button"
+      appButton
+      variant="secondary"
+      class="btn"
+      (click)="cancel()"
+      [disabled]="submitting()"
+    >
       {{ data.cancelText || 'Cancel' }}
     </button>
-    <button type="button" appButton variant="danger" class="btn" (click)="confirm()">
-      {{ data.confirmText || 'Delete' }}
+    <button
+      type="button"
+      appButton
+      variant="danger"
+      class="btn"
+      (click)="confirm()"
+      [loading]="submitting()"
+    >
+      {{ confirmLabel() }}
     </button>
   </div>
 </div>

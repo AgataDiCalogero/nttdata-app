@@ -1,18 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
+  Injector,
   OnDestroy,
   OnInit,
-  signal,
-  computed,
   PLATFORM_ID,
+  computed,
   effect,
-  Injector,
+  inject,
   runInInjectionContext,
+  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { DOCUMENT, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -44,7 +45,9 @@ export class Navbar implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly injector = inject(Injector);
+  private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly desktopQuery = '(min-width: 640px)';
 
   private readonly routerEvents$ = this.router.events.pipe(
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -62,11 +65,18 @@ export class Navbar implements OnInit, OnDestroy {
   });
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
+  readonly isDesktop = this.isBrowser
+    ? toSignal(
+        this.breakpointObserver
+          .observe(this.desktopQuery)
+          .pipe(map((state) => state.matches)),
+        { initialValue: this.breakpointObserver.isMatched(this.desktopQuery) },
+      )
+    : signal(false);
 
   // export icon for template binding
   readonly LogOut = LogOut;
 
-  private resizeHandler: (() => void) | null = null;
   private keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
   logout(): void {
@@ -91,87 +101,61 @@ export class Navbar implements OnInit, OnDestroy {
     }
   }
 
-  onResize(): void {
-    if (!this.isBrowser) return;
-    if (window.innerWidth >= 640) {
-      this.closeMenu(false);
-    }
-  }
-
   ngOnDestroy(): void {
     if (this.isBrowser) {
       this.document?.body?.classList.remove('mobile-menu-open');
-      if (this.resizeHandler) {
+      if (this.keydownHandler) {
         try {
-          const handler = this.resizeHandler;
-          if (handler) {
-            (
-              globalThis as unknown as {
-                removeEventListener(type: string, listener: (...args: unknown[]) => void): void;
-              }
-            ).removeEventListener('resize', handler);
-          }
+          this.document?.removeEventListener('keydown', this.keydownHandler);
         } catch {
-          // ignore - defensive for non-browser test envs
+          void 0;
         }
-        this.resizeHandler = null;
+        this.keydownHandler = null;
       }
     }
   }
   ngOnInit(): void {
     if (!this.isBrowser) return;
-    // Attach window resize listener at runtime only on the browser.
-    this.resizeHandler = () => this.onResize();
-    try {
-      const handler = this.resizeHandler;
-      if (handler) {
-        (
-          globalThis as unknown as {
-            addEventListener(type: string, listener: (...args: unknown[]) => void): void;
-          }
-        ).addEventListener('resize', handler);
+
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        this.closeMenu();
       }
-    } catch {
-      // Defensive: some test environments may throw when adding global listeners
-      this.resizeHandler = null;
-    }
+    };
+    this.keydownHandler = handler;
 
-    if (this.isBrowser) {
-      const handler = (e: KeyboardEvent) => {
-        if (e.key === 'Escape' || e.key === 'Esc') {
-          this.closeMenu();
+    // effect() must run in an Angular injection context. Use runInInjectionContext
+    // with the current injector so this works when invoked at runtime here.
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        if (this.isDesktop() && this.menuOpen()) {
+          this.closeMenu(false);
         }
-      };
-      this.keydownHandler = handler;
-
-      // use a tiny polling effect - attach/remove based on menuOpen
-      // effect() must run in an Angular injection context. Use runInInjectionContext
-      // with the current injector so this works when invoked at runtime here.
-      runInInjectionContext(this.injector, () => {
-        effect(() => {
-          if (!this.menuOpen()) {
-            try {
-              this.document?.removeEventListener('keydown', handler);
-            } catch {
-              void 0; // ignore errors when removing handler in non-browser/test envs
-            }
-            return;
-          }
-
-          try {
-            this.document?.addEventListener('keydown', handler);
-
-            const nav = this.document?.getElementById('main-nav');
-            const first = nav?.querySelector('a, button') as HTMLElement | null;
-            if (first) {
-              first.focus();
-            }
-          } catch {
-            void 0; // ignore DOM errors in non-browser/test envs
-          }
-        });
       });
-    }
+
+      effect(() => {
+        if (!this.menuOpen()) {
+          try {
+            this.document?.removeEventListener('keydown', handler);
+          } catch {
+            void 0; // ignore errors when removing handler in non-browser/test envs
+          }
+          return;
+        }
+
+        try {
+          this.document?.addEventListener('keydown', handler);
+
+          const nav = this.document?.getElementById('main-nav');
+          const first = nav?.querySelector('a, button') as HTMLElement | null;
+          if (first) {
+            first.focus();
+          }
+        } catch {
+          void 0; // ignore DOM errors in non-browser/test envs
+        }
+      });
+    });
   }
 
   private updateBodyScroll(): void {

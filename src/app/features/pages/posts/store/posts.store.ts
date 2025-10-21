@@ -170,6 +170,49 @@ export const PostsStoreAdapter = signalStore(
     loadUsersForFilter();
     setupPostsStream();
 
+    const performDeletePost = (post: Post) => {
+      const shouldGoPrev =
+        store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
+
+      patchState(store, { deletingId: post.id });
+
+      return postsApi.delete(post.id).pipe(
+        tap({
+          next: () => {
+            patchState(store, (state) => ({
+              deletingId: null,
+              posts: state.posts.filter((item) => item.id !== post.id),
+              pagination: state.pagination
+                ? {
+                    ...state.pagination,
+                    total: Math.max(state.pagination.total - 1, 0),
+                    pages: Math.max(
+                      1,
+                      Math.ceil(
+                        (state.pagination.total - 1) /
+                          (state.pagination.limit || store.perPage()),
+                      ),
+                    ),
+                  }
+                : null,
+            }));
+            toast.show('success', 'Post deleted');
+            if (shouldGoPrev) {
+              patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));
+            }
+            patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
+          },
+          error: (err) => {
+            console.error('Failed to delete post:', err);
+            patchState(store, { deletingId: null });
+            const mapped = mapHttpError(err);
+            toast.show('error', mapped.message);
+            throw new Error(mapped.message);
+          },
+        }),
+      );
+    };
+
     return {
       // Expose only custom signals and methods. Do NOT re-return store members
       // (they are already exposed by signalStore and re-declaring them causes override errors).
@@ -203,44 +246,16 @@ export const PostsStoreAdapter = signalStore(
       },
 
       deletePost(post: Post): void {
-        const shouldGoPrev =
-          store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
-
-        patchState(store, { deletingId: post.id });
-        postsApi
-          .delete(post.id)
+        performDeletePost(post)
           .pipe(takeUntilDestroyed(destroyRef))
           .subscribe({
-            next: () => {
-              patchState(store, (state) => ({
-                deletingId: null,
-                posts: state.posts.filter((item) => item.id !== post.id),
-                pagination: state.pagination
-                  ? {
-                      ...state.pagination,
-                      total: Math.max(state.pagination.total - 1, 0),
-                      pages: Math.max(
-                        1,
-                        Math.ceil(
-                          (state.pagination.total - 1) /
-                            (state.pagination.limit || store.perPage()),
-                        ),
-                      ),
-                    }
-                  : null,
-              }));
-              toast.show('success', 'Post deleted');
-              if (shouldGoPrev) {
-                patchState(store, (state) => ({ page: state.page - 1 }));
-              }
-              patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
-            },
-            error: (err) => {
-              console.error('Failed to delete post:', err);
-              patchState(store, { deletingId: null });
-              toast.show('error', mapHttpError(err).message);
-            },
+            next: () => void 0,
+            error: () => void 0,
           });
+      },
+
+      deletePostRequest(post: Post) {
+        return performDeletePost(post);
       },
 
       toggleComments(postId: number): void {

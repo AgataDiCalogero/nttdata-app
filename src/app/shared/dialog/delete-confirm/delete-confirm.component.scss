@@ -31,4 +31,8 @@ h2 {
   border-top: 1px solid var(--border-mix-60);
 }
 
+.delete-confirm__status {
+  margin: 0;
+}
+
 /* Buttons styling comes from appButton directive and global .btn styles */

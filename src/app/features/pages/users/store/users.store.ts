@@ -10,6 +10,64 @@ import { UserForm } from '../user-form/user-form.component';
 import { DeleteConfirmComponent } from '../../../../shared/dialog/delete-confirm/delete-confirm.component';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
+import { tap } from 'rxjs';
+
+interface SortState {
+  field: SortField;
+  dir: 1 | -1;
+}
+
+interface PageState {
+  page: number;
+  per_page: number;
+}
+
+interface PaginatedUsers {
+  items: User[];
+  total: number;
+  page: number;
+  per_page: number;
+  totalPages: number;
+}
+
+function buildPaginatedUsers(
+  users: User[],
+  searchTerm: string,
+  sortState: SortState,
+  pageState: PageState,
+): PaginatedUsers {
+  const query = searchTerm.trim().toLowerCase();
+  const filtered = query
+    ? users.filter((user) => {
+        const name = String(user.name ?? '').toLowerCase();
+        const email = String(user.email ?? '').toLowerCase();
+        return name.includes(query) || email.includes(query);
+      })
+    : [...users];
+
+  const sorted = filtered.sort((a, b) => {
+    const fa = String(a[sortState.field] ?? '').toLowerCase();
+    const fb = String(b[sortState.field] ?? '').toLowerCase();
+    if (fa < fb) return -1 * sortState.dir;
+    if (fa > fb) return 1 * sortState.dir;
+    return 0;
+  });
+
+  const perPage = Math.max(1, pageState.per_page);
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(Math.max(total, 1) / perPage));
+  const safePage = Math.max(1, Math.min(pageState.page, totalPages));
+  const start = (safePage - 1) * perPage;
+  const items = sorted.slice(start, start + perPage);
+
+  return {
+    items,
+    total,
+    page: safePage,
+    per_page: perPage,
+    totalPages,
+  };
+}
 
 // Definisci il tipo per lo state interno (solo ciò che serve per il funzionamento, non pubblico)
 interface UsersState {
@@ -37,38 +95,9 @@ export const UsersStoreAdapter = signalStore(
 
   // Computed per derived state
   withComputed((store) => ({
-    displayed: computed(() => {
-      const { page, per_page } = store.pageState();
-      // Compute filtered users locally
-      const query = store.searchTerm().trim().toLowerCase();
-      const { field, dir } = store.sortState();
-      const list = store.users();
-      const filtered = query
-        ? list.filter((user) => {
-            const name = String(user.name ?? '').toLowerCase();
-            const email = String(user.email ?? '').toLowerCase();
-            return name.includes(query) || email.includes(query);
-          })
-        : [...list];
-      const sorted = [...filtered].sort((a, b) => {
-        const fa = String(a[field] ?? '').toLowerCase();
-        const fb = String(b[field] ?? '').toLowerCase();
-        if (fa < fb) return -1 * dir;
-        if (fa > fb) return 1 * dir;
-        return 0;
-      });
-      const data = sorted;
-      const start = (page - 1) * per_page;
-      const items = data.slice(start, start + per_page);
-
-      return {
-        items,
-        total: data.length,
-        page,
-        per_page,
-        totalPages: Math.max(1, Math.ceil(Math.max(data.length, 1) / per_page)),
-      };
-    }),
+    displayed: computed(() =>
+      buildPaginatedUsers(store.users(), store.searchTerm(), store.sortState(), store.pageState()),
+    ),
   })),
 
   // Methods per tutte le operazioni
@@ -102,6 +131,7 @@ export const UsersStoreAdapter = signalStore(
             users: items ?? [],
             loading: false,
           });
+          setPage(store.pageState().page, store.pageState().per_page, false);
         },
         error: (err) => {
           console.error('Failed to load users:', err);
@@ -128,36 +158,21 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const setPage = (page: number, per_page: number, pushUrl = true) => {
-      const perPage = Math.max(1, per_page);
-      // Compute filtered users locally
-      const query = store.searchTerm().trim().toLowerCase();
-      const { field, dir } = store.sortState();
-      const list = store.users();
-      const filtered = query
-        ? list.filter((user) => {
-            const name = String(user.name ?? '').toLowerCase();
-            const email = String(user.email ?? '').toLowerCase();
-            return name.includes(query) || email.includes(query);
-          })
-        : [...list];
-      const sorted = [...filtered].sort((a, b) => {
-        const fa = String(a[field] ?? '').toLowerCase();
-        const fb = String(b[field] ?? '').toLowerCase();
-        if (fa < fb) return -1 * dir;
-        if (fa > fb) return 1 * dir;
-        return 0;
-      });
-      const totalPages = Math.max(1, Math.ceil(sorted.length / perPage));
-      const nextPage = Math.max(1, Math.min(page, totalPages));
+      const next = buildPaginatedUsers(
+        store.users(),
+        store.searchTerm(),
+        store.sortState(),
+        { page, per_page },
+      );
 
       patchState(store, {
-        pageState: { page: nextPage, per_page: perPage },
+        pageState: { page: next.page, per_page: next.per_page },
       });
 
       if (pushUrl) {
         router.navigate([], {
           relativeTo: route,
-          queryParams: { page: nextPage, per_page: perPage },
+          queryParams: { page: next.page, per_page: next.per_page },
           queryParamsHandling: 'merge',
         });
       }
@@ -208,9 +223,36 @@ export const UsersStoreAdapter = signalStore(
         message: `Are you sure you want to delete ${user.name}? This action cannot be undone.`,
         confirmText: 'Delete',
         cancelText: 'Cancel',
+        inProgressText: 'Deleting…',
+        errorMessage: 'Unable to delete user right now. Please try again.',
+        confirmAction: () => {
+          patchState(store, { deletingId: user.id });
+
+          return usersApi.delete(user.id).pipe(
+            tap({
+              next: () => {
+                const updatedUsers = store.users().filter((item) => item.id !== user.id);
+                patchState(store, {
+                  users: updatedUsers,
+                  deletingId: null,
+                });
+                toast.show('success', 'User deleted');
+                const { page, per_page } = store.pageState();
+                setPage(page, per_page, false);
+              },
+              error: (err) => {
+                console.error('Delete failed:', err);
+                patchState(store, { deletingId: null });
+                const mapped = mapHttpError(err);
+                toast.show('error', mapped.message);
+                throw new Error(mapped.message);
+              },
+            }),
+          );
+        },
       };
 
-      const ref = dialog.open(DeleteConfirmComponent, {
+      dialog.open(DeleteConfirmComponent, {
         width: '400px',
         maxWidth: '90vw',
         backdropClass: 'blurred-backdrop',
@@ -219,32 +261,6 @@ export const UsersStoreAdapter = signalStore(
         autoFocus: true,
         restoreFocus: true,
         data,
-      });
-
-      ref.closed.subscribe((confirmed) => {
-        if (!confirmed) return;
-        handleDeleteConfirmed(user.id);
-      });
-    };
-
-    const handleDeleteConfirmed = (userId: number) => {
-      patchState(store, { deletingId: userId });
-      usersApi.delete(userId).subscribe({
-        next: () => {
-          const updatedUsers = store.users().filter((item) => item.id !== userId);
-          patchState(store, {
-            users: updatedUsers,
-            deletingId: null,
-          });
-          toast.show('success', 'User deleted');
-          const { per_page } = store.pageState();
-          setPage(store.pageState().page, per_page, false);
-        },
-        error: (err) => {
-          console.error('Delete failed:', err);
-          patchState(store, { deletingId: null });
-          toast.show('error', mapHttpError(err).message);
-        },
       });
     };
 

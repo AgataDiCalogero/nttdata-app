@@ -109,9 +109,12 @@ export class Posts {
       message: `Are you sure you want to delete "${post.title}"? This action cannot be undone.`,
       confirmText: 'Delete',
       cancelText: 'Cancel',
+      inProgressText: 'Deleting…',
+      errorMessage: 'Unable to delete this post right now. Please try again.',
+      confirmAction: () => this.store.deletePostRequest(post),
     };
 
-    const ref = this.dialog.open(DeleteConfirmComponent, {
+    this.dialog.open(DeleteConfirmComponent, {
       width: '420px',
       maxWidth: '90vw',
       backdropClass: 'blurred-backdrop',
@@ -120,11 +123,6 @@ export class Posts {
       autoFocus: true,
       restoreFocus: true,
       data,
-    });
-
-    ref.closed.subscribe((confirmed) => {
-      if (!confirmed) return;
-      this.store.deletePost(post);
     });
   }
 
