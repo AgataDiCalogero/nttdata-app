@@ -45,7 +45,7 @@ export class Posts {
   handleCreatePost(): void {
     const config = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
       ariaLabel: 'New post',
-      desktop: { width: '620px' },
+      desktop: { width: '38.75rem' },
       data: { users: this.store.userOptions() },
     });
     const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(PostForm, config);
@@ -80,7 +80,7 @@ export class Posts {
   handleEditPost(post: Post): void {
     const config = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
       ariaLabel: `Edit post ${post.title}`,
-      desktop: { width: '620px' },
+      desktop: { width: '38.75rem' },
       data: { users: this.store.userOptions(), post },
     });
     const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(PostForm, config);
@@ -112,7 +112,7 @@ export class Posts {
     };
 
     this.dialog.open(DeleteConfirmComponent, {
-      width: '420px',
+      width: '26.25rem',
       maxWidth: '90vw',
       backdropClass: 'blurred-backdrop',
       panelClass: 'user-form-modal',
