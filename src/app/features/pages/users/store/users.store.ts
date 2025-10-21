@@ -179,7 +179,7 @@ export const UsersStoreAdapter = signalStore(
     const openNewUserModal = () => {
       const config = dialogLayouts.form<void, 'success' | 'cancel', UserForm>({
         ariaLabel: 'New user',
-        desktop: { width: '600px' },
+        desktop: { width: '37.5rem' },
       });
       const ref = dialog.open<'success' | 'cancel', void, UserForm>(UserForm, config);
       ref.closed.subscribe((result) => {
@@ -194,7 +194,7 @@ export const UsersStoreAdapter = signalStore(
         next: (user) => {
           const config = dialogLayouts.form<{ user: User }, 'success' | 'cancel', UserForm>({
             ariaLabel: 'Edit user',
-            desktop: { width: '600px' },
+            desktop: { width: '37.5rem' },
             data: { user },
           });
           const ref = dialog.open<'success' | 'cancel', { user: User }, UserForm>(UserForm, config);
@@ -247,7 +247,7 @@ export const UsersStoreAdapter = signalStore(
       };
 
       dialog.open(DeleteConfirmComponent, {
-        width: '400px',
+        width: '25rem',
         maxWidth: '90vw',
         backdropClass: 'blurred-backdrop',
         panelClass: 'user-form-modal',
