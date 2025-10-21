@@ -1,3 +1,5 @@
+@use '../../../../../styles/mixins' as *;
+
 .user-list {
   display: flex;
   flex-direction: column;
@@ -45,12 +47,20 @@
     min-width: 0;
   }
 
+  &__header {
+    @include flex-row($gap: var(--space-sm), $align: center, $justify: space-between);
+    flex-wrap: wrap;
+    row-gap: var(--space-xs);
+  }
+
   &__name {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--color-on-surface);
     line-height: 1.4;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   &__badge {
@@ -82,17 +92,19 @@
     }
   }
 
-  &__meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  &__details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-sm) var(--space-xl);
     margin-bottom: 0.5rem;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
   }
 
-  &__meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem; /* icons a bit farther from text */
+  &__detail {
+    @include flex-row($gap: 0.75rem, $align: center);
     color: var(--color-muted);
     font-size: 0.9375rem;
     line-height: 1.5;
@@ -111,10 +123,24 @@
     }
   }
 
-  &__buttons {
-    display: flex;
-    gap: 0.625rem;
-    margin-top: 0.5rem;
+  &__actions {
+    @include button-group($justify: flex-end, $wrap: wrap);
+    margin-top: var(--space-sm);
+
+    button[appButton] {
+      flex: 0 0 auto;
+    }
+
+    @include mobile {
+      width: 100%;
+      align-items: stretch;
+      justify-content: flex-start;
+
+      button[appButton] {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+    }
   }
 
   .btn {
@@ -129,7 +155,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
-    flex: 1;
+    flex: 0 0 auto;
 
     lucide-icon {
       width: 16px; /* smaller icons for buttons */
@@ -187,20 +213,14 @@
   }
 }
 
-@media (max-width: 768px) {
+@include mobile {
   .user-card {
     flex-direction: column;
     padding: 1.25rem;
 
-    &__buttons {
-      span {
-        display: none;
-      }
-
-      .btn {
-        padding: 0.625rem;
-        min-width: 46px;
-      }
+    &__header {
+      align-items: flex-start;
+      gap: var(--space-xs);
     }
   }
 }
