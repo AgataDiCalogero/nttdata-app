@@ -20,6 +20,7 @@
   padding: var(--space-sm) var(--btn-padding-x-md);
   border-radius: var(--border-radius-btn);
   border: 1px solid transparent;
+  box-sizing: border-box; /* keep total size stable when borders change */
   background: transparent;
   color: var(--color-on-surface);
   font-weight: 600;

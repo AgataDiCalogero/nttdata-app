@@ -135,9 +135,8 @@
   }
 
   &--active {
-    /* active option: orange border with a darker filled surface and glow */
-    /* slightly stronger surface overlay mapped to canonical token approximating 0.25 */
-    background: var(--alpha-28);
+    /* active option: light orange background with accent border */
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     border-color: var(--color-accent);
     transform: none;
     box-shadow: var(--shadow-accent-soft, 0 8px 24px rgba(249, 115, 22, 0.08));
@@ -173,8 +172,9 @@
   }
 
   .appearance-option--toggle & {
-    width: 1.4rem;
-    height: 1.4rem;
+    /* keep the same container width as regular options so labels align */
+    width: 1.8rem;
+    height: 1.8rem;
     margin-right: var(--space-xs);
 
     lucide-icon {
@@ -199,28 +199,6 @@
 
   /* ensure label sits to the right of the icon */
   margin-left: var(--space-sm);
-}
-
-.appearance-option__status {
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 0.2rem 0.4rem;
-  border-radius: var(--radius-sm);
-  background: var(--alpha-08);
-  color: var(--color-on-surface-variant);
-  @include mixins.transition-group((background, color));
-
-  &--active {
-    background: var(--alpha-accent-12);
-    color: var(--color-accent);
-  }
-}
-
-.appearance-option__check {
-  margin-left: auto;
-  color: var(--color-accent);
-  font-weight: bold;
-  font-size: 0.9rem;
 }
 
 /* Toggle pill for Reading mode */

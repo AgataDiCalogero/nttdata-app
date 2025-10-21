@@ -8,8 +8,24 @@
 @use './styles/appearance';
 
 /* Base & layout styles */
+/* Global layout: full-height flex for footer visibility */
+html,
 body {
+  height: 100%;
   margin: 0;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+}
+
+body {
   font-family:
     Inter,
     -apple-system,
@@ -23,7 +39,6 @@ body {
     var(--color-bg) 100%
   );
   color: var(--color-on-primary);
-  min-height: 100vh;
   transition:
     background 0.3s ease,
     color 0.3s ease;

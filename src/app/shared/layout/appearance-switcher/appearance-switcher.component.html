@@ -45,9 +45,6 @@
               <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Light</span>
-            @if (isLight()) {
-              <span class="appearance-option__check" aria-hidden="true">✓</span>
-            }
           </button>
 
           <button
@@ -64,9 +61,6 @@
               <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Dark</span>
-            @if (!isLight()) {
-              <span class="appearance-option__check" aria-hidden="true">✓</span>
-            }
           </button>
         </fieldset>
       </div>
@@ -87,15 +81,7 @@
           <span class="appearance-option__icon">
             <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           </span>
-          <span class="appearance-option__label">
-            Reading mode
-            <span
-              class="appearance-option__status"
-              [class.appearance-option__status--active]="isReadingMode()"
-            >
-              {{ isReadingMode() ? 'On' : 'Off' }}
-            </span>
-          </span>
+          <span class="appearance-option__label">Reading mode</span>
           <span class="appearance-option__switch" [attr.data-on]="isReadingMode()"></span>
         </button>
       </div>

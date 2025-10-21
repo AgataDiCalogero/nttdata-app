@@ -89,10 +89,14 @@
   }
 
   .token-help__btn--outline {
-    background: var(--alpha-03);
-    color: var(--color-on-surface);
-    border: 1px solid var(--alpha-04);
+    background: transparent;
+    color: var(--color-accent);
+    border: 2px solid var(--color-accent);
     box-shadow: none;
+
+    &:hover {
+      background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+    }
   }
 
   .token-help__btn--primary {
