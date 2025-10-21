@@ -4,4 +4,3 @@ export interface ListResponse<T> {
   items: T[];
   pagination?: PaginationMeta;
 }
-

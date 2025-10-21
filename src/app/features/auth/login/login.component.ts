@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
@@ -69,21 +76,21 @@ export class Login {
   );
 
   constructor() {
-    this.tokenControl.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        if (this.tokenControl.hasError('api')) {
-          const { api, ...rest } = this.tokenControl.errors ?? {};
-          const nextErrors = Object.keys(rest).length ? rest : null;
-          this.tokenControl.setErrors(nextErrors);
-        }
-        if (this.apiErrorMessage()) {
-          this.apiErrorMessage.set(null);
-        }
-        if (this.submissionMessage()) {
-          this.submissionMessage.set(null);
-        }
-      });
+    this.tokenControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      if (this.tokenControl.hasError('api')) {
+        // remove the 'api' error key while avoiding the unused-vars lint failure
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { api, ...rest } = this.tokenControl.errors ?? {};
+        const nextErrors = Object.keys(rest).length ? rest : null;
+        this.tokenControl.setErrors(nextErrors);
+      }
+      if (this.apiErrorMessage()) {
+        this.apiErrorMessage.set(null);
+      }
+      if (this.submissionMessage()) {
+        this.submissionMessage.set(null);
+      }
+    });
   }
 
   onSubmit(): void {

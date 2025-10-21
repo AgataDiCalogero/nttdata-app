@@ -106,8 +106,8 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: 0.125rem solid var(--color-accent);
+    outline-offset: 0.125rem;
   }
 }
 
@@ -126,7 +126,7 @@
 }
 
 .posts-card__comments {
-  border-top: 1px solid var(--comment-border);
+  border-top: 0.0625rem solid var(--comment-border);
   padding-top: var(--space-md);
   display: block;
 }

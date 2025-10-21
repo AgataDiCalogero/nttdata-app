@@ -189,8 +189,7 @@ export const PostsStoreAdapter = signalStore(
                     pages: Math.max(
                       1,
                       Math.ceil(
-                        (state.pagination.total - 1) /
-                          (state.pagination.limit || store.perPage()),
+                        (state.pagination.total - 1) / (state.pagination.limit || store.perPage()),
                       ),
                     ),
                   }

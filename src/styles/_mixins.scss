@@ -39,7 +39,7 @@
   padding-inline: $padding-inline;
 }
 
-@mixin grid-stack($min-width: 280px, $gap: var(--space-lg)) {
+@mixin grid-stack($min-width: 17.5rem, $gap: var(--space-lg)) {
   display: flex;
   flex-wrap: wrap;
   gap: $gap;
@@ -53,16 +53,16 @@
 // Card/surface styles
 @mixin surface-card($padding: var(--space-lg)) {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
   padding: $padding;
   box-shadow: var(--shadow);
 }
 
 // Focus states
 @mixin focus-ring($color: var(--focus-ring)) {
-  outline: 2px solid $color;
-  outline-offset: 2px;
+  outline: 0.125rem solid $color;
+  outline-offset: 0.125rem;
 }
 
 // Truncate text
@@ -74,37 +74,37 @@
 
 // Responsive breakpoints
 @mixin mobile {
-  @media (max-width: 640px) {
+  @media (max-width: 40rem) {
     @content;
   }
 }
 
 @mixin tablet {
-  @media (min-width: 641px) and (max-width: 1024px) {
+  @media (min-width: 40.063rem) and (max-width: 64rem) {
     @content;
   }
 }
 
 @mixin desktop {
-  @media (min-width: 1025px) {
+  @media (min-width: 64.063rem) {
     @content;
   }
 }
 
 @mixin tablet-up {
-  @media (min-width: 641px) {
+  @media (min-width: 40.063rem) {
     @content;
   }
 }
 
 @mixin desktop-wide {
-  @media (min-width: 1281px) {
+  @media (min-width: 80.063rem) {
     @content;
   }
 }
 
 @mixin until-tablet {
-  @media (max-width: 1024px) {
+  @media (max-width: 64rem) {
     @content;
   }
 }
@@ -139,7 +139,7 @@
   background: var(--color-surface);
   -webkit-backdrop-filter: blur($blur);
   backdrop-filter: blur($blur);
-  border: 1px solid var(--color-border);
+  border: 0.0625rem solid var(--color-border);
 }
 
 // Shadow helpers
@@ -196,7 +196,7 @@
 @mixin button-primary {
   background: var(--gradient-primary);
   color: var(--color-on-accent);
-  border: 1px solid var(--border-accent-emphasis);
+  border: 0.0625rem solid var(--border-accent-emphasis);
   box-shadow: var(--shadow-button-primary);
 
   &:hover {
