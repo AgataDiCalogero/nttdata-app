@@ -74,6 +74,8 @@
   }
 }
 
+/* (users-page header tightening is merged into the main users-page block below) */
+
 .users-skeleton {
   display: flex;
   flex-direction: column;
@@ -149,6 +151,42 @@
   @media (min-width: 72rem) {
     max-width: 72rem; /* keeps content readable on very wide screens */
     padding-inline: var(--layout-gutter); /* keep same gutter token */
+  }
+}
+
+/* Users page specific: make the page container fluid between navbar brand and controls so
+   the users header and cards align exactly with the logo and logout button on the navbar.
+   This keeps other pages unaffected. */
+.page-container.users-page {
+  /* remove the large-screen max width so the content can stretch across the
+     full available area while still respecting the same gutter tokens */
+  max-width: none;
+  width: 100%;
+  padding-inline: var(--layout-gutter);
+
+  @include desktop {
+    /* on very wide screens, keep the content spanning full width but allow
+       a comfortable inner padding via the existing gutter token */
+    padding-inline: var(--layout-gutter);
+  }
+
+  /* Tighten header spacing so it matches the navbar brand/logout edges precisely */
+  .users-header {
+    /* allow the header to expand full width but keep the internal content
+       aligned exactly with the navbar's logo and controls by removing extra
+       outer gaps and relying on the container gutter */
+    margin-bottom: var(--space-lg);
+    gap: var(--space-md);
+
+    &__left {
+      padding-inline-end: var(--space-lg); /* prevent search/button from hugging edge */
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+      padding-inline-start: var(--space-lg);
+    }
   }
 }
 

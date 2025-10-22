@@ -1,9 +1,23 @@
 @use '../../../../../styles/mixins' as *;
 
 .user-list {
-  display: flex;
-  flex-direction: column;
+  /* responsive grid: 1 column on small, 2 on medium, 3 on large */
+  display: grid;
   gap: var(--space-lg);
+  grid-template-columns: 1fr;
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* ensure direct children (cards) stretch to full column width */
+  > * {
+    width: 100%;
+  }
 }
 
 .user-card {
@@ -64,28 +78,75 @@
   &__status {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
-    padding: 0.25rem 0.75rem;
+    gap: var(--space-xs); /* controlled gap between icon and text */
+    padding-inline: 0.35rem; /* slightly increased horizontal padding */
+    align-self: flex-start; /* don't stretch: make pill only as wide as its content */
+    width: auto; /* ensure automatic shrink-to-fit width */
+    padding-block: 0; /* vertical centering controlled via height/line-height */
     border-radius: var(--radius-full);
     font-size: 0.8125rem;
     font-weight: 600;
     text-transform: capitalize;
+    vertical-align: middle;
+    box-sizing: border-box;
+    height: 1.6rem; /* fixed height so all pills match */
+    line-height: 1.6rem; /* vertically center text */
 
+    /* icon area: single-color glyph, no white fill/background */
     lucide-icon {
-      width: 0.75rem;
-      height: 0.75rem;
+      width: 1rem;
+      height: 1rem;
+      flex: 0 0 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: transparent;
+      color: inherit; /* color set in modifiers (active/inactive) */
+
+      svg {
+        stroke: currentColor !important;
+        fill: currentColor !important;
+        width: 0.9rem;
+        height: 0.9rem;
+        display: block;
+      }
     }
 
     &--active {
-      background: var(--state-success-bg);
-      color: var(--color-success);
-      border: 0.0625rem solid var(--color-success-border);
+      background: var(--badge-active-bg, rgba(16, 185, 129, 0.07));
+      color: var(--color-success-text-dark, var(--color-success));
+      border: 0.0625rem solid var(--badge-active-border, rgba(16, 185, 129, 0.28));
+
+      /* the small icon is monocolor (green glyph) */
+      lucide-icon {
+        background: transparent;
+        color: var(--color-success);
+        width: 1rem;
+        height: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
     }
 
     &--inactive {
-      background: var(--state-error-bg);
+      background: var(--badge-inactive-bg, rgba(239, 68, 68, 0.06));
       color: var(--color-danger);
-      border: 0.0625rem solid var(--color-danger-border);
+      border: 0.0625rem solid var(--badge-inactive-border, rgba(239, 68, 68, 0.18));
+
+      /* the small icon is monocolor (red glyph) */
+      lucide-icon {
+        background: transparent;
+        color: var(--color-danger);
+        width: 1rem;
+        height: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
     }
   }
 
@@ -94,21 +155,35 @@
     flex-direction: column;
     gap: var(--space-sm);
     margin: 0;
+    padding-bottom: var(--space-md);
+    border-bottom: 0.0625rem solid var(--border-mix-60);
   }
 
   &__meta-item {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-md); /* more separation between icon and text */
     color: var(--color-muted);
     font-size: 0.9375rem;
     line-height: 1.5;
 
+    /* fix icon area so text start position is identical across rows */
     lucide-icon {
-      width: 1rem;
-      height: 1rem;
-      flex-shrink: 0;
-      color: inherit;
+      width: 1.25rem;
+      height: 1.25rem;
+      flex: 0 0 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-muted);
+
+      svg {
+        width: 0.9rem;
+        height: 0.9rem;
+        stroke: currentColor !important;
+        fill: currentColor !important;
+        display: block;
+      }
     }
 
     dd {
@@ -120,10 +195,37 @@
     }
   }
 
+  /* Remove any visible label text (e.g. 'Email' or 'Gender') so only icon + value show */
+  .user-card__meta dt,
+  .user-card__meta .meta-label {
+    display: none !important;
+  }
+
+  /* Make sure meta items render as icon + value only */
+  .user-card__meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    lucide-icon {
+      flex: 0 0 auto;
+      color: var(--color-muted);
+    }
+
+    dd {
+      margin: 0;
+      color: var(--color-on-surface);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
   &__actions {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-sm);
+    padding-top: var(--space-sm);
 
     button[appButton] {
       width: 100%;
@@ -138,9 +240,31 @@
       }
     }
 
+    /* danger button: keep padding small, outlined red style and align to end */
     button[variant='danger'] {
       padding-inline: 0;
+      border: 0.125rem solid var(--color-danger-border);
+      color: var(--color-danger);
+      background: transparent;
+      justify-self: end;
     }
+
+    /* Button visual adjustments to mimic screenshot */
+    button[variant='ghost'] {
+      background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+      color: var(--color-on-surface);
+      border: 0.0625rem solid transparent;
+    }
+
+    button[variant='outline'] {
+      border: 0.125rem solid var(--color-accent);
+      color: var(--color-accent);
+      background: transparent;
+      box-shadow: none;
+      font-weight: 600;
+    }
+
+    /* merged above */
   }
 }
 
@@ -150,13 +274,15 @@
     flex-direction: column;
   }
 
+  /* Keep meta items stacked vertically (email above gender) on larger screens
+     to match the requested layout: icon+email row, then icon+gender row. */
   .user-card__meta {
-    flex-direction: row;
-    gap: var(--space-lg);
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 
   .user-card__meta-item {
-    flex: 0 1 18rem;
+    width: 100%;
   }
 
   .user-card__actions {
