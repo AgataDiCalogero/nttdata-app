@@ -1,10 +1,13 @@
 <section class="user-detail">
   <div class="user-detail__top">
-    <a routerLink="/users" class="user-detail__back" appButton variant="ghost"> ← Back to users </a>
+    <a routerLink="/users" class="user-detail__back" appButton variant="ghost">
+      <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
+      Back to users
+    </a>
   </div>
 
   @if (loading()) {
-    <app-loader [text]="'Loading user details…'"></app-loader>
+    <app-loader [text]="'Loading user details...'"></app-loader>
   } @else if (error()) {
     <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
       <div class="user-detail-alert-content">

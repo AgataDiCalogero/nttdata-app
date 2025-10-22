@@ -48,7 +48,6 @@ export class UserForm {
   // UI state
   isEdit = signal(false);
   userId = signal<number | null>(null);
-  isLoading = signal(false);
   submitting = signal(false);
   loadError = signal<string | null>(null);
   emailError = signal<string | null>(null); // Field-specific error for 422

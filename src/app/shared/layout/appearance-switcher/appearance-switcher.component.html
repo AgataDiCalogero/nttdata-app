@@ -36,7 +36,7 @@
             class="appearance-option"
             [class.appearance-option--active]="isLight()"
             role="menuitemradio"
-            aria-checked="false"
+            
             [attr.aria-checked]="isLight() ? 'true' : 'false'"
             (click)="setTheme('light')"
             [attr.aria-label]="isLight() ? 'Light theme (current)' : 'Switch to light theme'"
@@ -52,7 +52,7 @@
             class="appearance-option"
             [class.appearance-option--active]="!isLight()"
             role="menuitemradio"
-            aria-checked="false"
+            
             [attr.aria-checked]="!isLight() ? 'true' : 'false'"
             (click)="setTheme('dark')"
             [attr.aria-label]="!isLight() ? 'Dark theme (current)' : 'Switch to dark theme'"
@@ -74,7 +74,7 @@
           [class.appearance-option--active]="isReadingMode()"
           (click)="toggleReadingMode()"
           role="menuitemcheckbox"
-          aria-checked="false"
+          
           [attr.aria-checked]="isReadingMode() ? 'true' : 'false'"
           [attr.aria-label]="isReadingMode() ? 'Disable reading mode' : 'Enable reading mode'"
         >

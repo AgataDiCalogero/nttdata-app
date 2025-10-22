@@ -9,7 +9,7 @@
   <hr class="post-comments__divider" />
 
   @if (loading()) {
-    <app-loader [text]="'Loading comments…'"></app-loader>
+    <app-loader [text]="'Loading comments...'"></app-loader>
   } @else if (!comments || comments.length === 0) {
     <app-alert variant="info">
       <div class="post-comments-empty">

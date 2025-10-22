@@ -43,25 +43,9 @@ export class Posts {
   // (DialogResult type declared at module scope)
 
   handleCreatePost(): void {
-    const config = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
-      ariaLabel: 'New post',
-      desktop: { width: '38.75rem' },
+    this.openPostFormDialog({
+      label: 'New post',
       data: { users: this.store.userOptions() },
-    });
-    const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(PostForm, config);
-
-    ref.closed.subscribe((result) => {
-      if (result && typeof result === 'object' && 'status' in result) {
-        if (result.status === 'created') {
-          this.store.setPage(1);
-          this.store.refresh();
-        } else if (result.status === 'updated') {
-          const r = result as DialogResult;
-          if (r.post) {
-            this.store.onPostUpdated(r.post);
-          }
-        }
-      }
     });
   }
 
@@ -78,25 +62,9 @@ export class Posts {
   }
 
   handleEditPost(post: Post): void {
-    const config = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
-      ariaLabel: `Edit post ${post.title}`,
-      desktop: { width: '38.75rem' },
+    this.openPostFormDialog({
+      label: `Edit post ${post.title}`,
       data: { users: this.store.userOptions(), post },
-    });
-    const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(PostForm, config);
-
-    ref.closed.subscribe((result) => {
-      if (result && typeof result === 'object' && 'status' in result) {
-        const r = result as DialogResult;
-        if (result.status === 'updated') {
-          if (r.post) {
-            this.store.onPostUpdated(r.post);
-          }
-        } else if (result.status === 'created') {
-          this.store.setPage(1);
-          this.store.refresh();
-        }
-      }
     });
   }
 
@@ -141,6 +109,34 @@ export class Posts {
 
   handleChangePerPage(perPage: number): void {
     this.store.changePerPage(perPage);
+  }
+
+  private openPostFormDialog(config: { label: string; data: PostFormDialogData }): void {
+    const dialogConfig = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
+      ariaLabel: config.label,
+      desktop: { width: '38.75rem' },
+      data: config.data,
+    });
+    const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(
+      PostForm,
+      dialogConfig,
+    );
+
+    ref.closed.subscribe((result) => {
+      if (!result || typeof result !== 'object' || !('status' in result)) {
+        return;
+      }
+
+      if (result.status === 'created') {
+        this.store.setPage(1);
+        this.store.refresh();
+        return;
+      }
+
+      if (result.status === 'updated' && result.post) {
+        this.store.onPostUpdated(result.post);
+      }
+    });
   }
 
   private syncQueryParams(page: number, perPage: number): void {

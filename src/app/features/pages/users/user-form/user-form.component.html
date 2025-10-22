@@ -89,7 +89,7 @@
       variant="primary"
       type="submit"
       [loading]="submitting()"
-      [disabled]="form.invalid || isLoading() || submitting()"
+      [disabled]="form.invalid || submitting()"
       class="user-form__btn user-form__btn--create"
     >
       @if (submitting()) {

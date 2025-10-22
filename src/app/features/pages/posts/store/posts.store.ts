@@ -81,94 +81,14 @@ export const PostsStoreAdapter = signalStore(
     const fb = inject(FormBuilder);
     const destroyRef = inject(DestroyRef);
 
-    // Form per search
     const searchForm = fb.nonNullable.group({
       title: fb.nonNullable.control(''),
       userId: fb.nonNullable.control(0),
     });
 
-    // Setup iniziale
-    const setupSearchForm = () => {
-      searchForm.controls.title.valueChanges
-        .pipe(
-          debounceTime(300),
-          map((value) => value.trim()),
-          takeUntilDestroyed(destroyRef),
-        )
-        .subscribe((value) => {
-          patchState(store, (state) => ({
-            filters: { ...state.filters, title: value.length ? value : null },
-          }));
-          patchState(store, { page: 1 });
-        });
-
-      searchForm.controls.userId.valueChanges
-        .pipe(distinctUntilChanged(), takeUntilDestroyed(destroyRef))
-        .subscribe((value) => {
-          patchState(store, (state) => ({
-            filters: { ...state.filters, userId: value > 0 ? value : null },
-          }));
-          patchState(store, { page: 1 });
-        });
-    };
-
-    const setupPostsStream = () => {
-      toObservable(store.queryCriteria)
-        .pipe(
-          map((criteria) => {
-            const params: Record<string, unknown> = {
-              page: criteria.page,
-              per_page: criteria.per_page,
-            };
-            if (criteria.title) params.title = criteria.title;
-            if (criteria.user_id) params.user_id = criteria.user_id;
-            return params;
-          }),
-          switchMap((params) => {
-            patchState(store, { loading: true, error: null });
-            return postsApi.list(params).pipe(
-              tap((result) => {
-                patchState(store, {
-                  loading: false,
-                  posts: result?.items ?? [],
-                  pagination: result?.pagination ?? null,
-                });
-              }),
-              catchError((err) => {
-                console.error('Failed to load posts:', err);
-                patchState(store, { error: mapHttpError(err).message, loading: false });
-                return of(null);
-              }),
-            );
-          }),
-          takeUntilDestroyed(destroyRef),
-        )
-        .subscribe();
-    };
-
-    const loadUsersForFilter = () => {
-      usersApi
-        .list({ per_page: 50 })
-        .pipe(takeUntilDestroyed(destroyRef))
-        .subscribe({
-          next: ({ items }) => {
-            const list = items ?? [];
-            const lookup = list.reduce<Record<number, string>>((acc, user) => {
-              acc[user.id] = user.name ?? `User #${user.id}`;
-              return acc;
-            }, {});
-            patchState(store, { userOptions: list, userLookup: lookup });
-          },
-          error: (err) => {
-            console.error('Failed to load users for filters:', err);
-          },
-        });
-    };
-
-    // Inizializza
-    setupSearchForm();
+    initializeSearchFormListeners(searchForm);
+    initializePostsStream();
     loadUsersForFilter();
-    setupPostsStream();
 
     const performDeletePost = (post: Post) => {
       const shouldGoPrev =
@@ -332,5 +252,82 @@ export const PostsStoreAdapter = signalStore(
         patchState(store, { filters, page: 1 });
       },
     };
+
+    function initializeSearchFormListeners(form: typeof searchForm): void {
+      form.controls.title.valueChanges
+        .pipe(
+          debounceTime(300),
+          map((value) => value.trim()),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe((value) => {
+          patchState(store, (state) => ({
+            filters: { ...state.filters, title: value.length ? value : null },
+          }));
+          patchState(store, { page: 1 });
+        });
+
+      form.controls.userId.valueChanges
+        .pipe(distinctUntilChanged(), takeUntilDestroyed(destroyRef))
+        .subscribe((value) => {
+          patchState(store, (state) => ({
+            filters: { ...state.filters, userId: value > 0 ? value : null },
+          }));
+          patchState(store, { page: 1 });
+        });
+    }
+
+    function initializePostsStream(): void {
+      toObservable(store.queryCriteria)
+        .pipe(
+          map((criteria) => {
+            const params: Record<string, unknown> = {
+              page: criteria.page,
+              per_page: criteria.per_page,
+            };
+            if (criteria.title) params.title = criteria.title;
+            if (criteria.user_id) params.user_id = criteria.user_id;
+            return params;
+          }),
+          switchMap((params) => {
+            patchState(store, { loading: true, error: null });
+            return postsApi.list(params).pipe(
+              tap((result) => {
+                patchState(store, {
+                  loading: false,
+                  posts: result?.items ?? [],
+                  pagination: result?.pagination ?? null,
+                });
+              }),
+              catchError((err) => {
+                console.error('Failed to load posts:', err);
+                patchState(store, { error: mapHttpError(err).message, loading: false });
+                return of(null);
+              }),
+            );
+          }),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe();
+    }
+
+    function loadUsersForFilter(): void {
+      usersApi
+        .list({ per_page: 50 })
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe({
+          next: ({ items }) => {
+            const list = items ?? [];
+            const lookup = list.reduce<Record<number, string>>((acc, user) => {
+              acc[user.id] = user.name ?? `User #${user.id}`;
+              return acc;
+            }, {});
+            patchState(store, { userOptions: list, userLookup: lookup });
+          },
+          error: (err) => {
+            console.error('Failed to load users for filters:', err);
+          },
+        });
+    }
   }),
 ) satisfies Type<PostsService>;

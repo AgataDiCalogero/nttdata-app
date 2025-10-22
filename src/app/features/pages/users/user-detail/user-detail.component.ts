@@ -8,7 +8,13 @@ import { PostCardComponent } from '@/app/features/pages/posts/components/post-ca
 import { ButtonComponent } from '@/app/shared/ui/button/button.component';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
-import { LucideAngularModule, Mail, User as UserIcon, MessageSquare } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Mail,
+  User as UserIcon,
+  MessageSquare,
+  ArrowLeft,
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-user-detail',
@@ -34,6 +40,7 @@ export class UserDetail {
   readonly Mail = Mail;
   readonly UserIcon = UserIcon;
   readonly MessageSquare = MessageSquare;
+  readonly ArrowLeft = ArrowLeft;
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);

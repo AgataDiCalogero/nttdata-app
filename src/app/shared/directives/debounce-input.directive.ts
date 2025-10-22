@@ -17,7 +17,8 @@ export class DebounceInputDirective {
     effect((onCleanup) => {
       const v = this.ms();
       const delay = typeof v === 'number' ? v : 300;
-      const t = setTimeout(() => this.debounced.emit(this.valueSig()), delay);
+      const value = this.valueSig();
+      const t = setTimeout(() => this.debounced.emit(value), delay);
       onCleanup(() => clearTimeout(t));
     });
   }

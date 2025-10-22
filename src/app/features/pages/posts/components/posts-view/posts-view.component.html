@@ -27,7 +27,7 @@
   }
 
   @if (loading()) {
-    <app-loader class="posts-page__loader" [text]="'Loading posts…'"></app-loader>
+    <app-loader class="posts-page__loader" [text]="'Loading posts...'"></app-loader>
   }
 
   @if (!loading() && !error() && posts().length === 0) {

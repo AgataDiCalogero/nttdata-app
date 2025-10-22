@@ -5,11 +5,12 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { routes } from './app.routes';
 import { apiPrefixInterceptor } from './core/interceptors/api-prefix.interceptor';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([apiPrefixInterceptor, authInterceptor])),
+    provideHttpClient(withInterceptors([apiPrefixInterceptor, authInterceptor, errorInterceptor])),
     importProvidersFrom(LayoutModule),
   ],
 };
