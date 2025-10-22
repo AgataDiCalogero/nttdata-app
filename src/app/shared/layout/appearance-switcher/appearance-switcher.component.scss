@@ -92,7 +92,9 @@
   max-height: calc(100dvh - 6rem);
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
+  @supports (scrollbar-gutter: stable) {
+    scrollbar-gutter: stable;
+  }
 
   /* Più opaco */
   /* avoid color-mix fallbacks here to keep panel visually consistent */
