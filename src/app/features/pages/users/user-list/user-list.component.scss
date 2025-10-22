@@ -1,22 +1,38 @@
 @use '../../../../../styles/mixins' as *;
 
 .user-list {
-  /* responsive grid: 1 column on small, 2 on medium, 3 on large */
-  display: grid;
-  gap: var(--space-lg);
-  grid-template-columns: 1fr;
+  /* flexbox responsive list so cards align between navbar brand and controls
+    and keep consistent lateral spacing (gap) to prevent hover overlap */
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg); /* increase gap for more air */
+  align-items: stretch;
 
-  @include tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include desktop {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  /* ensure direct children (cards) stretch to full column width */
+  /* mobile: single column, cards take full width */
   > * {
-    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-inline: 0; /* padding handled by container gutter */
+    padding-block: var(--space-md); /* add vertical breathing between rows inside each column */
+  }
+
+  /* tablet: two columns - account for horizontal gap */
+  @include tablet {
+    > * {
+      flex: 0 0 calc((100% - var(--space-lg)) / 2);
+      max-width: calc((100% - var(--space-lg)) / 2);
+      padding-block: var(--space-md);
+    }
+  }
+
+  /* desktop: three columns */
+  @include desktop {
+    > * {
+      flex: 0 0 calc((100% - 2 * var(--space-lg)) / 3);
+      max-width: calc((100% - 2 * var(--space-lg)) / 3);
+      padding-block: var(--space-md);
+    }
   }
 }
 
@@ -24,7 +40,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
-  padding: clamp(var(--space-lg), 4vw, var(--space-xl));
+  /* increase internal padding for a more airy card */
+  padding: clamp(var(--space-xl), 4vw, calc(var(--space-xxl) + 0.5rem));
   background: var(--color-surface-solid);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-xl);
@@ -40,6 +57,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-md);
+    padding-inline: var(--space-sm);
+    padding-block-end: var(--space-sm);
   }
 
   &__avatar {
@@ -156,6 +175,7 @@
     gap: var(--space-sm);
     margin: 0;
     padding-bottom: var(--space-md);
+    padding-inline: var(--space-sm);
     border-bottom: 0.0625rem solid var(--border-mix-60);
   }
 
@@ -226,45 +246,88 @@
     grid-template-columns: 1fr;
     gap: var(--space-sm);
     padding-top: var(--space-sm);
+    padding-inline: var(--space-sm);
 
+    /* base button layout (mobile-first) */
     button[appButton] {
       width: 100%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: var(--space-xs);
+      gap: var(--space-md); /* larger gap between icon and text for clarity */
+      padding-inline: clamp(var(--space-sm), 1.6vw, var(--space-lg));
+      border-radius: var(--radius-md);
+      line-height: 1; /* ensure consistent inline sizing for em-based icons */
 
       lucide-icon {
-        width: 0.95rem;
-        height: 0.95rem;
+        /* slightly smaller than text and vertically centered */
+        width: 0.95em;
+        height: 0.95em;
+        flex: 0 0 0.95em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+
+        svg {
+          width: auto;
+          height: 0.85em;
+          stroke: currentColor !important;
+          fill: currentColor !important;
+          display: block;
+        }
       }
     }
 
-    /* danger button: keep padding small, outlined red style and align to end */
+    /* Delete (danger) button: small, outlined red and aligned right */
     button[variant='danger'] {
-      padding-inline: 0;
-      border: 0.125rem solid var(--color-danger-border);
+      width: auto;
+      padding-inline: var(--space-xxs, 0.25rem);
+      border: 0.125rem solid var(--color-danger);
       color: var(--color-danger);
       background: transparent;
       justify-self: end;
+      align-self: center;
+      box-shadow: none;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+
+      /* make the danger button a square icon button */
+      height: 2.25rem;
+      padding-block: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+
+      /* visually only show the icon; keep accessible label via aria-label */
+      span.visually-hidden {
+        display: none !important;
+      }
+      /* center the icon with no extra gap */
+      gap: 0;
     }
 
-    /* Button visual adjustments to mimic screenshot */
+    /* Primary/ghost action (View): subtle surface ghost, centered label */
+    /* View (ghost) should have an outline the color of the text */
     button[variant='ghost'] {
-      background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+      background: transparent;
       color: var(--color-on-surface);
-      border: 0.0625rem solid transparent;
+      border: 0.0625rem solid currentColor;
+      padding-inline: var(--space-md);
+      font-weight: 600;
     }
 
+    /* Edit (outline): prominent accent outline with thicker border and accent color */
     button[variant='outline'] {
       border: 0.125rem solid var(--color-accent);
       color: var(--color-accent);
       background: transparent;
       box-shadow: none;
-      font-weight: 600;
+      font-weight: 700;
+      padding-inline: var(--space-md);
+      border-radius: var(--radius-lg);
     }
-
-    /* merged above */
   }
 }
 
@@ -286,6 +349,6 @@
   }
 
   .user-card__actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr auto;
   }
 }

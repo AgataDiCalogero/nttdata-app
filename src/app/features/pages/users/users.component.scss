@@ -162,7 +162,8 @@
      full available area while still respecting the same gutter tokens */
   max-width: none;
   width: 100%;
-  padding-inline: var(--layout-gutter);
+  padding-inline-start: var(--layout-gutter);
+  padding-inline-end: var(--layout-gutter);
 
   @include desktop {
     /* on very wide screens, keep the content spanning full width but allow
@@ -188,6 +189,12 @@
       padding-inline-start: var(--space-lg);
     }
   }
+}
+
+/* Make users list respect the container gutters and avoid extra horizontal padding */
+.page-container.users-page .users-list-wrapper {
+  padding-inline: 0;
+  width: 100%;
 }
 
 /* ensure main blocks align to the container edges */

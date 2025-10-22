@@ -50,40 +50,44 @@
         </app-alert>
       } @else {
         @if (data.total > 0) {
-          <div class="users-list-wrapper">
-            <app-user-list
-              [items]="data.items"
-              (view)="goToDetail($event)"
-              (edit)="openEditUserModal($event)"
-              (delete)="onDelete($event)"
-            ></app-user-list>
-            <div class="users-pagination">
-              <button
-                appButton
-                variant="secondary"
-                class="btn"
-                [disabled]="currentPage().page <= 1"
-                (click)="setPage(currentPage().page - 1, currentPage().per_page)"
-              >
-                Prev
-              </button>
-              <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
-              <button
-                appButton
-                variant="secondary"
-                class="btn"
-                [disabled]="currentPage().page >= totalPages(data.total)"
-                (click)="setPage(currentPage().page + 1, currentPage().per_page)"
-              >
-                Next
-              </button>
+          <div class="page-container users-page">
+            <div class="users-list-wrapper">
+              <app-user-list
+                [items]="data.items"
+                (view)="goToDetail($event)"
+                (edit)="openEditUserModal($event)"
+                (delete)="onDelete($event)"
+              ></app-user-list>
+              <div class="users-pagination">
+                <button
+                  appButton
+                  variant="secondary"
+                  class="btn"
+                  [disabled]="currentPage().page <= 1"
+                  (click)="setPage(currentPage().page - 1, currentPage().per_page)"
+                >
+                  Prev
+                </button>
+                <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
+                <button
+                  appButton
+                  variant="secondary"
+                  class="btn"
+                  [disabled]="currentPage().page >= totalPages(data.total)"
+                  (click)="setPage(currentPage().page + 1, currentPage().per_page)"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         } @else {
-          <div class="users-list-wrapper">
-            <div class="users-empty">
-              <p>No users found.</p>
-              <a appButton variant="primary" routerLink="/users/new">Create first user</a>
+          <div class="page-container users-page">
+            <div class="users-list-wrapper">
+              <div class="users-empty">
+                <p>No users found.</p>
+                <a appButton variant="primary" routerLink="/users/new">Create first user</a>
+              </div>
             </div>
           </div>
         }
