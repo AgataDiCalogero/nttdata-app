@@ -1,10 +1,19 @@
-@use '../../../../../../styles/mixins' as *;
-
 .posts-list {
-  @include flex-column(var(--space-lg));
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .post-wrapper {
-  @include flex-column(var(--space-sm));
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-wrapper > app-post-card,
+.post-wrapper app-card {
+  display: flex;
+  flex-direction: column;
 }

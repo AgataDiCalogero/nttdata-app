@@ -23,6 +23,8 @@ import {
   ChevronRight,
   Mail,
   User,
+  Check,
+  X,
 } from 'lucide-angular/src/icons';
 
 type RegisteredIcon = {
@@ -51,6 +53,8 @@ const LUCIDE_ICONS: RegisteredIcon[] = [
   { name: 'chevron-right', data: ChevronRight },
   { name: 'mail', data: Mail },
   { name: 'user', data: User },
+  { name: 'check', data: Check },
+  { name: 'x', data: X },
 ];
 
 @Injectable({

@@ -3,6 +3,7 @@
 .users-page {
   display: flex;
   justify-content: center;
+  padding-inline: 0; /* align left/right edges with navbar gutters */
 }
 
 .users-container {
@@ -15,6 +16,12 @@
 .users-header {
   align-items: center;
   gap: var(--space-lg);
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
 
   button[mat-flat-button] {
     display: inline-flex;

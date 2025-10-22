@@ -9,6 +9,7 @@
   top: 0;
   z-index: var(--z-sticky);
   width: 100%;
+  -webkit-backdrop-filter: blur(14px); /* Safari support */
   backdrop-filter: blur(14px);
   background: color-mix(in srgb, var(--color-primary) 88%, transparent);
   border-bottom: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.08));
@@ -42,6 +43,7 @@
     }
   }
 
+  /* spacer keeps controls on the right */
   .spacer {
     flex: 1;
   }
@@ -50,6 +52,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
+    margin-inline-start: var(--space-sm); /* small gap after brand */
 
     a[mat-button] {
       text-transform: none;
@@ -57,6 +60,7 @@
       letter-spacing: 0;
       border-radius: var(--radius-lg);
       padding-inline: var(--space-md);
+      color: var(--color-on-surface); /* ensure readable in light theme */
 
       mat-icon {
         margin-inline-end: var(--space-xxs);
@@ -66,6 +70,19 @@
       &.active {
         background: color-mix(in srgb, var(--color-accent) 16%, transparent);
         color: var(--color-on-accent);
+      }
+    }
+  }
+
+  /* In light theme ensure active nav link text/icon uses accent for visibility */
+  :host-context(body.light-theme) {
+    .nav-links {
+      a[mat-button].active {
+        color: var(--color-accent);
+
+        mat-icon {
+          color: var(--color-accent);
+        }
       }
     }
   }

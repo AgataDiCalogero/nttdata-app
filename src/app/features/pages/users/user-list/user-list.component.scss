@@ -4,41 +4,97 @@
   display: grid;
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  align-items: stretch; /* ensure cells stretch to same height */
+}
+
+@media (min-width: 70rem) {
+  .user-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* cap to three columns on wide screens */
+  }
 }
 
 .user-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   background: color-mix(in srgb, var(--color-surface) 96%, transparent);
   border-radius: var(--radius-xl);
-  border: 1px solid color-mix(in srgb, var(--border-accent-soft) 60%, transparent);
+  /* fallback for browsers without color-mix */
+  border: 1px solid var(--border-accent-soft, rgba(0, 0, 0, 0.04));
+  @supports (color: color-mix(in srgb, var(--border-accent-soft) 60%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--border-accent-soft) 60%, transparent);
+  }
   box-shadow: var(--shadow-md);
 
   &:hover {
     box-shadow: var(--shadow-lg);
   }
+
+  flex: 1 1 auto; /* allow card to grow to fill the grid cell */
 }
 
 .user-card__avatar {
   background: var(--gradient-primary);
   color: var(--color-on-accent);
   font-weight: var(--font-weight-bold);
-  font-size: 1.125rem;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.user-card__heading {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.user-card__title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.user-card__status {
+  --status-color: var(--color-danger);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: calc(var(--space-2xs) + 1px) var(--space-sm);
+  border-radius: 999px;
+  border: 1px solid var(--status-color);
+  color: var(--status-color);
+  background-color: rgba(0, 0, 0, 0.02);
+  @supports (color: color-mix(in srgb, var(--status-color) 14%, transparent)) {
+    background-color: color-mix(in srgb, var(--status-color) 14%, transparent);
+  }
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+  line-height: 1;
+}
+
+.user-card__status-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .user-card__status-label {
-  text-transform: capitalize;
-  font-weight: var(--font-weight-medium);
+  line-height: 1;
 }
 
-.user-card__chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  text-transform: capitalize;
-  font-weight: var(--font-weight-medium);
+.user-card__status--active {
+  --status-color: var(--color-success);
+}
+
+.user-card__status--inactive {
+  --status-color: var(--color-danger);
 }
 
 .user-card__meta {
@@ -56,10 +112,11 @@
     color: var(--color-muted);
   }
 
-  dd {
+  span {
     margin: 0;
     color: var(--color-on-surface);
     word-break: break-word;
+    line-height: 1.5;
   }
 }
 
@@ -68,7 +125,7 @@ mat-card-actions {
   justify-content: flex-end;
   gap: var(--space-sm);
   padding-inline: var(--space-lg);
-
+  margin-top: auto; /* push actions to bottom */
   button[mat-button],
   button[mat-stroked-button] {
     text-transform: none;

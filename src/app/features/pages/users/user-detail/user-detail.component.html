@@ -1,85 +1,87 @@
-<section class="user-detail">
-  <div class="user-detail__top">
-    <a routerLink="/users" class="user-detail__back" appButton variant="ghost">
-      <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
-      Back to users
-    </a>
-  </div>
+<section class="user-detail-page" data-app-page="true">
+  <div class="user-detail app-container app-container--full app-container--flush">
+    <div class="user-detail__top">
+      <a routerLink="/users" class="user-detail__back" appButton variant="ghost">
+        <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
+        Back to users
+      </a>
+    </div>
 
-  @if (loading()) {
-    <app-loader [text]="'Loading user details...'"></app-loader>
-  } @else if (error()) {
-    <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
-      <div class="user-detail-alert-content">
-        <p>{{ error() }}</p>
-        <div class="user-detail-alert-actions">
-          <a routerLink="/users" appButton variant="ghost" size="sm">Back to list</a>
-        </div>
-      </div>
-    </app-alert>
-  } @else if (user(); as detail) {
-    <article class="user-card">
-      <div class="user-card__avatar" aria-hidden="true">
-        {{ (detail.name || '').slice(0, 2).toUpperCase() }}
-      </div>
-      <div class="user-card__meta">
-        <h1 class="user-card__name">{{ detail.name }}</h1>
-        <p class="user-card__email">
-          <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
-          <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
-        </p>
-        <div class="user-card__badges">
-          <span class="user-card__badge">
-            <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
-            {{ detail.gender || 'Not specified' }}
-          </span>
-          <span class="user-card__badge user-card__badge--status">
-            {{ detail.status | titlecase }}
-          </span>
-        </div>
-      </div>
-      <div class="user-card__summary">
-        <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
-        <span>
-          {{ posts().length }}
-          {{ posts().length === 1 ? 'post shared' : 'posts shared' }}
-        </span>
-      </div>
-    </article>
-
-    <section class="user-posts" aria-labelledby="user-posts-title">
-      <header class="user-posts__header">
-        <h2 id="user-posts-title">Posts from {{ detail.name }}</h2>
-        <p class="user-posts__subtitle">
-          Browse the ideas and reports submitted by this citizen. Comments can be opened inline.
-        </p>
-      </header>
-
-      @if (posts().length === 0) {
-        <app-alert variant="info">
-          <div class="user-posts-empty">
-            <p>No posts published yet.</p>
+    @if (loading()) {
+      <app-loader [text]="'Loading user details...'"></app-loader>
+    } @else if (error()) {
+      <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
+        <div class="user-detail-alert-content">
+          <p>{{ error() }}</p>
+          <div class="user-detail-alert-actions">
+            <a routerLink="/users" appButton variant="ghost" size="sm">Back to list</a>
           </div>
-        </app-alert>
-      } @else {
-        <div class="user-posts__grid">
-          @for (post of posts(); track trackPostId($index, post)) {
-            <app-post-card
-              [post]="post"
-              [interactive]="true"
-              padding="spacious"
-              [allowManage]="false"
-              [comments]="commentsFor(post.id) ?? null"
-              [commentsLoading]="commentsAreLoading(post.id)"
-              [authorName]="detail.name"
-              (toggleComments)="onToggleComments(post.id)"
-              (commentCreated)="onCommentCreated(post.id, $event)"
-              (commentUpdated)="onCommentUpdated(post.id, $event)"
-              (commentDeleted)="onCommentDeleted(post.id, $event)"
-            ></app-post-card>
-          }
         </div>
-      }
-    </section>
-  }
+      </app-alert>
+    } @else if (user(); as detail) {
+      <article class="user-card">
+        <div class="user-card__avatar" aria-hidden="true">
+          {{ (detail.name || '').slice(0, 2).toUpperCase() }}
+        </div>
+        <div class="user-card__meta">
+          <h1 class="user-card__name">{{ detail.name }}</h1>
+          <p class="user-card__email">
+            <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
+            <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
+          </p>
+          <div class="user-card__badges">
+            <span class="user-card__badge">
+              <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
+              {{ detail.gender || 'Not specified' }}
+            </span>
+            <span class="user-card__badge user-card__badge--status">
+              {{ detail.status | titlecase }}
+            </span>
+          </div>
+        </div>
+        <div class="user-card__summary">
+          <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
+          <span>
+            {{ posts().length }}
+            {{ posts().length === 1 ? 'post shared' : 'posts shared' }}
+          </span>
+        </div>
+      </article>
+
+      <section class="user-posts" aria-labelledby="user-posts-title">
+        <header class="user-posts__header">
+          <h2 id="user-posts-title">Posts from {{ detail.name }}</h2>
+          <p class="user-posts__subtitle">
+            Browse the ideas and reports submitted by this citizen. Comments can be opened inline.
+          </p>
+        </header>
+
+        @if (posts().length === 0) {
+          <app-alert variant="info">
+            <div class="user-posts-empty">
+              <p>No posts published yet.</p>
+            </div>
+          </app-alert>
+        } @else {
+          <div class="user-posts__grid">
+            @for (post of posts(); track trackPostId($index, post)) {
+              <app-post-card
+                [post]="post"
+                [interactive]="true"
+                padding="spacious"
+                [allowManage]="false"
+                [comments]="commentsFor(post.id) ?? null"
+                [commentsLoading]="commentsAreLoading(post.id)"
+                [authorName]="detail.name"
+                (toggleComments)="onToggleComments(post.id)"
+                (commentCreated)="onCommentCreated(post.id, $event)"
+                (commentUpdated)="onCommentUpdated(post.id, $event)"
+                (commentDeleted)="onCommentDeleted(post.id, $event)"
+              ></app-post-card>
+            }
+          </div>
+        }
+      </section>
+    }
+  </div>
 </section>

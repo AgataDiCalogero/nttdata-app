@@ -3,17 +3,8 @@
 @use '../../styles/posts-filters.scss';
 
 .posts-page {
-  @include flex-column(var(--space-lg));
-  padding-block: var(--space-xxl);
-  padding-inline: var(--layout-gutter);
+  padding-inline: 0; /* align with navbar gutters; container applies horizontal padding */
   color: var(--color-on-surface);
-  margin-inline: auto;
-  width: min(100%, var(--layout-wide-width));
-
-  @include mobile {
-    padding-block: var(--space-xl);
-    padding-inline: var(--layout-gutter-tight);
-  }
 
   &__header {
     @include flex-row(var(--space-md), center, space-between);
@@ -33,10 +24,6 @@
     margin: 0;
     color: var(--color-muted);
     font-size: 0.95rem;
-  }
-
-  &__actions {
-    @include button-group(var(--space-sm), flex-end);
   }
 
   &__alert {

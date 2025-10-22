@@ -25,8 +25,6 @@
     <span class="brand__label">NTT Data App</span>
   </a>
 
-  <span class="spacer" aria-hidden="true"></span>
-
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
     @if (!isLogged() && !isLoginRoute()) {
       <a mat-button routerLink="/login" (click)="closeMenu()">Login</a>
@@ -55,17 +53,13 @@
     }
   </nav>
 
+  <span class="spacer" aria-hidden="true"></span>
+
   <div class="controls">
     <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
 
     @if (isLogged()) {
-      <button
-        mat-flat-button
-        color="accent"
-        type="button"
-        class="logout-btn"
-        (click)="logout()"
-      >
+      <button mat-flat-button color="accent" type="button" class="logout-btn" (click)="logout()">
         <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
         <span class="logout-text">Logout</span>
       </button>
@@ -75,9 +69,7 @@
 
 <mat-menu #navMenu="matMenu" class="nav-menu">
   @if (!isLogged() && !isLoginRoute()) {
-    <button mat-menu-item routerLink="/login" (click)="closeMenu()">
-      Login
-    </button>
+    <button mat-menu-item routerLink="/login" (click)="closeMenu()">Login</button>
   }
   @if (isLogged()) {
     <button mat-menu-item routerLink="/users" (click)="closeMenu()">

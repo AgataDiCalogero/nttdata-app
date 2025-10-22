@@ -10,13 +10,14 @@ import {
 import { LucideAngularModule, Sun, Moon, BookOpenCheck } from 'lucide-angular';
 import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
 import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme/theme.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 @Component({
   selector: 'app-appearance-switcher',
   standalone: true,
-  imports: [LucideAngularModule, ClickOutsideDirective, EscapeKeyDirective],
+  imports: [LucideAngularModule, ClickOutsideDirective, EscapeKeyDirective, MatSlideToggleModule],
   templateUrl: './appearance-switcher.component.html',
   styleUrls: ['./appearance-switcher.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

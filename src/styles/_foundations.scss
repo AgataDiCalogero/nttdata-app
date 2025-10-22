@@ -23,6 +23,10 @@
     max-width: var(--app-page-wide-width);
   }
 
+  &.app-container--full {
+    max-width: none;
+  }
+
   &.app-container--flush {
     padding-inline: var(--app-page-gutter-tight);
   }

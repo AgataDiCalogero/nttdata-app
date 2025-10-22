@@ -68,22 +68,18 @@
       <div class="appearance-switcher__divider"></div>
 
       <div class="appearance-switcher__section">
-        <button
-          type="button"
-          class="appearance-option appearance-option--toggle"
-          [class.appearance-option--active]="isReadingMode()"
-          (click)="toggleReadingMode()"
-          role="menuitemcheckbox"
-          aria-checked="false"
-          [attr.aria-checked]="isReadingMode() ? 'true' : 'false'"
-          [attr.aria-label]="isReadingMode() ? 'Disable reading mode' : 'Enable reading mode'"
-        >
+        <div class="appearance-option appearance-option--toggle" role="menuitem">
           <span class="appearance-option__icon">
             <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           </span>
           <span class="appearance-option__label">Reading mode</span>
-          <span class="appearance-option__switch" [attr.data-on]="isReadingMode()"></span>
-        </button>
+          <mat-slide-toggle
+            class="appearance-toggle"
+            aria-label="Reading mode"
+            [checked]="isReadingMode()"
+            (change)="toggleReadingMode()"
+          ></mat-slide-toggle>
+        </div>
       </div>
     </div>
   }

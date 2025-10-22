@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import type { Comment, Post, User } from '@/app/shared/models';
@@ -19,6 +21,8 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
     LucideAngularModule,
     SelectComponent,
     ButtonComponent,
+    MatButtonModule,
+    MatIconModule,
     LoaderComponent,
     AlertComponent,
     PostsFiltersComponent,
@@ -47,7 +51,6 @@ export class PostsViewComponent {
 
   readonly createPost = output<void>();
   readonly resetFilters = output<void>();
-  readonly refresh = output<void>();
   readonly toggleComments = output<number>();
   readonly deletePost = output<Post>();
   readonly commentCreated = output<{ postId: number; comment: Comment }>();

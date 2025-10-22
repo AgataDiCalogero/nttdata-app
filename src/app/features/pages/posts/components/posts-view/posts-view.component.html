@@ -1,89 +1,87 @@
-<section class="posts-page">
-  <header class="posts-page__header">
-    <div class="posts-page__heading">
-      <h1 class="posts-page__title">Posts</h1>
-      <p class="posts-page__count">{{ postsCount() }} posts</p>
-    </div>
-    <button appButton type="button" (click)="createPost.emit()">
-      <lucide-icon [img]="Plus"></lucide-icon>
-      New Post
-    </button>
-  </header>
+<section class="posts-page" data-app-page="true">
+  <div class="posts-container app-container app-container--full app-container--flush">
+    <header class="posts-page__header app-page__header">
+      <div class="posts-page__heading">
+        <h1 class="posts-page__title">Posts</h1>
+        <p class="posts-page__count">{{ postsCount() }} posts</p>
+      </div>
+      <button mat-flat-button color="primary" type="button" (click)="createPost.emit()">
+        <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+        <span>New Post</span>
+      </button>
+    </header>
 
-  <app-posts-filters
-    [searchForm]="searchForm()"
-    [userOptions]="userOptions()"
-    (resetFilters)="resetFilters.emit()"
-  ></app-posts-filters>
+    <app-posts-filters
+      [searchForm]="searchForm()"
+      [userOptions]="userOptions()"
+      (resetFilters)="resetFilters.emit()"
+    ></app-posts-filters>
 
-  <div class="posts-page__actions">
-    <button appButton variant="ghost" type="button" (click)="refresh.emit()">Refresh</button>
+    @if (error()) {
+      <app-alert variant="error" class="posts-page__alert">
+        {{ error() }}
+      </app-alert>
+    }
+
+    @if (loading()) {
+      <app-loader class="posts-page__loader" [text]="'Loading posts...'"></app-loader>
+    }
+
+    @if (!loading() && !error() && posts().length === 0) {
+      <app-alert variant="info" class="posts-page__alert">
+        No posts match your filters yet. Try adjusting the search or refresh the list.
+      </app-alert>
+    }
+
+    @if (!loading() && posts().length > 0) {
+      <app-posts-list
+        [posts]="posts()"
+        [commentsMap]="commentsMap()"
+        [commentsLoading]="commentsLoading()"
+        [deletingId]="deletingId()"
+        [userLookup]="userLookup()"
+        (deletePost)="deletePost.emit($event)"
+        (toggleComments)="toggleComments.emit($event)"
+        (commentCreated)="commentCreated.emit($event)"
+        (commentUpdated)="commentUpdated.emit($event)"
+        (editPost)="editPost.emit($event)"
+        (viewAuthor)="viewAuthor.emit($event)"
+      ></app-posts-list>
+    }
+
+    @if (hasPagination()) {
+      <footer class="posts-pagination">
+        <div class="posts-pagination__controls">
+          <button
+            appButton
+            variant="ghost"
+            type="button"
+            (click)="changePage.emit(currentPage() - 1)"
+            [disabled]="currentPage() <= 1"
+          >
+            Previous
+          </button>
+          <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+          <button
+            appButton
+            variant="ghost"
+            type="button"
+            (click)="changePage.emit(currentPage() + 1)"
+            [disabled]="currentPage() >= totalPages()"
+          >
+            Next
+          </button>
+        </div>
+        <div class="posts-pagination__page-size">
+          <label for="per-page-select">Per page</label>
+          <app-select
+            id="per-page-select"
+            [options]="perPageSelectOptions()"
+            [placeholder]="currentPerPage().toString()"
+            (selectionChange)="changePerPage.emit(+$event)"
+          ></app-select>
+        </div>
+      </footer>
+    }
   </div>
-
-  @if (error()) {
-    <app-alert variant="error" class="posts-page__alert">
-      {{ error() }}
-    </app-alert>
-  }
-
-  @if (loading()) {
-    <app-loader class="posts-page__loader" [text]="'Loading posts...'"></app-loader>
-  }
-
-  @if (!loading() && !error() && posts().length === 0) {
-    <app-alert variant="info" class="posts-page__alert">
-      No posts match your filters yet. Try adjusting the search or refresh the list.
-    </app-alert>
-  }
-
-  @if (!loading() && posts().length > 0) {
-    <app-posts-list
-      [posts]="posts()"
-      [commentsMap]="commentsMap()"
-      [commentsLoading]="commentsLoading()"
-      [deletingId]="deletingId()"
-      [userLookup]="userLookup()"
-      (deletePost)="deletePost.emit($event)"
-      (toggleComments)="toggleComments.emit($event)"
-      (commentCreated)="commentCreated.emit($event)"
-      (commentUpdated)="commentUpdated.emit($event)"
-      (editPost)="editPost.emit($event)"
-      (viewAuthor)="viewAuthor.emit($event)"
-    ></app-posts-list>
-  }
-
-  @if (hasPagination()) {
-    <footer class="posts-pagination">
-      <div class="posts-pagination__controls">
-        <button
-          appButton
-          variant="ghost"
-          type="button"
-          (click)="changePage.emit(currentPage() - 1)"
-          [disabled]="currentPage() <= 1"
-        >
-          Previous
-        </button>
-        <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
-        <button
-          appButton
-          variant="ghost"
-          type="button"
-          (click)="changePage.emit(currentPage() + 1)"
-          [disabled]="currentPage() >= totalPages()"
-        >
-          Next
-        </button>
-      </div>
-      <div class="posts-pagination__page-size">
-        <label for="per-page-select">Per page</label>
-        <app-select
-          id="per-page-select"
-          [options]="perPageSelectOptions()"
-          [placeholder]="currentPerPage().toString()"
-          (selectionChange)="changePerPage.emit(+$event)"
-        ></app-select>
-      </div>
-    </footer>
-  }
 </section>

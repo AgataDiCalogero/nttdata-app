@@ -2,36 +2,41 @@
   @for (user of items(); track trackById($index, user)) {
     <mat-card class="user-card">
       <mat-card-header>
-        <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
-          {{ initials(user) }}
+        <div class="user-card__heading">
+          <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
+            {{ initials(user) }}
+          </div>
+          <div class="user-card__title-wrapper">
+            <mat-card-title>{{ user.name || 'Unnamed user' }}</mat-card-title>
+          </div>
+          <span
+            class="user-card__status"
+            [class.user-card__status--active]="user.status === 'active'"
+            [class.user-card__status--inactive]="user.status !== 'active'"
+            role="img"
+            [attr.aria-label]="user.status === 'active' ? 'Active user' : 'Inactive user'"
+          >
+            <mat-icon
+              class="user-card__status-icon"
+              [svgIcon]="user.status === 'active' ? 'lucide:check' : 'lucide:x'"
+              aria-hidden="true"
+            ></mat-icon>
+            <span class="user-card__status-label">{{ user.status }}</span>
+          </span>
         </div>
-        <mat-card-title>{{ user.name || 'Unnamed user' }}</mat-card-title>
-        <mat-card-subtitle>
-          <mat-chip-set aria-label="User status">
-            <mat-chip [color]="statusChipColor(user.status)" class="user-card__chip">
-              <mat-icon
-                svgIcon="lucide:{{ user.status === 'active' ? 'users' : 'alert-circle' }}"
-                aria-hidden="true"
-              ></mat-icon>
-              <span class="user-card__status-label">{{ user.status }}</span>
-            </mat-chip>
-          </mat-chip-set>
-        </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        <dl class="user-card__meta">
+        <div class="user-card__meta">
           <div class="user-card__meta-item">
-            <dt class="visually-hidden">Email</dt>
             <mat-icon svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
-            <dd>{{ user.email }}</dd>
+            <span>{{ user.email }}</span>
           </div>
           <div class="user-card__meta-item">
-            <dt class="visually-hidden">Gender</dt>
             <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>
-            <dd>{{ user.gender || '-' }}</dd>
+            <span>{{ user.gender || '-' }}</span>
           </div>
-        </dl>
+        </div>
       </mat-card-content>
 
       <mat-card-actions align="end">

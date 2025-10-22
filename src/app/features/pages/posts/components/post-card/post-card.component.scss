@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  flex: 1 1 auto; /* allow card to grow and fill wrapper */
 }
 
 .posts-card__header {
@@ -79,7 +80,7 @@
 .posts-card__body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-md);
 }
 
 .posts-card__content {
@@ -114,6 +115,19 @@
 .posts-card__footer {
   @include mixins.flex-row(var(--space-sm), center, space-between);
   flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: auto; /* push footer to bottom when possible */
+}
+
+.posts-card__comment-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.posts-card__comment-compose {
+  min-width: 8.5rem;
 }
 
 .posts-card__comment-toggle {
@@ -126,8 +140,8 @@
 }
 
 .posts-card__comments {
-  border-top: 0.0625rem solid var(--comment-border);
-  padding-top: var(--space-md);
+  border-bottom: 0.0625rem solid var(--comment-border);
+  padding-bottom: var(--space-md);
   display: block;
 }
 

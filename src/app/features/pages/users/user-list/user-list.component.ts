@@ -4,14 +4,13 @@ import type { User } from '@/app/shared/models';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   standalone: true,
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {
@@ -46,11 +45,5 @@ export class UserListComponent {
     const parts = name.split(/\s+/).filter(Boolean);
     if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
     return ((parts[0][0] || '') + (parts[1][0] || '')).toUpperCase();
-  }
-
-  statusChipColor(status?: string | null): 'primary' | 'warn' | undefined {
-    if (status === 'active') return 'primary';
-    if (status === 'inactive') return 'warn';
-    return undefined;
   }
 }

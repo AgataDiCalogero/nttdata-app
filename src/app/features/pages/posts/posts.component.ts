@@ -56,10 +56,6 @@ export class Posts {
     this.store.resetFilters();
   }
 
-  handleRefresh(): void {
-    this.store.refresh();
-  }
-
   handleToggleComments(postId: number): void {
     this.store.toggleComments(postId);
   }
