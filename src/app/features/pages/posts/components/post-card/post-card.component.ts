@@ -53,6 +53,8 @@ export class PostCardComponent implements AfterViewChecked {
 
   isExpanded = false;
   private pendingCommentsReveal = false;
+  // Which bottom section is currently open. Only one can be open at a time.
+  openSection: 'none' | 'comments' | 'composer' = 'none';
 
   shouldTruncate(): boolean {
     const body = this.post()?.body || '';
@@ -77,6 +79,48 @@ export class PostCardComponent implements AfterViewChecked {
     this.isExpanded = !this.isExpanded;
   }
 
+  openCommentsList(): void {
+    // If composer is open, close it first
+    if (this.openSection === 'composer') {
+      this.openSection = 'none';
+    }
+
+    if (this.openSection === 'comments') {
+      // Close if already open
+      this.openSection = 'none';
+      // If the comments are loaded we still allow toggleComments to hide them
+      // by emitting the parent toggle (preserves previous behaviour)
+      const current = this.post();
+      if (current) this.toggleComments.emit();
+      return;
+    }
+
+    this.openSection = 'comments';
+    // Ensure parent loads comments if not already loaded
+    const current = this.post();
+    if (current) this.toggleComments.emit();
+  }
+
+  openComposer(): void {
+    // If comments list is open, close it first
+    if (this.openSection === 'comments') {
+      this.openSection = 'none';
+    }
+
+    if (this.openSection === 'composer') {
+      this.openSection = 'none';
+      return;
+    }
+
+    this.openSection = 'composer';
+    // If comments are not loaded we also want them available in composer focus flow
+    const current = this.post();
+    if (current && !this.comments()) {
+      this.pendingCommentsReveal = true;
+      this.toggleComments.emit();
+    }
+  }
+
   onInternalCommentCreated(comment: ModelComment): void {
     this.commentCreated.emit(comment);
   }
@@ -87,15 +131,6 @@ export class PostCardComponent implements AfterViewChecked {
 
   onInternalCommentDeleted(commentId: number): void {
     this.commentDeleted.emit(commentId);
-  }
-
-  onComposeComment(visible: boolean): void {
-    if (!visible) {
-      this.pendingCommentsReveal = true;
-      this.toggleComments.emit();
-    } else {
-      this.focusComments();
-    }
   }
 
   ngAfterViewChecked(): void {

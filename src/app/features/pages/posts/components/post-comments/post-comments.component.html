@@ -1,10 +1,14 @@
 <section class="post-comments">
-  <app-comment-form
-    class="post-comments__composer"
-    [postId]="postId()"
-    placeholder="Write a comment..."
-    (created)="onCommentCreated($event)"
-  ></app-comment-form>
+  @if (!hideComposer()) {
+    <ng-container>
+      <app-comment-form
+        class="post-comments__composer"
+        [postId]="postId()"
+        placeholder="Write a comment..."
+        (created)="onCommentCreated($event)"
+      ></app-comment-form>
+    </ng-container>
+  }
 
   <hr class="post-comments__divider" />
 
@@ -17,9 +21,9 @@
       </div>
     </app-alert>
   } @else {
-    <ul class="post-comments__list">
+    <div class="post-comments__list">
       @for (comment of comments(); track trackByCommentId($index, comment)) {
-        <li class="post-comments__item">
+        <div class="post-comments__item">
           <header class="post-comments__item-header">
             <div class="post-comments__avatar" aria-hidden="true">
               {{ comment.name.charAt(0).toUpperCase() }}
@@ -110,8 +114,8 @@
               </p>
             }
           </div>
-        </li>
+        </div>
       }
-    </ul>
+    </div>
   }
 </section>

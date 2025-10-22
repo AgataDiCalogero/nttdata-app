@@ -2,7 +2,6 @@
   @let postModel = post();
   @let deleting = isDeleting();
   @let commentsList = comments();
-  @let commentsVisible = commentsLoading() || commentsList !== undefined;
   @let commentCount = commentsList?.length ?? 0;
   @let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
 
@@ -49,19 +48,6 @@
   </div>
 
   <div card-body class="posts-card__body">
-    @if (commentsVisible && postModel) {
-      <app-post-comments
-        #commentsSection
-        class="posts-card__comments"
-        [postId]="postModel.id"
-        [comments]="commentsList ?? []"
-        [loading]="commentsLoading()"
-        (commentCreated)="onInternalCommentCreated($event)"
-        (commentUpdated)="onInternalCommentUpdated($event)"
-        (commentDeleted)="onInternalCommentDeleted($event)"
-      ></app-post-comments>
-    }
-
     <p class="posts-card__content" [attr.aria-expanded]="isExpanded">
       @if (!isExpanded && shouldTruncate()) {
         {{ previewText() }}
@@ -92,7 +78,8 @@
         size="sm"
         type="button"
         class="posts-card__comment-compose"
-        (click)="onComposeComment(commentsVisible)"
+        (click)="openComposer()"
+        [attr.aria-pressed]="openSection === 'composer' ? 'true' : 'false'"
       >
         Post comment
       </button>
@@ -102,15 +89,31 @@
         size="sm"
         type="button"
         class="posts-card__comment-toggle"
-        (click)="toggleComments.emit()"
-        [attr.aria-expanded]="commentsVisible ? 'true' : 'false'"
+        (click)="openCommentsList()"
+        [attr.aria-pressed]="openSection === 'comments' ? 'true' : 'false'"
       >
         <lucide-icon [img]="MessageSquare"></lucide-icon>
-        {{ commentsVisible ? 'Hide comments' : 'View comments' }}
+        {{ openSection === 'comments' ? 'Hide comments' : 'View comments' }}
         @if (commentCount > 0) {
           <span class="posts-card__comment-count">({{ commentCount }})</span>
         }
       </button>
     </div>
   </div>
+
+  @if (openSection !== 'none' && postModel) {
+    <div class="posts-card__expanded">
+      <app-post-comments
+        #commentsSection
+        class="posts-card__comments"
+        [postId]="postModel.id"
+        [comments]="commentsList ?? []"
+        [loading]="commentsLoading()"
+        [hideComposer]="openSection === 'comments'"
+        (commentCreated)="onInternalCommentCreated($event)"
+        (commentUpdated)="onInternalCommentUpdated($event)"
+        (commentDeleted)="onInternalCommentDeleted($event)"
+      ></app-post-comments>
+    </div>
+  }
 </app-card>

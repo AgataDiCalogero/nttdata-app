@@ -1,6 +1,6 @@
-<ul class="posts-list">
+<div class="posts-list">
   @for (post of posts(); track trackPostById($index, post)) {
-    <li class="post-wrapper">
+    <div class="post-wrapper">
       <app-post-card
         [post]="post"
         [interactive]="true"
@@ -16,6 +16,6 @@
         (viewAuthor)="onViewAuthor(post)"
         [authorName]="authorName(post) ?? 'User #' + post.user_id"
       ></app-post-card>
-    </li>
+    </div>
   }
-</ul>
+</div>
