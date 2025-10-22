@@ -314,33 +314,29 @@
       }
     }
 
-    /* Primary/ghost action (View): subtle surface ghost, centered label */
-    /* View (ghost) should have an outline the color of the text */
+    /* Primary/ghost action (View): theme-aware ghost button */
     button[variant='ghost'] {
-      /* View: use inspector color for background and white text/icon */
-      background: #334155;
-      color: var(--color-white);
-      border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+      background: var(--btn-view-bg, transparent);
+      color: var(--btn-view-color, var(--color-on-surface));
+      border: 0.0625rem solid var(--btn-view-border, var(--border-mix-60));
       padding-inline: var(--space-md);
       font-weight: 600;
-
       lucide-icon {
         color: currentColor;
       }
 
       &:hover,
       &:focus {
-        background: color-mix(in srgb, #000 8%, #334155);
+        background: var(--btn-view-hover, var(--accent-hover));
         transform: translateY(-0.0625rem);
       }
     }
 
-    /* Edit (outline): prominent accent outline with thicker border and accent color */
+    /* Edit (outline): theme-aware outline button (no hardcoded blue/white) */
     button[variant='outline'] {
-      /* Edit: use same inspector color but with stronger outline */
-      border: 0.125rem solid rgba(255, 255, 255, 0.1);
-      color: var(--color-white);
-      background: #334155;
+      border: 0.125rem solid var(--btn-edit-border, var(--color-border));
+      color: var(--btn-edit-color, var(--color-on-surface));
+      background: var(--btn-edit-bg, transparent);
       box-shadow: none;
       font-weight: 700;
       padding-inline: var(--space-md);
@@ -352,7 +348,7 @@
 
       &:hover,
       &:focus {
-        background: color-mix(in srgb, #000 10%, #334155);
+        background: var(--btn-edit-hover, var(--accent-hover));
       }
     }
   }

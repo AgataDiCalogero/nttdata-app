@@ -63,6 +63,18 @@
   --color-info-text-dark: #1e40af; /* blue-800 */
   --color-info-text-light: #1e3a8a; /* blue-900 */
 
+  /* ===== Button palettes for small action buttons (View / Edit) ===== */
+  /* Defaults target the dark theme look previously hardcoded; use vars so themes can override */
+  --btn-view-bg: #334155; /* darker bluish used previously */
+  --btn-view-color: var(--color-white);
+  --btn-view-border: rgba(255, 255, 255, 0.06);
+  --btn-view-hover: rgba(0, 0, 0, 0.08);
+
+  --btn-edit-bg: #334155;
+  --btn-edit-color: var(--color-white);
+  --btn-edit-border: rgba(255, 255, 255, 0.1);
+  --btn-edit-hover: rgba(0, 0, 0, 0.1);
+
   --focus-ring: #f97316; /* orange-500 focus ring */
   --shadow: var(--shadow-lg);
   --shadow-orange: var(--shadow-accent);
@@ -254,6 +266,19 @@
   --color-info-border: rgba(59, 130, 246, 0.3);
   --color-info-text-dark: #1e40af; /* blue-800 */
   --color-info-text-light: #1e3a8a; /* blue-900 */
+
+  /* Light theme overrides for small action buttons - elegant, warm complement */
+  /* Make View use the same warm palette as Edit in light mode for a cohesive look */
+  --btn-edit-bg: rgba(249, 165, 76, 0.08); /* slightly stronger soft warm tint */
+  --btn-edit-color: #0b1220; /* dark text */
+  --btn-edit-border: rgba(249, 165, 76, 0.16);
+  --btn-edit-hover: rgba(249, 115, 22, 0.16);
+
+  /* View matches Edit in light theme for visual consistency and elegance */
+  --btn-view-bg: var(--btn-edit-bg);
+  --btn-view-color: var(--btn-edit-color);
+  --btn-view-border: var(--btn-edit-border);
+  --btn-view-hover: var(--btn-edit-hover);
 
   --focus-ring: #f97316; /* orange-500 focus ring */
   --shadow: var(--shadow-lg);

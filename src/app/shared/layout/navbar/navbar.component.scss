@@ -69,22 +69,37 @@
     a {
       color: var(--color-accent);
       text-decoration: none;
-      padding: var(--space-xs) var(--space-sm);
-      @include radius('xs');
-      @include transition-group((background, color), 0.18s);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem; /* slightly larger hit area and pill look */
+      @include radius('md');
+      border: 1px solid transparent;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.2px;
+      background: transparent;
+      @include transition-group((background, color, transform, box-shadow), 0.18s);
 
       &:hover {
         color: var(--color-on-accent);
-        background: var(--accent-hover);
+        background: color-mix(in srgb, var(--accent-hover) 30%, transparent);
+        transform: translateY(-0.0625rem);
+        box-shadow: var(--shadow-sm);
       }
 
       &:focus-visible {
         @include focus-ring;
-        background: var(--accent-hover);
+        background: color-mix(in srgb, var(--accent-hover) 28%, transparent);
       }
     }
 
     a.active {
+      /* stronger, filled appearance for active link */
+      background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+      color: var(--color-on-accent);
+      box-shadow: var(--shadow-accent-soft, none);
+      border-color: rgba(255, 255, 255, 0.06);
       @include navbar.navbar-link-active;
     }
   }
