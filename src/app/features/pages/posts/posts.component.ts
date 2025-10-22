@@ -7,6 +7,8 @@ import { PostForm } from './components/post-form/post-form.component';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import type { Post, Comment, DeleteConfirmData, User } from '@/app/shared/models';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { take } from 'rxjs';
 // Dialog result shape used by PostForm dialog
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
 type PostFormDialogData = { users: User[]; post?: Post };
@@ -25,6 +27,7 @@ export class Posts {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialogLayouts = inject(ResponsiveDialogService);
+  private readonly overlays = inject(UiOverlayService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
 
@@ -79,7 +82,7 @@ export class Posts {
       confirmAction: () => this.store.deletePostRequest(post),
     };
 
-    this.dialog.open(DeleteConfirmComponent, {
+    const ref = this.dialog.open(DeleteConfirmComponent, {
       width: '26.25rem',
       maxWidth: '90vw',
       backdropClass: 'blurred-backdrop',
@@ -88,6 +91,14 @@ export class Posts {
       autoFocus: true,
       restoreFocus: true,
       data,
+    });
+    this.overlays.activate({
+      key: 'post-delete-confirm',
+      close: () => ref.close(),
+      blockGlobalControls: true,
+    });
+    ref.closed.pipe(take(1)).subscribe(() => {
+      this.overlays.release('post-delete-confirm');
     });
   }
 
@@ -122,7 +133,14 @@ export class Posts {
       dialogConfig,
     );
 
-    ref.closed.subscribe((result) => {
+    this.overlays.activate({
+      key: 'post-form',
+      close: () => ref.close(),
+      blockGlobalControls: true,
+    });
+
+    ref.closed.pipe(take(1)).subscribe((result) => {
+      this.overlays.release('post-form');
       if (!result || typeof result !== 'object' || !('status' in result)) {
         return;
       }

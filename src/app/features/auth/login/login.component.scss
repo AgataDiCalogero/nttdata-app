@@ -10,13 +10,25 @@
   @include flex-center;
   flex: 1 1 auto;
   min-height: 100%;
+  min-height: 100dvh;
+  --login-page-vertical-padding: clamp(var(--space-lg), 10vh, var(--space-3xl));
   padding-inline: clamp(var(--space-md), 4vw, var(--space-xxl));
-  padding-block: clamp(var(--space-lg), 10vh, var(--space-3xl));
+  padding-block: var(--login-page-vertical-padding);
+  padding-block-start: max(
+    var(--login-page-vertical-padding),
+    calc(var(--space-lg) + env(safe-area-inset-top, 0px))
+  );
+  padding-block-end: max(
+    var(--login-page-vertical-padding),
+    calc(var(--space-lg) + env(safe-area-inset-bottom, 0px))
+  );
   box-sizing: border-box;
   width: 100%;
 
   @include mobile {
-    padding-block: clamp(var(--space-md), 6vh, var(--space-xl));
+    justify-content: flex-start;
+    align-items: center;
+    --login-page-vertical-padding: clamp(var(--space-md), 8vh, var(--space-xl));
   }
 
   .login-card {

@@ -20,7 +20,8 @@ import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { tap } from 'rxjs';
+import { tap, take } from 'rxjs';
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 @Component({
   standalone: true,
@@ -51,6 +52,7 @@ export class PostCommentsComponent {
   private readonly postsApi = inject(PostsApiService);
   private readonly toast = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly overlays = inject(UiOverlayService);
 
   readonly Pencil = Pencil;
   readonly X = X;
@@ -89,7 +91,7 @@ export class PostCommentsComponent {
         );
       },
     };
-    this.dialog.open(DeleteConfirmComponent, {
+    const ref = this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       maxWidth: '90vw',
       backdropClass: 'blurred-backdrop',
@@ -98,6 +100,14 @@ export class PostCommentsComponent {
       autoFocus: true,
       restoreFocus: true,
       data,
+    });
+    this.overlays.activate({
+      key: 'comment-delete-confirm',
+      close: () => ref.close(),
+      blockGlobalControls: true,
+    });
+    ref.closed.pipe(take(1)).subscribe(() => {
+      this.overlays.release('comment-delete-confirm');
     });
   }
 

@@ -188,6 +188,26 @@ select:focus-visible {
   background: rgba(2, 6, 23, 0.75) !important; /* darken overlay */
 }
 
+body.ui-overlay-blocked .app-navbar .controls {
+  pointer-events: none;
+  filter: blur(2px);
+  opacity: 0.55;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+body.ui-overlay-blocked .app-navbar app-appearance-switcher,
+body.ui-overlay-blocked .app-navbar .logout-btn {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+body.ui-overlay-blocked .app-navbar .logout-btn {
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
 .user-form-modal {
   border-radius: var(--radius-xl);
   overflow: hidden;

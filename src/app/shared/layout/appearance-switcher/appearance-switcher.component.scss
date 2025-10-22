@@ -4,6 +4,8 @@
 .appearance-switcher {
   position: relative;
   @include mixins.flex-row;
+  justify-content: flex-end;
+  width: max-content;
 }
 
 .appearance-switcher__trigger {
@@ -72,6 +74,11 @@
   outline: none !important;
   @include mixins.flex-column(var(--space-xs));
   z-index: 110;
+  max-height: calc(100vh - 6rem);
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 
   /* Più opaco */
   /* avoid color-mix fallbacks here to keep panel visually consistent */
@@ -319,7 +326,9 @@
     right: 0;
     top: calc(100% + 0.6rem);
     transform: translateX(0);
-    width: min(20rem, calc(100vw - var(--space-xl)));
+    width: min(20rem, calc(100vw - 2 * var(--layout-gutter-tight)));
+    max-height: calc(100vh - 5.5rem);
+    max-height: calc(100dvh - 5.5rem - env(safe-area-inset-bottom, 0px));
     border-radius: var(--radius-2xl);
     padding: var(--space-md);
     @include mixins.shadow('xl');

@@ -10,7 +10,8 @@ import { UserForm } from '../user-form/user-form.component';
 import { DeleteConfirmComponent } from '../../../../shared/dialog/delete-confirm/delete-confirm.component';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
-import { tap } from 'rxjs';
+import { tap, take } from 'rxjs';
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 interface SortState {
   field: SortField;
@@ -108,6 +109,7 @@ export const UsersStoreAdapter = signalStore(
     const route = inject(ActivatedRoute);
     const dialog = inject(Dialog);
     const dialogLayouts = inject(ResponsiveDialogService);
+    const overlays = inject(UiOverlayService);
 
     // Setup iniziale
     const setupInitialState = () => {
@@ -182,7 +184,13 @@ export const UsersStoreAdapter = signalStore(
         desktop: { width: '37.5rem' },
       });
       const ref = dialog.open<'success' | 'cancel', void, UserForm>(UserForm, config);
-      ref.closed.subscribe((result) => {
+      overlays.activate({
+        key: 'user-form',
+        close: () => ref.close(),
+        blockGlobalControls: true,
+      });
+      ref.closed.pipe(take(1)).subscribe((result) => {
+        overlays.release('user-form');
         if (result === 'success') {
           loadUsers();
         }
@@ -198,7 +206,13 @@ export const UsersStoreAdapter = signalStore(
             data: { user },
           });
           const ref = dialog.open<'success' | 'cancel', { user: User }, UserForm>(UserForm, config);
-          ref.closed.subscribe((result) => {
+          overlays.activate({
+            key: 'user-form',
+            close: () => ref.close(),
+            blockGlobalControls: true,
+          });
+          ref.closed.pipe(take(1)).subscribe((result) => {
+            overlays.release('user-form');
             if (result === 'success') {
               loadUsers();
             }
@@ -246,7 +260,7 @@ export const UsersStoreAdapter = signalStore(
         },
       };
 
-      dialog.open(DeleteConfirmComponent, {
+      const ref = dialog.open(DeleteConfirmComponent, {
         width: '25rem',
         maxWidth: '90vw',
         backdropClass: 'blurred-backdrop',
@@ -255,6 +269,14 @@ export const UsersStoreAdapter = signalStore(
         autoFocus: true,
         restoreFocus: true,
         data,
+      });
+      overlays.activate({
+        key: 'user-delete-confirm',
+        close: () => ref.close(),
+        blockGlobalControls: true,
+      });
+      ref.closed.pipe(take(1)).subscribe(() => {
+        overlays.release('user-delete-confirm');
       });
     };
 

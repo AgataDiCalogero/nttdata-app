@@ -15,6 +15,7 @@ import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 // Login page component for token-based authentication
 @Component({
@@ -31,6 +32,7 @@ export class Login {
   private readonly dialog = inject(Dialog);
   private readonly validator = inject(TokenValidationService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly overlays = inject(UiOverlayService);
 
   readonly loading = signal(false);
   private readonly apiErrorMessage = signal<string | null>(null);
@@ -142,9 +144,19 @@ export class Login {
   }
 
   openTokenHelp(): void {
-    this.dialog.open(TokenHelpDialogComponent, {
+    const dialogRef = this.dialog.open(TokenHelpDialogComponent, {
       autoFocus: false,
       panelClass: 'token-help-dialog',
+    });
+
+    this.overlays.activate({
+      key: 'token-help-dialog',
+      close: () => dialogRef.close(),
+      blockGlobalControls: true,
+    });
+
+    dialogRef.closed.pipe(take(1)).subscribe(() => {
+      this.overlays.release('token-help-dialog');
     });
   }
 }

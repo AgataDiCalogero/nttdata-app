@@ -3,6 +3,7 @@
 .app-footer {
   width: 100%;
   padding-block: var(--space-lg);
+  padding-block-end: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
   text-align: center;
   background: transparent; /* keep app chrome subtle */
   border-top: 1px solid var(--alpha-02);
