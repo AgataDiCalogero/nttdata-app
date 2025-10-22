@@ -1,43 +1,26 @@
-<section class="delete-confirm">
-  <div class="delete-confirm__icon">
-    <mat-icon svgIcon="lucide:alert-triangle" aria-hidden="true"></mat-icon>
-  </div>
-
-  <h2 class="delete-confirm__title">{{ data.title }}</h2>
-  <p class="delete-confirm__message">{{ data.message }}</p>
+<section class="form-dialog delete-confirm">
+  <header class="form-dialog__header">
+    <h2 class="form-dialog__title">{{ data.title }}</h2>
+    <p class="form-dialog__subtitle">{{ data.message }}</p>
+  </header>
 
   @if (errorMessage(); as error) {
-    <div class="delete-confirm__status" role="alert">
-      <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
-      <span>{{ error }}</span>
-    </div>
+    <app-alert variant="error" [dismissible]="true" (dismissed)="errorMessage.set(null)">
+      {{ error }}
+    </app-alert>
   }
 
-  <div class="delete-confirm__actions">
-    <button
-      type="button"
-      mat-button
-      (click)="cancel()"
-      [disabled]="submitting()"
-    >
+  <div class="form-dialog__actions delete-confirm__actions">
+    <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
       {{ data.cancelText || 'Cancel' }}
     </button>
-    <button
-      type="button"
-      mat-flat-button
-      color="warn"
-      (click)="confirm()"
-      [disabled]="submitting()"
-    >
+
+    <button appButton variant="danger" type="button" (click)="confirm()" [disabled]="submitting()">
       @if (submitting()) {
-        <mat-progress-spinner
-          mode="indeterminate"
-          diameter="18"
-          strokeWidth="2"
-        ></mat-progress-spinner>
+        Deleting…
+      } @else {
+        {{ confirmLabel() }}
       }
-      <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
-      <span>{{ confirmLabel() }}</span>
     </button>
   </div>
 </section>

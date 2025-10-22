@@ -1,29 +1,15 @@
 @use '../../../../../../styles/mixins' as mixins;
 
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(var(--space-lg), 4vw, var(--space-xxl));
+  min-height: 100%;
+}
+
 .post-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
   width: 100%;
-}
-
-.post-form__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.post-form__title {
-  margin: 0;
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-on-surface);
-}
-
-.post-form__subtitle {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: var(--font-size-sm);
 }
 
 .post-form__loading {
@@ -34,26 +20,15 @@
   color: var(--color-muted);
 }
 
-.post-form__error {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--state-error-border);
-  background: var(--state-error-bg);
-  font-size: var(--font-size-sm);
-
-  mat-icon {
-    color: var(--color-danger);
-  }
-}
-
-.post-form__body {
+.post-form__error-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-sm);
+  align-items: flex-start;
+
+  p {
+    margin: 0;
+  }
 }
 
 .post-form__field {
@@ -65,25 +40,8 @@
   resize: vertical;
 }
 
-.post-form__actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-md);
-
-  button[mat-flat-button] {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-  }
-}
-
-@media (max-width: 40rem) {
-  .post-form__actions {
-    flex-direction: column-reverse;
-    align-items: stretch;
-
-    button {
-      width: 100%;
-    }
+@include mixins.mobile {
+  :host {
+    padding: var(--space-lg);
   }
 }

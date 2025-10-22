@@ -50,6 +50,7 @@ export class PostCommentsComponent {
   readonly commentCreated = output<ModelComment>();
   readonly commentUpdated = output<ModelComment>();
   readonly commentDeleted = output<number>();
+  readonly composerCancelled = output<void>();
 
   private readonly fb = inject(FormBuilder);
   private readonly postsApi = inject(PostsApiService);
@@ -179,5 +180,9 @@ export class PostCommentsComponent {
 
   onCommentCreated(comment: ModelComment): void {
     this.commentCreated.emit(comment);
+  }
+
+  onComposerCancelled(): void {
+    this.composerCancelled.emit();
   }
 }

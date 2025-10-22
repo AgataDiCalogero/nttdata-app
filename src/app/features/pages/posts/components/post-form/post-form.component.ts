@@ -10,10 +10,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, Post, UpdatePost, User } from '@/app/shared/models';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { ButtonComponent, AlertComponent } from '@app/shared/ui';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -37,6 +37,8 @@ interface PostFormResult {
   imports: [
     ReactiveFormsModule,
     AutoFocusDirective,
+    ButtonComponent,
+    AlertComponent,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -52,7 +54,6 @@ export class PostForm {
   private readonly fb = inject(FormBuilder);
   private readonly postsApi = inject(PostsApiService);
   private readonly usersApi = inject(UsersApiService);
-  private readonly toast = inject(ToastService);
   private readonly dialogRef = inject(DialogRef<PostFormResult | 'cancel'>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly dialogData = inject<PostFormDialogData | null>(DIALOG_DATA, { optional: true });
@@ -61,6 +62,7 @@ export class PostForm {
   private readonly editablePost = signal<Post | null>(this.dialogData?.post ?? null);
   readonly loadingUsers = signal(false);
   readonly loadError = signal<string | null>(null);
+  readonly submitError = signal<string | null>(null);
   readonly submitting = signal(false);
 
   private readonly userIdControl = this.fb.nonNullable.control(0, [
@@ -167,6 +169,9 @@ export class PostForm {
       return;
     }
 
+    // Clear previous errors
+    this.submitError.set(null);
+
     const payload: CreatePost = {
       user_id: this.userIdControl.value,
       title: this.titleControl.value.trim(),
@@ -185,10 +190,6 @@ export class PostForm {
       next: (post) => {
         this.submitting.set(false);
         this.dialogRef.disableClose = false;
-        this.toast.show(
-          'success',
-          existing ? 'Post updated successfully' : 'Post created successfully',
-        );
         this.dialogRef.close({
           status: existing ? 'updated' : 'created',
           post,
@@ -200,12 +201,12 @@ export class PostForm {
         this.dialogRef.disableClose = false;
         const status = err?.status;
         if (status === 422) {
-          this.toast.show('error', 'Invalid data. Please review the fields.');
+          this.submitError.set('Invalid data. Please review the fields.');
           this.titleControl.setErrors({ api: true });
         } else if (status === 429) {
-          this.toast.show('error', 'Too many requests. Please try again later.');
+          this.submitError.set('Too many requests. Please try again later.');
         } else {
-          this.toast.show('error', 'Unable to create the post. Please retry.');
+          this.submitError.set('Unable to save the post. Please retry.');
         }
       },
     });

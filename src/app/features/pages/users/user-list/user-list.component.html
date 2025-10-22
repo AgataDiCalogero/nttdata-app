@@ -9,20 +9,19 @@
           <div class="user-card__title-wrapper">
             <mat-card-title>{{ user.name || 'Unnamed user' }}</mat-card-title>
           </div>
-          <span
-            class="user-card__status"
-            [class.user-card__status--active]="user.status === 'active'"
-            [class.user-card__status--inactive]="user.status !== 'active'"
-            role="img"
-            [attr.aria-label]="user.status === 'active' ? 'Active user' : 'Inactive user'"
+          <app-status-badge
+            [status]="user.status"
+            [ariaLabel]="user.status === 'active' ? 'Active user' : 'Inactive user'"
+          ></app-status-badge>
+          <button
+            mat-icon-button
+            color="warn"
+            class="user-card__delete-mobile"
+            (click)="onDelete(user, $event)"
+            aria-label="Delete user"
           >
-            <mat-icon
-              class="user-card__status-icon"
-              [svgIcon]="user.status === 'active' ? 'lucide:check' : 'lucide:x'"
-              aria-hidden="true"
-            ></mat-icon>
-            <span class="user-card__status-label">{{ user.status }}</span>
-          </span>
+            <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+          </button>
         </div>
       </mat-card-header>
 
@@ -51,6 +50,7 @@
         <button
           mat-icon-button
           color="warn"
+          class="user-card__delete-desktop"
           (click)="onDelete(user, $event)"
           aria-label="Delete user"
         >

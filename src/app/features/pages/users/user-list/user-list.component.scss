@@ -49,52 +49,23 @@
 
 .user-card__heading {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: var(--space-md);
   width: 100%;
 }
 
+.user-card__delete-mobile {
+  display: none; /* Hidden by default, shown on mobile */
+}
+
+.user-card__delete-desktop {
+  display: inline-flex; /* Shown by default, hidden on mobile */
+}
+
 .user-card__title-wrapper {
   display: flex;
   align-items: center;
-}
-
-.user-card__status {
-  --status-color: var(--color-danger);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  padding: calc(var(--space-2xs) + 1px) var(--space-sm);
-  border-radius: 999px;
-  border: 1px solid var(--status-color);
-  color: var(--status-color);
-  background-color: rgba(0, 0, 0, 0.02);
-  @supports (color: color-mix(in srgb, var(--status-color) 14%, transparent)) {
-    background-color: color-mix(in srgb, var(--status-color) 14%, transparent);
-  }
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  text-transform: capitalize;
-  line-height: 1;
-}
-
-.user-card__status-icon {
-  font-size: 1rem;
-  width: 1rem;
-  height: 1rem;
-}
-
-.user-card__status-label {
-  line-height: 1;
-}
-
-.user-card__status--active {
-  --status-color: var(--color-success);
-}
-
-.user-card__status--inactive {
-  --status-color: var(--color-danger);
 }
 
 .user-card__meta {
@@ -141,6 +112,14 @@ mat-card-actions {
 }
 
 @media (max-width: 40rem) {
+  .user-card__delete-mobile {
+    display: inline-flex; /* Show on mobile */
+  }
+
+  .user-card__delete-desktop {
+    display: none; /* Hide on mobile */
+  }
+
   mat-card-actions {
     flex-direction: column;
     align-items: stretch;

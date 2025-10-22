@@ -63,10 +63,21 @@
   <div class="comment-form__actions">
     <button
       appButton
+      variant="ghost"
+      type="button"
+      (click)="cancel()"
+      [disabled]="submitting()"
+      class="comment-form__cancel"
+    >
+      Cancel
+    </button>
+    <button
+      appButton
       variant="primary"
       type="submit"
       [disabled]="submitting()"
       [loading]="submitting()"
+      class="comment-form__submit"
     >
       {{ submitting() ? 'Publishing...' : 'Post comment' }}
     </button>

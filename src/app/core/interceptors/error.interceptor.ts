@@ -10,6 +10,7 @@ import { catchError, throwError, timer, retry } from 'rxjs';
 import { AuthService } from '../auth/auth-service/auth.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
+import { SKIP_GLOBAL_ERROR } from './http-context-tokens';
 
 const MAX_RATE_LIMIT_RETRIES = 1;
 
@@ -24,7 +25,7 @@ export const errorInterceptor: HttpInterceptorFn = (
   const router = inject(Router);
   const auth = inject(AuthService);
   const toast = inject(ToastService);
-  const skipGlobal = req.headers.has('X-Skip-Global-Error');
+  const skipGlobal = req.context.get(SKIP_GLOBAL_ERROR) || req.headers.has('X-Skip-Global-Error');
 
   return next(req).pipe(
     // Retry only on rate-limit using RxJS retry config

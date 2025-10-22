@@ -51,6 +51,12 @@ export class PostCardComponent implements AfterViewChecked {
   readonly commentUpdated = output<ModelComment>();
   readonly commentDeleted = output<number>();
 
+  // Compute count directly from comments array
+  get commentCount(): number {
+    const list = this.comments();
+    return Array.isArray(list) ? list.length : 0;
+  }
+
   isExpanded = false;
   private pendingCommentsReveal = false;
   // Which bottom section is currently open. Only one can be open at a time.
@@ -131,6 +137,13 @@ export class PostCardComponent implements AfterViewChecked {
 
   onInternalCommentDeleted(commentId: number): void {
     this.commentDeleted.emit(commentId);
+  }
+
+  onComposerCancelledFromChild(): void {
+    // Close any open bottom section (composer)
+    if (this.openSection === 'composer') {
+      this.openSection = 'none';
+    }
   }
 
   ngAfterViewChecked(): void {

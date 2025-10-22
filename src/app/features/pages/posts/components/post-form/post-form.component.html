@@ -1,32 +1,45 @@
-<section class="post-form">
-  <header class="post-form__header">
-    <h2 class="post-form__title">{{ dialogTitle() }}</h2>
-    <p class="post-form__subtitle">{{ dialogSubtitle() }}</p>
+<section class="form-dialog post-form">
+  <header class="form-dialog__header">
+    <h2 class="form-dialog__title">{{ dialogTitle() }}</h2>
+    <p class="form-dialog__subtitle">{{ dialogSubtitle() }}</p>
   </header>
 
   @if (loadingUsers() && !users().length) {
     <div class="post-form__loading">
-      <mat-progress-spinner mode="indeterminate" diameter="24" strokeWidth="3"></mat-progress-spinner>
+      <mat-progress-spinner
+        mode="indeterminate"
+        diameter="24"
+        strokeWidth="3"
+      ></mat-progress-spinner>
       <span>Loading authors list…</span>
     </div>
   }
 
   @if (loadError(); as error) {
-    <div class="post-form__error" role="alert">
-      <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
-      <span>{{ error }}</span>
-      <button
-        mat-button
-        type="button"
-        (click)="retryLoadUsers()"
-        [disabled]="loadingUsers()"
-      >
-        Retry
-      </button>
-    </div>
+    <app-alert variant="error" [dismissible]="false">
+      <div class="post-form__error-content">
+        <p>{{ error }}</p>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          (click)="retryLoadUsers()"
+          [disabled]="loadingUsers()"
+        >
+          Retry
+        </button>
+      </div>
+    </app-alert>
   }
 
-  <form class="post-form__body" [formGroup]="form" (ngSubmit)="submit()">
+  @if (submitError(); as error) {
+    <app-alert variant="error" [dismissible]="true" (dismissed)="submitError.set(null)">
+      {{ error }}
+    </app-alert>
+  }
+
+  <form class="form form-dialog__body" [formGroup]="form" (ngSubmit)="submit()">
     <mat-form-field
       class="post-form__field"
       appearance="outline"
@@ -100,29 +113,24 @@
       }
     </mat-form-field>
 
-    <div class="post-form__actions">
-      <button
-        mat-stroked-button
-        type="button"
-        (click)="cancel()"
-        [disabled]="submitting()"
-      >
+    <div class="form-actions form-dialog__actions">
+      <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
         Cancel
       </button>
       <button
-        mat-flat-button
-        color="primary"
+        appButton
+        variant="primary"
         type="submit"
+        [loading]="submitting()"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
         @if (submitting()) {
-          <mat-progress-spinner
-            mode="indeterminate"
-            diameter="18"
-            strokeWidth="2"
-          ></mat-progress-spinner>
+          Saving&hellip;
+        } @else if (isEdit()) {
+          Update
+        } @else {
+          Create
         }
-        <span>{{ submitting() ? 'Saving…' : submitLabel() }}</span>
       </button>
     </div>
   </form>

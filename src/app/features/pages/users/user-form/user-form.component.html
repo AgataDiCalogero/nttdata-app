@@ -9,6 +9,12 @@
     </h2>
   </header>
 
+  @if (loadError(); as error) {
+    <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
+      {{ error }}
+    </app-alert>
+  }
+
   <form
     class="form form-dialog__body user-form__form"
     [formGroup]="form"
@@ -24,7 +30,9 @@
         formControlName="name"
         placeholder="Enter full name"
         appAutoFocus
-        [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched ? 'true' : null"
+        [attr.aria-invalid]="
+          form.controls.name.invalid && form.controls.name.touched ? 'true' : null
+        "
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
         <app-alert variant="error" padding="compact">Please enter at least 2 characters.</app-alert>

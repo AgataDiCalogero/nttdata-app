@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 // Login page component for token-based authentication
 @Component({
@@ -47,6 +48,7 @@ export class Login {
   private readonly validator = inject(TokenValidationService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly overlays = inject(UiOverlayService);
+  private readonly toast = inject(ToastService);
 
   readonly loading = signal(false);
   private readonly apiErrorMessage = signal<string | null>(null);
@@ -140,10 +142,12 @@ export class Login {
             this.tokenControl.markAsTouched();
             this.tokenControl.markAsDirty();
             this.apiErrorMessage.set(message);
+            this.toast.show('error', message, 5000);
             return;
           }
 
           this.submissionMessage.set(message);
+          this.toast.show('error', message, 5000);
           return;
         }
 

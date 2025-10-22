@@ -1,121 +1,130 @@
 <section class="post-comments">
-  @if (!hideComposer()) {
-    <ng-container>
-      <app-comment-form
-        class="post-comments__composer"
-        [postId]="postId()"
-        placeholder="Write a comment..."
-        (created)="onCommentCreated($event)"
-      ></app-comment-form>
-    </ng-container>
-  }
+  <div class="post-comments__inner">
+    @if (!hideComposer()) {
+      <ng-container>
+        <app-comment-form
+          class="post-comments__composer"
+          [postId]="postId()"
+          placeholder="Write a comment..."
+          (created)="onCommentCreated($event)"
+          (cancelled)="onComposerCancelled()"
+        ></app-comment-form>
+      </ng-container>
+    }
 
-  <hr class="post-comments__divider" />
+    <hr class="post-comments__divider" />
 
-  @if (loading()) {
-    <app-loader [text]="'Loading comments...'"></app-loader>
-  } @else if (!comments || comments.length === 0) {
-    <app-alert variant="info">
-      <div class="post-comments-empty">
-        <p>Be the first to start the conversation.</p>
-      </div>
-    </app-alert>
-  } @else {
-    <div class="post-comments__list">
-      @for (comment of comments(); track trackByCommentId($index, comment)) {
-        <div class="post-comments__item">
-          <header class="post-comments__item-header">
-            <div class="post-comments__avatar" aria-hidden="true">
-              {{ comment.name.charAt(0).toUpperCase() }}
-            </div>
-            <div class="post-comments__meta">
-              <span class="post-comments__author">{{ comment.name || 'Anonymous' }}</span>
-              <span class="post-comments__email">{{ comment.email }}</span>
-            </div>
-            <div class="post-comments__item-actions">
-              @if (editingId() !== comment.id) {
-                <button
-                  appButton
-                  variant="ghost"
-                  size="sm"
-                  type="button"
-                  (click)="startEdit(comment)"
-                  aria-label="Edit comment from {{ comment.name }}"
-                >
-                  <lucide-icon [img]="Pencil"></lucide-icon>
-                  Edit
-                </button>
-                <button
-                  appButton
-                  variant="ghost"
-                  size="sm"
-                  type="button"
-                  (click)="deleteComment(comment)"
-                  [disabled]="deletingId() === comment.id"
-                  aria-label="Delete comment from {{ comment.name }}"
-                >
-                  <lucide-icon [img]="Trash2"></lucide-icon>
-                  Delete
-                </button>
-              } @else {
-                <button
-                  appButton
-                  variant="ghost"
-                  size="sm"
-                  type="button"
-                  (click)="cancelEdit()"
-                  aria-label="Cancel editing comment from {{ comment.name }}"
-                >
-                  <lucide-icon [img]="X"></lucide-icon>
-                  Cancel
-                </button>
-              }
-            </div>
-          </header>
-
-          <div class="post-comments__body">
-            @if (editingId() === comment.id) {
-              <form
-                class="post-comments__edit-form"
-                [formGroup]="editForm"
-                (ngSubmit)="saveEdit(comment)"
-              >
-                <textarea
-                  class="form-textarea"
-                  formControlName="body"
-                  rows="3"
-                  placeholder="Update your comment"
-                  [disabled]="submittingEdit()"
-                  [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
-                ></textarea>
-                <div class="post-comments__edit-actions">
+    @if (loading()) {
+      <app-loader [text]="'Loading comments...'"></app-loader>
+    } @else if ((comments()?.length ?? 0) === 0 && hideComposer()) {
+      <app-alert variant="info">
+        <div class="post-comments-empty">
+          <p>Be the first to start the conversation.</p>
+        </div>
+      </app-alert>
+    } @else if (hideComposer()) {
+      <div class="post-comments__list post-comments__scrollable">
+        @for (comment of comments(); track trackByCommentId($index, comment)) {
+          <div class="post-comments__item">
+            <header class="post-comments__item-header">
+              <div class="post-comments__avatar" aria-hidden="true">
+                {{ comment.name.charAt(0).toUpperCase() }}
+              </div>
+              <div class="post-comments__meta">
+                <span class="post-comments__author">{{ comment.name || 'Anonymous' }}</span>
+                <span class="post-comments__email">{{ comment.email }}</span>
+              </div>
+              <div class="post-comments__item-actions">
+                @if (editingId() !== comment.id) {
                   <button
                     appButton
-                    variant="primary"
+                    variant="ghost"
                     size="sm"
-                    type="submit"
-                    [loading]="submittingEdit()"
+                    type="button"
+                    (click)="startEdit(comment)"
+                    aria-label="Edit comment from {{ comment.name }}"
                   >
-                    Save
+                    <lucide-icon [img]="Pencil"></lucide-icon>
+                    Edit
                   </button>
-                  <button appButton variant="ghost" size="sm" type="button" (click)="cancelEdit()">
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    (click)="deleteComment(comment)"
+                    [disabled]="deletingId() === comment.id"
+                    aria-label="Delete comment from {{ comment.name }}"
+                  >
+                    <lucide-icon [img]="Trash2"></lucide-icon>
+                    Delete
+                  </button>
+                } @else {
+                  <button
+                    appButton
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    (click)="cancelEdit()"
+                    aria-label="Cancel editing comment from {{ comment.name }}"
+                  >
+                    <lucide-icon [img]="X"></lucide-icon>
                     Cancel
                   </button>
-                </div>
-                @if (editError()) {
-                  <app-alert variant="error" padding="compact">
-                    {{ editError() }}
-                  </app-alert>
                 }
-              </form>
-            } @else {
-              <p class="post-comments__text">
-                {{ comment.body }}
-              </p>
-            }
+              </div>
+            </header>
+
+            <div class="post-comments__body">
+              @if (editingId() === comment.id) {
+                <form
+                  class="post-comments__edit-form"
+                  [formGroup]="editForm"
+                  (ngSubmit)="saveEdit(comment)"
+                >
+                  <textarea
+                    class="form-textarea"
+                    formControlName="body"
+                    rows="3"
+                    placeholder="Update your comment"
+                    [disabled]="submittingEdit()"
+                    [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
+                  ></textarea>
+                  <div class="post-comments__edit-actions">
+                    <button
+                      appButton
+                      variant="primary"
+                      size="sm"
+                      type="submit"
+                      [loading]="submittingEdit()"
+                    >
+                      Save
+                    </button>
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      (click)="cancelEdit()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  @if (editError()) {
+                    <app-alert variant="error" padding="compact">
+                      {{ editError() }}
+                    </app-alert>
+                  }
+                </form>
+              } @else {
+                <p class="post-comments__text">
+                  {{ comment.body }}
+                </p>
+              }
+            </div>
           </div>
-        </div>
-      }
-    </div>
-  }
+        }
+      </div>
+    }
+  </div>
 </section>

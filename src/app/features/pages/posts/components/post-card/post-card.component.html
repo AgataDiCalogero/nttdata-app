@@ -2,7 +2,6 @@
   @let postModel = post();
   @let deleting = isDeleting();
   @let commentsList = comments();
-  @let commentCount = commentsList?.length ?? 0;
   @let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
 
   <div card-header class="posts-card__header">
@@ -72,17 +71,19 @@
 
   <div card-footer class="posts-card__footer">
     <div class="posts-card__comment-actions">
-      <button
-        appButton
-        variant="primary"
-        size="sm"
-        type="button"
-        class="posts-card__comment-compose"
-        (click)="openComposer()"
-        [attr.aria-pressed]="openSection === 'composer' ? 'true' : 'false'"
-      >
-        Post comment
-      </button>
+      @if (openSection !== 'composer') {
+        <button
+          appButton
+          variant="primary"
+          size="sm"
+          type="button"
+          class="posts-card__comment-compose"
+          (click)="openComposer()"
+        >
+          Post comment
+        </button>
+      }
+
       <button
         appButton
         variant="ghost"
@@ -94,9 +95,7 @@
       >
         <lucide-icon [img]="MessageSquare"></lucide-icon>
         {{ openSection === 'comments' ? 'Hide comments' : 'View comments' }}
-        @if (commentCount > 0) {
-          <span class="posts-card__comment-count">({{ commentCount }})</span>
-        }
+        <span class="posts-card__comment-count">({{ commentCount }})</span>
       </button>
     </div>
   </div>
@@ -113,6 +112,7 @@
         (commentCreated)="onInternalCommentCreated($event)"
         (commentUpdated)="onInternalCommentUpdated($event)"
         (commentDeleted)="onInternalCommentDeleted($event)"
+        (composerCancelled)="onComposerCancelledFromChild()"
       ></app-post-comments>
     </div>
   }

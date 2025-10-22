@@ -2,17 +2,20 @@
 
 .toast-container {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: var(--z-toast);
   pointer-events: none;
   display: block;
+  width: min(90vw, 26rem);
 }
 
 .toast-list {
   margin: 0;
   padding: 0;
   list-style: none;
+  width: 100%;
   @include mixins.flex-column(0.5rem);
 }
 
@@ -23,15 +26,14 @@
   box-shadow: var(--shadow-toast);
   color: var(--color-white);
   @include mixins.flex-row(var(--space-sm));
-  min-width: 17.5rem;
-  max-width: 25rem;
+  width: 100%;
   pointer-events: auto;
-  animation: toast-slide-in 0.3s ease-out;
+  animation: toast-drop-in 0.3s ease-out;
   outline: none;
   @include mixins.transition-group(all);
 
   &:hover {
-    transform: translateX(-0.25rem);
+    transform: translateY(-0.25rem);
     box-shadow: var(--shadow-toast-hover);
   }
 }
@@ -93,27 +95,26 @@
 }
 
 /* Animation */
-@keyframes toast-slide-in {
+@keyframes toast-drop-in {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateY(-1rem) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @include mixins.mobile {
   .toast-container {
-    right: 0.5rem;
-    left: 0.5rem;
-    bottom: 0.5rem;
+    top: 1rem;
+    width: calc(100% - 1rem);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .toast {
-    min-width: unset;
-    max-width: unset;
     width: 100%;
   }
 }

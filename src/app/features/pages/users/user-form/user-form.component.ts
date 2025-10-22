@@ -13,7 +13,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/models';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
@@ -37,7 +36,6 @@ export class UserForm {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(UsersApiService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly toast = inject(ToastService);
   private readonly dialogRef = inject(DialogRef<'success' | 'cancel'>);
   private readonly dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
 
@@ -131,8 +129,6 @@ export class UserForm {
 
     op$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
-        const msg = this.isEdit() ? 'User updated successfully' : 'User created successfully';
-        this.toast.show('success', msg);
         this.submitting.set(false);
 
         // Re-enable backdrop close
@@ -156,15 +152,12 @@ export class UserForm {
         if (status === 422) {
           // Validation error - likely email already exists
           this.emailError.set('Email already in use or invalid');
-          this.toast.show('error', 'Email already in use or invalid');
         } else if (status === 429) {
           // Rate limit
-          this.loadError.set('Please try again shortly');
-          this.toast.show('error', 'Too many requests. Please try again shortly.');
+          this.loadError.set('Too many requests. Please try again shortly.');
         } else {
           // Generic error
-          this.loadError.set('Save failed');
-          this.toast.show('error', 'An error occurred while saving. Please try again.');
+          this.loadError.set('An error occurred while saving. Please try again.');
         }
       },
     });

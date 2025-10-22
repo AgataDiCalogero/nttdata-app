@@ -37,7 +37,28 @@
 .comment-form__actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: calc(var(--space-sm) + 0.25rem); /* a bit more space between buttons */
   margin-top: var(--space-sm);
+
+  /* Ensure buttons have identical height */
+  > button {
+    /* Use a consistent min-height to match design tokens used elsewhere */
+    min-height: 2.5rem;
+    padding-inline: var(--space-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Make primary button visually identical height to ghost by stretching */
+  > .comment-form__submit {
+    height: 2.5rem;
+  }
+
+  > .comment-form__cancel {
+    height: 2.5rem;
+  }
 }
 
 .comment-form__scrollable {

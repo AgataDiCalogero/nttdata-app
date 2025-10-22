@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
+import { SKIP_GLOBAL_ERROR } from '../interceptors/http-context-tokens';
 
 export type TokenValidationErrorCode =
   | 'empty'
@@ -33,14 +34,17 @@ export class TokenValidationService {
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${normalized}`,
-      // Opt-out of global error handling in the error interceptor for this request
-      'X-Skip-Global-Error': '1',
     });
-    const params = new HttpParams().set('per_page', '1');
+    const context = new HttpContext().set(SKIP_GLOBAL_ERROR, true);
 
-    return this.http.get('/users', { headers, params, observe: 'response' }).pipe(
+    return this.http.post('/users', {}, { headers, context }).pipe(
       map(() => ({ success: true as const })),
-      catchError((error: unknown) => of(this.mapUiErrorToResult(mapHttpError(error)))),
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse && error.status === 422) {
+          return of({ success: true as const });
+        }
+        return of(this.mapUiErrorToResult(mapHttpError(error)));
+      }),
     );
   }
 

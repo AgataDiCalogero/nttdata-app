@@ -1,78 +1,43 @@
 @use '../../../../styles/mixins';
 
+@use '../../../../styles/mixins';
+
+/* Reuse form-dialog visual treatment (solid background, padding, shadow) */
 :host {
   display: block;
-  padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
-  max-width: 30rem;
 }
 
 .delete-confirm {
-  @include mixins.flex-column(var(--space-lg));
-  text-align: center;
-}
-
-.delete-confirm__icon {
-  display: grid;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  margin: 0 auto;
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.08);
-  color: var(--color-danger);
-
-  mat-icon {
-    font-size: 1.75rem;
-  }
-}
-
-.delete-confirm__title {
-  margin: 0;
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-on-surface);
-}
-
-.delete-confirm__message {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
-  line-height: 1.5;
-}
-
-.delete-confirm__status {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-sm);
-  align-items: center;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-lg);
-  background: var(--state-error-bg);
-  border: 1px solid var(--state-error-border);
-  font-size: var(--font-size-sm);
-  text-align: left;
-
-  mat-icon {
-    color: var(--color-danger);
-  }
+  display: block;
 }
 
 .delete-confirm__actions {
+  /* keep centered actions but match form-dialog spacing */
   display: flex;
   gap: var(--space-md);
   justify-content: center;
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--border-mix-60);
-
-  button[mat-flat-button] {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-  }
+  align-items: center;
 }
 
-@media (max-width: 30rem) {
+.delete-confirm__actions button {
+  min-width: 160px; /* same as form-dialog actions */
+}
+
+/* Ensure titles/subtitles are centered on small screens like Post/User forms */
+@media (max-width: 40rem) {
+  .form-dialog__header {
+    text-align: center;
+    align-items: center;
+  }
+
   .delete-confirm__actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+
+  .delete-confirm__actions button {
+    width: 100%;
+    min-width: auto;
   }
 }

@@ -33,6 +33,7 @@ export class CommentFormComponent {
   readonly postId = input.required<number>();
   readonly placeholder = input<string>('Share your thoughts...');
   readonly created = output<Comment>();
+  readonly cancelled = output<void>();
 
   readonly submitting = signal(false);
   readonly submitError = signal<string | null>(null);
@@ -88,5 +89,12 @@ export class CommentFormComponent {
           this.submitting.set(false);
         },
       });
+  }
+
+  cancel(): void {
+    // reset local state and notify parent that composer should close
+    this.form.reset();
+    this.submitError.set(null);
+    this.cancelled.emit();
   }
 }

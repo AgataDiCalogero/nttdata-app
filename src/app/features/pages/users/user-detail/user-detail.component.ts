@@ -5,7 +5,7 @@ import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import type { User, Post, Comment } from '@/app/shared/models';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
-import { ButtonComponent } from '@/app/shared/ui/button/button.component';
+import { ButtonComponent, StatusBadgeComponent } from '@/app/shared/ui';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
 import {
@@ -27,6 +27,7 @@ import {
     LoaderComponent,
     PostCardComponent,
     LucideAngularModule,
+    StatusBadgeComponent,
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
