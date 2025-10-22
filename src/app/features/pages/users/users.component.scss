@@ -1,7 +1,10 @@
 @use '../../../../styles/mixins' as *;
 
 .users-header {
-  @include flex-row(var(--space-lg), flex-start, space-between);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
   flex-wrap: nowrap;
   margin-bottom: var(--space-lg);
   gap: var(--space-md);
@@ -12,12 +15,16 @@
     gap: var(--space-sm);
     flex: 1 1 auto;
     min-width: 0; /* allow children to shrink and avoid overflow */
+    /* ensure left column starts at container x */
+    margin-inline-start: 0;
   }
 
   &__right {
     display: flex;
     align-items: center;
     flex: 0 0 auto; /* keep right column fixed size */
+    /* keep right column aligned to container end */
+    margin-inline-end: 0;
   }
 
   h1 {
@@ -54,8 +61,15 @@
     align-items: stretch;
     gap: var(--space-md);
 
+    /* on small screens, make the button aligned to the right inside the container */
     &__right {
-      align-self: flex-end;
+      align-self: stretch;
+      display: flex;
+      justify-content: flex-end;
+
+      .new-user {
+        width: auto; /* keep button intrinsic size but aligned right */
+      }
     }
   }
 }
@@ -122,4 +136,36 @@
     gap: var(--space-sm);
     text-align: center;
   }
+}
+
+/* Page container: mobile-first gutters that match the navbar spacing tokens */
+.page-container {
+  box-sizing: border-box;
+  padding-inline: var(--layout-gutter);
+  width: 100%;
+  margin-inline: auto;
+
+  /* limit content width on large screens while keeping same x coordinates */
+  @media (min-width: 72rem) {
+    max-width: 72rem; /* keeps content readable on very wide screens */
+    padding-inline: var(--layout-gutter); /* keep same gutter token */
+  }
+}
+
+/* ensure main blocks align to the container edges */
+.page-container > * {
+  width: 100%;
+}
+
+/* User list / cards area: make sure cards respect container padding and align */
+.users-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+/* Example: if app-user-list uses internal grid/cards, ensure they don't overflow */
+.users-list-wrapper app-user-list {
+  width: 100%;
 }

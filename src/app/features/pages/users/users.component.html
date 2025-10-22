@@ -3,26 +3,32 @@
   <router-outlet></router-outlet>
 } @else {
   <!-- Show users list -->
-  <header class="users-header">
-    <div class="users-header__left">
-      <h1>Users</h1>
-      <p class="users-subtitle">Manage and view all registered users</p>
+  <!-- page-container allinea il contenuto con la navbar usando le stesse gutter variables -->
+  <div class="page-container">
+    <header class="users-header">
+      <div class="users-header__left">
+        <h1>Users</h1>
+        <p class="users-subtitle">Manage and view all registered users</p>
 
-      <div class="users-search">
-        <app-user-filters [showCreate]="false" (searchChange)="onSearch($event)"></app-user-filters>
+        <div class="users-search">
+          <app-user-filters
+            [showCreate]="false"
+            (searchChange)="onSearch($event)"
+          ></app-user-filters>
+        </div>
       </div>
-    </div>
 
-    <div class="users-header__right">
-      <button appButton variant="primary" class="btn new-user" (click)="openNewUserModal()">
-        <span class="btn__icon"
-          ><!-- plus icon -->
-          <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
-        </span>
-        <span class="btn__label">New User</span>
-      </button>
-    </div>
-  </header>
+      <div class="users-header__right">
+        <button appButton variant="primary" class="btn new-user" (click)="openNewUserModal()">
+          <span class="btn__icon"
+            ><!-- plus icon -->
+            <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
+          </span>
+          <span class="btn__label">New User</span>
+        </button>
+      </div>
+    </header>
+  </div>
   @if (displayed(); as data) {
     @if (loading()) {
       <div class="users-skeleton">
@@ -44,7 +50,7 @@
         </app-alert>
       } @else {
         @if (data.total > 0) {
-          <div>
+          <div class="users-list-wrapper">
             <app-user-list
               [items]="data.items"
               (view)="goToDetail($event)"
@@ -74,9 +80,11 @@
             </div>
           </div>
         } @else {
-          <div class="users-empty">
-            <p>No users found.</p>
-            <a appButton variant="primary" routerLink="/users/new">Create first user</a>
+          <div class="users-list-wrapper">
+            <div class="users-empty">
+              <p>No users found.</p>
+              <a appButton variant="primary" routerLink="/users/new">Create first user</a>
+            </div>
           </div>
         }
       }
