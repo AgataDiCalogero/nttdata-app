@@ -57,7 +57,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    padding-inline: var(--space-sm);
+    /* align horizontal inset with actions so avatar lines up with View button */
+    padding-inline: var(--space-md);
     padding-block-end: var(--space-sm);
   }
 
@@ -175,7 +176,8 @@
     gap: var(--space-sm);
     margin: 0;
     padding-bottom: var(--space-md);
-    padding-inline: var(--space-sm);
+    /* align meta left edge with actions column start */
+    padding-inline: var(--space-md);
     border-bottom: 0.0625rem solid var(--border-mix-60);
   }
 
@@ -244,9 +246,9 @@
   &__actions {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-sm);
+    gap: var(--space-md); /* more space between buttons */
     padding-top: var(--space-sm);
-    padding-inline: var(--space-sm);
+    padding-inline: var(--space-md); /* space between buttons and card edge */
 
     /* base button layout (mobile-first) */
     button[appButton] {
@@ -254,16 +256,16 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: var(--space-md); /* larger gap between icon and text for clarity */
+      gap: var(--space-sm); /* icon/text gap */
       padding-inline: clamp(var(--space-sm), 1.6vw, var(--space-lg));
       border-radius: var(--radius-md);
       line-height: 1; /* ensure consistent inline sizing for em-based icons */
 
       lucide-icon {
         /* slightly smaller than text and vertically centered */
-        width: 0.95em;
-        height: 0.95em;
-        flex: 0 0 0.95em;
+        width: 0.9em;
+        height: 0.9em;
+        flex: 0 0 0.9em;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -271,7 +273,7 @@
 
         svg {
           width: auto;
-          height: 0.85em;
+          height: 0.8em;
           stroke: currentColor !important;
           fill: currentColor !important;
           display: block;
@@ -285,7 +287,7 @@
       padding-inline: var(--space-xxs, 0.25rem);
       border: 0.125rem solid var(--color-danger);
       color: var(--color-danger);
-      background: transparent;
+      background: color-mix(in srgb, var(--color-danger) 10%, transparent);
       justify-self: end;
       align-self: center;
       box-shadow: none;
@@ -306,27 +308,52 @@
       }
       /* center the icon with no extra gap */
       gap: 0;
+
+      lucide-icon {
+        color: var(--color-danger);
+      }
     }
 
     /* Primary/ghost action (View): subtle surface ghost, centered label */
     /* View (ghost) should have an outline the color of the text */
     button[variant='ghost'] {
-      background: transparent;
-      color: var(--color-on-surface);
-      border: 0.0625rem solid currentColor;
+      /* View: use inspector color for background and white text/icon */
+      background: #334155;
+      color: var(--color-white);
+      border: 0.0625rem solid rgba(255, 255, 255, 0.06);
       padding-inline: var(--space-md);
       font-weight: 600;
+
+      lucide-icon {
+        color: currentColor;
+      }
+
+      &:hover,
+      &:focus {
+        background: color-mix(in srgb, #000 8%, #334155);
+        transform: translateY(-0.0625rem);
+      }
     }
 
     /* Edit (outline): prominent accent outline with thicker border and accent color */
     button[variant='outline'] {
-      border: 0.125rem solid var(--color-accent);
-      color: var(--color-accent);
-      background: transparent;
+      /* Edit: use same inspector color but with stronger outline */
+      border: 0.125rem solid rgba(255, 255, 255, 0.1);
+      color: var(--color-white);
+      background: #334155;
       box-shadow: none;
       font-weight: 700;
       padding-inline: var(--space-md);
       border-radius: var(--radius-lg);
+
+      lucide-icon {
+        color: currentColor;
+      }
+
+      &:hover,
+      &:focus {
+        background: color-mix(in srgb, #000 10%, #334155);
+      }
     }
   }
 }

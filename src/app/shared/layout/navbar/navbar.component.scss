@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: row;
     gap: var(--space-sm);
+    align-items: center; /* ensure logo and text are vertically centered */
     color: inherit;
     text-decoration: none;
 

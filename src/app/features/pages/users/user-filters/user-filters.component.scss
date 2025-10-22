@@ -4,32 +4,46 @@
   align-items: center;
   flex: 1 1 auto;
   min-width: 0; /* allow flex children to shrink properly */
+  width: 100%;
 }
 
 .users-search__wrap {
   position: relative;
+  /* align the left edge of the search wrapper with card content */
+  padding-inline-start: var(--space-md);
   flex: 1 1 100%;
   min-width: 0;
+  max-width: 100%;
 }
 
 .users-search__icon {
   position: absolute;
-  left: var(--space-md);
+  left: calc(var(--space-md) + 0.5rem);
   top: 50%;
   transform: translateY(-50%);
-  width: 16px; /* slightly smaller */
-  height: 16px;
+  width: 0.95rem;
+  height: 0.95rem;
   color: var(--color-muted);
   pointer-events: none;
+
+  svg {
+    display: block;
+    width: 0.95rem;
+    height: 0.95rem;
+    stroke: currentColor !important;
+    fill: none !important;
+  }
 }
 
 .users-search {
   width: 100%;
   min-width: 0;
-  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 26px); /* more room between icon and text */
+  /* left padding to make room for icon inside the input */
+  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 1.5rem);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);
   background: var(--color-surface);
+  margin-bottom: var(--space-lg); /* extra spacing under the search so cards don't feel squashed */
 }
 
 @media (max-width: 640px) {

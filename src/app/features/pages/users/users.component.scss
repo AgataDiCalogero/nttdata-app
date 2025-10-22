@@ -3,7 +3,7 @@
 .users-header {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center; /* center vertically so right button sits between title and subtitle */
   justify-content: space-between;
   flex-wrap: nowrap;
   margin-bottom: var(--space-lg);
@@ -12,10 +12,9 @@
   &__left {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: 0; /* title and subtitle spacing handled inside title-block */
     flex: 1 1 auto;
     min-width: 0; /* allow children to shrink and avoid overflow */
-    /* ensure left column starts at container x */
     margin-inline-start: 0;
   }
 
@@ -33,6 +32,13 @@
     font-weight: 800;
   }
 
+  .users-header__title-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center between title/subtitle baseline */
+    gap: var(--space-xxs);
+  }
+
   .users-subtitle {
     margin: 0;
     color: var(--color-muted);
@@ -40,7 +46,7 @@
   }
 
   .users-search {
-    margin-top: var(--space-md);
+    margin-top: calc(var(--space-md) + 0.25rem);
     max-width: 100%;
     width: 100%;
     min-width: 0;
@@ -61,15 +67,14 @@
     align-items: stretch;
     gap: var(--space-md);
 
-    /* on small screens, make the button aligned to the right inside the container */
-    &__right {
-      align-self: stretch;
-      display: flex;
-      justify-content: flex-end;
+    /* stack search and center button on small screens */
+    .users-search {
+      order: 2;
+    }
 
-      .new-user {
-        width: auto; /* keep button intrinsic size but aligned right */
-      }
+    &__right {
+      order: 1;
+      align-self: flex-end;
     }
   }
 }

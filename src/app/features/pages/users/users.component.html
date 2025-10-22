@@ -7,27 +7,24 @@
   <div class="page-container users-page">
     <header class="users-header">
       <div class="users-header__left">
-        <h1>Users</h1>
-        <p class="users-subtitle">Manage and view all registered users</p>
-
-        <div class="users-search">
-          <app-user-filters
-            [showCreate]="false"
-            (searchChange)="onSearch($event)"
-          ></app-user-filters>
+        <div class="users-header__title-block">
+          <h1>Users</h1>
+          <p class="users-subtitle">Manage and view all registered users</p>
         </div>
       </div>
 
       <div class="users-header__right">
         <button appButton variant="primary" class="btn new-user" (click)="openNewUserModal()">
-          <span class="btn__icon"
-            ><!-- plus icon -->
-            <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
-          </span>
+          <span class="btn__icon"><lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon></span>
           <span class="btn__label">New User</span>
         </button>
       </div>
     </header>
+
+    <!-- search sits below the header so the New User button vertically centers between title and subtitle -->
+    <div class="users-search">
+      <app-user-filters [showCreate]="false" (searchChange)="onSearch($event)"></app-user-filters>
+    </div>
   </div>
   @if (displayed(); as data) {
     @if (loading()) {
