@@ -1,50 +1,67 @@
 <section class="post-form">
   <header class="post-form__header">
-    <h2>{{ dialogTitle() }}</h2>
-    <p>{{ dialogSubtitle() }}</p>
+    <h2 class="post-form__title">{{ dialogTitle() }}</h2>
+    <p class="post-form__subtitle">{{ dialogSubtitle() }}</p>
   </header>
 
   @if (loadingUsers() && !users().length) {
-    <app-loader [text]="'Loading authors list...'"></app-loader>
-  }
-
-  @if (loadError()) {
-    <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
-      <div class="post-form__alert">
-        <p>{{ loadError() }}</p>
-        <div class="post-form__alert-cta">
-          <button
-            appButton
-            variant="ghost"
-            type="button"
-            (click)="retryLoadUsers()"
-            [disabled]="loadingUsers()"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    </app-alert>
-  }
-
-  <form class="form post-form__body" [formGroup]="form" (ngSubmit)="submit()">
-    <div class="form-field">
-      <label class="form-label" for="post-user">Author</label>
-      <app-select
-        id="post-user"
-        [control]="form.controls.userId"
-        [options]="userOptions()"
-        [disabled]="submitting() || loadingUsers() || !users().length"
-      ></app-select>
-      @if (userIdInvalid) {
-        <app-alert variant="error" padding="compact">Please select a valid author.</app-alert>
-      }
+    <div class="post-form__loading">
+      <mat-progress-spinner mode="indeterminate" diameter="24" strokeWidth="3"></mat-progress-spinner>
+      <span>Loading authors list…</span>
     </div>
+  }
 
-    <div class="form-field">
-      <label class="form-label" for="post-title">Title</label>
+  @if (loadError(); as error) {
+    <div class="post-form__error" role="alert">
+      <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
+      <span>{{ error }}</span>
+      <button
+        mat-button
+        type="button"
+        (click)="retryLoadUsers()"
+        [disabled]="loadingUsers()"
+      >
+        Retry
+      </button>
+    </div>
+  }
+
+  <form class="post-form__body" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field
+      class="post-form__field"
+      appearance="outline"
+      color="accent"
+      [floatLabel]="'always'"
+    >
+      <mat-label>Author</mat-label>
+      <mat-select
+        id="post-user"
+        formControlName="userId"
+        [disabled]="submitting() || loadingUsers() || !users().length"
+        [attr.aria-invalid]="userIdInvalid ? 'true' : null"
+      >
+        <mat-option [value]="0" disabled>Select author</mat-option>
+        @for (option of userOptions(); track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+      @if (loadingUsers()) {
+        <mat-hint>Refreshing authors…</mat-hint>
+      }
+      @if (userIdInvalid) {
+        <mat-error>Please select a valid author.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field
+      class="post-form__field"
+      appearance="outline"
+      color="accent"
+      [floatLabel]="'always'"
+    >
+      <mat-label>Title</mat-label>
       <input
-        class="form-input"
+        matInput
         id="post-title"
         type="text"
         formControlName="title"
@@ -54,17 +71,21 @@
         [attr.aria-invalid]="titleInvalid ? 'true' : null"
         maxlength="120"
       />
+      <mat-hint align="end">{{ form.controls.title.value.length }}/120</mat-hint>
       @if (titleInvalid) {
-        <app-alert variant="error" padding="compact"
-          >Title must be at least 5 characters long.</app-alert
-        >
+        <mat-error>Title must be at least 5 characters long.</mat-error>
       }
-    </div>
+    </mat-form-field>
 
-    <div class="form-field">
-      <label class="form-label" for="post-body">Content</label>
+    <mat-form-field
+      class="post-form__field post-form__field--textarea"
+      appearance="outline"
+      color="accent"
+      [floatLabel]="'always'"
+    >
+      <mat-label>Content</mat-label>
       <textarea
-        class="form-textarea"
+        matInput
         id="post-body"
         formControlName="body"
         rows="8"
@@ -73,28 +94,35 @@
         [attr.aria-invalid]="bodyInvalid ? 'true' : null"
         maxlength="500"
       ></textarea>
-      <div class="field-hint">
-        <span>{{ (form.controls.body.value || '').length }}/500</span>
-        @if (bodyInvalid) {
-          <app-alert variant="error" padding="compact"
-            >Please describe the post with at least 20 characters.</app-alert
-          >
-        }
-      </div>
-    </div>
+      <mat-hint align="end">{{ form.controls.body.value.length }}/500</mat-hint>
+      @if (bodyInvalid) {
+        <mat-error>Please describe the post with at least 20 characters.</mat-error>
+      }
+    </mat-form-field>
 
     <div class="post-form__actions">
-      <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="cancel()"
+        [disabled]="submitting()"
+      >
         Cancel
       </button>
       <button
-        appButton
-        variant="primary"
+        mat-flat-button
+        color="primary"
         type="submit"
-        [loading]="submitting()"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
-        {{ submitting() ? 'Saving...' : submitLabel() }}
+        @if (submitting()) {
+          <mat-progress-spinner
+            mode="indeterminate"
+            diameter="18"
+            strokeWidth="2"
+          ></mat-progress-spinner>
+        }
+        <span>{{ submitting() ? 'Saving…' : submitLabel() }}</span>
       </button>
     </div>
   </form>

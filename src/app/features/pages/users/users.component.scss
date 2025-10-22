@@ -1,221 +1,114 @@
 @use '../../../../styles/mixins' as *;
 
-.users-header {
+.users-page {
   display: flex;
-  flex-direction: row;
-  align-items: center; /* center vertically so right button sits between title and subtitle */
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  margin-bottom: var(--space-lg);
-  gap: var(--space-md);
+  justify-content: center;
+}
 
-  &__left {
-    display: flex;
-    flex-direction: column;
-    gap: 0; /* title and subtitle spacing handled inside title-block */
-    flex: 1 1 auto;
-    min-width: 0; /* allow children to shrink and avoid overflow */
-    margin-inline-start: 0;
-  }
+.users-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  width: 100%;
+}
 
-  &__right {
-    display: flex;
-    align-items: center;
-    flex: 0 0 auto; /* keep right column fixed size */
-    /* keep right column aligned to container end */
-    margin-inline-end: 0;
-  }
+.users-header {
+  align-items: center;
+  gap: var(--space-lg);
 
-  h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 800;
-  }
-
-  .users-header__title-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* center between title/subtitle baseline */
-    gap: var(--space-xxs);
-  }
-
-  .users-subtitle {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 0.95rem;
-  }
-
-  .users-search {
-    margin-top: calc(var(--space-md) + 0.25rem);
-    max-width: 100%;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .new-user {
+  button[mat-flat-button] {
     display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
-    padding: 0.625rem 1.125rem;
-    border-radius: var(--radius-lg);
-    white-space: nowrap;
-  }
-
-  /* Small screens: stack header so search is full width above the button */
-  @media (max-width: 42.5rem) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-md);
-
-    /* stack search and center button on small screens */
-    .users-search {
-      order: 2;
-    }
-
-    &__right {
-      order: 1;
-      align-self: flex-end;
-    }
+    text-transform: none;
+    font-weight: var(--font-weight-semibold);
   }
 }
 
-/* (users-page header tightening is merged into the main users-page block below) */
+.users-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-md);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
 
-.users-skeleton {
+.users-error mat-card-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  align-items: flex-start;
 
-  &__row {
-    height: 4.5rem;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(
-      90deg,
-      var(--skeleton-tint-02),
-      var(--skeleton-tint-04),
-      var(--skeleton-tint-02)
-    );
-    animation: shimmer 1.5s infinite;
+  .users-error__content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    mat-icon {
+      color: var(--color-danger);
+    }
+
+    p {
+      margin: 0;
+    }
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -12.5rem 0;
-  }
-  100% {
-    background-position: calc(12.5rem + 100%) 0;
-  }
-}
-
-.users-error,
-.users-empty {
-  @include flex-column(var(--space-sm));
-  padding: var(--space-lg);
-  border-radius: var(--radius-xl);
-  border: 0.0625rem solid var(--border-mix-60);
-  background: var(--color-surface);
-  text-align: center;
+.users-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
 }
 
 .users-pagination {
-  @include flex-row(var(--space-sm), center, space-between);
-  margin-top: var(--space-xl);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  align-items: center;
   flex-wrap: wrap;
 
-  span {
-    font-weight: 600;
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    text-transform: none;
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__info {
+    font-weight: var(--font-weight-semibold);
   }
 }
 
-@include mobile {
+.users-empty mat-card-content {
+  display: grid;
+  gap: var(--space-md);
+  justify-items: center;
+  text-align: center;
+
+  mat-icon {
+    font-size: 2rem;
+    color: var(--color-muted);
+  }
+
+  button {
+    text-transform: none;
+  }
+}
+
+@media (max-width: 48rem) {
   .users-header {
-    @include flex-column(var(--space-md));
+    flex-direction: column;
     align-items: stretch;
 
-    h1 {
-      text-align: center;
+    button[mat-flat-button] {
+      align-self: stretch;
+      justify-content: center;
     }
   }
 
   .users-pagination {
     flex-direction: column;
     gap: var(--space-sm);
-    text-align: center;
   }
-}
-
-/* Page container: mobile-first gutters that match the navbar spacing tokens */
-.page-container {
-  box-sizing: border-box;
-  padding-inline: var(--layout-gutter);
-  width: 100%;
-  margin-inline: auto;
-
-  /* limit content width on large screens while keeping same x coordinates */
-  @media (min-width: 72rem) {
-    max-width: 72rem; /* keeps content readable on very wide screens */
-    padding-inline: var(--layout-gutter); /* keep same gutter token */
-  }
-}
-
-/* Users page specific: make the page container fluid between navbar brand and controls so
-   the users header and cards align exactly with the logo and logout button on the navbar.
-   This keeps other pages unaffected. */
-.page-container.users-page {
-  /* remove the large-screen max width so the content can stretch across the
-     full available area while still respecting the same gutter tokens */
-  max-width: none;
-  width: 100%;
-  padding-inline-start: var(--layout-gutter);
-  padding-inline-end: var(--layout-gutter);
-
-  @include desktop {
-    /* on very wide screens, keep the content spanning full width but allow
-       a comfortable inner padding via the existing gutter token */
-    padding-inline: var(--layout-gutter);
-  }
-
-  /* Tighten header spacing so it matches the navbar brand/logout edges precisely */
-  .users-header {
-    /* allow the header to expand full width but keep the internal content
-       aligned exactly with the navbar's logo and controls by removing extra
-       outer gaps and relying on the container gutter */
-    margin-bottom: var(--space-lg);
-    gap: var(--space-md);
-
-    &__left {
-      padding-inline-end: var(--space-lg); /* prevent search/button from hugging edge */
-    }
-
-    &__right {
-      display: flex;
-      align-items: center;
-      padding-inline-start: var(--space-lg);
-    }
-  }
-}
-
-/* Make users list respect the container gutters and avoid extra horizontal padding */
-.page-container.users-page .users-list-wrapper {
-  padding-inline: 0;
-  width: 100%;
-}
-
-/* ensure main blocks align to the container edges */
-.page-container > * {
-  width: 100%;
-}
-
-/* User list / cards area: make sure cards respect container padding and align */
-.users-list-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  width: 100%;
-}
-
-/* Example: if app-user-list uses internal grid/cards, ensure they don't overflow */
-.users-list-wrapper app-user-list {
-  width: 100%;
 }

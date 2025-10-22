@@ -1,5 +1,19 @@
-<header class="app-navbar">
-  <div class="brand">
+<mat-toolbar class="app-navbar" color="primary">
+  @if (isLogged()) {
+    <button
+      mat-icon-button
+      class="menu-trigger"
+      type="button"
+      aria-label="Apri navigazione"
+      [matMenuTriggerFor]="navMenu"
+      (menuOpened)="onMenuOpened()"
+      (menuClosed)="onMenuClosed()"
+    >
+      <mat-icon svgIcon="lucide:menu" aria-hidden="true"></mat-icon>
+    </button>
+  }
+
+  <a class="brand" routerLink="/" (click)="closeMenu()">
     <img
       ngSrc="assets/logo.svg"
       alt="NTT Data"
@@ -8,71 +22,71 @@
       height="40"
       priority
     />
-    <h1>NTT Data App</h1>
-  </div>
-  <div class="nav-wrapper">
-    <nav id="main-nav" role="navigation" aria-label="Main navigation">
-      @if (!isLogged() && !isLoginRoute()) {
-        <a routerLink="/login" (click)="closeMenu()">Login</a>
-      }
-      @if (isLogged()) {
-        <a
-          routerLink="/users"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMenu()"
-          >Users</a
-        >
-        <a
-          routerLink="/posts"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMenu()"
-          >Posts</a
-        >
-      }
-    </nav>
-  </div>
-  <!-- Mobile menu toggle -->
-  @if (isLogged()) {
-    <button
-      class="menu-toggle"
-      [attr.aria-expanded]="menuOpen()"
-      aria-controls="main-nav"
-      aria-label="Toggle navigation"
-      (click)="toggleMenu()"
-    >
-      <span class="menu-icon" aria-hidden="true"></span>
-    </button>
-  }
+    <span class="brand__label">NTT Data App</span>
+  </a>
 
-  <!-- overlay shown when mobile menu is open -->
-  @if (menuOpen()) {
-    <div
-      class="mobile-overlay"
-      (click)="closeMenu()"
-      aria-hidden="true"
-      tabindex="-1"
-    ></div>
-  }
+  <span class="spacer" aria-hidden="true"></span>
+
+  <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
+    @if (!isLogged() && !isLoginRoute()) {
+      <a mat-button routerLink="/login" (click)="closeMenu()">Login</a>
+    }
+    @if (isLogged()) {
+      <a
+        mat-button
+        routerLink="/users"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMenu()"
+      >
+        <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+        <span>Users</span>
+      </a>
+      <a
+        mat-button
+        routerLink="/posts"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMenu()"
+      >
+        <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+        <span>Posts</span>
+      </a>
+    }
+  </nav>
+
   <div class="controls">
-    <div class="controls__group">
-      <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
-    </div>
-    <!-- Show logout when user is authenticated: visible, with icon + text -->
+    <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
+
     @if (isLogged()) {
       <button
+        mat-flat-button
+        color="accent"
         type="button"
-        appButton
-        variant="secondary"
-        size="sm"
         class="logout-btn"
         (click)="logout()"
-        aria-label="Logout"
       >
-        <lucide-icon [img]="LogOut" aria-hidden="true"></lucide-icon>
+        <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
         <span class="logout-text">Logout</span>
       </button>
     }
   </div>
-</header>
+</mat-toolbar>
+
+<mat-menu #navMenu="matMenu" class="nav-menu">
+  @if (!isLogged() && !isLoginRoute()) {
+    <button mat-menu-item routerLink="/login" (click)="closeMenu()">
+      Login
+    </button>
+  }
+  @if (isLogged()) {
+    <button mat-menu-item routerLink="/users" (click)="closeMenu()">
+      <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+      <span>Users</span>
+    </button>
+    <button mat-menu-item routerLink="/posts" (click)="closeMenu()">
+      <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+      <span>Posts</span>
+    </button>
+  }
+</mat-menu>

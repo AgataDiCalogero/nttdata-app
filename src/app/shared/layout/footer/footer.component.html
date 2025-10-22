@@ -1,13 +1,25 @@
-<footer class="app-footer">
-  <div class="app-footer__inner">
+<footer class="app-footer" data-app-section="true">
+  <mat-divider class="app-footer__divider"></mat-divider>
+  <div class="app-footer__inner app-container app-container--wide">
+    <p class="app-footer__meta">
+      <mat-icon svgIcon="lucide:sun" aria-hidden="true"></mat-icon>
+      <span>
+        Built by
+        <span class="app-footer__author">Agata Di Calogero</span>
+        &ndash; Start2Impact project for NTT Data
+      </span>
+    </p>
+
     <a
+      mat-stroked-button
+      color="accent"
       class="app-footer__link"
       href="https://agatadicalogero.netlify.app/"
       target="_blank"
       rel="noopener noreferrer"
     >
-      Built by <span class="app-footer__author">Agata Di Calogero</span> — Start2Impact project for
-      NTT Data
+      <span>Portfolio</span>
+      <mat-icon svgIcon="lucide:external-link" aria-hidden="true"></mat-icon>
     </a>
   </div>
 </footer>

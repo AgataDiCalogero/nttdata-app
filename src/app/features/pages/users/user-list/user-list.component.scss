@@ -1,377 +1,100 @@
 @use '../../../../../styles/mixins' as *;
 
 .user-list {
-  /* flexbox responsive list so cards align between navbar brand and controls
-    and keep consistent lateral spacing (gap) to prevent hover overlap */
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-lg); /* increase gap for more air */
-  align-items: stretch;
-
-  /* mobile: single column, cards take full width */
-  > * {
-    box-sizing: border-box;
-    flex: 0 0 100%;
-    max-width: 100%;
-    padding-inline: 0; /* padding handled by container gutter */
-    padding-block: var(--space-md); /* add vertical breathing between rows inside each column */
-  }
-
-  /* tablet: two columns - account for horizontal gap */
-  @include tablet {
-    > * {
-      flex: 0 0 calc((100% - var(--space-lg)) / 2);
-      max-width: calc((100% - var(--space-lg)) / 2);
-      padding-block: var(--space-md);
-    }
-  }
-
-  /* desktop: three columns */
-  @include desktop {
-    > * {
-      flex: 0 0 calc((100% - 2 * var(--space-lg)) / 3);
-      max-width: calc((100% - 2 * var(--space-lg)) / 3);
-      padding-block: var(--space-md);
-    }
-  }
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
 }
 
 .user-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  /* increase internal padding for a more airy card */
-  padding: clamp(var(--space-xl), 4vw, calc(var(--space-xxl) + 0.5rem));
-  background: var(--color-surface-solid);
-  border: 0.0625rem solid var(--color-border);
+  gap: var(--space-md);
+  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  @include transition-group((transform, box-shadow));
+  border: 1px solid color-mix(in srgb, var(--border-accent-soft) 60%, transparent);
+  box-shadow: var(--shadow-md);
 
   &:hover {
-    transform: translateY(-0.125rem);
-    box-shadow: var(--shadow-md);
-  }
-
-  &__identity {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    /* align horizontal inset with actions so avatar lines up with View button */
-    padding-inline: var(--space-md);
-    padding-block-end: var(--space-sm);
-  }
-
-  &__avatar {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: var(--radius-lg);
-    background: var(--gradient-primary);
-    color: var(--color-on-accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.125rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    box-shadow: var(--shadow-accent-soft);
-  }
-
-  &__identity-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    min-width: 0;
-  }
-
-  &__name {
-    margin: 0;
-    font-size: 1.1875rem;
-    font-weight: 600;
-    color: var(--color-on-surface);
-    line-height: 1.3;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__status {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs); /* controlled gap between icon and text */
-    padding-inline: 0.35rem; /* slightly increased horizontal padding */
-    align-self: flex-start; /* don't stretch: make pill only as wide as its content */
-    width: auto; /* ensure automatic shrink-to-fit width */
-    padding-block: 0; /* vertical centering controlled via height/line-height */
-    border-radius: var(--radius-full);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    text-transform: capitalize;
-    vertical-align: middle;
-    box-sizing: border-box;
-    height: 1.6rem; /* fixed height so all pills match */
-    line-height: 1.6rem; /* vertically center text */
-
-    /* icon area: single-color glyph, no white fill/background */
-    lucide-icon {
-      width: 1rem;
-      height: 1rem;
-      flex: 0 0 1rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: transparent;
-      color: inherit; /* color set in modifiers (active/inactive) */
-
-      svg {
-        stroke: currentColor !important;
-        fill: currentColor !important;
-        width: 0.9rem;
-        height: 0.9rem;
-        display: block;
-      }
-    }
-
-    &--active {
-      background: var(--badge-active-bg, rgba(16, 185, 129, 0.07));
-      color: var(--color-success-text-dark, var(--color-success));
-      border: 0.0625rem solid var(--badge-active-border, rgba(16, 185, 129, 0.28));
-
-      /* the small icon is monocolor (green glyph) */
-      lucide-icon {
-        background: transparent;
-        color: var(--color-success);
-        width: 1rem;
-        height: 1rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-      }
-    }
-
-    &--inactive {
-      background: var(--badge-inactive-bg, rgba(239, 68, 68, 0.06));
-      color: var(--color-danger);
-      border: 0.0625rem solid var(--badge-inactive-border, rgba(239, 68, 68, 0.18));
-
-      /* the small icon is monocolor (red glyph) */
-      lucide-icon {
-        background: transparent;
-        color: var(--color-danger);
-        width: 1rem;
-        height: 1rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-      }
-    }
-  }
-
-  &__meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    margin: 0;
-    padding-bottom: var(--space-md);
-    /* align meta left edge with actions column start */
-    padding-inline: var(--space-md);
-    border-bottom: 0.0625rem solid var(--border-mix-60);
-  }
-
-  &__meta-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md); /* more separation between icon and text */
-    color: var(--color-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-
-    /* fix icon area so text start position is identical across rows */
-    lucide-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      flex: 0 0 1.25rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-muted);
-
-      svg {
-        width: 0.9rem;
-        height: 0.9rem;
-        stroke: currentColor !important;
-        fill: currentColor !important;
-        display: block;
-      }
-    }
-
-    dd {
-      margin: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: var(--color-on-surface);
-    }
-  }
-
-  /* Remove any visible label text (e.g. 'Email' or 'Gender') so only icon + value show */
-  .user-card__meta dt,
-  .user-card__meta .meta-label {
-    display: none !important;
-  }
-
-  /* Make sure meta items render as icon + value only */
-  .user-card__meta-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-
-    lucide-icon {
-      flex: 0 0 auto;
-      color: var(--color-muted);
-    }
-
-    dd {
-      margin: 0;
-      color: var(--color-on-surface);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  &__actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-md); /* more space between buttons */
-    padding-top: var(--space-sm);
-    padding-inline: var(--space-md); /* space between buttons and card edge */
-
-    /* base button layout (mobile-first) */
-    button[appButton] {
-      width: 100%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-sm); /* icon/text gap */
-      padding-inline: clamp(var(--space-sm), 1.6vw, var(--space-lg));
-      border-radius: var(--radius-md);
-      line-height: 1; /* ensure consistent inline sizing for em-based icons */
-
-      lucide-icon {
-        /* slightly smaller than text and vertically centered */
-        width: 0.9em;
-        height: 0.9em;
-        flex: 0 0 0.9em;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        vertical-align: middle;
-
-        svg {
-          width: auto;
-          height: 0.8em;
-          stroke: currentColor !important;
-          fill: currentColor !important;
-          display: block;
-        }
-      }
-    }
-
-    /* Delete (danger) button: small, outlined red and aligned right */
-    button[variant='danger'] {
-      width: auto;
-      padding-inline: var(--space-xxs, 0.25rem);
-      border: 0.125rem solid var(--color-danger);
-      color: var(--color-danger);
-      background: color-mix(in srgb, var(--color-danger) 10%, transparent);
-      justify-self: end;
-      align-self: center;
-      box-shadow: none;
-      font-weight: 600;
-      border-radius: var(--radius-sm);
-
-      /* make the danger button a square icon button */
-      height: 2.25rem;
-      padding-block: 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 2.25rem;
-
-      /* visually only show the icon; keep accessible label via aria-label */
-      span.visually-hidden {
-        display: none !important;
-      }
-      /* center the icon with no extra gap */
-      gap: 0;
-
-      lucide-icon {
-        color: var(--color-danger);
-      }
-    }
-
-    /* Primary/ghost action (View): theme-aware ghost button */
-    button[variant='ghost'] {
-      background: var(--btn-view-bg, transparent);
-      color: var(--btn-view-color, var(--color-on-surface));
-      border: 0.0625rem solid var(--btn-view-border, var(--border-mix-60));
-      padding-inline: var(--space-md);
-      font-weight: 600;
-      lucide-icon {
-        color: currentColor;
-      }
-
-      &:hover,
-      &:focus {
-        background: var(--btn-view-hover, var(--accent-hover));
-        transform: translateY(-0.0625rem);
-      }
-    }
-
-    /* Edit (outline): theme-aware outline button (no hardcoded blue/white) */
-    button[variant='outline'] {
-      border: 0.125rem solid var(--btn-edit-border, var(--color-border));
-      color: var(--btn-edit-color, var(--color-on-surface));
-      background: var(--btn-edit-bg, transparent);
-      box-shadow: none;
-      font-weight: 700;
-      padding-inline: var(--space-md);
-      border-radius: var(--radius-lg);
-
-      lucide-icon {
-        color: currentColor;
-      }
-
-      &:hover,
-      &:focus {
-        background: var(--btn-edit-hover, var(--accent-hover));
-      }
-    }
+    box-shadow: var(--shadow-lg);
   }
 }
 
-@include tablet-up {
-  .user-card {
-    gap: var(--space-md);
+.user-card__avatar {
+  background: var(--gradient-primary);
+  color: var(--color-on-accent);
+  font-weight: var(--font-weight-bold);
+  font-size: 1.125rem;
+}
+
+.user-card__status-label {
+  text-transform: capitalize;
+  font-weight: var(--font-weight-medium);
+}
+
+.user-card__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  text-transform: capitalize;
+  font-weight: var(--font-weight-medium);
+}
+
+.user-card__meta {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.user-card__meta-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-sm);
+  align-items: center;
+
+  mat-icon {
+    color: var(--color-muted);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-on-surface);
+    word-break: break-word;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding-inline: var(--space-lg);
+
+  button[mat-button],
+  button[mat-stroked-button] {
+    text-transform: none;
+    font-weight: var(--font-weight-medium);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  button[mat-icon-button] {
+    align-self: center;
+  }
+}
+
+@media (max-width: 40rem) {
+  mat-card-actions {
     flex-direction: column;
-  }
+    align-items: stretch;
 
-  /* Keep meta items stacked vertically (email above gender) on larger screens
-     to match the requested layout: icon+email row, then icon+gender row. */
-  .user-card__meta {
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
+    button {
+      width: 100%;
+    }
 
-  .user-card__meta-item {
-    width: 100%;
-  }
-
-  .user-card__actions {
-    grid-template-columns: 1fr 1fr auto;
+    button[mat-icon-button] {
+      align-self: stretch;
+      justify-content: center;
+    }
   }
 }

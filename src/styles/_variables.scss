@@ -92,6 +92,14 @@
   --alpha-border: rgba(55, 65, 81, 0.5); /* border transparency */
   --alpha-focus: rgba(249, 115, 22, 0.3); /* focus ring alpha */
   --skeleton-tint: rgba(255, 255, 255, 0.04); /* skeleton animation */
+  --alpha-white-0: rgba(255, 255, 255, 0);
+  --alpha-white-08: rgba(255, 255, 255, 0.08);
+  --alpha-white-15: rgba(255, 255, 255, 0.15);
+  --alpha-white-28: rgba(255, 255, 255, 0.28);
+  --alpha-white-45: rgba(255, 255, 255, 0.45);
+  --alpha-white-50: rgba(255, 255, 255, 0.5);
+  --alpha-white-60: rgba(255, 255, 255, 0.6);
+  --alpha-white-94: rgba(255, 255, 255, 0.94);
 
   /* Button sizing tokens (centralized for consistency) */
   --btn-height-sm: 2.5rem; /* 40px */
@@ -206,7 +214,14 @@
 
   --color-border: #fed7aa; /* orange-200 border */
   --color-muted: #6b7280; /* gray-500 muted text */
+  --alpha-white-0: rgba(255, 255, 255, 0);
+  --alpha-white-08: rgba(255, 255, 255, 0.08);
+  --alpha-white-15: rgba(255, 255, 255, 0.15);
+  --alpha-white-28: rgba(255, 255, 255, 0.28);
+  --alpha-white-45: rgba(255, 255, 255, 0.45);
+  --alpha-white-50: rgba(255, 255, 255, 0.5);
   --alpha-white-60: rgba(255, 255, 255, 0.6);
+  --alpha-white-94: rgba(255, 255, 255, 0.94);
   --surface-mix-92: rgba(255, 255, 255, 0.92);
   --state-surface-bg: rgba(249, 250, 251, 0.7);
   --state-surface-border: rgba(203, 213, 225, 0.75);

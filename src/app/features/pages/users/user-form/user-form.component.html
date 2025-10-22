@@ -1,110 +1,109 @@
-<h2 class="user-form__title">
-  @if (isEdit()) {
-    Edit User
-  } @else {
-    New User
-  }
-</h2>
-
-<form class="form user-form__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
-  <div class="form-field">
-    <label class="form-label" for="name">Name</label>
-    <input
-      class="form-input"
-      id="name"
-      type="text"
-      formControlName="name"
-      placeholder="Enter full name"
-      appAutoFocus
-      [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched ? 'true' : null"
-    />
-    @if (form.controls.name.touched && form.controls.name.invalid) {
-      <app-alert variant="error" padding="compact">Please enter at least 2 characters.</app-alert>
-    }
-  </div>
-
-  <div class="form-field">
-    <label class="form-label" for="email">Email</label>
-    <input
-      class="form-input"
-      id="email"
-      type="email"
-      formControlName="email"
-      placeholder="user@example.com"
-      [attr.aria-invalid]="
-        form.controls.email.invalid && form.controls.email.touched ? 'true' : null
-      "
-    />
-    @if (form.controls.email.touched && form.controls.email.invalid) {
-      <app-alert variant="error" padding="compact">Invalid email address.</app-alert>
-    }
-    @if (emailError()) {
-      <app-alert variant="error" padding="compact">{{ emailError() }}</app-alert>
-    }
-  </div>
-
-  <div class="form-field">
-    <label class="form-label" for="gender">Gender</label>
-    <app-select
-      id="gender"
-      [control]="form.controls.gender"
-      [options]="[
-        { value: 'male', label: 'male' },
-        { value: 'female', label: 'female' },
-      ]"
-    ></app-select>
-    @if (form.controls.gender.touched && form.controls.gender.invalid) {
-      <app-alert variant="error" padding="compact">Please select a gender.</app-alert>
-    }
-  </div>
-
-  <div class="form-field">
-    <label class="form-label" for="status">Status</label>
-    <app-select
-      id="status"
-      [control]="form.controls.status"
-      [options]="[
-        { value: 'active', label: 'active' },
-        { value: 'inactive', label: 'inactive' },
-      ]"
-    ></app-select>
-  </div>
-
-  <div class="form-actions user-form__actions">
-    <!-- Primary action moved to the right in the mock; we'll render Cancel first and Create second
-         but style them so Create appears on the right visually and both stretch on mobile. -->
-    <button
-      appButton
-      variant="ghost"
-      type="button"
-      (click)="cancel()"
-      [disabled]="submitting()"
-      class="user-form__btn user-form__btn--cancel"
-    >
-      Cancel
-    </button>
-
-    <button
-      appButton
-      variant="primary"
-      type="submit"
-      [loading]="submitting()"
-      [disabled]="form.invalid || submitting()"
-      class="user-form__btn user-form__btn--create"
-    >
-      @if (submitting()) {
-        Saving&hellip;
-      } @else if (isEdit()) {
-        Update
+<section class="form-dialog user-form">
+  <header class="form-dialog__header">
+    <h2 class="form-dialog__title">
+      @if (isEdit()) {
+        Edit User
       } @else {
-        Create
+        New User
       }
-    </button>
-  </div>
+    </h2>
+  </header>
 
-  @if (loadError()) {
-    <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
-      {{ loadError() }}
-    </app-alert>
-  }
-</form>
+  <form
+    class="form form-dialog__body user-form__form"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    novalidate
+  >
+    <div class="form-field">
+      <label class="form-label" for="name">Name</label>
+      <input
+        class="form-input"
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Enter full name"
+        appAutoFocus
+        [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched ? 'true' : null"
+      />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <app-alert variant="error" padding="compact">Please enter at least 2 characters.</app-alert>
+      }
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="email">Email</label>
+      <input
+        class="form-input"
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="user@example.com"
+        [attr.aria-invalid]="
+          form.controls.email.invalid && form.controls.email.touched ? 'true' : null
+        "
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <app-alert variant="error" padding="compact">Invalid email address.</app-alert>
+      }
+      @if (emailError()) {
+        <app-alert variant="error" padding="compact">{{ emailError() }}</app-alert>
+      }
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="gender">Gender</label>
+      <app-select
+        id="gender"
+        [control]="form.controls.gender"
+        [options]="[
+          { value: 'male', label: 'male' },
+          { value: 'female', label: 'female' },
+        ]"
+      ></app-select>
+      @if (form.controls.gender.touched && form.controls.gender.invalid) {
+        <app-alert variant="error" padding="compact">Please select a gender.</app-alert>
+      }
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="status">Status</label>
+      <app-select
+        id="status"
+        [control]="form.controls.status"
+        [options]="[
+          { value: 'active', label: 'active' },
+          { value: 'inactive', label: 'inactive' },
+        ]"
+      ></app-select>
+    </div>
+
+    <div class="form-actions form-dialog__actions">
+      <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
+        Cancel
+      </button>
+
+      <button
+        appButton
+        variant="primary"
+        type="submit"
+        [loading]="submitting()"
+        [disabled]="form.invalid || submitting()"
+      >
+        @if (submitting()) {
+          Saving&hellip;
+        } @else if (isEdit()) {
+          Update
+        } @else {
+          Create
+        }
+      </button>
+    </div>
+
+    @if (loadError()) {
+      <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
+        {{ loadError() }}
+      </app-alert>
+    }
+  </form>
+</section>

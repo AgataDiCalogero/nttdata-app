@@ -1,191 +1,155 @@
 @use '../../../../styles/mixins' as *;
 
 :host {
-  display: flex;
-  flex: 1 1 auto;
-  min-height: 0;
+  display: block;
 }
 
 .login-page {
-  @include flex-center;
-  flex: 1 1 auto;
-  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 100dvh;
-  --login-page-vertical-padding: clamp(var(--space-lg), 10vh, var(--space-3xl));
-  padding-inline: clamp(var(--space-md), 4vw, var(--space-xxl));
-  padding-block: var(--login-page-vertical-padding);
-  padding-block-start: max(
-    var(--login-page-vertical-padding),
-    calc(var(--space-lg) + env(safe-area-inset-top, 0px))
-  );
-  padding-block-end: max(
-    var(--login-page-vertical-padding),
-    calc(var(--space-lg) + env(safe-area-inset-bottom, 0px))
-  );
+  padding-block: clamp(var(--space-xl), 12vh, var(--space-3xl));
+  padding-inline: var(--app-page-gutter);
   box-sizing: border-box;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-card {
+  width: min(100%, 28rem);
+  padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
+  border-radius: var(--radius-2xl);
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+
+  @include tablet {
+    padding-inline: var(--space-xl);
+  }
+}
+
+.login-card__icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  color: var(--color-on-accent);
+  box-shadow: var(--shadow-accent-soft);
+
+  /* Make the inner icon larger and ensure SVGs scale properly and stay centered */
+  mat-icon {
+    font-size: 2.4rem; /* slightly larger so it fills the circle */
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* If the icon is an inline SVG, ensure it doesn't overflow or get squashed */
+    svg {
+      width: 1em;
+      height: 1em;
+      display: block;
+    }
+  }
+}
+
+.login-card__title {
+  margin: 0;
+  font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
+  font-weight: var(--font-weight-bold);
+  color: var(--color-on-surface);
+}
+
+.login-card__subtitle {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.login-field {
   width: 100%;
 
-  @include mobile {
-    justify-content: flex-start;
-    align-items: center;
-    --login-page-vertical-padding: clamp(var(--space-md), 8vh, var(--space-xl));
+  mat-icon[matSuffix] {
+    opacity: 0.48;
+  }
+
+  &--invalid mat-icon[matSuffix] {
+    color: var(--color-danger);
+    opacity: 1;
+  }
+}
+
+.login-form__message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  background: var(--state-error-bg);
+  border: 1px solid var(--state-error-border);
+  color: var(--color-danger-text-dark);
+  font-size: var(--font-size-sm);
+
+  mat-icon {
+    font-size: 1.125rem;
+  }
+}
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.login-actions__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: 100%;
+  min-height: 3rem;
+
+  mat-progress-spinner {
+    margin-inline-end: var(--space-xs);
+  }
+}
+
+.login-actions__help {
+  align-self: center;
+  text-transform: none;
+  font-weight: var(--font-weight-medium);
+}
+
+@media (max-width: 40rem) {
+  .login-page {
+    padding-inline: var(--app-page-gutter-tight);
   }
 
   .login-card {
+    padding-inline: var(--space-lg);
+  }
+
+  .login-actions__submit {
     width: 100%;
-    max-width: 26rem;
-    @include glassmorphism(24px);
-    @include radius('xl');
-    padding: var(--space-lg) var(--space-2xl);
-    @include shadow('lg');
-    @include transition-group(all, 0.3s);
-
-    @include mobile {
-      padding: var(--space-md);
-      max-width: calc(100% - 2 * var(--layout-gutter-tight));
-      margin-inline: auto;
-    }
-  }
-
-  .icon-wrapper {
-    @include flex-center;
-    margin-bottom: var(--space-lg);
-  }
-
-  .icon-container {
-    width: 4rem;
-    height: 4rem;
-    @include radius('xl');
-    @include flex-center;
-    background: var(--gradient-primary);
-    @include shadow('accent');
-    @include smooth-transition(transform);
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  .lock-icon {
-    width: 2rem;
-    height: 2rem;
-    color: var(--color-on-accent);
-  }
-
-  .title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    text-align: center;
-    margin: 0 0 var(--space-xs) 0;
-    color: var(--color-on-surface);
-    transition: color 0.3s ease;
-  }
-
-  .subtitle {
-    text-align: center;
-    margin: 0 0 var(--space-lg) 0;
-    color: var(--color-muted);
-    font-size: 0.95rem;
-    @include smooth-transition(color, 0.3s);
-  }
-
-  .login-form {
-    @include flex-column(var(--space-lg));
-    width: 100%;
-    min-width: 0;
-  }
-
-  .form-group {
-    @include flex-column(var(--space-xs));
-  }
-
-  .form-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-on-surface);
-    margin: 0;
-    @include smooth-transition(color, 0.3s);
-  }
-
-  .form-input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    @include radius('lg');
-    border: 1px solid var(--color-border);
-    box-sizing: border-box;
-    background: var(--color-bg-input-dark);
-    color: var(--color-on-surface);
-    font-size: var(--font-size-base);
-    outline: none;
-    @include smooth-transition(all, 0.3s);
-
-    &::placeholder {
-      color: var(--color-muted);
-      opacity: 0.6;
-    }
-
-    &:focus {
-      @include focus-ring;
-      border-color: var(--color-accent);
-      background: var(--color-bg-input-dark-focus);
-    }
-
-    .light-theme & {
-      background: var(--color-bg-input-light);
-      border-color: var(--color-accent-light-alpha);
-      color: var(--color-on-primary);
-      box-shadow: var(--shadow-input-light);
-
-      &::placeholder {
-        color: var(--color-on-primary);
-        opacity: 0.55;
-      }
-
-      &:focus {
-        background: var(--color-bg-input-light-focus);
-        border-color: var(--focus-ring);
-        box-shadow: var(--shadow-focus);
-      }
-    }
-  }
-
-  button[appButton] {
-    width: 100%;
-  }
-
-  .form-error-banner {
-    padding: var(--space-sm) var(--space-md);
-    @include radius('lg');
-    background: var(--state-error-bg);
-    border: 1px solid var(--state-error-border);
-    color: var(--color-danger-text-dark);
-    font-size: var(--font-size-sm);
-  }
-
-  .footer {
-    margin-top: var(--space-md);
-    padding-top: var(--space-sm);
-    border-top: 1px solid var(--color-border);
-    text-align: center;
-    @include smooth-transition(border-color);
-  }
-
-  .forgot-link {
-    background: none;
-    border: none;
-    color: var(--color-muted);
-    font-size: 0.875rem;
-    cursor: pointer;
-    padding: 0;
-    @include transition-group(color);
-
-    &:hover {
-      color: var(--color-accent);
-      text-decoration: underline;
-    }
-
-    &:focus-visible {
-      @include focus-ring;
-    }
   }
 }

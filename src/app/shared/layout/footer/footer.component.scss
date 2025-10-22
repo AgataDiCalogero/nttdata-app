@@ -1,57 +1,67 @@
 @use '../../../../styles/mixins' as *;
 
 .app-footer {
-  width: 100%;
-  padding-block: var(--space-lg);
-  padding-block-end: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
-  text-align: center;
-  background: transparent; /* keep app chrome subtle */
-  border-top: 1px solid var(--alpha-02);
-  font-size: 0.95rem;
   margin-top: auto;
+  padding-block: clamp(var(--space-lg), 6vw, var(--space-3xl));
+  background: transparent;
+  color: var(--color-muted);
+  text-align: center;
+  position: relative;
+
+  .app-footer__divider {
+    width: min(92%, 70rem);
+    margin: 0 auto var(--space-lg);
+    border-color: color-mix(in srgb, var(--border-accent-soft) 65%, transparent);
+  }
 }
 
 .app-footer__inner {
-  @include container();
-  padding-inline: var(--layout-gutter);
   display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  flex-wrap: wrap;
+  gap: var(--space-lg);
   align-items: center;
   justify-content: center;
+  padding-block: var(--space-sm);
+  text-align: center;
 }
 
-@include tablet-up {
-  .app-footer__inner {
-    flex-direction: row;
-    justify-content: center; /* center content on tablet+ */
-    gap: var(--space-md);
+.app-footer__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: color-mix(in srgb, var(--color-on-surface) 72%, transparent);
+
+  mat-icon {
+    font-size: 1.25rem;
   }
-}
-
-.app-footer__link {
-  color: var(--color-muted);
-  text-decoration: none;
-  font-weight: 500;
-  border-bottom: 1px solid transparent;
-  @include transition-group((color, border-color), 0.18s);
-}
-
-.app-footer__link:hover {
-  /* prefer a slightly stronger on-surface for hover when supported */
-  color: var(--color-muted);
-  @supports (color: color-mix(in srgb, var(--color-on-surface) 78%, transparent)) {
-    color: color-mix(in srgb, var(--color-on-surface) 78%, transparent);
-  }
-}
-
-.app-footer__link:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 3px;
-  border-radius: var(--radius-xs);
 }
 
 .app-footer__author {
   color: var(--color-accent);
-  font-weight: 700;
+  font-weight: var(--font-weight-semibold);
+}
+
+.app-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  text-transform: none;
+  font-weight: var(--font-weight-semibold);
+
+  mat-icon {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .app-footer__inner {
+    flex-direction: column;
+  }
+
+  .app-footer__link {
+    width: 100%;
+    justify-content: center;
+  }
 }

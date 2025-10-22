@@ -1,96 +1,98 @@
 @if (isChildRouteActive()) {
-  <!-- Show child routes (user detail, user form) -->
   <router-outlet></router-outlet>
 } @else {
-  <!-- Show users list -->
-  <!-- page-container allinea il contenuto con la navbar usando le stesse gutter variables -->
-  <div class="page-container users-page">
-    <header class="users-header">
-      <div class="users-header__left">
-        <div class="users-header__title-block">
-          <h1>Users</h1>
-          <p class="users-subtitle">Manage and view all registered users</p>
+  <section class="users-page" data-app-page="true">
+    <div class="users-container app-container app-container--wide">
+      <header class="users-header app-page__header">
+        <div class="users-header__copy">
+          <h1 class="app-page__title">Users</h1>
+          <p class="app-page__meta">Manage and view all registered users</p>
         </div>
-      </div>
-
-      <div class="users-header__right">
-        <button appButton variant="primary" class="btn new-user" (click)="openNewUserModal()">
-          <span class="btn__icon"><lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon></span>
-          <span class="btn__label">New User</span>
+        <button
+          mat-flat-button
+          color="primary"
+          type="button"
+          (click)="openNewUserModal()"
+          [disabled]="loading()"
+        >
+          <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+          <span>New User</span>
         </button>
-      </div>
-    </header>
+      </header>
 
-    <!-- search sits below the header so the New User button vertically centers between title and subtitle -->
-    <div class="users-search">
       <app-user-filters [showCreate]="false" (searchChange)="onSearch($event)"></app-user-filters>
-    </div>
-  </div>
-  @if (displayed(); as data) {
-    @if (loading()) {
-      <div class="users-skeleton">
-        @for (i of [1, 2, 3, 4, 5]; track i) {
-          <div class="users-skeleton__row" aria-hidden="true"></div>
-        }
-      </div>
-    } @else {
-      @if (error()) {
-        <app-alert variant="error" [dismissible]="true" (dismissed)="clearError()">
-          <div class="users-alert-content">
-            <p>{{ error() }}</p>
-            <div class="users-alert-actions">
-              <button appButton variant="ghost" size="sm" (click)="usersService.loadUsers()">
-                Retry
-              </button>
-            </div>
-          </div>
-        </app-alert>
-      } @else {
-        @if (data.total > 0) {
-          <div class="page-container users-page">
-            <div class="users-list-wrapper">
-              <app-user-list
-                [items]="data.items"
-                (view)="goToDetail($event)"
-                (edit)="openEditUserModal($event)"
-                (delete)="onDelete($event)"
-              ></app-user-list>
-              <div class="users-pagination">
-                <button
-                  appButton
-                  variant="secondary"
-                  class="btn"
-                  [disabled]="currentPage().page <= 1"
-                  (click)="setPage(currentPage().page - 1, currentPage().per_page)"
-                >
-                  Prev
-                </button>
-                <span>Page {{ currentPage().page }} of {{ totalPages(data.total) }}</span>
-                <button
-                  appButton
-                  variant="secondary"
-                  class="btn"
-                  [disabled]="currentPage().page >= totalPages(data.total)"
-                  (click)="setPage(currentPage().page + 1, currentPage().per_page)"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+
+      @if (displayed(); as data) {
+        @if (loading()) {
+          <div class="users-loader" aria-live="polite">
+            <mat-progress-spinner
+              mode="indeterminate"
+              diameter="36"
+              strokeWidth="3"
+            ></mat-progress-spinner>
+            <span>Loading users…</span>
           </div>
         } @else {
-          <div class="page-container users-page">
-            <div class="users-list-wrapper">
-              <div class="users-empty">
-                <p>No users found.</p>
-                <a appButton variant="primary" routerLink="/users/new">Create first user</a>
+          @if (error(); as err) {
+            <mat-card class="users-error" appearance="outlined">
+              <mat-card-content>
+                <div class="users-error__content">
+                  <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
+                  <p>{{ err }}</p>
+                </div>
+                <button mat-button type="button" (click)="clearError()" [disabled]="loading()">
+                  Retry
+                </button>
+              </mat-card-content>
+            </mat-card>
+          } @else {
+            @if (data.total > 0) {
+              <div class="users-list-wrapper">
+                <app-user-list
+                  [items]="data.items"
+                  (view)="goToDetail($event)"
+                  (edit)="openEditUserModal($event)"
+                  (delete)="onDelete($event)"
+                ></app-user-list>
+
+                <div class="users-pagination">
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    [disabled]="currentPage().page <= 1"
+                    (click)="setPage(currentPage().page - 1, currentPage().per_page)"
+                  >
+                    <mat-icon svgIcon="lucide:chevron-left" aria-hidden="true"></mat-icon>
+                    <span>Prev</span>
+                  </button>
+                  <span class="users-pagination__info">
+                    Page {{ currentPage().page }} of {{ totalPages(data.total) }}
+                  </span>
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    [disabled]="currentPage().page >= totalPages(data.total)"
+                    (click)="setPage(currentPage().page + 1, currentPage().per_page)"
+                  >
+                    <span>Next</span>
+                    <mat-icon svgIcon="lucide:chevron-right" aria-hidden="true"></mat-icon>
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
+            } @else {
+              <mat-card class="users-empty" appearance="outlined">
+                <mat-card-content>
+                  <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+                  <p>No users found.</p>
+                  <button mat-flat-button color="primary" routerLink="/users/new">
+                    Create first user
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            }
+          }
         }
       }
-    }
-  }
+    </div>
+  </section>
 }
-
-<!-- delete confirmation handled inline via onDelete() -->

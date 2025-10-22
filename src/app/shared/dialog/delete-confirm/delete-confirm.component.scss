@@ -2,37 +2,77 @@
 
 :host {
   display: block;
-  padding: clamp(var(--space-md), 3vw, var(--space-xl));
+  padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
   max-width: 30rem;
 }
 
 .delete-confirm {
-  @include mixins.flex-column(var(--space-md));
+  @include mixins.flex-column(var(--space-lg));
+  text-align: center;
 }
 
-h2 {
+.delete-confirm__icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--color-danger);
+
+  mat-icon {
+    font-size: 1.75rem;
+  }
+}
+
+.delete-confirm__title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-on-surface);
 }
 
 .delete-confirm__message {
   margin: 0;
-  font-size: 0.95rem;
-  color: var(--color-on-surface);
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
   line-height: 1.5;
 }
 
-.delete-confirm__actions {
-  @include mixins.button-group(var(--space-sm), flex-end, wrap);
-  margin-top: var(--space-sm);
-  padding-top: var(--space-md);
-  border-top: 0.0625rem solid var(--border-mix-60);
-}
-
 .delete-confirm__status {
-  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-sm);
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  background: var(--state-error-bg);
+  border: 1px solid var(--state-error-border);
+  font-size: var(--font-size-sm);
+  text-align: left;
+
+  mat-icon {
+    color: var(--color-danger);
+  }
 }
 
-/* Buttons styling comes from appButton directive and global .btn styles */
+.delete-confirm__actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-mix-60);
+
+  button[mat-flat-button] {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 30rem) {
+  .delete-confirm__actions {
+    flex-direction: column;
+  }
+}

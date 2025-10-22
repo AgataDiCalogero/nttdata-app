@@ -14,13 +14,27 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 // Login page component for token-based authentication
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, ButtonComponent],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

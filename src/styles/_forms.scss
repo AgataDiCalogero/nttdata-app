@@ -179,3 +179,139 @@
 .posts-filters select {
   min-height: 42px;
 }
+
+/* Elevated modal-style form container ------------------------------------ */
+.form-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: min(100%, 540px);
+  margin-inline: auto;
+  padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  background: var(--color-surface-solid);
+  border-radius: var(--radius-dialog);
+  border: 1px solid var(--border-mix-60);
+  box-shadow: var(--shadow-2xl);
+  color: var(--color-on-surface);
+
+  @supports (background: color-mix(in srgb, var(--color-surface-solid) 94%, transparent)) {
+    background: color-mix(in srgb, var(--color-surface-solid) 94%, transparent);
+  }
+
+  @supports (color: color-mix(in srgb, var(--color-border) 62%, transparent)) {
+    border-color: color-mix(in srgb, var(--color-border) 62%, transparent);
+  }
+}
+
+.form-dialog__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-dialog__title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-on-surface);
+}
+
+.form-dialog__subtitle {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.form-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.form-dialog
+  :is(
+    .form-input,
+    .form-select,
+    .form-textarea,
+    .select,
+    .form-field input:not([type='checkbox']):not([type='radio']),
+    .form-field select,
+    .form-field textarea
+  ) {
+  padding: calc(var(--space-sm) + 4px) var(--space-lg);
+  background: var(--color-bg-input-dark);
+  border-radius: var(--radius-input);
+  border: 1px solid var(--border-mix-60);
+  box-shadow: inset 0 1px 0 var(--alpha-white-08);
+
+  @supports (background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg))) {
+    background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg));
+  }
+}
+
+.form-dialog__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-mix-60);
+}
+
+@supports (color: color-mix(in srgb, var(--color-border) 55%, transparent)) {
+  .form-dialog__actions {
+    border-top-color: color-mix(in srgb, var(--color-border) 55%, transparent);
+  }
+}
+
+.form-dialog__actions .btn {
+  min-width: 160px;
+  border-radius: var(--radius-button);
+  padding-inline: var(--space-xl);
+}
+
+.form-dialog__actions .btn[data-variant='ghost'] {
+  background: var(--color-surface-solid);
+  border-color: var(--border-mix-60);
+  color: var(--color-on-surface);
+  box-shadow: inset 0 1px 0 var(--alpha-white-15);
+
+  @supports (background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-white))) {
+    background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-white));
+  }
+}
+
+.form-dialog__actions .btn[data-variant='ghost']:hover {
+  @supports (background: color-mix(in srgb, var(--color-surface-solid) 92%, var(--color-white))) {
+    background: color-mix(in srgb, var(--color-surface-solid) 92%, var(--color-white));
+  }
+}
+
+.form-dialog__actions .btn[data-variant='ghost']:focus-visible {
+  box-shadow: var(--shadow-focus);
+}
+
+.form-dialog__actions .btn[data-variant='primary'] {
+  box-shadow: var(--shadow-button-primary);
+}
+
+.form-dialog__actions .btn[data-variant='primary']:focus-visible {
+  box-shadow: var(--shadow-button-primary-focus);
+}
+
+@media (max-width: 40rem) {
+  .form-dialog {
+    padding: var(--space-lg);
+  }
+
+  .form-dialog__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--space-sm);
+  }
+
+  .form-dialog__actions .btn {
+    width: 100%;
+  }
+}

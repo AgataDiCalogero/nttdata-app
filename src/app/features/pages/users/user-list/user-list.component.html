@@ -1,54 +1,57 @@
 <div class="user-list">
   @for (user of items(); track trackById($index, user)) {
-    <article class="user-card">
-      <header class="user-card__identity">
-        <div class="user-card__avatar" aria-hidden="true">{{ initials(user) }}</div>
-
-        <div class="user-card__identity-body">
-          <h3 class="user-card__name">{{ user.name || 'Unnamed user' }}</h3>
-          <span class="user-card__status user-card__status--{{ user.status }}">
-            <lucide-icon
-              [img]="user.status === 'active' ? Check : X"
-              aria-hidden="true"
-            ></lucide-icon>
-            <span class="user-card__status-label">{{ user.status }}</span>
-          </span>
+    <mat-card class="user-card">
+      <mat-card-header>
+        <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
+          {{ initials(user) }}
         </div>
-      </header>
+        <mat-card-title>{{ user.name || 'Unnamed user' }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-set aria-label="User status">
+            <mat-chip [color]="statusChipColor(user.status)" class="user-card__chip">
+              <mat-icon
+                svgIcon="lucide:{{ user.status === 'active' ? 'users' : 'alert-circle' }}"
+                aria-hidden="true"
+              ></mat-icon>
+              <span class="user-card__status-label">{{ user.status }}</span>
+            </mat-chip>
+          </mat-chip-set>
+        </mat-card-subtitle>
+      </mat-card-header>
 
-      <dl class="user-card__meta">
-        <div class="user-card__meta-item">
-          <dt class="visually-hidden">Email</dt>
-          <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
-          <dd>{{ user.email }}</dd>
-        </div>
-        <div class="user-card__meta-item">
-          <dt class="visually-hidden">Gender</dt>
-          <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
-          <dd>{{ user.gender || '-' }}</dd>
-        </div>
-      </dl>
+      <mat-card-content>
+        <dl class="user-card__meta">
+          <div class="user-card__meta-item">
+            <dt class="visually-hidden">Email</dt>
+            <mat-icon svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
+            <dd>{{ user.email }}</dd>
+          </div>
+          <div class="user-card__meta-item">
+            <dt class="visually-hidden">Gender</dt>
+            <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>
+            <dd>{{ user.gender || '-' }}</dd>
+          </div>
+        </dl>
+      </mat-card-content>
 
-      <footer class="user-card__actions">
-        <button appButton variant="ghost" size="sm" (click)="onView(user, $event)">
-          <lucide-icon [img]="Eye" aria-hidden="true"></lucide-icon>
+      <mat-card-actions align="end">
+        <button mat-button (click)="onView(user, $event)">
+          <mat-icon svgIcon="lucide:eye" aria-hidden="true"></mat-icon>
           <span>View</span>
         </button>
-        <button appButton variant="outline" size="sm" (click)="onEdit(user, $event)">
-          <lucide-icon [img]="Pencil" aria-hidden="true"></lucide-icon>
+        <button mat-stroked-button (click)="onEdit(user, $event)">
+          <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
           <span>Edit</span>
         </button>
         <button
-          appButton
-          variant="danger"
-          size="sm"
+          mat-icon-button
+          color="warn"
           (click)="onDelete(user, $event)"
           aria-label="Delete user"
         >
-          <lucide-icon [img]="Trash2" aria-hidden="true"></lucide-icon>
-          <span class="visually-hidden">Delete</span>
+          <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
         </button>
-      </footer>
-    </article>
+      </mat-card-actions>
+    </mat-card>
   }
 </div>

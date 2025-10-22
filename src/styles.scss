@@ -6,6 +6,8 @@
 @use './styles/states';
 @use './styles/skeleton';
 @use './styles/appearance';
+@use './styles/material-theme';
+@use './styles/foundations';
 
 /* Base & layout styles */
 /* Global layout: full-height flex for footer visibility */

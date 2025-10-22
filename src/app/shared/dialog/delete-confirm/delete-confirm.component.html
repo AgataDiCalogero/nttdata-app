@@ -1,19 +1,22 @@
-<div class="delete-confirm">
-  <h2>{{ data.title }}</h2>
+<section class="delete-confirm">
+  <div class="delete-confirm__icon">
+    <mat-icon svgIcon="lucide:alert-triangle" aria-hidden="true"></mat-icon>
+  </div>
+
+  <h2 class="delete-confirm__title">{{ data.title }}</h2>
   <p class="delete-confirm__message">{{ data.message }}</p>
 
-  @if (errorMessage()) {
-    <app-alert variant="error" padding="compact" class="delete-confirm__status">
-      {{ errorMessage() }}
-    </app-alert>
+  @if (errorMessage(); as error) {
+    <div class="delete-confirm__status" role="alert">
+      <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
+      <span>{{ error }}</span>
+    </div>
   }
 
   <div class="delete-confirm__actions">
     <button
       type="button"
-      appButton
-      variant="secondary"
-      class="btn"
+      mat-button
       (click)="cancel()"
       [disabled]="submitting()"
     >
@@ -21,13 +24,20 @@
     </button>
     <button
       type="button"
-      appButton
-      variant="danger"
-      class="btn"
+      mat-flat-button
+      color="warn"
       (click)="confirm()"
-      [loading]="submitting()"
+      [disabled]="submitting()"
     >
-      {{ confirmLabel() }}
+      @if (submitting()) {
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="18"
+          strokeWidth="2"
+        ></mat-progress-spinner>
+      }
+      <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+      <span>{{ confirmLabel() }}</span>
     </button>
   </div>
-</div>
+</section>

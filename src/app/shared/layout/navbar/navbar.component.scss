@@ -1,153 +1,129 @@
 @use '../../../../styles/mixins' as *;
-@use '../../../../styles/navbar';
-@use './navbar-mobile' as mobile-styles;
+
+:host {
+  display: block;
+}
 
 .app-navbar {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
   width: 100%;
-  box-sizing: border-box;
-  padding: var(--space-sm) var(--layout-gutter);
-  min-height: 4rem;
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  @include flex-row(var(--space-md), center, space-between);
-  overflow: visible;
-  @include smooth-transition(background, 0.3s, ease-in-out);
+  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--color-primary) 88%, transparent);
+  border-bottom: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.08));
+  padding-inline: var(--app-page-gutter-tight);
+  transition: background var(--duration-normal) var(--ease-in-out);
 
-  h1 {
-    margin: 0;
-    font-size: 1.125rem;
-    font-weight: 700;
+  .menu-trigger {
+    display: none;
   }
 
   .brand {
-    z-index: 70;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: row;
+    display: inline-flex;
+    align-items: center;
     gap: var(--space-sm);
-    align-items: center; /* ensure logo and text are vertically centered */
     color: inherit;
     text-decoration: none;
+    padding: 0 var(--space-xs);
 
     &__logo {
-      width: 2.25rem;
-      height: 2.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
     }
 
-    h1 {
-      margin: 0;
+    &__label {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-lg);
+      letter-spacing: var(--letter-spacing-tight);
       background: var(--gradient-primary);
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 800;
     }
   }
 
-  .mobile-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--alpha-overlay-medium);
-    z-index: var(--z-backdrop);
+  .spacer {
+    flex: 1;
   }
 
-  .nav-wrapper {
-    @include flex-row(var(--space-xs), center, center);
-    flex: 0 1 auto;
-    margin-inline: auto;
-    min-width: 0;
-    z-index: 10;
-  }
+  .nav-links {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
 
-  nav {
-    @include flex-row(var(--space-xs), center, center);
-    max-width: 100%;
-    white-space: nowrap;
+    a[mat-button] {
+      text-transform: none;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0;
+      border-radius: var(--radius-lg);
+      padding-inline: var(--space-md);
 
-    a {
-      color: var(--color-accent);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.375rem;
-      padding: 0.375rem 0.75rem; /* slightly larger hit area and pill look */
-      @include radius('md');
-      border: 1px solid transparent;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.2px;
-      background: transparent;
-      @include transition-group((background, color, transform, box-shadow), 0.18s);
+      mat-icon {
+        margin-inline-end: var(--space-xxs);
+        font-size: 1.125rem;
+      }
 
-      &:hover {
+      &.active {
+        background: color-mix(in srgb, var(--color-accent) 16%, transparent);
         color: var(--color-on-accent);
-        background: color-mix(in srgb, var(--accent-hover) 30%, transparent);
-        transform: translateY(-0.0625rem);
-        box-shadow: var(--shadow-sm);
       }
-
-      &:focus-visible {
-        @include focus-ring;
-        background: color-mix(in srgb, var(--accent-hover) 28%, transparent);
-      }
-    }
-
-    a.active {
-      /* stronger, filled appearance for active link */
-      background: color-mix(in srgb, var(--color-accent) 18%, transparent);
-      color: var(--color-on-accent);
-      box-shadow: var(--shadow-accent-soft, none);
-      border-color: rgba(255, 255, 255, 0.06);
-      @include navbar.navbar-link-active;
     }
   }
 
   .controls {
-    @include flex-row(var(--space-sm), center);
-    flex: 0 0 auto;
-    margin-left: auto;
-    padding-right: var(--space-xs);
-    z-index: 90;
-    overflow: visible;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
 
     app-appearance-switcher {
       display: inline-flex;
-      overflow: visible;
-
-      .appearance-switcher__panel {
-        z-index: 110 !important;
-      }
     }
 
     .logout-btn {
-      @include flex-row(var(--space-xs), center);
-      padding: 0.5rem 0.75rem;
-      min-height: 2.5rem;
-      border-radius: 0.625rem;
-      background: transparent;
-      color: var(--color-on-primary);
-      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-weight: var(--font-weight-semibold);
+      text-transform: none;
 
-      svg {
-        width: 1.125rem;
-        height: 1.125rem;
-        flex-shrink: 0;
-      }
-
-      &:hover {
-        transform: translateY(-0.0625rem);
-        background: var(--alpha-accent-06);
+      mat-icon {
+        font-size: 1.125rem;
       }
     }
   }
+}
 
-  .menu-toggle {
-    display: none;
+.nav-menu {
+  min-width: 14rem;
+
+  mat-icon {
+    margin-inline-end: var(--space-sm);
   }
 }
 
-@include mobile {
-  @include mobile-styles.navbar-mobile;
+@media (max-width: 62rem) {
+  .app-navbar {
+    padding-inline: var(--app-page-gutter-tight);
+
+    .menu-trigger {
+      display: inline-flex;
+      margin-inline-end: var(--space-sm);
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .logout-btn .logout-text {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 40rem) {
+  .app-navbar {
+    .brand__label {
+      font-size: var(--font-size-md);
+    }
+  }
 }

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { LucideAngularModule, Trash2, Pencil, Plus } from 'lucide-angular';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
 import type { User } from '@/app/shared/models';
@@ -16,9 +17,10 @@ import { provideUsersService, injectUsersService } from './store/users.inject';
   imports: [
     CommonModule,
     RouterModule,
-    LucideAngularModule,
-    ButtonComponent,
-    AlertComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
     UserFiltersComponent,
     UserListComponent,
   ],
@@ -30,10 +32,6 @@ import { provideUsersService, injectUsersService } from './store/users.inject';
 export class Users {
   public readonly usersService = injectUsersService();
   private readonly router = inject(Router);
-
-  readonly Trash2 = Trash2;
-  readonly Pencil = Pencil;
-  readonly Plus = Plus;
 
   // Expose service signals
   readonly loading = this.usersService.loading;

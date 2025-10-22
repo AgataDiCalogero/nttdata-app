@@ -1,0 +1,44 @@
+@use '@angular/material' as mat;
+
+// Core styles (typography, density reset, etc.)
+@include mat.core();
+
+// Dark theme aligns with existing default app palette.
+$dark-primary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 800);
+$dark-accent: mat.m2-define-palette(mat.$m2-deep-orange-palette, 500, 300, 700);
+$dark-warn: mat.m2-define-palette(mat.$m2-red-palette);
+$dark-theme: mat.m2-define-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $dark-warn,
+    ),
+    density: 0,
+  )
+);
+
+:root {
+  @include mat.color-variants-backwards-compatibility($dark-theme);
+  @include mat.all-component-themes($dark-theme);
+}
+
+// Light theme overrides rely on the same accent hues but target body.light-theme as the app already does.
+body.light-theme {
+  $light-primary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 700);
+  $light-accent: mat.m2-define-palette(mat.$m2-deep-orange-palette, 500, 300, 700);
+  $light-warn: mat.m2-define-palette(mat.$m2-red-palette);
+  $light-theme: mat.m2-define-light-theme(
+    (
+      color: (
+        primary: $light-primary,
+        accent: $light-accent,
+        warn: $light-warn,
+      ),
+      density: 0,
+    )
+  );
+
+  @include mat.color-variants-backwards-compatibility($light-theme);
+  @include mat.all-component-colors($light-theme);
+}

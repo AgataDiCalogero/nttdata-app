@@ -11,13 +11,15 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, Post, UpdatePost, User } from '@/app/shared/models';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
-import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface PostFormDialogData {
   users?: User[];
@@ -34,11 +36,13 @@ interface PostFormResult {
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    ButtonComponent,
-    AlertComponent,
-    LoaderComponent,
-    SelectComponent,
     AutoFocusDirective,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss'],
@@ -87,13 +91,12 @@ export class PostForm {
   );
   readonly submitLabel = computed(() => (this.isEdit() ? 'Save changes' : 'Create post'));
 
-  readonly userOptions = computed(() => [
-    { value: 0 as const, label: 'Select author' },
-    ...this.users().map((user) => ({
+  readonly userOptions = computed(() =>
+    this.users().map((user) => ({
       value: user.id,
       label: `${user.name} (ID ${user.id})`,
     })),
-  ]);
+  );
 
   constructor() {
     const post = this.editablePost();
@@ -214,9 +217,5 @@ export class PostForm {
 
   cancel(): void {
     this.dialogRef.close('cancel');
-  }
-
-  trackUserById(_index: number, user: User): number {
-    return user.id;
   }
 }

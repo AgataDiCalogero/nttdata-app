@@ -1,132 +1,23 @@
-@use '../../../../../styles/mixins' as *;
+@use '../../../../../styles/mixins' as mixins;
 
 :host {
-  display: block;
-  padding: clamp(var(--space-md), 4vw, var(--space-xxl));
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(var(--space-lg), 4vw, var(--space-xxl));
   min-height: 100%;
 }
 
-.user-form__title {
-  margin: 0 0 var(--space-lg) 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-on-surface);
+.user-form {
+  width: 100%;
 }
 
 .user-form__form {
-  max-width: clamp(320px, 65vw, 520px);
-  /* Less transparent, slightly brighter surface to match mock */
-  background: var(--surface-elevated);
-  border: 1px solid var(--alpha-03);
-  border-radius: var(--radius-xl);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-xxl);
-
-  @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
-    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
-  }
-
-  @include transition-group((box-shadow, transform), 0.25s);
+  gap: var(--space-lg);
 }
 
-.user-form__actions {
-  border-top: 1px solid var(--alpha-02);
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  display: flex;
-  gap: var(--space-sm);
-  justify-content: flex-end;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.user-form__alert {
-  background: var(--state-error-bg);
-  border-radius: var(--radius-xl);
-  /* fallback */
-  border: 1px solid var(--color-danger-border);
-  padding: var(--space-sm) var(--space-md);
-  margin: var(--space-md) 0 0 0;
-}
-
-@include mobile {
+@include mixins.mobile {
   :host {
-    padding: var(--space-md);
+    padding: var(--space-lg);
   }
-
-  .user-form__form {
-    padding: var(--space-md);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .user-form__actions {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: var(--space-sm);
-  }
-
-  .user-form__actions button {
-    width: 100%;
-  }
-}
-
-/* Desktop: make actions take full control width with the primary on the right and secondary on left
-   Mirror the mock: Cancel on the left (ghost), Create on the right (orange). */
-.user-form__btn {
-  min-width: 140px;
-  padding: 12px 20px;
-  border-radius: 10px;
-}
-
-.user-form__btn--cancel {
-  background: var(--alpha-02);
-  color: var(--color-on-surface);
-  border: 1px solid var(--alpha-04);
-}
-
-.user-form__btn--create {
-  background: var(
-    --gradient-primary,
-    linear-gradient(180deg, var(--color-accent), var(--color-accent-dark))
-  );
-  color: var(--color-on-accent, white);
-  border: none;
-  box-shadow: var(--shadow-accent);
-}
-
-/* Inputs: darker backgrounds, rounded, subtle inner shadow */
-.form-input,
-.form-select {
-  display: block;
-  width: 100%;
-  padding: 14px 16px;
-  background: var(--input-bg);
-  border: 1px solid var(--alpha-03);
-  color: var(--color-on-surface);
-  border-radius: 10px;
-  box-shadow: inset 0 1px 0 var(--alpha-02);
-}
-
-/* Make selects show a chevron on the right */
-.form-select {
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--color-on-surface) 50%),
-    linear-gradient(135deg, var(--color-on-surface) 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 12px) calc(50% - 3px);
-  background-size:
-    6px 6px,
-    6px 6px;
-  background-repeat: no-repeat;
-  padding-right: 44px;
-}
-
-/* Label spacing tweaks */
-.form-label {
-  margin-bottom: 8px;
-  display: block;
-  font-weight: 600;
 }
