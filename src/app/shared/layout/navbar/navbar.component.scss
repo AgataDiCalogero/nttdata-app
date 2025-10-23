@@ -135,11 +135,14 @@
 
   /* Styles applied when the app is on the login route. We toggle `body.login-route` from the component. */
   :host-context(body.login-route) {
-    /* Hide navigation elements including hamburger */
+    /* Hide navigation elements including hamburger - target the actual button to avoid !important */
     .menu-trigger,
     .nav-links,
-    .logout-btn {
-      display: none !important;
+    button[appButton].logout-btn {
+      display: none;
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0;
     }
 
     /* Keep only the appearance switcher visible on the right */
@@ -171,41 +174,86 @@
    (no !important). */
   .cdk-overlay-pane .nav-menu {
     min-width: 14rem;
-    background: var(--color-surface-solid);
-    color: var(--color-on-surface);
-    border-radius: var(--radius-2xl);
+    /* Theme options style: darker bluish surface, white text, and rounded panel */
+    background: var(--color-surface-elevated, #0f2b3b); /* fallback bluish */
+    color: var(--color-on-surface, #ffffff);
+    border-radius: calc(var(--radius-2xl) * 1.1);
     box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
-    border: none;
-    border: 1px solid var(--border-accent-soft);
+    border: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.06));
+  }
+  /* Material uses CSS variables for menu text color; set them on the panel so
+       internal Material rules pick the right colors without needing !important. */
+  .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu,
+  .cdk-overlay-pane .mat-menu-panel.nav-menu,
+  .cdk-overlay-pane .nav-menu {
+    /* ensure Material's internal variables map to our theme tokens */
+    --mat-menu-item-label-text-color: var(--color-on-surface, #ffffff);
+    --mat-sys-on-surface: var(--color-on-surface, #ffffff);
+    --mat-menu-item-icon-color: var(--color-accent, #f97316);
   }
   .cdk-overlay-pane .nav-menu .mat-ripple-element {
     display: none;
   }
 
   /* mat-menu renders in overlay; these class rules are applied to the panel */
-  .cdk-overlay-pane .nav-menu button.mat-menu-item {
-    color: inherit;
+  /* Ensure menu items (Material v2 MDC and legacy) inherit our colors. Include
+     :visited and :link variants to match Material's selectors and avoid using !important. */
+  .cdk-overlay-pane .nav-menu button.mat-menu-item,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item:visited,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item:link,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:visited,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:link {
+    color: var(--color-on-surface);
+  }
+
+  /* Ensure the inner Material button wrapper / label text uses the on-surface color
+     (Material renders label inside .mat-button-wrapper or a span). We include common
+     panel variants so overlay-scoped styles apply reliably. */
+  .cdk-overlay-pane .nav-menu button.mat-menu-item .mat-button-wrapper,
+  .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item .mat-button-wrapper,
+  .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item .mat-button-wrapper,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item > span,
+  .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item > span,
+  .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item > span {
+    color: var(--color-on-surface);
   }
 
   .cdk-overlay-pane .nav-menu button.mat-menu-item:hover,
-  .cdk-overlay-pane .nav-menu button.mat-menu-item.cdk-program-focused {
-    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  .cdk-overlay-pane .nav-menu button.mat-menu-item.cdk-program-focused,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:hover,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item.cdk-program-focused,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item:link:hover,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:link:hover {
+    /* pill-like hover with subtle contrast */
+    background: color-mix(in srgb, var(--color-on-surface) 6%, transparent);
     color: var(--color-on-surface);
   }
 
   /* Active (current route) state inside the dropdown */
-  .cdk-overlay-pane .nav-menu button.mat-menu-item.active {
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  .cdk-overlay-pane .nav-menu button.mat-menu-item.active,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item.active,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item.active:link,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item.active:link {
+    /* active selection: pill with accent backdrop to mimic Theme options */
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-accent) 18%, transparent),
+      color-mix(in srgb, var(--color-accent) 14%, transparent)
+    );
     color: var(--color-on-surface);
 
     mat-icon {
-      color: var(--color-on-surface);
+      color: var(--color-accent);
     }
   }
 
-  .cdk-overlay-pane .nav-menu mat-icon {
+  /* Ensure mat icons inside the overlay use the accent color */
+  .cdk-overlay-pane .nav-menu mat-icon,
+  .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item mat-icon,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item mat-icon {
     margin-inline-end: var(--space-sm);
-    color: var(--color-on-surface-muted, rgba(255, 255, 255, 0.56));
+    color: var(--color-accent); /* icons in orange */
   }
 
   @media (max-width: 62rem) {
@@ -215,17 +263,18 @@
       display: none;
     }
 
-    .logout-btn {
+    /* target the actual button element with the appButton directive for specificity */
+    button[appButton].logout-btn {
       /* compact circular icon button on mobile */
-      padding: 0 !important;
-      min-width: auto !important;
-      width: 2.5rem !important;
-      height: 2.5rem !important;
-      border-radius: 50% !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      overflow: hidden !important;
+      padding: 0;
+      min-width: auto;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
 
       /* label made screen-reader-only via sr-only utility */
 
@@ -251,21 +300,25 @@
     }
 
     /* Contextual menu styling on mobile - matches appearance-switcher */
-    .cdk-overlay-pane .nav-menu {
+    .cdk-overlay-pane .nav-menu,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu {
       min-width: auto;
       width: min(18rem, calc(100vw - 2rem));
-      border-radius: var(--radius-2xl);
-      background: var(--color-surface-solid);
+      border-radius: calc(var(--radius-2xl) * 1.1);
+      background: var(--color-surface-elevated, #0f2b3b);
       box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
-      border: none;
+      border: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.06));
       color: var(--color-on-surface);
       margin-bottom: 0.5rem;
       transform-origin: bottom right;
-      z-index: 9999 !important;
+      z-index: 9999;
     }
 
     /* Center menu contents on mobile for the floating trigger experience */
-    .cdk-overlay-pane .nav-menu .mat-menu-content {
+    .cdk-overlay-pane .nav-menu .mat-menu-content,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu .mat-menu-content,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu .mat-menu-content {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -275,20 +328,48 @@
     }
 
     /* Make menu items visually centered and use theme foregrounds */
-    .cdk-overlay-pane .nav-menu button.mat-menu-item {
+    .cdk-overlay-pane .nav-menu button.mat-menu-item,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item {
       width: 100%;
-      justify-content: center; /* center icon + text */
-      text-align: center;
-      padding-left: var(--space-md);
-      padding-right: var(--space-md);
+      justify-content: flex-start; /* keep icon + text in a row like Theme options */
+      text-align: left;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-lg);
+      gap: var(--space-sm);
     }
 
-    .cdk-overlay-pane .nav-menu button.mat-menu-item mat-icon {
-      margin-inline-end: 0;
-      margin-bottom: 0.25rem;
-      display: block;
-      opacity: 0.95;
+    .cdk-overlay-pane .nav-menu button.mat-menu-item mat-icon,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item mat-icon,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item mat-icon {
+      margin-inline-end: var(--space-sm);
+      display: inline-flex;
+      opacity: 1;
       color: var(--color-accent);
+      background: transparent;
+      border-radius: 50%;
+      width: 1.5rem;
+      height: 1.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* subtle darker pill for hovered/active items to match Theme options */
+    .cdk-overlay-pane .nav-menu button.mat-menu-item:hover,
+    .cdk-overlay-pane .nav-menu button.mat-menu-item.cdk-program-focused,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item:hover,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item.cdk-program-focused,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item:hover,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item.cdk-program-focused {
+      background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
+      color: var(--color-on-surface);
+    }
+
+    .cdk-overlay-pane .nav-menu button.mat-menu-item.active,
+    .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item.active,
+    .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item.active {
+      background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+      color: var(--color-on-surface);
     }
   }
 
@@ -339,10 +420,10 @@
   }
 }
 
-/* CRITICAL: Hide hamburger on login route */
-:host-context(body.login-route) .floating-menu-trigger {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* CRITICAL: Hide hamburger on login route - target the button element (no !important) */
+:host-context(body.login-route) button[appButton].floating-menu-trigger {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }

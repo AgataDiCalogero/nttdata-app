@@ -44,7 +44,7 @@
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  margin: 0 auto;
+  margin: 0 auto; /* center the icon horizontally without forcing all children to center */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,6 +72,10 @@
   font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
   font-weight: var(--font-weight-bold);
   color: var(--color-on-surface);
+  text-align: center; /* explicit to ensure centering */
+  align-self: center; /* only the title is centered inside the card */
+  line-height: 1.05;
+  margin-top: var(--space-sm);
 }
 
 .login-card__subtitle {
