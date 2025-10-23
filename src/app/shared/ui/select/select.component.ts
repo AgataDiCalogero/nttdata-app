@@ -22,6 +22,8 @@ export class SelectComponent {
   readonly required = input(false);
   readonly id = input<string>('');
   readonly label = input<string>('');
+  readonly ariaLabel = input<string>('');
+  readonly ariaDescribedBy = input<string>('');
 
   readonly selectionChange = output<string>();
 

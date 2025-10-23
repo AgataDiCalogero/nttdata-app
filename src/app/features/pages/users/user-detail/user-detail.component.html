@@ -57,7 +57,9 @@
           </p>
         </header>
 
-        @if (posts().length === 0) {
+        @if (postsLoading()) {
+          <app-loader [text]="'Loading posts...'" class="user-posts__loader"></app-loader>
+        } @else if (posts().length === 0) {
           <app-alert variant="info">
             <div class="user-posts-empty">
               <p>No posts published yet.</p>

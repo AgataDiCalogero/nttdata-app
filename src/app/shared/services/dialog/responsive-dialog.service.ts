@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
-import { Overlay } from '@angular/cdk/overlay';
 
 const MOBILE_QUERY = '(max-width: 639.98px)';
 
@@ -18,7 +17,6 @@ export interface ResponsiveDialogOptions<TData = unknown, R = unknown, C = unkno
 @Injectable({ providedIn: 'root' })
 export class ResponsiveDialogService {
   private readonly breakpointObserver = inject(BreakpointObserver);
-  private readonly overlay = inject(Overlay);
 
   form<TData, R = unknown, C = unknown>(
     options: ResponsiveDialogOptions<TData, R, C>,

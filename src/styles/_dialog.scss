@@ -1,4 +1,4 @@
-/* Shared dialog overlay and panel styles */
+﻿/* Shared dialog overlay and panel styles */
 
 .cdk-overlay-backdrop.app-dialog-overlay {
   background: var(--overlay-backdrop-strong) !important;
@@ -14,4 +14,11 @@
   box-shadow: var(--shadow-xl);
   overflow: auto;
   max-height: calc(100vh - var(--space-xl));
+}
+
+@media (max-width: 40rem) {
+  .cdk-overlay-pane .app-dialog-panel {
+    max-height: calc(100vh - var(--space-lg) - env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+  }
 }

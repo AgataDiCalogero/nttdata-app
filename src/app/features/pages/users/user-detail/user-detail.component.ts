@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
@@ -9,6 +9,8 @@ import { ButtonComponent, StatusBadgeComponent } from '@/app/shared/ui';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { from, mergeMap, of, catchError, map } from 'rxjs';
 import {
   LucideAngularModule,
   Mail,
@@ -49,10 +51,13 @@ export class UserDetail {
   readonly error = signal<string | null>(null);
   readonly user = signal<User | null>(null);
   readonly posts = signal<Post[]>([]);
+  readonly postsLoading = signal(true);
 
   private readonly commentsMap = signal<Record<number, Comment[]>>({});
   private readonly commentsLoading = signal<Record<number, boolean>>({});
   readonly commentsCount = signal<Record<number, number>>({});
+
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
     const idParam = this.route.snapshot.paramMap.get('id') ?? '';
@@ -68,53 +73,55 @@ export class UserDetail {
   }
 
   private loadUser(id: number): void {
-    this.usersApi.getById(id).subscribe({
-      next: (u) => this.user.set(u),
-      error: (err) => {
-        console.error('Failed to load user:', err);
-        this.toast.show('error', 'Unable to load user details');
-        this.error.set('Unable to load user details');
-        this.loading.set(false);
-      },
-      complete: () => this.loading.set(false),
-    });
+    this.usersApi
+      .getById(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (u) => this.user.set(u),
+        error: (err) => {
+          console.error('Failed to load user:', err);
+          this.toast.show('error', 'Unable to load user details');
+          this.error.set('Unable to load user details');
+          this.loading.set(false);
+        },
+        complete: () => this.loading.set(false),
+      });
   }
 
   private loadUserPosts(userId: number): void {
-    this.postsApi.list({ user_id: userId, per_page: 50 }).subscribe({
-      next: ({ items }) => {
-        const list = items ?? [];
-        this.posts.set(list);
-        // Prefetch comment counts for preview badges
-        // Prefetch comment counts with basic caching and limited concurrency
-        const known = this.commentsCount();
-        const toFetch = list.filter((p) => known[p.id] === undefined);
-        if (toFetch.length) {
-          import('rxjs').then(({ from, mergeMap, of, catchError }) => {
-            from(toFetch)
-              .pipe(
-                mergeMap(
-                  (p) =>
-                    this.postsApi
-                      .listComments(p.id)
-                      .pipe(catchError(() => of(null as unknown as Comment[]))),
-                  3,
-                ),
-              )
-              .subscribe((comments: any) => {
-                const post = toFetch.shift();
-                if (!post) return;
-                const count = Array.isArray(comments) ? comments.length : 0;
-                this.commentsCount.update((state) => ({ ...state, [post.id]: count }));
-              });
-          });
-        }
-      },
-      error: (err) => {
-        console.error('Failed to load posts for user:', err);
-        this.toast.show('error', 'Unable to load user posts');
-      },
-    });
+    this.postsLoading.set(true);
+    this.postsApi
+      .list({ user_id: userId, per_page: 50 })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ({ items }) => {
+          const list = items ?? [];
+          this.posts.set(list);
+          const known = this.commentsCount();
+          const toFetch = list.filter((p) => known[p.id] === undefined);
+          from(toFetch)
+            .pipe(
+              mergeMap(
+                (post) =>
+                  this.postsApi.listComments(post.id).pipe(
+                    catchError(() => of(null as unknown as Comment[])),
+                    map((comments) => ({ post, comments })),
+                  ),
+                3,
+              ),
+              takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe(({ post, comments }: any) => {
+              const count = Array.isArray(comments) ? comments.length : 0;
+              this.commentsCount.update((state) => ({ ...state, [post.id]: count }));
+            });
+        },
+        error: (err) => {
+          console.error('Failed to load posts for user:', err);
+          this.toast.show('error', 'Unable to load user posts');
+        },
+        complete: () => this.postsLoading.set(false),
+      });
   }
 
   commentsFor(postId: number): Comment[] | undefined {
@@ -135,22 +142,26 @@ export class UserDetail {
     }
 
     this.commentsLoading.update((state) => ({ ...state, [postId]: true }));
-    this.postsApi.listComments(postId).subscribe({
-      next: (comments) => {
-        this.commentsMap.update((state) => ({ ...state, [postId]: comments ?? [] }));
-        this.commentsCount.update((state) => ({
-          ...state,
-          [postId]: Array.isArray(comments) ? comments.length : 0,
-        }));
-      },
-      error: (err) => {
-        console.error('Failed to load comments:', err);
-        this.toast.show('error', 'Unable to load comments');
-      },
-      complete: () => {
-        this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
-      },
-    });
+    this.postsApi
+      .listComments(postId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (comments) => {
+          this.commentsMap.update((state) => ({ ...state, [postId]: comments ?? [] }));
+          this.commentsCount.update((state) => ({
+            ...state,
+            [postId]: Array.isArray(comments) ? comments.length : 0,
+          }));
+        },
+        error: (err) => {
+          console.error('Failed to load comments:', err);
+          this.toast.show('error', 'Unable to load comments');
+          this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
+        },
+        complete: () => {
+          this.commentsLoading.update((state) => ({ ...state, [postId]: false }));
+        },
+      });
   }
 
   onCommentCreated(postId: number, comment: Comment): void {

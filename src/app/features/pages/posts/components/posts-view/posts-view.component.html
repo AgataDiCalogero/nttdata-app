@@ -57,7 +57,7 @@
           [control]="perPageControl"
           [options]="perPageSelectOptions()"
           (selectionChange)="changePerPage.emit(+$event)"
-          aria-label="Posts per page"
+          [ariaLabel]="'Posts per page'"
           [showPlaceholder]="false"
         ></app-select>
       </app-pagination>

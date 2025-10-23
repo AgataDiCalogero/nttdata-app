@@ -224,7 +224,7 @@
       /* Background stays as the app surface so the accent icon stands out */
       background: var(--color-surface);
       box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
-      border: 1px solid rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border-accent-soft);
 
       /* Hamburger icon should be accent (orange) per request */
       mat-icon {

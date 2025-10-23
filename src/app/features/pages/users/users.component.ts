@@ -4,9 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { LucideAngularModule } from 'lucide-angular';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import type { User } from '@/app/shared/models';
 import type { SortField } from './store/users.service';
 import { provideUsersService, injectUsersService } from './store/users.inject';
@@ -18,8 +20,10 @@ import { provideUsersService, injectUsersService } from './store/users.inject';
     CommonModule,
     RouterModule,
     MatIconModule,
+    LucideAngularModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    ButtonComponent,
     UserFiltersComponent,
     UserListComponent,
     PaginationComponent,

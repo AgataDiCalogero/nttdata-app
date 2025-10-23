@@ -8,6 +8,8 @@
       type="button"
       aria-label="Apri navigazione"
       [matMenuTriggerFor]="navMenu"
+      [attr.aria-controls]="navMenu?.panelId"
+      [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
       (menuOpened)="onMenuOpened()"
       (menuClosed)="onMenuClosed()"
     >

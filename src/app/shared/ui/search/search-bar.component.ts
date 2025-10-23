@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { LucideAngularModule, Search } from 'lucide-angular';
+import { createUniqueId } from '@app/shared/utils/id';
 
 type SearchSize = 'wide' | 'compact';
 const SIZE_SET = new Set<SearchSize>(['wide', 'compact']);
@@ -39,14 +40,7 @@ export class SearchBarComponent {
   protected readonly labelText = computed(
     () => this.label() || this.ariaLabel() || this.placeholder(),
   );
-  protected readonly labelId = computed(
-    () =>
-      `searchbar-label-${Math.abs(
-        this.placeholder()
-          .split('')
-          .reduce((a, c) => (a + c.charCodeAt(0)) | 0, 0),
-      )}`,
-  );
+  protected readonly labelId: string = createUniqueId('searchbar-label');
 
   protected readonly isWide = computed(() =>
     SIZE_SET.has(this.size()) ? this.size() === 'wide' : true,

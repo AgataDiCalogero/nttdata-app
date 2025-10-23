@@ -29,13 +29,7 @@ export class PostsFiltersComponent {
       label: user.name || 'Unnamed user',
     })),
   ]);
-
-  readonly createPost = output<void>();
   readonly resetFilters = output<void>();
-
-  onCreate(): void {
-    this.createPost.emit();
-  }
 
   onReset(): void {
     this.resetFilters.emit();

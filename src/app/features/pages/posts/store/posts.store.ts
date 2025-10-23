@@ -1,7 +1,17 @@
 import { inject, signal, computed, DestroyRef, Type } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged, map, switchMap, tap, catchError, of } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  tap,
+  catchError,
+  of,
+  from,
+  mergeMap,
+} from 'rxjs';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
 import type {
   Comment,
@@ -136,11 +146,8 @@ export const PostsStoreAdapter = signalStore(
       initializePaging(page: number, perPage: number): void {
         const sanitizedPerPage = Math.max(1, perPage);
         const sanitizedPage = Math.max(1, page);
-        const needsReload = sanitizedPerPage !== store.perPage() || sanitizedPage !== store.page();
+        // Changing page/perPage is sufficient to trigger data reload via queryCriteria
         patchState(store, { perPage: sanitizedPerPage, page: sanitizedPage });
-        if (needsReload) {
-          patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
-        }
       },
 
       setPage(page: number): void {
@@ -201,6 +208,9 @@ export const PostsStoreAdapter = signalStore(
             error: (err) => {
               console.error('Failed to load comments:', err);
               toast.show('error', mapHttpError(err).message);
+              patchState(store, (state) => ({
+                commentsLoading: { ...state.commentsLoading, [postId]: false },
+              }));
             },
             complete: () => {
               patchState(store, (state) => ({
@@ -326,21 +336,24 @@ export const PostsStoreAdapter = signalStore(
       const toFetch = items.filter((p) => known[p.id] === undefined);
       if (!toFetch.length) return;
       // Throttle concurrency and cache results to reduce UI churn
-      import('rxjs').then(({ from, mergeMap, of, catchError }) => {
-        from(toFetch)
-          .pipe(
-            mergeMap((p) => postsApi.listComments(p.id).pipe(catchError(() => of(null as any))), 3),
-            takeUntilDestroyed(destroyRef),
-          )
-          .subscribe((comments) => {
-            const post = toFetch.shift();
-            if (!post) return;
-            const count = Array.isArray(comments) ? comments.length : 0;
-            patchState(store, (state) => ({
-              commentsCountMap: { ...((state as any).commentsCountMap ?? {}), [post.id]: count },
-            }));
-          });
-      });
+      from(toFetch)
+        .pipe(
+          mergeMap(
+            (post) =>
+              postsApi.listComments(post.id).pipe(
+                catchError(() => of(null as any)),
+                map((comments) => ({ post, comments })),
+              ),
+            3,
+          ),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe(({ post, comments }) => {
+          const count = Array.isArray(comments) ? comments.length : 0;
+          patchState(store, (state) => ({
+            commentsCountMap: { ...((state as any).commentsCountMap ?? {}), [post.id]: count },
+          }));
+        });
     }
 
     function loadUsersForFilter(): void {
