@@ -4,7 +4,6 @@ import type { FormGroup } from '@angular/forms';
 import type { Observable } from 'rxjs';
 
 export interface PostsService {
-  // Signals pubblici
   loading: Signal<boolean>;
   error: Signal<string | null>;
   posts: Signal<Post[]>;
@@ -22,7 +21,6 @@ export interface PostsService {
   hasPagination: Signal<boolean>;
   postsCount: Signal<number>;
 
-  // Signals methods
   initializePaging(page: number, perPage: number): void;
   setPage(page: number): void;
   refresh(): void;

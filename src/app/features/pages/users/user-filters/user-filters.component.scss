@@ -3,7 +3,7 @@
   gap: var(--space-sm);
   align-items: center;
   flex: 1 1 auto;
-  min-width: 0; /* allow flex children to shrink properly */
+  min-width: 0;
   width: 100%;
 }
 
@@ -12,12 +12,11 @@
   flex: 1 1 100%;
   min-width: 0;
   max-width: 100%;
-  /* Remove padding to align with cards */
 }
 
 .users-search__icon {
   position: absolute;
-  /* Icon inside the input, sized to match text height */
+
   left: var(--space-md);
   top: 50%;
   transform: translateY(-50%);
@@ -42,7 +41,7 @@
 .users-search {
   width: 100%;
   min-width: 0;
-  /* Padding with appropriate spacing from icon */
+
   padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 0.9rem + 0.5rem);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);

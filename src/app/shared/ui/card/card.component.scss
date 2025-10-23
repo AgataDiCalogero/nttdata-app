@@ -17,7 +17,6 @@
   color: var(--color-on-surface);
   @include mixins.transition-group((transform, box-shadow, background, border-color));
 
-  /* Prefer color-mix when available for theme-aware surface blends */
   @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {
     --card-bg: color-mix(in srgb, var(--color-surface) 94%, transparent);
   }
@@ -43,7 +42,6 @@
 }
 
 :host(.card--subtle) {
-  /* Use canonical alpha token */
   --card-bg: var(--alpha-85);
   --card-shadow: var(--shadow-md);
   @supports (background: color-mix(in srgb, var(--color-surface) 85%, transparent)) {

@@ -50,15 +50,13 @@
   color: var(--color-on-accent);
   box-shadow: var(--shadow-accent-soft);
 
-  /* Make the inner icon larger and ensure SVGs scale properly and stay centered */
   mat-icon {
-    font-size: 2.4rem; /* slightly larger so it fills the circle */
+    font-size: 2.4rem;
     line-height: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    /* If the icon is an inline SVG, ensure it doesn't overflow or get squashed */
     svg {
       width: 1em;
       height: 1em;

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  /* Facebook-style design */
+
   background: var(--color-surface-container-low);
   border: 0.0625rem solid var(--color-outline-variant);
   border-radius: var(--radius-lg);
@@ -38,12 +38,10 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: calc(var(--space-sm) + 0.25rem); /* a bit more space between buttons */
+  gap: calc(var(--space-sm) + 0.25rem);
   margin-top: var(--space-sm);
 
-  /* Ensure buttons have identical height */
   > button {
-    /* Use a consistent min-height to match design tokens used elsewhere */
     min-height: 2.5rem;
     padding-inline: var(--space-md);
     display: inline-flex;
@@ -51,7 +49,6 @@
     justify-content: center;
   }
 
-  /* Make primary button visually identical height to ghost by stretching */
   > .comment-form__submit {
     height: 2.5rem;
   }
@@ -66,7 +63,6 @@
   overflow-y: auto;
   padding-right: var(--space-sm);
 
-  /* Custom scrollbar for webkit browsers */
   &::-webkit-scrollbar {
     width: 0.25rem;
   }
@@ -85,9 +81,7 @@
     }
   }
 
-  /* Firefox scrollbar */
   @supports not (-webkit-appearance: none) {
-    /* Only apply these in browsers that support the non-webkit scrollbar properties (Firefox) */
     scrollbar-width: thin;
     scrollbar-color: var(--color-outline) var(--color-surface-container-low);
   }

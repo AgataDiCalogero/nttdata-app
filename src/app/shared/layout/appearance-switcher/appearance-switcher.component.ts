@@ -37,10 +37,7 @@ export class AppearanceSwitcherComponent {
   readonly isLight = this.themeService.isLightTheme;
   readonly isReadingMode = this.themeService.isReadingMode;
 
-  // Computed signal for the current icon based on theme and reading mode
   readonly currentIcon = computed(() => {
-    // Icon for the trigger should reflect the theme only (Sun for light, Moon for dark).
-    // Reading mode does not change the trigger icon.
     return this.isLight() ? this.Sun : this.Moon;
   });
 

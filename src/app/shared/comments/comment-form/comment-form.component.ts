@@ -92,7 +92,6 @@ export class CommentFormComponent {
   }
 
   cancel(): void {
-    // reset local state and notify parent that composer should close
     this.form.reset();
     this.submitError.set(null);
     this.cancelled.emit();

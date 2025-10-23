@@ -4,7 +4,7 @@
   @include mixins.flex-column(var(--space-lg));
   max-width: 28rem;
   padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
-  /* Make surface fully opaque to prevent seeing the page underneath */
+
   background: var(--color-surface-solid);
   color: var(--color-on-surface);
   border-radius: var(--radius-xl);
@@ -70,7 +70,6 @@
     color: var(--color-on-surface);
   }
 
-  /* Footer: center and allow buttons to share available width */
   .token-help__footer {
     display: flex;
     gap: var(--space-sm);

@@ -1,9 +1,6 @@
 @use 'sass:meta';
 @use 'sass:list';
 
-/* Utility mixins for common patterns */
-
-// Flexbox layouts
 @mixin flex-row($gap: var(--space-md), $align: center, $justify: flex-start) {
   display: flex;
   align-items: $align;
@@ -50,7 +47,6 @@
   }
 }
 
-// Card/surface styles
 @mixin surface-card($padding: var(--space-lg)) {
   background: var(--color-surface);
   border: 0.0625rem solid var(--color-border);
@@ -59,20 +55,17 @@
   box-shadow: var(--shadow);
 }
 
-// Focus states
 @mixin focus-ring($color: var(--focus-ring)) {
   outline: 0.125rem solid $color;
   outline-offset: 0.125rem;
 }
 
-// Truncate text
 @mixin text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-// Responsive breakpoints
 @mixin mobile {
   @media (max-width: 40rem) {
     @content;
@@ -109,7 +102,6 @@
   }
 }
 
-// Hover/transition effects
 @mixin smooth-transition($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
   $transitions: ();
 
@@ -134,7 +126,6 @@
   @include smooth-transition($properties, $duration, $timing, $delay);
 }
 
-// Glass morphism effect
 @mixin glassmorphism($blur: 10px) {
   background: var(--color-surface);
   -webkit-backdrop-filter: blur($blur);
@@ -142,7 +133,6 @@
   border: 0.0625rem solid var(--color-border);
 }
 
-// Shadow helpers
 @mixin shadow($level: 'md') {
   @if $level == 'xs' {
     box-shadow: var(--shadow-xs);
@@ -165,7 +155,6 @@
   }
 }
 
-// Border radius helpers
 @mixin radius($size: 'md') {
   $radius-token: null;
 
@@ -192,7 +181,6 @@
   }
 }
 
-// Button variant mixins (used by components expecting mixin helpers)
 @mixin button-primary {
   background: var(--gradient-primary);
   color: var(--color-on-accent);

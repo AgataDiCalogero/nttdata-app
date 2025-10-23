@@ -13,17 +13,17 @@
   padding: calc(var(--space-xs) + 0.125rem) var(--space-md);
   border-radius: var(--radius-2xl);
   position: relative;
-  z-index: 220; /* raise above navbar controls so trigger is visible */
+  z-index: 220;
   color: inherit;
   cursor: pointer;
   background: transparent;
-  /* make the trigger border accent-colored by default so it's orange in both themes */
+
   border: 0.0625rem solid var(--color-accent);
   @include mixins.transition-group((transform, box-shadow));
 
   &:hover {
     transform: translateY(-0.125rem);
-    /* hover: slightly stronger accent tint */
+
     background: var(--alpha-accent-08, rgba(249, 165, 76, 0.08));
     border-color: var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
 
@@ -45,7 +45,6 @@
   height: 1.2rem;
 }
 
-/* Ensure the navbar trigger icon is always accent-colored (orange) in both themes */
 .appearance-switcher__trigger .appearance-switcher__icon lucide-icon {
   color: var(--color-accent);
 }
@@ -72,18 +71,18 @@
   right: 0;
   top: calc(100% + 0.6rem);
   min-width: 11.25rem;
-  /* use a solid surface to avoid any light rim showing */
+
   background: var(--color-surface-solid);
   color: var(--color-on-surface);
   border-radius: var(--radius-2xl);
-  /* remove inner white-ish border to match mock */
+
   border: none;
   padding: var(--space-md);
-  /* remove frosted rim and use a darker subtle shadow to avoid white edge */
+
   box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  /* Extra properties to prevent any light rim or pseudo-elements from showing */
+
   background-clip: padding-box !important;
   outline: none !important;
   @include mixins.flex-column(var(--space-xs));
@@ -95,9 +94,6 @@
   @supports (scrollbar-gutter: stable) {
     scrollbar-gutter: stable;
   }
-
-  /* Più opaco */
-  /* avoid color-mix fallbacks here to keep panel visually consistent */
 }
 
 .appearance-switcher__options {
@@ -111,7 +107,6 @@
   }
 }
 
-/* Remove default fieldset border and any stray outlines/pseudo-elements that draw the white frame */
 .appearance-switcher__options,
 .appearance-switcher__options fieldset,
 .appearance-switcher__options legend {
@@ -131,7 +126,6 @@
 }
 
 .appearance-option {
-  /* left-aligned row for icon + label; check will sit to the right */
   @include mixins.flex-row(var(--space-xs));
   align-items: center;
   justify-content: flex-start;
@@ -148,7 +142,6 @@
   @include mixins.transition-group((background, border-color, transform));
 
   &:hover {
-    /* lighter mid-orange hover for both active and inactive (between not-active and active) */
     background: color-mix(in srgb, var(--color-accent) 6%, transparent);
     transform: translateY(-0.0625rem);
   }
@@ -158,23 +151,17 @@
   }
 
   &--active {
-    /* active option: stronger accent-tinted fill and accent border
-       Use color-mix with surface so the tint adapts to light/dark themes.
-       Provide fallbacks for environments without color-mix. */
     background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     border-color: var(--color-accent);
     transform: none;
     box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
 
-    /* If color-mix with surface is supported, blend accent with surface
-       so the final tint follows the active theme background */
     @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
       background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
       border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
     }
 
     .appearance-option__icon {
-      /* subtle accent-filled circle behind the icon, theme-aware */
       background: color-mix(in srgb, var(--color-accent) 10%, transparent);
       color: var(--color-accent);
       box-shadow: none;
@@ -202,14 +189,13 @@
 
 .appearance-option__icon {
   @include mixins.flex-center;
-  /* Make all emoji/icon containers the same fixed size so icons align perfectly */
+
   width: 2rem;
   height: 2rem;
   border-radius: var(--radius-full);
   @include mixins.transition-group(all);
 
   lucide-icon {
-    /* force consistent icon size inside the container */
     width: 1.2rem;
     height: 1.2rem;
     display: block;
@@ -217,13 +203,11 @@
   }
 
   .appearance-option--toggle & {
-    /* keep the same container width as regular options so labels align */
     width: 2rem;
     height: 2rem;
     margin-right: var(--space-xs);
 
     lucide-icon {
-      /* keep the icon visual size same as others for uniformity */
       width: 1.2rem;
       height: 1.2rem;
     }
@@ -243,22 +227,19 @@
     flex: 1;
   }
 
-  /* ensure label sits to the right of the icon */
   margin-left: var(--space-sm);
 }
 
-/* Toggle pill for Reading mode */
 .appearance-option__switch {
   margin-left: auto;
   width: 3.25rem;
   height: 1.9rem;
   border-radius: var(--radius-full);
   position: relative;
-  /* fallback for older browsers */
+
   background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06));
   border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
 
-  /* prefer color-mix when supported so the tint adapts precisely to the theme surface */
   @supports (color: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))) {
     background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
   }
@@ -267,7 +248,6 @@
   }
   @include mixins.transition-group((background, border-color, box-shadow));
 
-  /* white circular knob */
   &::after {
     content: '';
     position: absolute;
@@ -278,12 +258,11 @@
     border-radius: 50%;
     background: var(--color-on-surface);
     box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.12);
-    z-index: 2; /* ensure knob sits above background */
+    z-index: 2;
     transform: translateX(0);
     @include mixins.transition-group(transform, background, box-shadow);
   }
 
-  /* Active/on state: full accent fill and knob slides right */
   &[data-on='true'] {
     background: var(--color-accent);
     border-color: var(--color-accent);
@@ -297,7 +276,6 @@
   }
 }
 
-/* MatSlideToggle overrides for appearance-toggle */
 .appearance-toggle {
   --toggle-height: 1.9rem;
   --toggle-width: 3.25rem;
@@ -309,7 +287,7 @@
   width: var(--toggle-width) !important;
   height: var(--toggle-height) !important;
   border-radius: var(--radius-full) !important;
-  /* off state: lighter accent tint (fallback) */
+
   background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06)) !important;
   border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18)) !important;
   @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
@@ -323,7 +301,7 @@
 .appearance-toggle .mat-slide-toggle-thumb {
   width: calc(var(--toggle-height) - 0.25rem) !important;
   height: calc(var(--toggle-height) - 0.25rem) !important;
-  /* knob uses accent color (no white fill) */
+
   background: var(--color-accent) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
   transition:
@@ -333,7 +311,6 @@
   transform: translateY(-50%) !important;
 }
 
-/* Remove any inner pseudo elements/icons that could show a white mark */
 .appearance-toggle .mat-slide-toggle-thumb::before,
 .appearance-toggle .mat-slide-toggle-thumb::after {
   display: none !important;
@@ -346,7 +323,7 @@
 }
 .appearance-toggle.mat-checked .mat-slide-toggle-thumb {
   transform: translateX(calc(var(--toggle-width) - var(--toggle-height))) translateY(-50%) !important;
-  /* keep knob same accent or you can choose a slightly lighter/darker variant */
+
   background: var(--color-accent) !important;
 }
 
@@ -378,16 +355,11 @@
     font-weight: 700;
   }
 
-  /* When the switcher is open make the trigger visually 'active':
-     - subtle accent-tinted fill that blends with the surface (theme-aware)
-     - accent border and stronger subtle shadow
-     - icon uses --color-on-accent so it remains visible on light themes */
   .appearance-switcher__trigger {
     transform: translateY(-0.0625rem);
     border-color: var(--color-accent);
     box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.08));
 
-    /* default fill fallback for older browsers */
     background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
 
     @supports (color: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface))) {
@@ -430,8 +402,6 @@
     @include mixins.shadow('xl');
   }
 
-  /* (no mobile-specific overrides for .appearance-switcher__options) */
-
   .appearance-option {
     flex: 1;
 
@@ -445,7 +415,7 @@ body.reading-mode .appearance-switcher__panel {
   background: var(--color-surface);
   color: var(--color-on-surface);
 }
-/* Remove any stray pseudo-elements inside the panel that could draw a rim. */
+
 .appearance-switcher__panel::before,
 .appearance-switcher__panel::after,
 .appearance-switcher__panel *::before,

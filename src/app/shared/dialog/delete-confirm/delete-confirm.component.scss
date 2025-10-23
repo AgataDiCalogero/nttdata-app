@@ -1,8 +1,5 @@
 @use '../../../../styles/mixins';
 
-@use '../../../../styles/mixins';
-
-/* Reuse form-dialog visual treatment (solid background, padding, shadow) */
 :host {
   display: block;
 }
@@ -12,7 +9,6 @@
 }
 
 .delete-confirm__actions {
-  /* keep centered actions but match form-dialog spacing */
   display: flex;
   gap: var(--space-md);
   justify-content: center;
@@ -20,10 +16,9 @@
 }
 
 .delete-confirm__actions button {
-  min-width: 160px; /* same as form-dialog actions */
+  min-width: 160px;
 }
 
-/* Ensure titles/subtitles are centered on small screens like Post/User forms */
 @media (max-width: 40rem) {
   .form-dialog__header {
     text-align: center;

@@ -1,7 +1,4 @@
-/* Shared appearance/appearance-switcher helper rules to reduce duplication in component styles */
-
 .appearance-switcher__trigger {
-  /* lightweight fallback trigger visuals shared across themes */
   background: var(--gradient-accent-ambient);
   border-color: var(--alpha-accent-18);
   box-shadow: var(--shadow-accent-ambient);

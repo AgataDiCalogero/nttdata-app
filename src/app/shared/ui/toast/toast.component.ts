@@ -12,9 +12,9 @@ import { ToastService } from './toast.service';
     'aria-live': 'polite',
     'aria-atomic': 'true',
     role: 'status',
-    // Skip hydration for ephemeral toasts to avoid SSR/client DOM drift
+
     ngSkipHydration: '',
-    // Accessibility: allow dismissing all toasts with Escape
+
     '(document:keydown.escape)': 'handleEscape($event)',
   },
 })
@@ -26,8 +26,6 @@ export class ToastComponent implements AfterViewChecked {
     this.toastService.dismiss(id);
   }
 
-  // Focus the most recent toast for screen reader users when a new toast appears.
-  // We keep this minimal to avoid layout thrashing; the template sets `tabindex="-1"` on toasts.
   ngAfterViewChecked(): void {
     try {
       const container = document.querySelector('.toast-list');
@@ -36,15 +34,12 @@ export class ToastComponent implements AfterViewChecked {
       if (latest) {
         latest.focus();
       }
-    } catch {
-      // Defensive: DOM may be unavailable in some render targets
+    } catch (err) {
+      // ignore DOM access errors during hydration
+      console.debug('toast focus error', err);
     }
   }
 
-  /**
-   * Allow users to dismiss all toasts with the Escape key as an accessibility fallback.
-   * Note: host listener passes a generic Event; narrow to KeyboardEvent safely.
-   */
   handleEscape(event: Event): void {
     const e = event as KeyboardEvent;
     if (e.defaultPrevented || this.toasts().length === 0) {

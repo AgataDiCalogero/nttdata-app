@@ -1,5 +1,4 @@
 :root {
-  /* Shared layout scales */
   --app-page-max-width: clamp(64rem, 90vw, 80rem);
   --app-page-wide-width: clamp(72rem, 94vw, 96rem);
   --app-page-gutter: clamp(var(--space-lg), 4vw, var(--space-2xl));
@@ -83,7 +82,13 @@
   margin: 0;
   font-size: clamp(var(--font-size-lg), 2.5vw, var(--font-size-2xl));
   font-weight: var(--font-weight-medium);
-  color: color-mix(in srgb, var(--color-on-surface) 70%, transparent);
+  color: var(--color-muted);
+}
+
+@supports (color: color-mix(in srgb, var(--color-on-surface) 70%, transparent)) {
+  :where(h3, .app-subtitle) {
+    color: color-mix(in srgb, var(--color-on-surface) 70%, transparent);
+  }
 }
 
 .app-page__meta,

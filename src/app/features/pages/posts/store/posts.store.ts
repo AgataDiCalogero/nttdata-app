@@ -17,7 +17,6 @@ import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 
-// Definisci il tipo per lo state interno (solo ciò che serve per il funzionamento, non pubblico)
 interface PostsState {
   posts: Post[];
   pagination: PaginationMeta | null;
@@ -28,16 +27,14 @@ interface PostsState {
   deletingId: number | null;
   loading: boolean;
   error: string | null;
-  // Signals privati per filtri, page, ecc.
+
   filters: PostFilters;
   page: number;
   perPage: number;
   reloadToken: number;
 }
 
-// Crea l'adapter Signal Store
 export const PostsStoreAdapter = signalStore(
-  // Stato iniziale generico
   withState<PostsState>({
     posts: [],
     pagination: null,
@@ -54,7 +51,6 @@ export const PostsStoreAdapter = signalStore(
     reloadToken: 0,
   }),
 
-  // Computed per queryCriteria e altri derivati
   withComputed((store) => ({
     queryCriteria: computed<QueryCriteria>(() => ({
       page: store.page(),
@@ -73,7 +69,6 @@ export const PostsStoreAdapter = signalStore(
     postsCount: computed(() => store.posts().length),
   })),
 
-  // Methods per tutte le operazioni
   withMethods((store) => {
     const postsApi = inject(PostsApiService);
     const usersApi = inject(UsersApiService);
@@ -133,12 +128,9 @@ export const PostsStoreAdapter = signalStore(
     };
 
     return {
-      // Expose only custom signals and methods. Do NOT re-return store members
-      // (they are already exposed by signalStore and re-declaring them causes override errors).
-      searchForm: signal(searchForm), // Form as signal
+      searchForm: signal(searchForm),
       perPageOptions: signal([5, 10, 20]),
 
-      // Methods pubblici
       initializePaging(page: number, perPage: number): void {
         const sanitizedPerPage = Math.max(1, perPage);
         const sanitizedPage = Math.max(1, page);

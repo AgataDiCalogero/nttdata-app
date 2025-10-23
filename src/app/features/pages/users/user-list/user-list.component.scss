@@ -4,12 +4,12 @@
   display: grid;
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-  align-items: stretch; /* ensure cells stretch to same height */
+  align-items: stretch;
 }
 
 @media (min-width: 70rem) {
   .user-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* cap to three columns on wide screens */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -22,7 +22,7 @@
   backdrop-filter: blur(12px);
   background: color-mix(in srgb, var(--color-surface) 96%, transparent);
   border-radius: var(--radius-xl);
-  /* fallback for browsers without color-mix */
+
   border: 1px solid var(--border-accent-soft, rgba(0, 0, 0, 0.04));
   @supports (color: color-mix(in srgb, var(--border-accent-soft) 60%, transparent)) {
     border: 1px solid color-mix(in srgb, var(--border-accent-soft) 60%, transparent);
@@ -33,7 +33,7 @@
     box-shadow: var(--shadow-lg);
   }
 
-  flex: 1 1 auto; /* allow card to grow to fill the grid cell */
+  flex: 1 1 auto;
 }
 
 .user-card__avatar {
@@ -56,11 +56,11 @@
 }
 
 .user-card__delete-mobile {
-  display: none; /* Hidden by default, shown on mobile */
+  display: none;
 }
 
 .user-card__delete-desktop {
-  display: inline-flex; /* Shown by default, hidden on mobile */
+  display: inline-flex;
 }
 
 .user-card__title-wrapper {
@@ -96,7 +96,7 @@ mat-card-actions {
   justify-content: flex-end;
   gap: var(--space-sm);
   padding-inline: var(--space-lg);
-  margin-top: auto; /* push actions to bottom */
+  margin-top: auto;
   button[mat-button],
   button[mat-stroked-button] {
     text-transform: none;
@@ -113,11 +113,11 @@ mat-card-actions {
 
 @media (max-width: 40rem) {
   .user-card__delete-mobile {
-    display: inline-flex; /* Show on mobile */
+    display: inline-flex;
   }
 
   .user-card__delete-desktop {
-    display: none; /* Hide on mobile */
+    display: none;
   }
 
   mat-card-actions {

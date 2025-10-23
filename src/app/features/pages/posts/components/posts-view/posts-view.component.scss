@@ -3,7 +3,7 @@
 @use '../../styles/posts-filters.scss';
 
 .posts-page {
-  padding-inline: 0; /* align with navbar gutters; container applies horizontal padding */
+  padding-inline: 0;
   color: var(--color-on-surface);
 
   &__header {

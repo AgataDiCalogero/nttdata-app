@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { take } from 'rxjs';
@@ -23,7 +23,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
-// Login page component for token-based authentication
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -84,7 +83,6 @@ export class Login {
     }
 
     return null;
-    // Allow other validators to surface their own messages when added.
   });
 
   readonly showTokenInvalidState = computed(
@@ -96,11 +94,11 @@ export class Login {
   constructor() {
     this.tokenControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.tokenControl.hasError('api')) {
-        // remove the 'api' error key while avoiding the unused-vars lint failure
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { api, ...rest } = this.tokenControl.errors ?? {};
-        const nextErrors = Object.keys(rest).length ? rest : null;
-        this.tokenControl.setErrors(nextErrors);
+        const existing: ValidationErrors = (this.tokenControl.errors ?? {}) as ValidationErrors;
+        const rest = Object.fromEntries(
+          Object.entries(existing).filter(([k]) => k !== 'api'),
+        ) as ValidationErrors;
+        this.tokenControl.setErrors(Object.keys(rest).length ? rest : null);
       }
       if (this.apiErrorMessage()) {
         this.apiErrorMessage.set(null);

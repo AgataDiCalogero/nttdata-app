@@ -72,7 +72,6 @@
   }
 }
 
-/* Toast variants */
 .toast--success {
   background: var(--gradient-success);
 }
@@ -94,7 +93,6 @@
   }
 }
 
-/* Animation */
 @keyframes toast-drop-in {
   from {
     opacity: 0;

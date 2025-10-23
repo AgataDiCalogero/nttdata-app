@@ -39,18 +39,15 @@ export class UserForm {
   private readonly dialogRef = inject(DialogRef<'success' | 'cancel'>);
   private readonly dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
 
-  // Modal mode: optional user input and closed output
   user = input<User | undefined>(undefined);
   closed = output<'success' | 'cancel'>();
 
-  // UI state
   isEdit = signal(false);
   userId = signal<number | null>(null);
   submitting = signal(false);
   loadError = signal<string | null>(null);
-  emailError = signal<string | null>(null); // Field-specific error for 422
+  emailError = signal<string | null>(null);
 
-  // Form (non-nullable controls)
   form = this.fb.nonNullable.group({
     name: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(2)]),
     email: this.fb.nonNullable.control('', [Validators.required, Validators.email]),
@@ -59,10 +56,8 @@ export class UserForm {
   });
 
   constructor() {
-    // Modal mode: if user input is provided via input(), use it
     let inputUser = this.user();
 
-    // Also check dialog data (from config.data)
     if (!inputUser && this.dialogData?.user) {
       inputUser = this.dialogData.user;
     }
@@ -70,7 +65,7 @@ export class UserForm {
     if (inputUser) {
       this.isEdit.set(true);
       this.userId.set(inputUser.id);
-      // Patch form immediately with input user
+
       this.form.patchValue({
         name: inputUser.name ?? '',
         email: inputUser.email ?? '',
@@ -106,18 +101,15 @@ export class UserForm {
 
   submit(): void {
     if (this.form.invalid) {
-      // Reveal validation errors
       this.form.markAllAsTouched();
       return;
     }
 
-    // Clear previous errors
     this.emailError.set(null);
     this.loadError.set(null);
 
     this.submitting.set(true);
 
-    // Disable backdrop close when submitting
     this.dialogRef.disableClose = true;
 
     const payload = this.normalizeForSubmit();
@@ -131,32 +123,24 @@ export class UserForm {
       next: () => {
         this.submitting.set(false);
 
-        // Re-enable backdrop close
         this.dialogRef.disableClose = false;
 
-        // Modal mode: close dialog and emit success
         this.closed.emit('success');
         this.dialogRef.close('success');
       },
       error: (err) => {
-        // Technical log
         console.error('Save failed:', err);
 
         this.submitting.set(false);
 
-        // Re-enable backdrop close
         this.dialogRef.disableClose = false;
 
-        // Error mapping
         const status = err?.status;
         if (status === 422) {
-          // Validation error - likely email already exists
           this.emailError.set('Email already in use or invalid');
         } else if (status === 429) {
-          // Rate limit
           this.loadError.set('Too many requests. Please try again shortly.');
         } else {
-          // Generic error
           this.loadError.set('An error occurred while saving. Please try again.');
         }
       },
@@ -164,7 +148,6 @@ export class UserForm {
   }
 
   cancel(): void {
-    // Close dialog and emit cancel
     this.closed.emit('cancel');
     this.dialogRef.close('cancel');
   }

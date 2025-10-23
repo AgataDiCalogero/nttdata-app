@@ -20,9 +20,6 @@ export class ResponsiveDialogService {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly overlay = inject(Overlay);
 
-  /**
-   * Builds a dialog configuration that adapts between desktop modal and mobile drawer layouts.
-   */
   form<TData, R = unknown, C = unknown>(
     options: ResponsiveDialogOptions<TData, R, C>,
   ): ResponsiveDialogConfig<TData, R, C> {

@@ -1,14 +1,12 @@
 import { Injectable, signal, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
-// Authentication service managing user tokens with SSR safety
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly tokenSignal = signal<string | null>(null);
 
   constructor() {
-    // Load saved token from localStorage (browser only)
     if (isPlatformBrowser(this.platformId)) {
       const saved = localStorage.getItem('auth-token');
       this.tokenSignal.set(saved);
@@ -25,7 +23,6 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    // Save token to localStorage (browser only)
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('auth-token', token);
     }
@@ -33,7 +30,6 @@ export class AuthService {
   }
 
   clearToken() {
-    // Remove token from localStorage (browser only)
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('auth-token');
     }

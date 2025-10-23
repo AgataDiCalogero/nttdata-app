@@ -1,6 +1,3 @@
-/* Centralized state styles: error, empty, loading, success messages */
-/* Provide RGBA fallbacks before color-mix() to support older browsers */
-
 .state {
   --state-bg: var(--state-surface-bg);
   --state-border: var(--state-surface-border);

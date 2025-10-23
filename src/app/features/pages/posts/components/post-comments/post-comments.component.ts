@@ -43,8 +43,7 @@ export class PostCommentsComponent {
   readonly comments = input<ModelComment[] | null | undefined>(null);
   readonly loading = input(false);
   readonly postId = input.required<number>();
-  // When true the composer (comment form) should be hidden. This allows the parent
-  // component to show only the comments list while another section (composer) is open.
+
   readonly hideComposer = input(false);
 
   readonly commentCreated = output<ModelComment>();

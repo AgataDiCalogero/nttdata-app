@@ -1,4 +1,3 @@
-// Centralized user types for the application
 export type UserStatus = 'active' | 'inactive';
 
 export interface User {

@@ -1,71 +1,63 @@
-/* Centralized design tokens - SEMANTIC FIRST approach */
-/* Reduced from 120+ to 35 core tokens for maintainability */
-/* Default (dark) theme variables live under :root; light theme overrides live under .light-theme */
-
 :root {
-  /* ===== BASE COLORS ===== */
   --color-white: #ffffff;
   --color-black: #000000;
   --color-transparent: transparent;
 
-  /* ===== SEMANTIC COLORS ===== */
-  --color-primary: #1f2937; /* gray-800 surface */
-  --color-on-primary: var(--color-white); /* white text on dark */
-  --color-bg: #111827; /* gray-900 background */
-  --color-bg-secondary: #1f2937; /* gray-800 for gradients */
+  --color-primary: #1f2937;
+  --color-on-primary: var(--color-white);
+  --color-bg: #111827;
+  --color-bg-secondary: #1f2937;
 
-  --color-accent: #f97316; /* orange-500 primary accent */
-  --color-accent-light: #fb923c; /* orange-400 */
-  --color-accent-dark: #ea580c; /* orange-600 for hover */
-  --color-on-accent: var(--color-white); /* white on orange */
+  --color-accent: #f97316;
+  --color-accent-light: #fb923c;
+  --color-accent-dark: #ea580c;
+  --color-on-accent: var(--color-white);
   --gradient-accent-soft: linear-gradient(
     135deg,
     rgba(249, 115, 22, 0.12),
     rgba(234, 88, 12, 0.08)
-  ); /* subtle footer gradient */
+  );
 
-  --color-surface: rgba(31, 41, 55, 0.5); /* gray-800/50 with alpha */
-  --color-surface-solid: #1f2937; /* solid surface */
-  --color-surface-variant: rgba(55, 65, 81, 0.4); /* gray-700/40 for hover states */
-  --color-on-surface: var(--color-white); /* white text on surface */
+  --color-surface: rgba(31, 41, 55, 0.5);
+  --color-surface-solid: #1f2937;
+  --color-surface-variant: rgba(55, 65, 81, 0.4);
+  --color-on-surface: var(--color-white);
 
-  --color-border: rgba(55, 65, 81, 0.5); /* gray-700/50 */
-  --color-muted: #9ca3af; /* gray-400 muted text */
-  --border-accent-soft: rgba(249, 115, 22, 0.2); /* accent divider */
-  --border-accent-strong: rgba(249, 115, 22, 0.5); /* accent hover underline */
+  --color-border: rgba(55, 65, 81, 0.5);
+  --color-muted: #9ca3af;
+  --border-accent-soft: rgba(249, 115, 22, 0.2);
+  --border-accent-strong: rgba(249, 115, 22, 0.5);
   --border-accent-emphasis: rgba(249, 115, 22, 0.26);
 
-  --color-danger: #ef4444; /* red-500 */
-  --color-danger-dark: #dc2626; /* red-600 */
+  --color-danger: #ef4444;
+  --color-danger-dark: #dc2626;
   --color-danger-bg: rgba(239, 68, 68, 0.1);
   --color-danger-border: rgba(239, 68, 68, 0.3);
   --color-danger-border-strong: rgba(220, 38, 38, 0.4);
-  --color-danger-text-dark: #991b1b; /* red-800 */
-  --color-danger-text-light: #7f1d1d; /* red-900 */
+  --color-danger-text-dark: #991b1b;
+  --color-danger-text-light: #7f1d1d;
 
-  --color-success: #10b981; /* green-500 */
-  --color-success-light: #22c55e; /* green-500 */
+  --color-success: #10b981;
+  --color-success-light: #22c55e;
   --color-success-bg: rgba(34, 197, 94, 0.1);
   --color-success-border: rgba(34, 197, 94, 0.3);
-  --color-success-text-dark: #166534; /* green-800 */
-  --color-success-text-light: #14532d; /* green-900 */
+  --color-success-text-dark: #166534;
+  --color-success-text-light: #14532d;
 
-  --color-warning: #f59e0b; /* amber-500 */
+  --color-warning: #f59e0b;
   --color-warning-bg: rgba(245, 158, 11, 0.1);
   --color-warning-border: rgba(245, 158, 11, 0.3);
-  --color-warning-text-dark: #92400e; /* amber-800 */
-  --color-warning-text-light: #78350f; /* amber-900 */
+  --color-warning-text-dark: #92400e;
+  --color-warning-text-light: #78350f;
 
-  --color-info: #3b82f6; /* blue-500 */
-  --color-info-dark: #1e40af; /* blue-800 */
+  --color-info: #3b82f6;
+  --color-info-dark: #1e40af;
   --color-info-bg: rgba(59, 130, 246, 0.1);
   --color-info-border: rgba(59, 130, 246, 0.3);
-  --color-info-text-dark: #1e40af; /* blue-800 */
-  --color-info-text-light: #1e3a8a; /* blue-900 */
+  --color-info-text-dark: #1e40af;
+  --color-info-text-light: #1e3a8a;
 
-  /* ===== Button palettes for small action buttons (View / Edit) ===== */
-  /* Defaults target the dark theme look previously hardcoded; use vars so themes can override */
-  --btn-view-bg: #334155; /* darker bluish used previously */
+  --btn-view-bg: #334155;
   --btn-view-color: var(--color-white);
   --btn-view-border: rgba(255, 255, 255, 0.06);
   --btn-view-hover: rgba(0, 0, 0, 0.08);
@@ -75,23 +67,21 @@
   --btn-edit-border: rgba(255, 255, 255, 0.1);
   --btn-edit-hover: rgba(0, 0, 0, 0.1);
 
-  --focus-ring: #f97316; /* orange-500 focus ring */
+  --focus-ring: #f97316;
   --shadow: var(--shadow-lg);
   --shadow-orange: var(--shadow-accent);
   --border-radius-btn: var(--radius-button);
 
-  /* ===== INPUT BACKGROUNDS ===== */
-  --color-bg-input-dark: rgba(17, 24, 39, 0.2); /* subtle dark overlay */
-  --color-bg-input-dark-focus: rgba(17, 24, 39, 0.7); /* darker on focus */
+  --color-bg-input-dark: rgba(17, 24, 39, 0.2);
+  --color-bg-input-dark-focus: rgba(17, 24, 39, 0.7);
   --color-accent-light-alpha: rgba(249, 115, 22, 0.35);
 
-  /* ===== ESSENTIAL ALPHA VALUES ===== */
-  --alpha-overlay-dark: rgba(0, 0, 0, 0.6); /* modal backdrops */
-  --alpha-overlay-light: rgba(0, 0, 0, 0.05); /* hover states */
-  --alpha-surface: rgba(255, 255, 255, 0.85); /* surface alpha */
-  --alpha-border: rgba(55, 65, 81, 0.5); /* border transparency */
-  --alpha-focus: rgba(249, 115, 22, 0.3); /* focus ring alpha */
-  --skeleton-tint: rgba(255, 255, 255, 0.04); /* skeleton animation */
+  --alpha-overlay-dark: rgba(0, 0, 0, 0.6);
+  --alpha-overlay-light: rgba(0, 0, 0, 0.05);
+  --alpha-surface: rgba(255, 255, 255, 0.85);
+  --alpha-border: rgba(55, 65, 81, 0.5);
+  --alpha-focus: rgba(249, 115, 22, 0.3);
+  --skeleton-tint: rgba(255, 255, 255, 0.04);
   --alpha-white-0: rgba(255, 255, 255, 0);
   --alpha-white-08: rgba(255, 255, 255, 0.08);
   --alpha-white-15: rgba(255, 255, 255, 0.15);
@@ -101,45 +91,39 @@
   --alpha-white-60: rgba(255, 255, 255, 0.6);
   --alpha-white-94: rgba(255, 255, 255, 0.94);
 
-  /* Button sizing tokens (centralized for consistency) */
-  --btn-height-sm: 2.5rem; /* 40px */
-  --btn-height-md: 2.75rem; /* 44px */
-  --btn-height-lg: 3.25rem; /* 52px */
-  --btn-padding-x-sm: var(--space-md); /* 16px */
-  --btn-padding-x-md: var(--space-lg); /* 24px */
-  --btn-padding-x-lg: var(--space-xl); /* 32px */
+  --btn-height-sm: 2.5rem;
+  --btn-height-md: 2.75rem;
+  --btn-height-lg: 3.25rem;
+  --btn-padding-x-sm: var(--space-md);
+  --btn-padding-x-md: var(--space-lg);
+  --btn-padding-x-lg: var(--space-xl);
 
-  /* Centralized fallbacks for color-mix() uses in components */
   --fallback-accent-hover-rgba: rgba(249, 115, 22, 0.1);
   --fallback-border-rgba: rgba(55, 65, 81, 0.5);
   --fallback-surface-backdrop: rgba(31, 41, 55, 0.5);
 
-  /* Semantic mix variables (fallbacks). Components should use these. */
   --accent-hover: var(--fallback-accent-hover-rgba);
   --border-mix: var(--fallback-border-rgba);
   --surface-backdrop: var(--fallback-surface-backdrop);
   --focus-mix: rgba(249, 115, 22, 0.3);
 
-  /* 8pt Grid Spacing System */
   --space-unit: 8px;
-  --space-xxs: calc(var(--space-unit) * 0.25); /* 2px */
-  --space-2xs: calc(var(--space-unit) * 0.375); /* 3px */
-  --space-xs: calc(var(--space-unit) * 0.5); /* 4px */
-  --space-sm: var(--space-unit); /* 8px */
-  --space-md: calc(var(--space-unit) * 2); /* 16px */
-  --space-lg: calc(var(--space-unit) * 3); /* 24px */
-  --space-xl: calc(var(--space-unit) * 4); /* 32px */
-  --space-2xl: calc(var(--space-unit) * 5); /* 40px */
-  --space-xxl: calc(var(--space-unit) * 6); /* 48px */
-  --space-3xl: calc(var(--space-unit) * 8); /* 64px */
+  --space-xxs: calc(var(--space-unit) * 0.25);
+  --space-2xs: calc(var(--space-unit) * 0.375);
+  --space-xs: calc(var(--space-unit) * 0.5);
+  --space-sm: var(--space-unit);
+  --space-md: calc(var(--space-unit) * 2);
+  --space-lg: calc(var(--space-unit) * 3);
+  --space-xl: calc(var(--space-unit) * 4);
+  --space-2xl: calc(var(--space-unit) * 5);
+  --space-xxl: calc(var(--space-unit) * 6);
+  --space-3xl: calc(var(--space-unit) * 8);
 
   --layout-max-width: 1200px;
   --layout-wide-width: 1440px;
   --layout-gutter: clamp(var(--space-md), 3vw, var(--space-xl));
   --layout-gutter-tight: clamp(var(--space-sm), 2vw, var(--space-lg));
 
-  /* ===== Reading mode tokens (defaults) ===== */
-  /* These are used when body.reading-mode is applied and can be overridden by light/dark reading blocks */
   --reading-gradient-top: radial-gradient(
     circle at 10% 80%,
     rgba(249, 115, 22, 0.035),
@@ -148,7 +132,7 @@
   --reading-glow-primary: rgba(249, 115, 22, 0.08);
   --reading-glow-secondary: rgba(234, 88, 12, 0.05);
 
-  --reading-highlight-color: rgba(255, 250, 240, 0.8); /* warm paper highlight */
+  --reading-highlight-color: rgba(255, 250, 240, 0.8);
   --reading-border-color: rgba(0, 0, 0, 0.04);
   --reading-shadow-elevation: 0 8px 26px rgba(2, 6, 23, 0.12);
   --reading-focus-ring-color: rgba(249, 115, 22, 0.14);
@@ -156,10 +140,9 @@
   --reading-accent-hover-color: rgba(249, 115, 22, 0.06);
   --reading-surface-backdrop-color: rgba(0, 0, 0, 0.02);
 
-  /* Light reading defaults */
   --reading-light-color-primary: #ffffff;
   --reading-light-color-on-primary: #0b1220;
-  --reading-light-bg: #fff8f0; /* warmer cream */
+  --reading-light-bg: #fff8f0;
   --reading-light-bg-secondary: #fff3e8;
   --reading-light-surface: #fffaf6;
   --reading-light-surface-solid: #ffffff;
@@ -167,7 +150,6 @@
   --reading-light-muted: #6b6b6b;
   --reading-light-shadow: 0 10px 36px rgba(17, 24, 39, 0.06);
 
-  /* Dark reading defaults */
   --reading-dark-color-primary: #0b1220;
   --reading-dark-color-on-primary: #f8f7f5;
   --reading-dark-bg: #0f1724;
@@ -192,28 +174,28 @@
   --reading-light-bg-secondary: #fff3ea;
   --reading-light-surface: #fff8f4;
   --reading-light-on-surface: #08121b;
-  --color-primary: #ffffff; /* white surface */
-  --color-on-primary: #111827; /* gray-900 text on light */
-  --color-bg: #fff7ed; /* orange-50 background */
-  --color-bg-secondary: #ffffff; /* white for gradients */
+  --color-primary: #ffffff;
+  --color-on-primary: #111827;
+  --color-bg: #fff7ed;
+  --color-bg-secondary: #ffffff;
 
-  --color-accent: #f97316; /* orange-500 stays same */
-  --color-accent-light: #fb923c; /* orange-400 */
-  --color-accent-dark: #ea580c; /* orange-600 */
-  --color-on-accent: #ffffff; /* white on orange */
+  --color-accent: #f97316;
+  --color-accent-light: #fb923c;
+  --color-accent-dark: #ea580c;
+  --color-on-accent: #ffffff;
   --gradient-accent-soft: linear-gradient(
     135deg,
     rgba(249, 165, 76, 0.12),
     rgba(249, 115, 22, 0.08)
   );
 
-  --color-surface: rgba(255, 255, 255, 0.8); /* white/80 with alpha */
-  --color-surface-solid: #ffffff; /* solid white surface */
-  --color-surface-variant: rgba(249, 115, 22, 0.05); /* orange tint for hover */
-  --color-on-surface: #111827; /* dark text on light surface */
+  --color-surface: rgba(255, 255, 255, 0.8);
+  --color-surface-solid: #ffffff;
+  --color-surface-variant: rgba(249, 115, 22, 0.05);
+  --color-on-surface: #111827;
 
-  --color-border: #fed7aa; /* orange-200 border */
-  --color-muted: #6b7280; /* gray-500 muted text */
+  --color-border: #fed7aa;
+  --color-muted: #6b7280;
   --alpha-white-0: rgba(255, 255, 255, 0);
   --alpha-white-08: rgba(255, 255, 255, 0.08);
   --alpha-white-15: rgba(255, 255, 255, 0.15);
@@ -251,66 +233,60 @@
   --skeleton-tint-02: rgba(249, 165, 76, 0.05);
   --skeleton-tint-04: rgba(249, 165, 76, 0.1);
 
-  --color-danger: #dc2626; /* red-600 */
-  --color-danger-dark: #b91c1c; /* red-700 */
+  --color-danger: #dc2626;
+  --color-danger-dark: #b91c1c;
   --color-danger-bg: rgba(239, 68, 68, 0.08);
   --color-danger-border: rgba(239, 68, 68, 0.3);
   --color-danger-border-strong: rgba(220, 38, 38, 0.4);
-  --color-danger-text-dark: #991b1b; /* red-800 */
-  --color-danger-text-light: #7f1d1d; /* red-900 */
+  --color-danger-text-dark: #991b1b;
+  --color-danger-text-light: #7f1d1d;
 
-  --color-success: #059669; /* green-600 */
-  --color-success-light: #22c55e; /* green-500 */
+  --color-success: #059669;
+  --color-success-light: #22c55e;
   --color-success-bg: rgba(34, 197, 94, 0.08);
   --color-success-border: rgba(34, 197, 94, 0.3);
-  --color-success-text-dark: #166534; /* green-800 */
-  --color-success-text-light: #14532d; /* green-900 */
+  --color-success-text-dark: #166534;
+  --color-success-text-light: #14532d;
 
   --comment-bg: rgba(249, 165, 76, 0.06);
   --comment-border: rgba(249, 115, 22, 0.12);
 
-  --color-warning: #d97706; /* amber-600 */
+  --color-warning: #d97706;
   --color-warning-bg: rgba(245, 158, 11, 0.08);
   --color-warning-border: rgba(245, 158, 11, 0.3);
-  --color-warning-text-dark: #92400e; /* amber-800 */
-  --color-warning-text-light: #78350f; /* amber-900 */
+  --color-warning-text-dark: #92400e;
+  --color-warning-text-light: #78350f;
 
-  --color-info: #3b82f6; /* blue-500 */
-  --color-info-dark: #1e40af; /* blue-800 */
+  --color-info: #3b82f6;
+  --color-info-dark: #1e40af;
   --color-info-bg: rgba(59, 130, 246, 0.08);
   --color-info-border: rgba(59, 130, 246, 0.3);
-  --color-info-text-dark: #1e40af; /* blue-800 */
-  --color-info-text-light: #1e3a8a; /* blue-900 */
+  --color-info-text-dark: #1e40af;
+  --color-info-text-light: #1e3a8a;
 
-  /* Light theme overrides for small action buttons - elegant, warm complement */
-  /* Make View use the same warm palette as Edit in light mode for a cohesive look */
-  --btn-edit-bg: rgba(249, 165, 76, 0.08); /* slightly stronger soft warm tint */
-  --btn-edit-color: #0b1220; /* dark text */
+  --btn-edit-bg: rgba(249, 165, 76, 0.08);
+  --btn-edit-color: #0b1220;
   --btn-edit-border: rgba(249, 165, 76, 0.16);
   --btn-edit-hover: rgba(249, 115, 22, 0.16);
 
-  /* View matches Edit in light theme for visual consistency and elegance */
   --btn-view-bg: var(--btn-edit-bg);
   --btn-view-color: var(--btn-edit-color);
   --btn-view-border: var(--btn-edit-border);
   --btn-view-hover: var(--btn-edit-hover);
 
-  --focus-ring: #f97316; /* orange-500 focus ring */
+  --focus-ring: #f97316;
   --shadow: var(--shadow-lg);
   --shadow-orange: var(--shadow-accent);
 
-  /* ===== INPUT BACKGROUNDS (LIGHT THEME) ===== */
-  --color-bg-input-light: #fff8ef; /* warm light background */
-  --color-bg-input-light-focus: #fffdf9; /* lighter on focus */
+  --color-bg-input-light: #fff8ef;
+  --color-bg-input-light-focus: #fffdf9;
   --shadow-input-light:
     inset 0 0 0 1px rgba(249, 115, 22, 0.12), 0 6px 16px -10px rgba(249, 115, 22, 0.2);
 
-  /* Light-theme fallbacks */
   --fallback-accent-hover-rgba: rgba(249, 115, 22, 0.08);
   --fallback-border-rgba: rgba(254, 215, 170, 1);
   --fallback-surface-backdrop: rgba(255, 255, 255, 0.8);
 
-  /* Semantic mix variables for light theme */
   --accent-hover: var(--fallback-accent-hover-rgba);
   --border-mix-60: var(--fallback-border-rgba);
   --surface-backdrop: var(--fallback-surface-backdrop);
@@ -318,7 +294,6 @@
   --alpha-overlay-medium: rgba(0, 0, 0, 0.5);
   --shadow-brand-filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.35));
 
-  /* ===== POST CONTENT VARIABLES ===== */
   --post-preview-lines: 3;
   --post-line-height: 1.6;
   --post-preview-height: calc(var(--post-preview-lines) * var(--post-line-height) * 1em);
@@ -334,5 +309,3 @@
     --focus-ring-mix: color-mix(in srgb, var(--focus-ring) 30%, transparent);
   }
 }
-
-/* End of variables */

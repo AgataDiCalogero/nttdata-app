@@ -9,8 +9,6 @@
 @use './styles/material-theme';
 @use './styles/foundations';
 
-/* Base & layout styles */
-/* Global layout: full-height flex for footer visibility */
 html,
 body {
   height: 100%;
@@ -96,7 +94,6 @@ body.dark-theme.reading-mode {
   --surface-backdrop: var(--reading-dark-surface-backdrop);
 }
 
-/* Decorative gradient blurs (background) */
 body::before,
 body::after {
   content: '';
@@ -136,7 +133,6 @@ body.reading-mode::after {
   opacity: 0.28;
 }
 
-/* Ensure pseudo-elements target the body when theme class is applied to body */
 body.light-theme::before {
   opacity: 0.3;
 }
@@ -145,27 +141,23 @@ body.light-theme::after {
   opacity: 0.25;
 }
 
-/* Focus Management - WCAG 2.4.7 Focus Visible */
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
 }
 
-/* Button Focus Enhancement */
 button:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
-/* Link Focus Enhancement - WCAG 2.4.7 Non-color identification */
 a:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   text-decoration: underline;
 }
 
-/* Input Focus Enhancement */
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
@@ -174,20 +166,18 @@ select:focus-visible {
   border-color: var(--focus-ring);
 }
 
-/* Modal Dialog Styles */
 .blurred-backdrop {
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   background: var(--overlay-backdrop-soft);
 }
 
-/* Token help dialog: stronger backdrop and pane rules so page underneath isn't visible */
 .cdk-overlay-pane.token-help-dialog {
-  z-index: 1200 !important; /* sit above app chrome */
+  z-index: 1200 !important;
 }
 
 .cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
-  background: rgba(2, 6, 23, 0.75) !important; /* darken overlay */
+  background: rgba(2, 6, 23, 0.75) !important;
 }
 
 body.ui-overlay-blocked .app-navbar .controls {
@@ -220,7 +210,6 @@ body.ui-overlay-blocked .app-navbar .logout-btn {
   overflow-y: auto;
 }
 
-/* Optional: Lateral Drawer Styles */
 .slide-in-drawer {
   animation: slideIn 0.3s ease;
   border-radius: 0;

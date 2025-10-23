@@ -9,7 +9,7 @@ import type { Post, Comment, DeleteConfirmData, User } from '@/app/shared/models
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { take } from 'rxjs';
-// Dialog result shape used by PostForm dialog
+
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
 type PostFormDialogData = { users: User[]; post?: Post };
 
@@ -42,8 +42,6 @@ export class Posts {
       this.syncQueryParams(page, perPage);
     });
   }
-
-  // (DialogResult type declared at module scope)
 
   handleCreatePost(): void {
     this.openPostFormDialog({

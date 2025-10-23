@@ -8,8 +8,7 @@ export const apiPrefixInterceptor: HttpInterceptorFn = (
   const apiBase = environment?.baseUrl ?? '';
   const url = req.url ?? '';
 
-  // Allow absolute URLs (http://, https://, //) to pass through unchanged
-  const isAbsolute = /^(https?:)?\/\//i.test(url);
+  const isAbsolute = /^(https?:)?\/\//.test(url);
   if (!url || isAbsolute || url.startsWith(apiBase)) {
     return next(req);
   }

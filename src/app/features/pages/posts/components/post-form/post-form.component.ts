@@ -117,9 +117,7 @@ export class PostForm {
             next: (user) => {
               this.users.update((list) => [...list, user]);
             },
-            error: () => {
-              // Ignore errors: the select will still bind to the existing value.
-            },
+            error: () => {},
           });
       }
     }
@@ -169,7 +167,6 @@ export class PostForm {
       return;
     }
 
-    // Clear previous errors
     this.submitError.set(null);
 
     const payload: CreatePost = {

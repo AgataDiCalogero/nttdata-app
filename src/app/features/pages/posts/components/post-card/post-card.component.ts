@@ -51,7 +51,6 @@ export class PostCardComponent implements AfterViewChecked {
   readonly commentUpdated = output<ModelComment>();
   readonly commentDeleted = output<number>();
 
-  // Compute count directly from comments array
   get commentCount(): number {
     const list = this.comments();
     return Array.isArray(list) ? list.length : 0;
@@ -59,7 +58,7 @@ export class PostCardComponent implements AfterViewChecked {
 
   isExpanded = false;
   private pendingCommentsReveal = false;
-  // Which bottom section is currently open. Only one can be open at a time.
+
   openSection: 'none' | 'comments' | 'composer' = 'none';
 
   shouldTruncate(): boolean {
@@ -86,29 +85,25 @@ export class PostCardComponent implements AfterViewChecked {
   }
 
   openCommentsList(): void {
-    // If composer is open, close it first
     if (this.openSection === 'composer') {
       this.openSection = 'none';
     }
 
     if (this.openSection === 'comments') {
-      // Close if already open
       this.openSection = 'none';
-      // If the comments are loaded we still allow toggleComments to hide them
-      // by emitting the parent toggle (preserves previous behaviour)
+
       const current = this.post();
       if (current) this.toggleComments.emit();
       return;
     }
 
     this.openSection = 'comments';
-    // Ensure parent loads comments if not already loaded
+
     const current = this.post();
     if (current) this.toggleComments.emit();
   }
 
   openComposer(): void {
-    // If comments list is open, close it first
     if (this.openSection === 'comments') {
       this.openSection = 'none';
     }
@@ -119,7 +114,7 @@ export class PostCardComponent implements AfterViewChecked {
     }
 
     this.openSection = 'composer';
-    // If comments are not loaded we also want them available in composer focus flow
+
     const current = this.post();
     if (current && !this.comments()) {
       this.pendingCommentsReveal = true;
@@ -140,7 +135,6 @@ export class PostCardComponent implements AfterViewChecked {
   }
 
   onComposerCancelledFromChild(): void {
-    // Close any open bottom section (composer)
     if (this.openSection === 'composer') {
       this.openSection = 'none';
     }

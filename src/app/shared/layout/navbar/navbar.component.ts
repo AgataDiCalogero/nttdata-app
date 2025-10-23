@@ -20,7 +20,6 @@ import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
 
-// Main application navbar with Material toolbar and responsive menu
 @Component({
   selector: 'app-navbar',
   imports: [

@@ -70,7 +70,6 @@ function buildPaginatedUsers(
   };
 }
 
-// Definisci il tipo per lo state interno (solo ciò che serve per il funzionamento, non pubblico)
 interface UsersState {
   users: User[];
   loading: boolean;
@@ -81,9 +80,7 @@ interface UsersState {
   pageState: { page: number; per_page: number };
 }
 
-// Crea l'adapter Signal Store
 export const UsersStoreAdapter = signalStore(
-  // Stato iniziale generico
   withState<UsersState>({
     users: [],
     loading: true,
@@ -94,14 +91,12 @@ export const UsersStoreAdapter = signalStore(
     pageState: { page: 1, per_page: 10 },
   }),
 
-  // Computed per derived state
   withComputed((store) => ({
     displayed: computed(() =>
       buildPaginatedUsers(store.users(), store.searchTerm(), store.sortState(), store.pageState()),
     ),
   })),
 
-  // Methods per tutte le operazioni
   withMethods((store) => {
     const usersApi = inject(UsersApiService);
     const toast = inject(ToastService);
@@ -111,7 +106,6 @@ export const UsersStoreAdapter = signalStore(
     const dialogLayouts = inject(ResponsiveDialogService);
     const overlays = inject(UiOverlayService);
 
-    // Setup iniziale
     const setupInitialState = () => {
       const qp = route.snapshot.queryParamMap;
       const page = Number(qp.get('page') ?? 1) || 1;
@@ -280,11 +274,9 @@ export const UsersStoreAdapter = signalStore(
       });
     };
 
-    // Inizializza
     setupInitialState();
 
     return {
-      // Methods pubblici
       loadUsers,
       onSearch,
       toggleSort,

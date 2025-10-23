@@ -33,7 +33,6 @@ export class Users {
   public readonly usersService = injectUsersService();
   private readonly router = inject(Router);
 
-  // Expose service signals
   readonly loading = this.usersService.loading;
   readonly error = this.usersService.error;
   readonly deletingId = this.usersService.deletingId;
@@ -114,8 +113,6 @@ export class Users {
   }
 
   clearError(): void {
-    // Since error is managed by the service, we might need to reload or handle differently
-    // For now, just reload
     this.usersService.loadUsers();
   }
 }
