@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
@@ -21,6 +21,10 @@ import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
 export class PostsFiltersComponent {
   readonly searchForm = input.required<FormGroup>();
   readonly userOptions = input<{ id: number; name?: string }[]>([]);
+  // optional control & output for per-page selection
+  readonly perPageControl = input<FormControl | null>(null);
+  readonly perPageOptions = input<{ value: number; label: string }[]>([]);
+  readonly perPageChange = output<number>();
 
   readonly userSelectOptions = computed(() => [
     { value: 0 as const, label: 'All authors' },
@@ -30,6 +34,14 @@ export class PostsFiltersComponent {
     })),
   ]);
   readonly resetFilters = output<void>();
+
+  readonly perPageSelectOptions = computed(() => this.perPageOptions() ?? []);
+
+  onPerPageChange(value: number | string): void {
+    // normalize to number and forward to parent
+    const num = typeof value === 'string' ? +value : value;
+    this.perPageChange.emit(num);
+  }
 
   onReset(): void {
     this.resetFilters.emit();

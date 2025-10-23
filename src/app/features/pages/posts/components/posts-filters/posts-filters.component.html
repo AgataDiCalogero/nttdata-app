@@ -9,5 +9,13 @@
     [control]="$any(searchForm().get('userId'))"
     [options]="userSelectOptions()"
   ></app-select>
+  <app-select
+    class="posts-filters__perpage"
+    [control]="$any(searchForm().get('perPage'))"
+    [options]="perPageSelectOptions()"
+    (selectionChange)="onPerPageChange($event)"
+    [ariaLabel]="'Posts per page'"
+    [showPlaceholder]="false"
+  ></app-select>
   <button appButton variant="ghost" type="button" (click)="onReset()">Reset</button>
 </form>

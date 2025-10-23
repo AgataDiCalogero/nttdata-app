@@ -34,7 +34,8 @@
 .app-search__input {
   width: 100%;
   min-width: 0;
-  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 0.9rem + 0.5rem);
+  /* Leave a bit more space between the icon and the text */
+  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 0.9rem + 1.5rem);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);
   background: var(--color-surface);
@@ -55,6 +56,17 @@
 
 .app-search--wide {
   max-width: 40rem;
+}
+
+/* New variants */
+.app-search--small {
+  max-width: 16rem;
+}
+
+.app-search--full {
+  /* full-width input that grows to its container (useful for list pages) */
+  max-width: none;
+  width: 100%;
 }
 
 @media (max-width: 640px) {

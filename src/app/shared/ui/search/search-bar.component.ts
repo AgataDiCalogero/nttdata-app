@@ -5,8 +5,8 @@ import { DebounceInputDirective } from '@app/shared/directives/debounce-input.di
 import { LucideAngularModule, Search } from 'lucide-angular';
 import { createUniqueId } from '@app/shared/utils/id';
 
-type SearchSize = 'wide' | 'compact';
-const SIZE_SET = new Set<SearchSize>(['wide', 'compact']);
+type SearchSize = 'wide' | 'compact' | 'small' | 'full';
+const SIZE_SET = new Set<SearchSize>(['wide', 'compact', 'small', 'full']);
 
 @Component({
   standalone: true,
@@ -47,6 +47,12 @@ export class SearchBarComponent {
   );
   protected readonly isCompact = computed(() =>
     SIZE_SET.has(this.size()) ? this.size() === 'compact' : false,
+  );
+  protected readonly isSmall = computed(() =>
+    SIZE_SET.has(this.size()) ? this.size() === 'small' : false,
+  );
+  protected readonly isFull = computed(() =>
+    SIZE_SET.has(this.size()) ? this.size() === 'full' : false,
   );
 
   onDebounced(value: string): void {

@@ -5,7 +5,13 @@
         <h1 class="app-page__title">Posts</h1>
         <p class="app-page__meta">{{ postsCount() }} posts</p>
       </div>
-      <button appButton variant="primary" type="button" (click)="createPost.emit()" aria-label="Create new post">
+      <button
+        appButton
+        variant="primary"
+        type="button"
+        (click)="createPost.emit()"
+        aria-label="Create new post"
+      >
         <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
         <span>New Post</span>
       </button>
@@ -14,6 +20,9 @@
     <app-posts-filters
       [searchForm]="searchForm()"
       [userOptions]="userOptions()"
+      [perPageControl]="$any(perPageControl)"
+      [perPageOptions]="perPageSelectOptions()"
+      (perPageChange)="changePerPage.emit($event)"
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
 
@@ -52,14 +61,7 @@
         [pageCount]="totalPages()"
         (pageChange)="changePage.emit($event)"
       >
-        <app-select
-          pagination-extra
-          [control]="perPageControl"
-          [options]="perPageSelectOptions()"
-          (selectionChange)="changePerPage.emit(+$event)"
-          [ariaLabel]="'Posts per page'"
-          [showPlaceholder]="false"
-        ></app-select>
+        <!-- per-page select moved into the filters component -->
       </app-pagination>
     }
   </div>

@@ -2,6 +2,8 @@
   class="app-search"
   [class.app-search--wide]="isWide()"
   [class.app-search--compact]="isCompact()"
+  [class.app-search--small]="isSmall()"
+  [class.app-search--full]="isFull()"
 >
   <span class="sr-only" [id]="labelId">{{ labelText() }}</span>
   <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
