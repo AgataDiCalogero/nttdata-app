@@ -21,55 +21,20 @@
   }
 
   .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    color: inherit;
-    text-decoration: none;
-    padding: 0 var(--space-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0;
+    border-radius: var(--radius-lg);
+    padding-inline: var(--space-md);
+    color: var(--color-on-surface);
 
-    &__logo {
-      width: 2.5rem;
-      height: 2.5rem;
+    mat-icon {
+      margin-inline-end: var(--space-xxs);
+      font-size: 1.125rem;
     }
 
-    &__label {
-      font-weight: var(--font-weight-bold);
-      font-size: var(--font-size-lg);
-      letter-spacing: var(--letter-spacing-tight);
-      background: var(--gradient-primary);
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  }
-
-  .spacer {
-    flex: 1;
-  }
-
-  .nav-links {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    margin-inline-start: var(--space-sm);
-
-    a[mat-button] {
-      text-transform: none;
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: 0;
-      border-radius: var(--radius-lg);
-      padding-inline: var(--space-md);
-      color: var(--color-on-surface);
-
-      mat-icon {
-        margin-inline-end: var(--space-xxs);
-        font-size: 1.125rem;
-      }
-
-      &.active {
-        background: color-mix(in srgb, var(--color-accent) 16%, transparent);
-        color: var(--color-on-accent);
-      }
+    &.active {
+      background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+      color: var(--color-on-accent);
     }
   }
 
@@ -139,24 +104,38 @@
     padding-inline: var(--app-page-gutter-tight);
 
     .menu-trigger {
-      display: inline-flex;
-      /* floating circular FAB on mobile */
+      /* floating FAB - placed bottom-right of the viewport */
       position: fixed;
-      bottom: calc(var(--space-lg));
-      right: calc(var(--space-sm));
-      width: 3.25rem;
-      height: 3.25rem;
-      border-radius: 50%;
+      bottom: 1.25rem;
+      right: 1rem;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.5rem; /* small rounded square */
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       padding: 0;
-      z-index: calc(var(--z-sticky) + 10);
-      box-shadow: 0 8px 24px rgba(2, 6, 23, 0.12);
-      background: var(--color-surface-elevated, var(--color-surface));
-      border: 1px solid var(--border-accent-soft, rgba(0, 0, 0, 0.08));
+      z-index: calc(var(--z-sticky) + 30);
+      /* Background stays as the app surface so the accent icon stands out */
+      background: var(--color-surface);
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
+      border: 1px solid rgba(0, 0, 0, 0.04);
 
+      /* Hamburger icon should be accent (orange) per request */
       mat-icon {
         font-size: 1.25rem;
+        color: var(--color-accent);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        margin: 0;
+      }
+
+      &:hover,
+      &:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 36px rgba(2, 6, 23, 0.18);
       }
     }
 
@@ -165,12 +144,40 @@
     }
 
     .logout-btn {
-      /* tighten spacing on mobile so it doesn't feel too roomy */
-      padding-inline: var(--space-xxs);
-      min-width: auto;
+      /* compact circular icon button on mobile */
+      padding: 0 !important;
+      min-width: auto !important;
+      width: 2.5rem !important;
+      height: 2.5rem !important;
+      border-radius: 50% !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
 
+      /* hide textual label and ensure icon is centered */
       .logout-text {
-        display: none;
+        display: none !important;
+      }
+
+      mat-icon {
+        margin: 0;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        font-size: 1.125rem;
+        color: var(--color-on-surface);
+        line-height: 1;
+
+        /* make sure the inner SVG fits and is centered */
+        svg {
+          width: 1rem;
+          height: 1rem;
+          display: block;
+        }
       }
     }
   }

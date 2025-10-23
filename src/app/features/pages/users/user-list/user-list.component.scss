@@ -27,13 +27,12 @@
   @supports (color: color-mix(in srgb, var(--border-accent-soft) 60%, transparent)) {
     border: 1px solid color-mix(in srgb, var(--border-accent-soft) 60%, transparent);
   }
-  box-shadow: var(--shadow-md);
-
+  @include app-card(var(--space-md), 'xl', 'md');
   &:hover {
-    box-shadow: var(--shadow-lg);
+    @include shadow('lg');
   }
 
-  flex: 1 1 auto;
+  @include flex-grow();
 }
 
 .user-card__avatar {

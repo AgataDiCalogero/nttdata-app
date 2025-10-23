@@ -1,3 +1,5 @@
+@use '../../../../styles/mixins' as mixins;
+
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -5,9 +7,9 @@
 
   background: var(--color-surface-container-low);
   border: 0.0625rem solid var(--color-outline-variant);
-  border-radius: var(--radius-lg);
+  @include mixins.radius('lg');
   padding: var(--space-md);
-  box-shadow: var(--shadow-xs);
+  @include mixins.shadow('xs');
 
   @supports (background: color-mix(in srgb, var(--color-surface-container-low) 95%, transparent)) {
     background: color-mix(in srgb, var(--color-surface-container-low) 95%, transparent);

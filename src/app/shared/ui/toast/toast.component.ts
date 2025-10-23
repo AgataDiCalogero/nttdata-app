@@ -27,6 +27,9 @@ export class ToastComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
+    // Guard against server-side execution where `document` is not available.
+    if (typeof document === 'undefined') return;
+
     try {
       const container = document.querySelector('.toast-list');
       if (!container) return;
@@ -35,7 +38,8 @@ export class ToastComponent implements AfterViewChecked {
         latest.focus();
       }
     } catch (err) {
-      // ignore DOM access errors during hydration
+      // ignore DOM access errors during hydration / unexpected DOM changes
+      // keep the debug log at debug level to avoid noisy logs in production
       console.debug('toast focus error', err);
     }
   }

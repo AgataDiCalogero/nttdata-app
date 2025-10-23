@@ -55,6 +55,19 @@
   box-shadow: var(--shadow);
 }
 
+// App-level shorthand for cards used across components
+@mixin app-card($padding: var(--space-md), $radius: 'lg', $shadow-level: 'md') {
+  background: var(--color-surface);
+  border: 0.0625rem solid var(--color-border);
+  @include radius($radius);
+  padding: $padding;
+  @include shadow($shadow-level);
+}
+
+@mixin flex-grow() {
+  flex: 1 1 auto;
+}
+
 @mixin focus-ring($color: var(--focus-ring)) {
   outline: 0.125rem solid $color;
   outline-offset: 0.125rem;
