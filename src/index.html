@@ -10,6 +10,24 @@
     <link rel="apple-touch-icon" href="assets/logo.svg" />
   </head>
   <body>
+    <script>
+      // Apply persisted theme before first paint to prevent flash of wrong theme
+      (function () {
+        try {
+          var theme = localStorage.getItem('preferred-theme');
+          if (!theme) {
+            var prefersLight =
+              window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+            theme = prefersLight ? 'light' : 'dark';
+          }
+          var reading = localStorage.getItem('reading-mode') === 'true';
+          var body = document.body;
+          body.classList.toggle('light-theme', theme === 'light');
+          body.classList.toggle('dark-theme', theme === 'dark');
+          body.classList.toggle('reading-mode', !!reading);
+        } catch (e) {}
+      })();
+    </script>
     <app-root></app-root>
   </body>
 </html>

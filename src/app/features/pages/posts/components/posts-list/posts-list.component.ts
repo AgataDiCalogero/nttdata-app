@@ -14,6 +14,7 @@ import { PostCardComponent } from '../post-card/post-card.component';
 export class PostsListComponent {
   readonly posts = input([] as Post[]);
   readonly commentsMap = input({} as Record<number, Comment[] | undefined>);
+  readonly commentsCountMap = input({} as Record<number, number>);
   readonly commentsLoading = input({} as Record<number, boolean>);
   readonly deletingId = input(null as number | null);
   readonly userLookup = input({} as Record<number, string>);

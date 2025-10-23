@@ -3,11 +3,18 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
+import { LucideAngularModule, Search } from 'lucide-angular';
 
 @Component({
   standalone: true,
   selector: 'app-posts-filters',
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, SelectComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ButtonComponent,
+    SelectComponent,
+    LucideAngularModule,
+  ],
   templateUrl: './posts-filters.component.html',
   styleUrls: ['./posts-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,6 +22,10 @@ import { SelectComponent } from '@app/shared/ui/select/select.component';
 export class PostsFiltersComponent {
   readonly searchForm = input.required<FormGroup>();
   readonly userOptions = input<{ id: number; name?: string }[]>([]);
+  readonly Search = Search;
+  readonly perPageOptions = input<number[]>([10]);
+  readonly currentPerPage = input<number>(10);
+  readonly changePerPage = output<number>();
 
   readonly userSelectOptions = computed(() => [
     { value: 0 as const, label: 'All authors' },
@@ -23,6 +34,10 @@ export class PostsFiltersComponent {
       label: user.name || 'Unnamed user',
     })),
   ]);
+
+  readonly perPageSelectOptions = computed(() =>
+    (this.perPageOptions() || []).map((n) => ({ value: n, label: String(n) })),
+  );
 
   readonly createPost = output<void>();
   readonly resetFilters = output<void>();

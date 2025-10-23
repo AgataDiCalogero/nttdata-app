@@ -73,6 +73,7 @@
                 [allowManage]="false"
                 [comments]="commentsFor(post.id) ?? null"
                 [commentsLoading]="commentsAreLoading(post.id)"
+                [commentsPreviewCount]="commentsCount()[post.id]"
                 [authorName]="detail.name"
                 (toggleComments)="onToggleComments(post.id)"
                 (commentCreated)="onCommentCreated(post.id, $event)"

@@ -8,6 +8,7 @@
         [isDeleting]="isDeleting(post.id)"
         [comments]="commentsFor(post.id) ?? null"
         [commentsLoading]="commentsAreLoading(post.id)"
+        [commentsPreviewCount]="commentsCountMap()[post.id]"
         (delete)="deletePost.emit(post)"
         (toggleComments)="toggleComments.emit(post.id)"
         (commentCreated)="onCommentCreated(post.id, $event)"

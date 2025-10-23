@@ -58,17 +58,7 @@
     }
   }
 
-  :host-context(body.light-theme) {
-    .nav-links {
-      a[mat-button].active {
-        color: var(--color-accent);
-
-        mat-icon {
-          color: var(--color-accent);
-        }
-      }
-    }
-  }
+  /* Removed light-theme only override for active nav links to keep consistent, accessible colors across themes */
 
   .controls {
     display: inline-flex;
@@ -90,6 +80,55 @@
       mat-icon {
         font-size: 1.125rem;
       }
+    }
+  }
+}
+
+/* Ensure nav links are always legible and have clear states */
+.app-navbar .nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+
+  a[mat-button] {
+    --_hover-bg: var(--accent-hover);
+    --_active-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    /* Use on-surface for text so it remains readable on light active backgrounds */
+    --_active-fg: var(--color-on-surface);
+
+    border-radius: var(--radius-lg);
+    color: var(--color-on-surface);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    transition:
+      background var(--duration-normal) var(--ease-in-out),
+      color var(--duration-normal) var(--ease-in-out);
+
+    mat-icon {
+      color: inherit;
+      margin-inline-end: var(--space-2xs);
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: var(--_hover-bg);
+      color: var(--color-on-surface);
+      text-decoration: none;
+    }
+
+    &.active {
+      background: var(--_active-bg);
+      color: var(--_active-fg);
+
+      mat-icon {
+        color: var(--_active-fg);
+      }
+    }
+
+    &:active {
+      /* slightly stronger on press */
+      background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+      color: var(--color-on-surface);
     }
   }
 }
@@ -146,6 +185,16 @@ body.login-route {
   button.mat-menu-item.cdk-program-focused {
     background: color-mix(in srgb, var(--color-accent) 8%, transparent);
     color: var(--color-on-surface);
+  }
+
+  /* Active (current route) state inside the dropdown */
+  button.mat-menu-item.active {
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    color: var(--color-on-surface);
+
+    mat-icon {
+      color: var(--color-on-surface);
+    }
   }
 
   mat-icon {

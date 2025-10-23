@@ -10,6 +10,7 @@ export interface PostsService {
   pagination: Signal<PaginationMeta | null>;
   commentsMap: Signal<Record<number, Comment[]>>;
   commentsLoading: Signal<Record<number, boolean>>;
+  commentsCountMap: Signal<Record<number, number>>;
   userOptions: Signal<User[]>;
   userLookup: Signal<Record<number, string>>;
   deletingId: Signal<number | null>;

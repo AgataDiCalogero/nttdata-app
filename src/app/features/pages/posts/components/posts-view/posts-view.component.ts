@@ -40,6 +40,7 @@ export class PostsViewComponent {
   readonly posts = input.required<Post[]>();
   readonly commentsMap = input.required<Record<number, Comment[] | undefined>>();
   readonly commentsLoading = input.required<Record<number, boolean>>();
+  readonly commentsCountMap = input.required<Record<number, number>>();
   readonly perPageOptions = input.required<number[]>();
   readonly currentPage = input.required<number>();
   readonly totalPages = input.required<number>();

@@ -14,6 +14,9 @@
     <app-posts-filters
       [searchForm]="searchForm()"
       [userOptions]="userOptions()"
+      [perPageOptions]="perPageOptions()"
+      [currentPerPage]="currentPerPage()"
+      (changePerPage)="changePerPage.emit($event)"
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
 
@@ -34,6 +37,7 @@
         [posts]="posts()"
         [commentsMap]="commentsMap()"
         [commentsLoading]="commentsLoading()"
+        [commentsCountMap]="commentsCountMap()"
         [deletingId]="deletingId()"
         [userLookup]="userLookup()"
         (deletePost)="deletePost.emit($event)"
@@ -46,7 +50,7 @@
     }
 
     @if (hasPagination()) {
-      <footer class="posts-pagination">
+      <footer class="posts-pagination app-pagination">
         <div class="posts-pagination__controls">
           <button
             appButton
@@ -57,7 +61,7 @@
           >
             Previous
           </button>
-          <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+          <span class="app-pagination__info">Page {{ currentPage() }} of {{ totalPages() }}</span>
           <button
             appButton
             variant="ghost"
@@ -67,15 +71,6 @@
           >
             Next
           </button>
-        </div>
-        <div class="posts-pagination__page-size">
-          <label for="per-page-select">Per page</label>
-          <app-select
-            id="per-page-select"
-            [options]="perPageSelectOptions()"
-            [placeholder]="currentPerPage().toString()"
-            (selectionChange)="changePerPage.emit(+$event)"
-          ></app-select>
         </div>
       </footer>
     }

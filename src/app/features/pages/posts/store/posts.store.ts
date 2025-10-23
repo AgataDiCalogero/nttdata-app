@@ -22,6 +22,7 @@ interface PostsState {
   pagination: PaginationMeta | null;
   commentsMap: Record<number, Comment[]>;
   commentsLoading: Record<number, boolean>;
+  commentsCountMap: Record<number, number>;
   userOptions: User[];
   userLookup: Record<number, string>;
   deletingId: number | null;
@@ -40,6 +41,7 @@ export const PostsStoreAdapter = signalStore(
     pagination: null,
     commentsMap: {},
     commentsLoading: {},
+    commentsCountMap: {},
     userOptions: [],
     userLookup: {},
     deletingId: null,
@@ -153,7 +155,7 @@ export const PostsStoreAdapter = signalStore(
 
       resetFilters(): void {
         searchForm.reset({ title: '', userId: 0 });
-        patchState(store, { filters: { title: null, userId: null }, page: 1 });
+        patchState(store, { filters: { title: null, userId: null }, page: 1, perPage: 10 });
       },
 
       deletePost(post: Post): void {
@@ -190,6 +192,10 @@ export const PostsStoreAdapter = signalStore(
             next: (comments) => {
               patchState(store, (state) => ({
                 commentsMap: { ...state.commentsMap, [postId]: comments ?? [] },
+                commentsCountMap: {
+                  ...((state as any).commentsCountMap ?? {}),
+                  [postId]: Array.isArray(comments) ? comments.length : 0,
+                },
               }));
             },
             error: (err) => {
@@ -210,6 +216,12 @@ export const PostsStoreAdapter = signalStore(
             ...state.commentsMap,
             [postId]: [comment, ...(state.commentsMap[postId] ?? [])],
           },
+          commentsCountMap: {
+            ...((state as any).commentsCountMap ?? {}),
+            [postId]:
+              1 +
+              ((state as any).commentsCountMap?.[postId] ?? state.commentsMap[postId]?.length ?? 0),
+          },
         }));
       },
 
@@ -223,6 +235,10 @@ export const PostsStoreAdapter = signalStore(
               [postId]: current.map((existing) =>
                 existing.id === comment.id ? comment : existing,
               ),
+            },
+            commentsCountMap: {
+              ...((state as any).commentsCountMap ?? {}),
+              [postId]: current.length,
             },
           };
         });
@@ -290,6 +306,7 @@ export const PostsStoreAdapter = signalStore(
                   posts: result?.items ?? [],
                   pagination: result?.pagination ?? null,
                 });
+                prefetchCommentCounts(result?.items ?? []);
               }),
               catchError((err) => {
                 console.error('Failed to load posts:', err);
@@ -301,6 +318,32 @@ export const PostsStoreAdapter = signalStore(
           takeUntilDestroyed(destroyRef),
         )
         .subscribe();
+    }
+
+    function prefetchCommentCounts(items: Post[]): void {
+      const existing = (store as any).commentsCountMap?.() as Record<number, number> | undefined;
+      const known = existing || {};
+      items.forEach((post) => {
+        if (known[post.id] !== undefined) return;
+        postsApi
+          .listComments(post.id)
+          .pipe(takeUntilDestroyed(destroyRef))
+          .subscribe({
+            next: (comments) => {
+              patchState(store, (state) => ({
+                commentsCountMap: {
+                  ...((state as any).commentsCountMap ?? {}),
+                  [post.id]: Array.isArray(comments) ? comments.length : 0,
+                },
+              }));
+            },
+            error: () => {
+              patchState(store, (state) => ({
+                commentsCountMap: { ...((state as any).commentsCountMap ?? {}), [post.id]: 0 },
+              }));
+            },
+          });
+      });
     }
 
     function loadUsersForFilter(): void {

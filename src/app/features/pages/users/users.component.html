@@ -55,7 +55,7 @@
                   (delete)="onDelete($event)"
                 ></app-user-list>
 
-                <div class="users-pagination">
+                <div class="users-pagination app-pagination">
                   <button
                     mat-stroked-button
                     type="button"
@@ -65,7 +65,7 @@
                     <mat-icon svgIcon="lucide:chevron-left" aria-hidden="true"></mat-icon>
                     <span>Prev</span>
                   </button>
-                  <span class="users-pagination__info">
+                  <span class="users-pagination__info app-pagination__info">
                     Page {{ currentPage().page }} of {{ totalPages(data.total) }}
                   </span>
                   <button
@@ -96,3 +96,4 @@
     </div>
   </section>
 }
+

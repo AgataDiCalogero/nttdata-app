@@ -52,6 +52,7 @@ export class UserDetail {
 
   private readonly commentsMap = signal<Record<number, Comment[]>>({});
   private readonly commentsLoading = signal<Record<number, boolean>>({});
+  private readonly commentsCount = signal<Record<number, number>>({});
 
   constructor() {
     const idParam = this.route.snapshot.paramMap.get('id') ?? '';
@@ -80,7 +81,24 @@ export class UserDetail {
 
   private loadUserPosts(userId: number): void {
     this.postsApi.list({ user_id: userId, per_page: 50 }).subscribe({
-      next: ({ items }) => this.posts.set(items ?? []),
+      next: ({ items }) => {
+        const list = items ?? [];
+        this.posts.set(list);
+        // Prefetch comment counts for preview badges
+        list.forEach((p) => {
+          this.postsApi.listComments(p.id).subscribe({
+            next: (comments) => {
+              this.commentsCount.update((state) => ({
+                ...state,
+                [p.id]: Array.isArray(comments) ? comments.length : 0,
+              }));
+            },
+            error: () => {
+              this.commentsCount.update((state) => ({ ...state, [p.id]: 0 }));
+            },
+          });
+        });
+      },
       error: (err) => {
         console.error('Failed to load posts for user:', err);
         this.toast.show('error', 'Unable to load user posts');
@@ -109,6 +127,10 @@ export class UserDetail {
     this.postsApi.listComments(postId).subscribe({
       next: (comments) => {
         this.commentsMap.update((state) => ({ ...state, [postId]: comments ?? [] }));
+        this.commentsCount.update((state) => ({
+          ...state,
+          [postId]: Array.isArray(comments) ? comments.length : 0,
+        }));
       },
       error: (err) => {
         console.error('Failed to load comments:', err);
@@ -125,6 +147,10 @@ export class UserDetail {
       const current = state[postId] ?? [];
       return { ...state, [postId]: [comment, ...current] };
     });
+    this.commentsCount.update((state) => ({
+      ...state,
+      [postId]: 1 + (state[postId] ?? this.commentsMap()[postId]?.length ?? 0),
+    }));
   }
 
   onCommentUpdated(postId: number, comment: Comment): void {
@@ -151,6 +177,10 @@ export class UserDetail {
         [postId]: current.filter((existing) => existing.id !== commentId),
       };
     });
+    this.commentsCount.update((state) => ({
+      ...state,
+      [postId]: Math.max(0, (state[postId] ?? this.commentsMap()[postId]?.length ?? 1) - 1),
+    }));
   }
 
   trackPostId(_idx: number, post: Post): number {

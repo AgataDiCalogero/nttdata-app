@@ -38,6 +38,8 @@ export class PostCardComponent implements AfterViewChecked {
   readonly comments = input<ModelComment[] | null | undefined>(undefined);
   readonly commentsLoading = input(false);
   readonly authorName = input<string | null>(null);
+  // Optional pre-fetched count to show in preview (before comments are loaded)
+  readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
   readonly Trash2 = Trash2;
   readonly MessageSquare = MessageSquare;
@@ -52,6 +54,8 @@ export class PostCardComponent implements AfterViewChecked {
   readonly commentDeleted = output<number>();
 
   get commentCount(): number {
+    const preview = this.commentsPreviewCount();
+    if (typeof preview === 'number' && preview >= 0) return preview;
     const list = this.comments();
     return Array.isArray(list) ? list.length : 0;
   }

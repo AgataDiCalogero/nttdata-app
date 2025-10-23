@@ -133,13 +133,8 @@
   }
 
   &__grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: var(--space-lg);
-
-    > * {
-      flex: 1 1 clamp(18rem, 48%, 30rem);
-      min-width: clamp(18rem, 48%, 30rem);
-    }
+    grid-template-columns: minmax(0, 1fr);
   }
 }
