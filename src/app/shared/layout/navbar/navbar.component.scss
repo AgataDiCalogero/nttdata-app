@@ -63,134 +63,139 @@
   .controls {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
-    margin-left: auto; /* push controls to the far right */
+    .toolbar-menu-trigger {
+      margin-left: auto; /* push controls to the far right */
 
-    app-appearance-switcher {
-      display: inline-flex;
-    }
+      app-appearance-switcher {
+        display: inline-flex;
+      }
 
-    .logout-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-xs);
-      font-weight: var(--font-weight-semibold);
-      text-transform: none;
+      .logout-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+        font-weight: var(--font-weight-semibold);
+        text-transform: none;
 
-      mat-icon {
-        font-size: 1.125rem;
+        mat-icon {
+          font-size: 1.125rem;
+        }
       }
     }
   }
-}
 
-/* Ensure nav links are always legible and have clear states */
-.app-navbar .nav-links {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
+  /* Ensure nav links are always legible and have clear states */
+  .app-navbar .nav-links {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
 
-  a[appButton] {
-    --_hover-bg: var(--accent-hover);
-    --_active-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
-    /* Use on-surface for text so it remains readable on light active backgrounds */
-    --_active-fg: var(--color-on-surface);
+    a[appButton] {
+      --_hover-bg: var(--accent-hover);
+      --_active-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
+      /* Use on-surface for text so it remains readable on light active backgrounds */
+      --_active-fg: var(--color-on-surface);
 
-    border-radius: var(--radius-lg);
-    color: var(--color-on-surface);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    transition:
-      background var(--duration-normal) var(--ease-in-out),
-      color var(--duration-normal) var(--ease-in-out);
-
-    mat-icon {
-      color: inherit;
-      margin-inline-end: var(--space-2xs);
-    }
-
-    &:hover,
-    &:focus-visible {
-      background: var(--_hover-bg);
+      border-radius: var(--radius-lg);
       color: var(--color-on-surface);
       text-decoration: none;
-    }
-
-    &.active {
-      background: var(--_active-bg);
-      color: var(--_active-fg);
+      font-weight: var(--font-weight-medium);
+      transition:
+        background var(--duration-normal) var(--ease-in-out),
+        color var(--duration-normal) var(--ease-in-out);
 
       mat-icon {
+        color: inherit;
+        margin-inline-end: var(--space-2xs);
+      }
+
+      &:hover,
+      &:focus-visible {
+        background: var(--_hover-bg);
+        color: var(--color-on-surface);
+        text-decoration: none;
+      }
+
+      &.active {
+        background: var(--_active-bg);
         color: var(--_active-fg);
+
+        mat-icon {
+          color: var(--_active-fg);
+        }
+      }
+
+      &:active {
+        /* slightly stronger on press */
+        background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+        color: var(--color-on-surface);
+      }
+    }
+  }
+
+  /* Styles applied when the app is on the login route. We toggle `body.login-route` from the component. */
+  :host-context(body.login-route) {
+    /* Hide navigation elements including hamburger */
+    .menu-trigger,
+    .nav-links,
+    .logout-btn {
+      display: none !important;
+    }
+
+    /* Keep only the appearance switcher visible on the right */
+    .controls {
+      app-appearance-switcher {
+        display: inline-flex;
       }
     }
 
-    &:active {
-      /* slightly stronger on press */
-      background: color-mix(in srgb, var(--color-accent) 24%, transparent);
-      color: var(--color-on-surface);
-    }
-  }
-}
-
-/* Styles applied when the app is on the login route. We toggle `body.login-route` from the component. */
-:host-context(body.login-route) {
-  /* Hide navigation elements */
-  .menu-trigger,
-  .nav-links,
-  .logout-btn {
-    display: none !important;
-  }
-
-  /* Keep only the appearance switcher visible on the right */
-  .controls {
-    app-appearance-switcher {
-      display: inline-flex;
+    /* Brand appears as plain orange label (not a link) */
+    .brand {
+      pointer-events: none;
+      .brand__label {
+        color: var(--color-accent);
+        background: none;
+        -webkit-background-clip: unset;
+        background-clip: unset;
+        font-weight: var(--font-weight-bold);
+      }
     }
   }
 
-  /* Brand appears as plain orange label (not a link) */
-  .brand {
-    pointer-events: none;
-    .brand__label {
-      color: var(--color-accent);
-      background: none;
-      -webkit-background-clip: unset;
-      background-clip: unset;
-      font-weight: var(--font-weight-bold);
-    }
+  /* Optionally lock body scroll on login so the centered card stays visible; footer should still be reachable if present */
+  /* body.login-route no longer forces overflow hidden; allow page to scroll if needed */
+
+  /* Style the mat-menu panel to match app surface aesthetics and tokens */
+  /* mat-menu panel gets the `nav-menu` class and renders inside cdk overlay pane. We
+   style the overlay panel via a specific selector to ensure the app palette is used
+   (no !important). */
+  .cdk-overlay-pane .nav-menu {
+    min-width: 14rem;
+    background: var(--color-surface-solid);
+    color: var(--color-on-surface);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
+    border: none;
+    border: 1px solid var(--border-accent-soft);
   }
-}
-
-/* Optionally lock body scroll on login so the centered card stays visible; footer should still be reachable if present */
-/* body.login-route no longer forces overflow hidden; allow page to scroll if needed */
-
-/* Style the mat-menu panel to match app surface aesthetics and tokens */
-.nav-menu {
-  min-width: 14rem;
-  background: var(--color-surface);
-  color: var(--color-on-surface);
-  border-radius: var(--radius-lg);
-  @include shadow('lg');
-  border: 1px solid var(--border-accent-soft);
-  .mat-ripple-element {
-    display: none !important;
+  .cdk-overlay-pane .nav-menu .mat-ripple-element {
+    display: none;
   }
 
   /* mat-menu renders in overlay; these class rules are applied to the panel */
-  button.mat-menu-item {
+  .cdk-overlay-pane .nav-menu button.mat-menu-item {
     color: inherit;
   }
 
-  button.mat-menu-item:hover,
-  button.mat-menu-item.cdk-program-focused {
+  .cdk-overlay-pane .nav-menu button.mat-menu-item:hover,
+  .cdk-overlay-pane .nav-menu button.mat-menu-item.cdk-program-focused {
     background: color-mix(in srgb, var(--color-accent) 8%, transparent);
     color: var(--color-on-surface);
   }
 
   /* Active (current route) state inside the dropdown */
-  button.mat-menu-item.active {
-    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  .cdk-overlay-pane .nav-menu button.mat-menu-item.active {
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     color: var(--color-on-surface);
 
     mat-icon {
@@ -198,52 +203,13 @@
     }
   }
 
-  mat-icon {
+  .cdk-overlay-pane .nav-menu mat-icon {
     margin-inline-end: var(--space-sm);
-    color: var(--color-on-surface-muted, rgba(0, 0, 0, 0.56));
+    color: var(--color-on-surface-muted, rgba(255, 255, 255, 0.56));
   }
-}
 
-@media (max-width: 62rem) {
-  .app-navbar {
+  @media (max-width: 62rem) {
     padding-inline: var(--app-page-gutter-tight);
-
-    .menu-trigger {
-      /* floating FAB - placed bottom-right of the viewport */
-      position: fixed;
-      bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
-      right: 1rem;
-      width: 3rem;
-      height: 3rem;
-      border-radius: 0.5rem; /* small rounded square */
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      z-index: calc(var(--z-sticky) + 30);
-      /* Background stays as the app surface so the accent icon stands out */
-      background: var(--color-surface);
-      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
-      border: 1px solid var(--border-accent-soft);
-
-      /* Hamburger icon should be accent (orange) per request */
-      mat-icon {
-        font-size: 1.25rem;
-        color: var(--color-accent);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        margin: 0;
-      }
-
-      &:hover,
-      &:focus,
-      &:focus-visible {
-        transform: translateY(-2px);
-        box-shadow: 0 14px 36px rgba(2, 6, 23, 0.18);
-      }
-    }
 
     .nav-links {
       display: none;
@@ -283,13 +249,100 @@
         }
       }
     }
-  }
-}
 
-@media (max-width: 40rem) {
-  .app-navbar {
+    /* Contextual menu styling on mobile - matches appearance-switcher */
+    .cdk-overlay-pane .nav-menu {
+      min-width: auto;
+      width: min(18rem, calc(100vw - 2rem));
+      border-radius: var(--radius-2xl);
+      background: var(--color-surface-solid);
+      box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
+      border: none;
+      color: var(--color-on-surface);
+      margin-bottom: 0.5rem;
+      transform-origin: bottom right;
+      z-index: 9999 !important;
+    }
+
+    /* Center menu contents on mobile for the floating trigger experience */
+    .cdk-overlay-pane .nav-menu .mat-menu-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2xs);
+      padding-top: var(--space-sm);
+      padding-bottom: var(--space-sm);
+    }
+
+    /* Make menu items visually centered and use theme foregrounds */
+    .cdk-overlay-pane .nav-menu button.mat-menu-item {
+      width: 100%;
+      justify-content: center; /* center icon + text */
+      text-align: center;
+      padding-left: var(--space-md);
+      padding-right: var(--space-md);
+    }
+
+    .cdk-overlay-pane .nav-menu button.mat-menu-item mat-icon {
+      margin-inline-end: 0;
+      margin-bottom: 0.25rem;
+      display: block;
+      opacity: 0.95;
+      color: var(--color-accent);
+    }
+  }
+
+  @media (max-width: 40rem) {
     .brand__label {
       font-size: var(--font-size-md);
     }
   }
+}
+
+/* Floating hamburger button - outside toolbar, only mobile */
+.floating-menu-trigger {
+  position: fixed;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 9998;
+
+  /* Use appearance-switcher colors */
+  background: var(--color-surface-solid);
+  border: 1px solid var(--color-accent);
+  box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
+  transition:
+    transform var(--duration-normal) var(--ease-in-out),
+    box-shadow var(--duration-normal) var(--ease-in-out);
+
+  mat-icon {
+    font-size: 1.25rem;
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface-solid));
+  }
+}
+
+/* CRITICAL: Hide hamburger on login route */
+:host-context(body.login-route) .floating-menu-trigger {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }

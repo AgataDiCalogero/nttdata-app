@@ -1,0 +1,28 @@
+.floating-menu-trigger {
+  display: none; /* hidden by default, shown on mobile via media query */
+}
+
+@media (max-width: 62rem) {
+  .floating-menu-trigger {
+    display: inline-flex;
+    position: fixed;
+    right: 1rem;
+    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    z-index: calc(var(--z-sticky) + 30);
+    padding: 0;
+    box-shadow: var(--shadow-xl, 0 10px 30px rgba(2, 6, 23, 0.14));
+    /* use theme tokens so it matches the current appearance (light/dark) */
+    background: var(--color-surface-solid);
+    border: 1px solid var(--border-accent-soft);
+
+    mat-icon {
+      color: var(--color-accent);
+      font-size: 1.25rem;
+    }
+  }
+}

@@ -1,10 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import type { User } from '@/app/shared/models';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { StatusBadgeComponent } from '@/app/shared/ui';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -17,12 +27,23 @@ import { StatusBadgeComponent } from '@/app/shared/ui';
 export class UserListComponent {
   readonly items = input([] as User[]);
 
+  // signal used by the template to switch which delete button is rendered
+  protected readonly isMobile = signal(false);
+
   readonly view = output<number>();
   readonly edit = output<number>();
   readonly delete = output<User>();
 
   trackById(_index: number, item: User): number {
     return item.id;
+  }
+
+  constructor() {
+    const bo = inject(BreakpointObserver);
+    const destroyRef = inject(DestroyRef);
+    bo.observe('(max-width: 40rem)')
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe((s) => this.isMobile.set(Boolean(s.matches)));
   }
 
   onView(user: User, event?: Event): void {

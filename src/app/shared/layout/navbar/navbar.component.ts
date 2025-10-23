@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -19,6 +20,7 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
+import { NavMenuService } from './nav-menu.service';
 
 @Component({
   selector: 'app-navbar',
@@ -39,17 +41,25 @@ import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service'
     '[attr.data-menu-open]': 'menuOpen() ? "true" : "false"',
   },
 })
-export class Navbar implements OnInit {
+export class Navbar implements OnInit, AfterViewInit {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly _lucideIcons = inject(LucideMatIconService);
 
   @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
+  private readonly navMenuService = inject(NavMenuService);
 
   // Initialize from location.pathname synchronously to avoid router timing on refresh
+  // Initialize from location.pathname when available (SSR/client) so the login route is detected synchronously on initial render
   readonly isLoginRoute = signal(
-    globalThis?.location?.pathname?.startsWith?.('/login') ?? this.router.url.startsWith('/login'),
+    globalThis?.location?.pathname
+      ? globalThis.location.pathname.startsWith('/login')
+      : this.router.url.startsWith('/login'),
+  );
+  // Mobile breakpoint matches the SCSS media query (max-width: 62rem)
+  readonly isMobile = signal(
+    Boolean(globalThis?.window && globalThis.window.matchMedia?.('(max-width: 62rem)')?.matches),
   );
   // helper for template binding to avoid inline object literals which can confuse the template parser
   readonly routerLinkExact = { exact: true } as const;
@@ -57,6 +67,34 @@ export class Navbar implements OnInit {
   readonly menuOpen = signal(false);
 
   ngOnInit(): void {
+    // Keep a live isMobile signal in sync with viewport changes so template can conditionally render
+    try {
+      const win = globalThis.window as Window | undefined;
+      const doc = globalThis.document as Document | undefined;
+      if (!win) return;
+
+      // Compute breakpoint in pixels based on root font-size so `62rem` matches SCSS
+      const rootFontSize = doc
+        ? Number.parseFloat(getComputedStyle(doc.documentElement).fontSize || '16')
+        : 16;
+      const breakpointPx = 62 * (Number.isFinite(rootFontSize) ? rootFontSize : 16);
+
+      const update = () => this.isMobile.set(win.innerWidth <= breakpointPx);
+
+      // initialize
+      update();
+
+      win.addEventListener('resize', update, { passive: true });
+      this.destroyRef.onDestroy(() => {
+        try {
+          win.removeEventListener('resize', update);
+        } catch {
+          // ignore
+        }
+      });
+    } catch {
+      // server-rendered or unsupported environment
+    }
     // Ensure body class matches current route immediately to avoid visual flashes
     if (typeof document !== 'undefined') {
       if (this.isLoginRoute()) {
@@ -84,19 +122,22 @@ export class Navbar implements OnInit {
       });
   }
 
-  // Dev-only contrast check for navbar/menu items to help ensure WCAG contrast
-  // Logs ratios in console when running on localhost.
   ngAfterViewInit(): void {
+    // register the internal MatMenuTrigger so external floating triggers can control it
+    this.navMenuService.register(this.menuTrigger ?? null, 'toolbar');
+    // set menu reference (mat-menu) by querying the template reference - this avoids direct MatMenu import here
+    const menuEl = document.querySelector('mat-menu.nav-menu');
+    // Note: NavMenuService primarily uses the trigger, but setting menu ref keeps the API consistent
+    if (menuEl) {
+      // nothing else required here; trigger has reference to menu from MatMenuTrigger
+    }
     try {
-      const isLocal = (globalThis as any)?.location?.hostname === 'localhost';
-      if (!isLocal || typeof window === 'undefined' || typeof document === 'undefined') {
+      const isLocal = String(globalThis?.location?.hostname) === 'localhost';
+      if (!isLocal || globalThis.window === undefined || globalThis.document === undefined) {
         return;
       }
-
-      const nav = document.querySelector('.app-navbar') as HTMLElement | null;
-      const sample = document.querySelector(
-        '.app-navbar .nav-links a[appButton]',
-      ) as HTMLElement | null;
+      const nav = globalThis.document.querySelector('.app-navbar');
+      const sample = globalThis.document.querySelector('.app-navbar .nav-links a[appButton]');
       if (!nav || !sample) return;
 
       const bg = getComputedStyle(nav).backgroundColor;
@@ -134,8 +175,8 @@ export class Navbar implements OnInit {
       );
       console.debug(`[A11Y] Navbar hover contrast ratio: ${hoverRatio.toFixed(2)} (target ≥ 4.5)`);
 
-      nav.removeChild(activeEl);
-      nav.removeChild(hoverEl);
+      activeEl.remove();
+      hoverEl.remove();
     } catch {
       // ignore
     }
@@ -151,8 +192,11 @@ export class Navbar implements OnInit {
 
   #toRgb(input: string): { r: number; g: number; b: number } {
     // rgb(a) or hex #rrggbb
-    const rgb = input.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
-    if (rgb) return { r: +rgb[1], g: +rgb[2], b: +rgb[3] };
+    const rgbExec = /rgba?\((\d+),\s*(\d+),\s*(\d+)/i.exec(input);
+    if (rgbExec) {
+      return { r: +rgbExec[1], g: +rgbExec[2], b: +rgbExec[3] };
+    }
+
     const hex = input.trim();
     if (hex.startsWith('#')) {
       const v = hex.slice(1);
@@ -163,7 +207,7 @@ export class Navbar implements OnInit {
               .map((c) => c + c)
               .join('')
           : v;
-      const num = parseInt(n, 16);
+      const num = Number.parseInt(n, 16);
       return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
     }
     // Fallback to black

@@ -13,9 +13,18 @@
             [status]="user.status"
             [ariaLabel]="user.status === 'active' ? 'Active user' : 'Inactive user'"
           ></app-status-badge>
-          <button appButton variant="danger" [iconOnly]="true" class="user-card__delete-mobile" (click)="onDelete(user, $event)" aria-label="Delete user">
-            <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
-          </button>
+          @if (isMobile()) {
+            <button
+              appButton
+              variant="danger"
+              [iconOnly]="true"
+              class="user-card__delete-mobile"
+              (click)="onDelete(user, $event)"
+              aria-label="Delete user"
+            >
+              <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+            </button>
+          }
         </div>
       </mat-card-header>
 
@@ -41,9 +50,18 @@
           <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
           <span>Edit</span>
         </button>
-        <button appButton variant="danger" [iconOnly]="true" class="user-card__delete-desktop" (click)="onDelete(user, $event)" aria-label="Delete user">
-          <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
-        </button>
+        @if (!isMobile()) {
+          <button
+            appButton
+            variant="danger"
+            [iconOnly]="true"
+            class="user-card__delete-desktop"
+            (click)="onDelete(user, $event)"
+            aria-label="Delete user"
+          >
+            <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+          </button>
+        }
       </mat-card-actions>
     </mat-card>
   }
