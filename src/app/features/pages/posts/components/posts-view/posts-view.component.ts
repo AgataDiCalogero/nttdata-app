@@ -7,6 +7,7 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
 import type { Comment, Post, User } from '@/app/shared/models';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
@@ -21,6 +22,7 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
     LucideAngularModule,
     SelectComponent,
     ButtonComponent,
+    PaginationComponent,
     MatButtonModule,
     MatIconModule,
     LoaderComponent,

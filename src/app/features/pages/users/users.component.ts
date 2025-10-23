@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import type { User } from '@/app/shared/models';
 import type { SortField } from './store/users.service';
 import { provideUsersService, injectUsersService } from './store/users.inject';
@@ -23,6 +24,7 @@ import { provideUsersService, injectUsersService } from './store/users.inject';
     MatCardModule,
     UserFiltersComponent,
     UserListComponent,
+    PaginationComponent,
   ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],

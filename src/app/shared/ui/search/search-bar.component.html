@@ -1,0 +1,29 @@
+<label
+  class="app-search"
+  [class.app-search--wide]="isWide"
+  [class.app-search--compact]="isCompact"
+>
+  <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
+
+  @if (control()) {
+    <input
+      type="search"
+      class="app-search__input"
+      [attr.placeholder]="placeholder()"
+      [attr.aria-label]="ariaLabel() || placeholder()"
+      [formControl]="control()"
+      [appDebounceInput]="debounceTime()"
+      (debounced)="onDebounced($event)"
+    />
+  } @else {
+    <input
+      type="search"
+      class="app-search__input"
+      [attr.placeholder]="placeholder()"
+      [attr.aria-label]="ariaLabel() || placeholder()"
+      [appDebounceInput]="debounceTime()"
+      (debounced)="onDebounced($event)"
+    />
+  }
+</label>
+

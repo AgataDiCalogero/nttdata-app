@@ -5,3 +5,5 @@ export * from './card/card.component';
 export * from './select/select.component';
 export * from './toast/toast.component';
 export * from './status-badge/status-badge.component';
+export * from './search/search-bar.component';
+export * from './pagination/pagination.component';

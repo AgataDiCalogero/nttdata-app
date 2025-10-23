@@ -257,8 +257,8 @@ export const UsersStoreAdapter = signalStore(
       const ref = dialog.open(DeleteConfirmComponent, {
         width: '25rem',
         maxWidth: '90vw',
-        backdropClass: 'blurred-backdrop',
-        panelClass: 'user-form-modal',
+        backdropClass: 'app-dialog-overlay',
+        panelClass: 'app-dialog-panel',
         ariaLabel: 'Delete user confirmation',
         autoFocus: true,
         restoreFocus: true,

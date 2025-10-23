@@ -1,0 +1,30 @@
+<nav class="app-pagination" [attr.aria-label]="ariaLabel()">
+  <button
+    appButton
+    variant="ghost"
+    type="button"
+    (click)="prev()"
+    [disabled]="!canPrev()"
+    [attr.aria-disabled]="!canPrev() ? 'true' : null"
+  >
+    Previous
+  </button>
+
+  <span class="app-pagination__info" aria-live="polite" role="status">
+    Page {{ page() }} of {{ pageCount() }}
+  </span>
+
+  <button
+    appButton
+    variant="ghost"
+    type="button"
+    (click)="next()"
+    [disabled]="!canNext()"
+    [attr.aria-disabled]="!canNext() ? 'true' : null"
+  >
+    Next
+  </button>
+
+  <ng-content select="[pagination-extra]"></ng-content>
+</nav>
+

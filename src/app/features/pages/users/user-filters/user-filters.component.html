@@ -1,15 +1,10 @@
 <div class="user-filters">
-  <div class="app-search app-search--wide">
-    <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
-    <input
-      type="search"
-      class="app-search__input"
-      placeholder="Search by name or email..."
-      aria-label="Search users by name or email"
-      appDebounceInput
-      (debounced)="onDebounced($event)"
-    />
-  </div>
+  <app-search-bar
+    size="wide"
+    placeholder="Search by name or email..."
+    ariaLabel="Search users by name or email"
+    (debounced)="onDebounced($event)"
+  />
   @if (showCreate()) {
     <button appButton variant="primary" (click)="onCreate()" aria-label="Create new user">
       <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>

@@ -13,30 +13,9 @@
     @include flex-column(var(--space-xxs));
   }
 
-  &__title {
-    margin: 0;
-    font-size: clamp(1.6rem, 2vw + 1rem, 2.2rem);
-  }
+  /* Title/subtitle typography provided by global .app-page__title and .app-subtitle */
 
-  &__subtitle {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 0.95rem;
-  }
-
-  button[mat-flat-button] {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    text-transform: none;
-    font-weight: var(--font-weight-semibold);
-
-    mat-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
+  /* Header CTA uses shared appButton styles */
 }
 
 .users-container {
@@ -81,25 +60,7 @@
   gap: var(--space-xl);
 }
 
-.users-pagination {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-md);
-  align-items: center;
-  flex-wrap: wrap;
-
-  button {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    text-transform: none;
-    font-weight: var(--font-weight-medium);
-  }
-
-  &__info {
-    font-weight: var(--font-weight-semibold);
-  }
-}
+/* Rely on shared .app-pagination styles */
 
 .users-empty mat-card-content {
   display: grid;
@@ -122,14 +83,12 @@
     flex-direction: column;
     align-items: stretch;
 
-    button[mat-flat-button] {
+    button[appButton],
+    a[appButton] {
       width: 100%;
       justify-content: center;
     }
   }
 
-  .users-pagination {
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
+  /* .app-pagination responsive handled by shared styles */
 }

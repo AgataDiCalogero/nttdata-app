@@ -96,8 +96,7 @@ mat-card-actions {
   gap: var(--space-sm);
   padding-inline: var(--space-lg);
   margin-top: auto;
-  button[mat-button],
-  button[mat-stroked-button] {
+  button[appButton] {
     text-transform: none;
     font-weight: var(--font-weight-medium);
     display: inline-flex;
@@ -105,7 +104,8 @@ mat-card-actions {
     gap: var(--space-xs);
   }
 
-  button[mat-icon-button] {
+  .user-card__delete-desktop,
+  .user-card__delete-mobile {
     align-self: center;
   }
 }
@@ -127,7 +127,8 @@ mat-card-actions {
       width: 100%;
     }
 
-    button[mat-icon-button] {
+    .user-card__delete-desktop,
+    .user-card__delete-mobile {
       align-self: stretch;
       justify-content: center;
     }

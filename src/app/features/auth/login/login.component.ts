@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
@@ -32,6 +33,7 @@ import { ToastService } from '@app/shared/ui/toast/toast.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    ButtonComponent,
     MatIconModule,
     MatProgressSpinnerModule,
   ],
@@ -162,7 +164,8 @@ export class Login {
   openTokenHelp(): void {
     const dialogRef = this.dialog.open(TokenHelpDialogComponent, {
       autoFocus: false,
-      panelClass: 'token-help-dialog',
+      panelClass: ['token-help-dialog', 'app-dialog-panel'],
+      backdropClass: 'app-dialog-overlay',
     });
 
     this.overlays.activate({

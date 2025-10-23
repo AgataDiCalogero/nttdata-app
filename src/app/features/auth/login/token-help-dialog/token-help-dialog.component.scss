@@ -5,11 +5,11 @@
   max-width: 28rem;
   padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
 
-  background: var(--color-surface-solid);
+  background: var(--dialog-surface);
   color: var(--color-on-surface);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--alpha-03);
-  box-shadow: var(--shadow-xxl);
+  border: 1px solid var(--dialog-border);
+  box-shadow: var(--shadow-xl);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 

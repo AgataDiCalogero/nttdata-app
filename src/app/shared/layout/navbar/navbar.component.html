@@ -28,12 +28,13 @@
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
     @if (!isLoginRoute()) {
       @if (!isLogged()) {
-        <a mat-button routerLink="/login" (click)="closeMenu()">Login</a>
+        <a appButton variant="ghost" routerLink="/login" (click)="closeMenu()">Login</a>
       }
     }
     @if (!isLoginRoute() && isLogged()) {
       <a
-        mat-button
+        appButton
+        variant="ghost"
         routerLink="/users"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -43,7 +44,8 @@
         <span>Users</span>
       </a>
       <a
-        mat-button
+        appButton
+        variant="ghost"
         routerLink="/posts"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -61,7 +63,7 @@
     <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
 
     @if (!isLoginRoute() && isLogged()) {
-      <button mat-flat-button color="accent" type="button" class="logout-btn" (click)="logout()">
+      <button appButton variant="secondary" type="button" class="logout-btn" (click)="logout()">
         <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
         <span class="logout-text">Logout</span>
       </button>

@@ -79,8 +79,8 @@ export class Posts {
     const ref = this.dialog.open(DeleteConfirmComponent, {
       width: '26.25rem',
       maxWidth: '90vw',
-      backdropClass: 'blurred-backdrop',
-      panelClass: 'user-form-modal',
+      backdropClass: 'app-dialog-overlay',
+      panelClass: 'app-dialog-panel',
       ariaLabel: 'Delete post confirmation',
       autoFocus: true,
       restoreFocus: true,

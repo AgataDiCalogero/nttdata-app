@@ -1,18 +1,17 @@
 import { Component, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { LucideAngularModule, Search, Plus } from 'lucide-angular';
+import { LucideAngularModule, Plus } from 'lucide-angular';
+import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
 
 @Component({
   standalone: true,
   selector: 'app-user-filters',
   templateUrl: './user-filters.component.html',
   styleUrls: ['./user-filters.component.scss'],
-  imports: [CommonModule, DebounceInputDirective, ButtonComponent, LucideAngularModule],
+  imports: [CommonModule, ButtonComponent, LucideAngularModule, SearchBarComponent],
 })
 export class UserFiltersComponent {
-  readonly Search = Search;
   readonly Plus = Plus;
   readonly showCreate = input(true);
   readonly searchChange = output<string>();

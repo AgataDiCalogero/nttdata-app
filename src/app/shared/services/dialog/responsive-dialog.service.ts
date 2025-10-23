@@ -25,7 +25,7 @@ export class ResponsiveDialogService {
   ): ResponsiveDialogConfig<TData, R, C> {
     const sharedDefaults: ResponsiveDialogConfig<TData, R, C> = {
       ariaLabel: options.ariaLabel,
-      backdropClass: 'blurred-backdrop',
+      backdropClass: 'app-dialog-overlay',
       autoFocus: true,
       restoreFocus: true,
       closeOnNavigation: true,
@@ -37,7 +37,7 @@ export class ResponsiveDialogService {
       ...sharedConfig,
       width: '37.5rem',
       maxWidth: '90vw',
-      panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'user-form-modal'),
+      panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'app-dialog-panel'),
     };
     const desktopConfig = this.mergeConfig(desktopBase, options.desktop);
 
@@ -46,7 +46,7 @@ export class ResponsiveDialogService {
       height: '100%',
       width: '30rem',
       maxWidth: '100vw',
-      panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'slide-in-drawer'),
+      panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'app-dialog-panel'),
       positionStrategy: this.overlay.position().global().top('0').right('0'),
     };
     const mobileConfig = this.mergeConfig(mobileBase, options.mobile);

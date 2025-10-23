@@ -7,6 +7,7 @@
 @use './styles/skeleton';
 @use './styles/appearance';
 @use './styles/material-theme';
+@use './styles/dialog';
 @use './styles/search';
 @use './styles/pagination';
 @use './styles/foundations';
@@ -168,18 +169,12 @@ select:focus-visible {
   border-color: var(--focus-ring);
 }
 
-.blurred-backdrop {
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  background: var(--overlay-backdrop-soft);
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
+  background: rgba(2, 6, 23, 0.75) !important;
 }
 
 .cdk-overlay-pane.token-help-dialog {
   z-index: 1200 !important;
-}
-
-.cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
-  background: rgba(2, 6, 23, 0.75) !important;
 }
 
 body.ui-overlay-blocked .app-navbar .controls {
@@ -202,28 +197,4 @@ body.ui-overlay-blocked .app-navbar .logout-btn {
   opacity: 0.5;
 }
 
-.user-form-modal {
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  background: var(--color-surface);
-  color: var(--color-on-surface);
-  box-shadow: var(--shadow);
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.slide-in-drawer {
-  animation: slideIn 0.3s ease;
-  border-radius: 0;
-  height: 100%;
-  max-height: 100vh;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
+/* Legacy dialog classes removed; dialogs now use .app-dialog-overlay and .app-dialog-panel */

@@ -38,8 +38,8 @@
 
         <div class="login-actions">
           <button
-            mat-flat-button
-            color="primary"
+            appButton
+            variant="primary"
             type="submit"
             class="login-actions__submit"
             [disabled]="loading() || form.invalid"
@@ -55,7 +55,8 @@
           </button>
 
           <button
-            mat-button
+            appButton
+            variant="ghost"
             type="button"
             class="login-actions__help"
             (click)="openTokenHelp()"

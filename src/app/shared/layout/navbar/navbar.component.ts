@@ -13,6 +13,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
@@ -28,6 +29,7 @@ import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service'
     AppearanceSwitcherComponent,
     MatToolbarModule,
     MatButtonModule,
+    ButtonComponent,
     MatIconModule,
     MatMenuModule,
   ],
@@ -95,7 +97,7 @@ export class Navbar implements OnInit {
 
       const nav = document.querySelector('.app-navbar') as HTMLElement | null;
       const sample = document.querySelector(
-        '.app-navbar .nav-links a[mat-button]',
+        '.app-navbar .nav-links a[appButton]',
       ) as HTMLElement | null;
       if (!nav || !sample) return;
 

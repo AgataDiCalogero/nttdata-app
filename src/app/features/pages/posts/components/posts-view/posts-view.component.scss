@@ -15,16 +15,7 @@
     @include flex-column(var(--space-xxs));
   }
 
-  &__title {
-    margin: 0;
-    font-size: clamp(1.6rem, 2vw + 1rem, 2.2rem);
-  }
-
-  &__count {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 0.95rem;
-  }
+  /* Title/meta typography provided by global .app-page__title and .app-page__meta */
 
   &__alert {
     margin-block: var(--space-md);
@@ -41,6 +32,4 @@
   width: 100%;
 }
 
-.posts-pagination {
-  margin-top: var(--space-lg);
-}
+/* Rely on shared .app-pagination margin */

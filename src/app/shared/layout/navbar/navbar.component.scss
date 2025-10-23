@@ -90,7 +90,7 @@
   align-items: center;
   gap: var(--space-xs);
 
-  a[mat-button] {
+  a[appButton] {
     --_hover-bg: var(--accent-hover);
     --_active-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
     /* Use on-surface for text so it remains readable on light active backgrounds */

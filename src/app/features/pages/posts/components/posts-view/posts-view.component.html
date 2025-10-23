@@ -2,10 +2,10 @@
   <div class="posts-container app-container app-container--full app-container--flush">
     <header class="posts-page__header app-page__header">
       <div class="posts-page__heading">
-        <h1 class="posts-page__title">Posts</h1>
-        <p class="posts-page__count">{{ postsCount() }} posts</p>
+        <h1 class="app-page__title">Posts</h1>
+        <p class="app-page__meta">{{ postsCount() }} posts</p>
       </div>
-      <button mat-flat-button color="primary" type="button" (click)="createPost.emit()">
+      <button appButton variant="primary" type="button" (click)="createPost.emit()" aria-label="Create new post">
         <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
         <span>New Post</span>
       </button>
@@ -50,29 +50,11 @@
     }
 
     @if (hasPagination()) {
-      <footer class="posts-pagination app-pagination">
-        <div class="posts-pagination__controls">
-          <button
-            appButton
-            variant="ghost"
-            type="button"
-            (click)="changePage.emit(currentPage() - 1)"
-            [disabled]="currentPage() <= 1"
-          >
-            Previous
-          </button>
-          <span class="app-pagination__info">Page {{ currentPage() }} of {{ totalPages() }}</span>
-          <button
-            appButton
-            variant="ghost"
-            type="button"
-            (click)="changePage.emit(currentPage() + 1)"
-            [disabled]="currentPage() >= totalPages()"
-          >
-            Next
-          </button>
-        </div>
-      </footer>
+      <app-pagination
+        [page]="currentPage()"
+        [pageCount]="totalPages()"
+        (pageChange)="changePage.emit($event)"
+      />
     }
   </div>
 </section>

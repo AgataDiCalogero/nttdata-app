@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import type { User } from '@/app/shared/models';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { StatusBadgeComponent } from '@/app/shared/ui';
 
@@ -11,7 +11,7 @@ import { StatusBadgeComponent } from '@/app/shared/ui';
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, StatusBadgeComponent],
+  imports: [CommonModule, MatCardModule, ButtonComponent, MatIconModule, StatusBadgeComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {

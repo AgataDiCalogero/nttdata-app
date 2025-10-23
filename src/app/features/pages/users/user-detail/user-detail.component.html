@@ -24,7 +24,7 @@
           {{ (detail.name || '').slice(0, 2).toUpperCase() }}
         </div>
         <div class="user-card__meta">
-          <h1 class="user-card__name">{{ detail.name }}</h1>
+          <h1 class="app-page__title">{{ detail.name }}</h1>
           <p class="user-card__email">
             <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
             <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
@@ -50,9 +50,9 @@
       </article>
 
       <section class="user-posts" aria-labelledby="user-posts-title">
-        <header class="user-posts__header">
-          <h2 id="user-posts-title">Posts from {{ detail.name }}</h2>
-          <p class="user-posts__subtitle">
+        <header class="user-posts__header" data-app-header="true">
+          <h2 id="user-posts-title" class="app-section-title">Posts from {{ detail.name }}</h2>
+          <p class="app-subtitle">
             Browse the ideas and reports submitted by this citizen. Comments can be opened inline.
           </p>
         </header>

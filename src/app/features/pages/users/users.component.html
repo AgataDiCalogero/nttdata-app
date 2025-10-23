@@ -5,15 +5,16 @@
     <div class="users-container app-container app-container--full app-container--flush">
       <header class="users-page__header app-page__header">
         <div class="users-page__heading">
-          <h1 class="users-page__title">Users</h1>
-          <p class="users-page__subtitle">Manage and view all registered users</p>
+          <h1 class="app-page__title">Users</h1>
+          <p class="app-subtitle">Manage and view all registered users</p>
         </div>
         <button
-          mat-flat-button
-          color="primary"
+          appButton
+          variant="primary"
           type="button"
           (click)="openNewUserModal()"
           [disabled]="loading()"
+          aria-label="Create new user"
         >
           <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
           <span>New User</span>
@@ -40,7 +41,7 @@
                   <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
                   <p>{{ err }}</p>
                 </div>
-                <button mat-button type="button" (click)="clearError()" [disabled]="loading()">
+                <button appButton variant="ghost" type="button" (click)="clearError()" [disabled]="loading()">
                   Retry
                 </button>
               </mat-card-content>
@@ -55,38 +56,18 @@
                   (delete)="onDelete($event)"
                 ></app-user-list>
 
-                <div class="users-pagination app-pagination">
-                  <button
-                    mat-stroked-button
-                    type="button"
-                    [disabled]="currentPage().page <= 1"
-                    (click)="setPage(currentPage().page - 1, currentPage().per_page)"
-                  >
-                    <mat-icon svgIcon="lucide:chevron-left" aria-hidden="true"></mat-icon>
-                    <span>Prev</span>
-                  </button>
-                  <span class="users-pagination__info app-pagination__info">
-                    Page {{ currentPage().page }} of {{ totalPages(data.total) }}
-                  </span>
-                  <button
-                    mat-stroked-button
-                    type="button"
-                    [disabled]="currentPage().page >= totalPages(data.total)"
-                    (click)="setPage(currentPage().page + 1, currentPage().per_page)"
-                  >
-                    <span>Next</span>
-                    <mat-icon svgIcon="lucide:chevron-right" aria-hidden="true"></mat-icon>
-                  </button>
-                </div>
+                <app-pagination
+                  [page]="currentPage().page"
+                  [pageCount]="totalPages(data.total)"
+                  (pageChange)="setPage($event, currentPage().per_page)"
+                />
               </div>
             } @else {
               <mat-card class="users-empty" appearance="outlined">
                 <mat-card-content>
                   <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
                   <p>No users found.</p>
-                  <button mat-flat-button color="primary" routerLink="/users/new">
-                    Create first user
-                  </button>
+                  <a appButton variant="primary" routerLink="/users/new">Create first user</a>
                 </mat-card-content>
               </mat-card>
             }

@@ -1,0 +1,16 @@
+/* Shared dialog overlay and panel styles */
+
+.cdk-overlay-backdrop.app-dialog-overlay {
+  background: var(--overlay-backdrop-strong) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.cdk-overlay-pane .app-dialog-panel {
+  border-radius: var(--radius-dialog);
+  background: var(--dialog-surface);
+  color: var(--color-on-surface);
+  border: 1px solid var(--dialog-border);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}

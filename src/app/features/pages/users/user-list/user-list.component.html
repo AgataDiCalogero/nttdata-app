@@ -13,13 +13,7 @@
             [status]="user.status"
             [ariaLabel]="user.status === 'active' ? 'Active user' : 'Inactive user'"
           ></app-status-badge>
-          <button
-            mat-icon-button
-            color="warn"
-            class="user-card__delete-mobile"
-            (click)="onDelete(user, $event)"
-            aria-label="Delete user"
-          >
+          <button appButton variant="danger" [iconOnly]="true" class="user-card__delete-mobile" (click)="onDelete(user, $event)" aria-label="Delete user">
             <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
           </button>
         </div>
@@ -39,21 +33,15 @@
       </mat-card-content>
 
       <mat-card-actions align="end">
-        <button mat-button (click)="onView(user, $event)">
+        <button appButton variant="ghost" (click)="onView(user, $event)">
           <mat-icon svgIcon="lucide:eye" aria-hidden="true"></mat-icon>
           <span>View</span>
         </button>
-        <button mat-stroked-button (click)="onEdit(user, $event)">
+        <button appButton variant="secondary" (click)="onEdit(user, $event)">
           <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
           <span>Edit</span>
         </button>
-        <button
-          mat-icon-button
-          color="warn"
-          class="user-card__delete-desktop"
-          (click)="onDelete(user, $event)"
-          aria-label="Delete user"
-        >
+        <button appButton variant="danger" [iconOnly]="true" class="user-card__delete-desktop" (click)="onDelete(user, $event)" aria-label="Delete user">
           <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
         </button>
       </mat-card-actions>

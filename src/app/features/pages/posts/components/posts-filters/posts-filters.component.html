@@ -1,22 +1,17 @@
 <form class="posts-filters" [formGroup]="searchForm()" (submit)="$event.preventDefault()">
-  <div class="app-search app-search--compact">
-    <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
-    <input
-      type="search"
-      class="app-search__input"
-      formControlName="title"
-      placeholder="Search by title"
-      aria-label="Search by title"
-    />
-  </div>
+  <app-search-bar
+    size="compact"
+    [control]="$any(searchForm().get('title'))"
+    placeholder="Search by title"
+    ariaLabel="Search by title"
+  />
   <app-select
     [control]="$any(searchForm().get('userId'))"
     [options]="userSelectOptions()"
-    [placeholder]="'All authors'"
   ></app-select>
   <app-select
+    [control]="perPageControl"
     [options]="perPageSelectOptions()"
-    [placeholder]="currentPerPage().toString()"
     (selectionChange)="changePerPage.emit(+$event)"
     aria-label="Posts per page"
   ></app-select>

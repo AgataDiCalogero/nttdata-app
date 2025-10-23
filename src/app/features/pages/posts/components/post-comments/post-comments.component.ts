@@ -97,8 +97,8 @@ export class PostCommentsComponent {
     const ref = this.dialog.open(DeleteConfirmComponent, {
       width: '400px',
       maxWidth: '90vw',
-      backdropClass: 'blurred-backdrop',
-      panelClass: 'user-form-modal',
+      backdropClass: 'app-dialog-overlay',
+      panelClass: 'app-dialog-panel',
       ariaLabel: 'Delete comment confirmation',
       autoFocus: true,
       restoreFocus: true,

@@ -91,6 +91,19 @@
   --alpha-white-60: rgba(255, 255, 255, 0.6);
   --alpha-white-94: rgba(255, 255, 255, 0.94);
 
+  /* Overlays and dialogs */
+  --overlay-backdrop-soft: rgba(2, 6, 23, 0.5);
+  --overlay-backdrop-strong: rgba(2, 6, 23, 0.75);
+  --dialog-surface: var(--color-surface);
+  --dialog-border: var(--color-border);
+
+  /* Semantic alpha variants */
+  --alpha-info-15: rgba(59, 130, 246, 0.15);
+  --alpha-success-12: rgba(34, 197, 94, 0.12);
+
+  /* Focus ring contrast for inverse surfaces */
+  --focus-ring-contrast: #ffffff;
+
   --btn-height-sm: 2.5rem;
   --btn-height-md: 2.75rem;
   --btn-height-lg: 3.25rem;
@@ -232,6 +245,15 @@
   --badge-inactive-border: rgba(239, 68, 68, 0.18);
   --skeleton-tint-02: rgba(249, 165, 76, 0.05);
   --skeleton-tint-04: rgba(249, 165, 76, 0.1);
+
+  /* Overlays and dialogs (light theme overrides) */
+  --overlay-backdrop-soft: rgba(2, 6, 23, 0.45);
+  --overlay-backdrop-strong: rgba(2, 6, 23, 0.6);
+  --dialog-surface: var(--color-surface-solid);
+  --dialog-border: var(--color-border);
+  --alpha-info-15: rgba(59, 130, 246, 0.18);
+  --alpha-success-12: rgba(34, 197, 94, 0.14);
+  --focus-ring-contrast: #111827;
 
   --color-danger: #dc2626;
   --color-danger-dark: #b91c1c;
