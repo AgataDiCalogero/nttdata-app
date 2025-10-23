@@ -45,13 +45,26 @@ export class Navbar implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly _lucideIcons = inject(LucideMatIconService);
 
-  @ViewChild(MatMenuTrigger) private menuTrigger?: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
 
-  readonly isLoginRoute = signal(this.router.url.startsWith('/login'));
+  // Initialize from location.pathname synchronously to avoid router timing on refresh
+  readonly isLoginRoute = signal(
+    globalThis?.location?.pathname?.startsWith?.('/login') ?? this.router.url.startsWith('/login'),
+  );
+  // helper for template binding to avoid inline object literals which can confuse the template parser
+  readonly routerLinkExact = { exact: true } as const;
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
 
   ngOnInit(): void {
+    // Ensure body class matches current route immediately to avoid visual flashes
+    if (typeof document !== 'undefined') {
+      if (this.isLoginRoute()) {
+        document.body.classList.add('login-route');
+      } else {
+        document.body.classList.remove('login-route');
+      }
+    }
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -60,6 +73,14 @@ export class Navbar implements OnInit {
       .subscribe((event) => {
         this.isLoginRoute.set(event.urlAfterRedirects.startsWith('/login'));
         this.closeMenu();
+        // Toggle a body class so we can style the page for the login route (non-scrollable header etc.)
+        if (typeof document !== 'undefined') {
+          if (this.isLoginRoute()) {
+            document.body.classList.add('login-route');
+          } else {
+            document.body.classList.remove('login-route');
+          }
+        }
       });
   }
 

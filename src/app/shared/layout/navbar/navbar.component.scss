@@ -16,20 +16,40 @@
   padding-inline: var(--app-page-gutter-tight);
   transition: background var(--duration-normal) var(--ease-in-out);
 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   .menu-trigger {
     display: none;
   }
 
   .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
     font-weight: var(--font-weight-semibold);
     letter-spacing: 0;
     border-radius: var(--radius-lg);
     padding-inline: var(--space-md);
     color: var(--color-on-surface);
 
+    /* remove underline specifically for the brand link and ensure focus doesn't reintroduce it */
+    text-decoration: none;
+    &:focus-visible,
+    &:focus {
+      text-decoration: none;
+    }
+
     mat-icon {
       margin-inline-end: var(--space-xxs);
       font-size: 1.125rem;
+    }
+
+    .brand__label {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none; /* ensure no underline */
     }
 
     &.active {
@@ -54,6 +74,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
+    margin-left: auto; /* push controls to the far right */
 
     app-appearance-switcher {
       display: inline-flex;
@@ -71,6 +92,40 @@
       }
     }
   }
+}
+
+/* Styles applied when the app is on the login route. We toggle `body.login-route` from the component. */
+:host-context(body.login-route) {
+  /* Hide navigation elements */
+  .menu-trigger,
+  .nav-links,
+  .logout-btn {
+    display: none !important;
+  }
+
+  /* Keep only the appearance switcher visible on the right */
+  .controls {
+    app-appearance-switcher {
+      display: inline-flex;
+    }
+  }
+
+  /* Brand appears as plain orange label (not a link) */
+  .brand {
+    pointer-events: none;
+    .brand__label {
+      color: var(--color-accent);
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      font-weight: var(--font-weight-bold);
+    }
+  }
+}
+
+/* Optionally lock body scroll on login so the centered card stays visible; footer should still be reachable if present */
+body.login-route {
+  overflow: hidden;
 }
 
 /* Style the mat-menu panel to match app surface aesthetics and tokens */

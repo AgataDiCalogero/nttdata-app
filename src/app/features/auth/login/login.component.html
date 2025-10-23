@@ -34,12 +34,7 @@
           }
         </mat-form-field>
 
-        @if (submissionMessage(); as message) {
-          <div class="login-form__message" role="alert">
-            <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
-            <span>{{ message }}</span>
-          </div>
-        }
+        <!-- Global submission messages are shown via ToastService to avoid duplicate UIs -->
 
         <div class="login-actions">
           <button

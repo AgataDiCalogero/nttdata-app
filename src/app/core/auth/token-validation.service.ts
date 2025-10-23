@@ -35,6 +35,19 @@ export class TokenValidationService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${normalized}`,
     });
+    // dev-only masked log to help debug token validation (no full token printed)
+    try {
+      const maybeLocation = (globalThis as unknown as { location?: { hostname?: string } })
+        .location;
+      if (maybeLocation && maybeLocation.hostname === 'localhost') {
+        console.debug(
+          'TokenValidationService: validating token (masked):',
+          `${normalized.slice(0, 6)}...`,
+        );
+      }
+    } catch {
+      // ignore
+    }
     const context = new HttpContext().set(SKIP_GLOBAL_ERROR, true);
 
     return this.http.post('/users', {}, { headers, context }).pipe(

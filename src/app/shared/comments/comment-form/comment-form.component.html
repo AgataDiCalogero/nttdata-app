@@ -82,9 +82,5 @@
       {{ submitting() ? 'Publishing...' : 'Post comment' }}
     </button>
   </div>
-  @if (submitError(); as error) {
-    <app-alert variant="error" [dismissible]="true" (dismissed)="submitError.set(null)">
-      {{ error }}
-    </app-alert>
-  }
+  <!-- Errors are surfaced via ToastService; keep local field errors inline only -->
 </form>

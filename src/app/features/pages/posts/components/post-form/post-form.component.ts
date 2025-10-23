@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { CreatePost, Post, UpdatePost, User } from '@/app/shared/models';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 import { ButtonComponent, AlertComponent } from '@app/shared/ui';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -62,8 +63,8 @@ export class PostForm {
   private readonly editablePost = signal<Post | null>(this.dialogData?.post ?? null);
   readonly loadingUsers = signal(false);
   readonly loadError = signal<string | null>(null);
-  readonly submitError = signal<string | null>(null);
   readonly submitting = signal(false);
+  private readonly toast = inject(ToastService);
 
   private readonly userIdControl = this.fb.nonNullable.control(0, [
     Validators.required,
@@ -167,8 +168,6 @@ export class PostForm {
       return;
     }
 
-    this.submitError.set(null);
-
     const payload: CreatePost = {
       user_id: this.userIdControl.value,
       title: this.titleControl.value.trim(),
@@ -198,12 +197,13 @@ export class PostForm {
         this.dialogRef.disableClose = false;
         const status = err?.status;
         if (status === 422) {
-          this.submitError.set('Invalid data. Please review the fields.');
+          // Field-level validation: mark the title control so the template shows the specific field error
           this.titleControl.setErrors({ api: true });
         } else if (status === 429) {
-          this.submitError.set('Too many requests. Please try again later.');
+          // Global/server error: show a centralized toast
+          this.toast.show('error', 'Too many requests. Please try again later.');
         } else {
-          this.submitError.set('Unable to save the post. Please retry.');
+          this.toast.show('error', 'Unable to save the post. Please retry.');
         }
       },
     });

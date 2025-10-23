@@ -9,12 +9,20 @@ export const authInterceptor: HttpInterceptorFn = (
   const auth = inject(AuthService);
   const token = auth.token();
 
-  if (!token) {
+  // If the request already provides an Authorization header (e.g. token validation),
+  // do not override it with the stored token.
+  if (req.headers.has('Authorization')) {
+    return next(req);
+  }
+
+  if (!token?.trim()) {
     return next(req);
   }
 
   const authReq = req.clone({
-    setHeaders: { Authorization: `Bearer ${token}` },
+    setHeaders: {
+      Authorization: `Bearer ${token.trim()}`,
+    },
   });
 
   return next(authReq);

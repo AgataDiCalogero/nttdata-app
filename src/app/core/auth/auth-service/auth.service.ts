@@ -27,6 +27,7 @@ export class AuthService {
       localStorage.setItem('auth-token', token);
     }
     this.tokenSignal.set(token);
+    // intentionally no logging here to avoid accidental secret leakage
   }
 
   clearToken() {

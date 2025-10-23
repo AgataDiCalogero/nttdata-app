@@ -8,6 +8,7 @@ import { PostCardComponent } from '@/app/features/pages/posts/components/post-ca
 import { ButtonComponent, StatusBadgeComponent } from '@/app/shared/ui';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 import {
   LucideAngularModule,
   Mail,
@@ -37,6 +38,7 @@ export class UserDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly usersApi = inject(UsersApiService);
   private readonly postsApi = inject(PostsApiService);
+  private readonly toast = inject(ToastService);
 
   readonly Mail = Mail;
   readonly UserIcon = UserIcon;
@@ -69,6 +71,7 @@ export class UserDetail {
       next: (u) => this.user.set(u),
       error: (err) => {
         console.error('Failed to load user:', err);
+        this.toast.show('error', 'Unable to load user details');
         this.error.set('Unable to load user details');
       },
       complete: () => this.loading.set(false),
@@ -80,7 +83,7 @@ export class UserDetail {
       next: ({ items }) => this.posts.set(items ?? []),
       error: (err) => {
         console.error('Failed to load posts for user:', err);
-        this.error.set('Unable to load user posts');
+        this.toast.show('error', 'Unable to load user posts');
       },
     });
   }
@@ -109,6 +112,7 @@ export class UserDetail {
       },
       error: (err) => {
         console.error('Failed to load comments:', err);
+        this.toast.show('error', 'Unable to load comments');
       },
       complete: () => {
         this.commentsLoading.update((state) => ({ ...state, [postId]: false }));

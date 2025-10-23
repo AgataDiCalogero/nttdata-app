@@ -33,12 +33,6 @@
     </app-alert>
   }
 
-  @if (submitError(); as error) {
-    <app-alert variant="error" [dismissible]="true" (dismissed)="submitError.set(null)">
-      {{ error }}
-    </app-alert>
-  }
-
   <form class="form form-dialog__body" [formGroup]="form" (ngSubmit)="submit()">
     <mat-form-field
       class="post-form__field"

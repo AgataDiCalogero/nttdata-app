@@ -107,11 +107,5 @@
         }
       </button>
     </div>
-
-    @if (loadError()) {
-      <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
-        {{ loadError() }}
-      </app-alert>
-    }
   </form>
 </section>

@@ -1,5 +1,5 @@
 <mat-toolbar class="app-navbar" color="primary">
-  @if (isLogged()) {
+  @if (!isLoginRoute() && isLogged()) {
     <button
       mat-icon-button
       class="menu-trigger"
@@ -26,10 +26,12 @@
   </a>
 
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
-    @if (!isLogged() && !isLoginRoute()) {
-      <a mat-button routerLink="/login" (click)="closeMenu()">Login</a>
+    @if (!isLoginRoute()) {
+      @if (!isLogged()) {
+        <a mat-button routerLink="/login" (click)="closeMenu()">Login</a>
+      }
     }
-    @if (isLogged()) {
+    @if (!isLoginRoute() && isLogged()) {
       <a
         mat-button
         routerLink="/users"
@@ -58,7 +60,7 @@
   <div class="controls">
     <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
 
-    @if (isLogged()) {
+    @if (!isLoginRoute() && isLogged()) {
       <button mat-flat-button color="accent" type="button" class="logout-btn" (click)="logout()">
         <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
         <span class="logout-text">Logout</span>
@@ -68,17 +70,19 @@
 </mat-toolbar>
 
 <mat-menu #navMenu="matMenu" class="nav-menu">
-  @if (!isLogged() && !isLoginRoute()) {
-    <button mat-menu-item routerLink="/login" (click)="closeMenu()">Login</button>
-  }
-  @if (isLogged()) {
-    <button mat-menu-item routerLink="/users" (click)="closeMenu()">
-      <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-      <span>Users</span>
-    </button>
-    <button mat-menu-item routerLink="/posts" (click)="closeMenu()">
-      <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-      <span>Posts</span>
-    </button>
+  @if (!isLoginRoute()) {
+    @if (!isLogged()) {
+      <button mat-menu-item routerLink="/login" (click)="closeMenu()">Login</button>
+    }
+    @if (isLogged()) {
+      <button mat-menu-item routerLink="/users" (click)="closeMenu()">
+        <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+        <span>Users</span>
+      </button>
+      <button mat-menu-item routerLink="/posts" (click)="closeMenu()">
+        <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+        <span>Posts</span>
+      </button>
+    }
   }
 </mat-menu>

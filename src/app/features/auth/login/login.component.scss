@@ -8,8 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100dvh;
-  padding-block: clamp(var(--space-xl), 12vh, var(--space-3xl));
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  padding-block: var(--space-md);
   padding-inline: var(--app-page-gutter);
   box-sizing: border-box;
 }
@@ -22,7 +24,7 @@
 
 .login-card {
   width: min(100%, 28rem);
-  padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
+  padding: var(--space-xl) var(--space-2xl) var(--space-lg);
   border-radius: var(--radius-2xl);
   position: relative;
   overflow: hidden;
@@ -31,7 +33,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 
   @include tablet {
     padding-inline: var(--space-xl);
@@ -39,8 +41,8 @@
 }
 
 .login-card__icon {
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   margin: 0 auto;
   display: flex;
@@ -51,7 +53,7 @@
   box-shadow: var(--shadow-accent-soft);
 
   mat-icon {
-    font-size: 2.4rem;
+    font-size: 2rem;
     line-height: 1;
     display: inline-flex;
     align-items: center;
@@ -81,7 +83,7 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
 .login-field {

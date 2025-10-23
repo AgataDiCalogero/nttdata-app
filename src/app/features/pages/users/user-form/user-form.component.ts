@@ -17,6 +17,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 @Component({
   selector: 'app-user-form',
@@ -38,6 +39,7 @@ export class UserForm {
   private readonly destroyRef = inject(DestroyRef);
   private readonly dialogRef = inject(DialogRef<'success' | 'cancel'>);
   private readonly dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
+  private readonly toast = inject(ToastService);
 
   user = input<User | undefined>(undefined);
   closed = output<'success' | 'cancel'>();
@@ -139,9 +141,9 @@ export class UserForm {
         if (status === 422) {
           this.emailError.set('Email already in use or invalid');
         } else if (status === 429) {
-          this.loadError.set('Too many requests. Please try again shortly.');
+          this.toast.show('error', 'Too many requests. Please try again shortly.');
         } else {
-          this.loadError.set('An error occurred while saving. Please try again.');
+          this.toast.show('error', 'An error occurred while saving. Please try again.');
         }
       },
     });

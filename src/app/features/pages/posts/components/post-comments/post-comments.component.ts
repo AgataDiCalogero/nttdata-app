@@ -163,11 +163,13 @@ export class PostCommentsComponent {
           console.error('Failed to update comment', err);
           this.submittingEdit.set(false);
           if (err?.status === 422) {
+            // Keep inline validation errors for the edit form
             this.editError.set('Comment content is not valid. Please revise and try again.');
           } else if (err?.status === 429) {
-            this.editError.set('Too many attempts. Please wait a moment and retry.');
+            // Rate limit / server-level error -> show centralized toast
+            this.toast.show('error', 'Too many attempts. Please wait a moment and retry.');
           } else {
-            this.editError.set('Unable to update this comment right now.');
+            this.toast.show('error', 'Unable to update this comment right now.');
           }
         },
       });
