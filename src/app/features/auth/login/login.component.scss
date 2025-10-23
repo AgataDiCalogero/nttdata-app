@@ -9,8 +9,8 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
+  /* allow page to scroll on compact screens and when virtual keyboard opens */
+  overflow: visible;
   padding-block: var(--space-md);
   padding-inline: var(--app-page-gutter);
   box-sizing: border-box;

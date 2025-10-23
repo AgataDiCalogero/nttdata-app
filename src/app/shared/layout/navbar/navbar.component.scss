@@ -163,9 +163,7 @@
 }
 
 /* Optionally lock body scroll on login so the centered card stays visible; footer should still be reachable if present */
-body.login-route {
-  overflow: hidden;
-}
+/* body.login-route no longer forces overflow hidden; allow page to scroll if needed */
 
 /* Style the mat-menu panel to match app surface aesthetics and tokens */
 .nav-menu {
@@ -174,7 +172,10 @@ body.login-route {
   color: var(--color-on-surface);
   border-radius: var(--radius-lg);
   @include shadow('lg');
-  border: 1px solid var(--border-accent-soft, rgba(0, 0, 0, 0.06));
+  border: 1px solid var(--border-accent-soft);
+  .mat-ripple-element {
+    display: none !important;
+  }
 
   /* mat-menu renders in overlay; these class rules are applied to the panel */
   button.mat-menu-item {
@@ -210,7 +211,7 @@ body.login-route {
     .menu-trigger {
       /* floating FAB - placed bottom-right of the viewport */
       position: fixed;
-      bottom: 1.25rem;
+      bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
       right: 1rem;
       width: 3rem;
       height: 3rem;
@@ -237,7 +238,8 @@ body.login-route {
       }
 
       &:hover,
-      &:focus {
+      &:focus,
+      &:focus-visible {
         transform: translateY(-2px);
         box-shadow: 0 14px 36px rgba(2, 6, 23, 0.18);
       }
@@ -259,10 +261,7 @@ body.login-route {
       justify-content: center !important;
       overflow: hidden !important;
 
-      /* hide textual label and ensure icon is centered */
-      .logout-text {
-        display: none !important;
-      }
+      /* label made screen-reader-only via sr-only utility */
 
       mat-icon {
         margin: 0;

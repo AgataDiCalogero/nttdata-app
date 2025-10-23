@@ -27,6 +27,7 @@ export class SearchBarComponent {
   readonly size = input<SearchSize>('wide');
   readonly placeholder = input<string>('Search');
   readonly ariaLabel = input<string>('');
+  readonly label = input<string>('');
   readonly debounceTime = input<number | ''>(300);
 
   // Optional reactive forms control
@@ -34,6 +35,18 @@ export class SearchBarComponent {
 
   // Debounced value output for consumers that rely on events
   readonly debounced = output<string>();
+
+  protected readonly labelText = computed(
+    () => this.label() || this.ariaLabel() || this.placeholder(),
+  );
+  protected readonly labelId = computed(
+    () =>
+      `searchbar-label-${Math.abs(
+        this.placeholder()
+          .split('')
+          .reduce((a, c) => (a + c.charCodeAt(0)) | 0, 0),
+      )}`,
+  );
 
   protected readonly isWide = computed(() =>
     SIZE_SET.has(this.size()) ? this.size() === 'wide' : true,

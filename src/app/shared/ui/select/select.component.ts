@@ -16,6 +16,7 @@ export class SelectComponent {
   readonly control = input<FormControl | null>(null);
   readonly options = input<{ value: unknown; label: string }[]>([]);
   readonly placeholder = input<string>('');
+  readonly showPlaceholder = input<boolean>(true);
   readonly variant = input<SelectVariant>('default');
   readonly disabled = input(false);
   readonly required = input(false);

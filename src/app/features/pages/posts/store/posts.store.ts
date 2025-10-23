@@ -323,25 +323,22 @@ export const PostsStoreAdapter = signalStore(
     function prefetchCommentCounts(items: Post[]): void {
       const existing = (store as any).commentsCountMap?.() as Record<number, number> | undefined;
       const known = existing || {};
-      items.forEach((post) => {
-        if (known[post.id] !== undefined) return;
-        postsApi
-          .listComments(post.id)
-          .pipe(takeUntilDestroyed(destroyRef))
-          .subscribe({
-            next: (comments) => {
-              patchState(store, (state) => ({
-                commentsCountMap: {
-                  ...((state as any).commentsCountMap ?? {}),
-                  [post.id]: Array.isArray(comments) ? comments.length : 0,
-                },
-              }));
-            },
-            error: () => {
-              patchState(store, (state) => ({
-                commentsCountMap: { ...((state as any).commentsCountMap ?? {}), [post.id]: 0 },
-              }));
-            },
+      const toFetch = items.filter((p) => known[p.id] === undefined);
+      if (!toFetch.length) return;
+      // Throttle concurrency and cache results to reduce UI churn
+      import('rxjs').then(({ from, mergeMap, of, catchError }) => {
+        from(toFetch)
+          .pipe(
+            mergeMap((p) => postsApi.listComments(p.id).pipe(catchError(() => of(null as any))), 3),
+            takeUntilDestroyed(destroyRef),
+          )
+          .subscribe((comments) => {
+            const post = toFetch.shift();
+            if (!post) return;
+            const count = Array.isArray(comments) ? comments.length : 0;
+            patchState(store, (state) => ({
+              commentsCountMap: { ...((state as any).commentsCountMap ?? {}), [post.id]: count },
+            }));
           });
       });
     }

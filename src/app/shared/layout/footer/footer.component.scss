@@ -43,16 +43,15 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.app-footer__link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  text-transform: none;
+.app-footer__author-link {
+  color: var(--color-accent);
   font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
 
-  mat-icon {
-    font-size: 1.1rem;
-  }
+.app-footer__author-link:hover,
+.app-footer__author-link:focus-visible {
+  text-decoration: underline;
 }
 
 @media (max-width: 40rem) {

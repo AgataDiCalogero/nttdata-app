@@ -8,6 +8,7 @@ import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delet
 import type { Post, Comment, DeleteConfirmData, User } from '@/app/shared/models';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { take } from 'rxjs';
 
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
@@ -28,6 +29,7 @@ export class Posts {
   private readonly route = inject(ActivatedRoute);
   private readonly dialogLayouts = inject(ResponsiveDialogService);
   private readonly overlays = inject(UiOverlayService);
+  private readonly toast = inject(ToastService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
 
@@ -105,6 +107,11 @@ export class Posts {
   }
 
   handleViewAuthor(userId: number): void {
+    const exists = Boolean(this.store.userLookup()[userId]);
+    if (!exists) {
+      this.toast.show('info', 'Author not available for this post');
+      return;
+    }
     this.router.navigate(['/users', userId]).catch(() => {});
   }
 

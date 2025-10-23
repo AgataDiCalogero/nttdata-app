@@ -17,7 +17,6 @@ import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -32,7 +31,6 @@ import { ToastService } from '@app/shared/ui/toast/toast.service';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     ButtonComponent,
     MatIconModule,
     MatProgressSpinnerModule,

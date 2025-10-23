@@ -12,7 +12,7 @@
     [required]="required()"
     (change)="onChange($event)"
   >
-    @if (placeholder()) {
+    @if (placeholder() && showPlaceholder()) {
       <option value="">{{ placeholder() }}</option>
     }
     @for (option of options(); track option.value) {
@@ -36,7 +36,7 @@
     [required]="required()"
     (change)="onChange($event)"
   >
-    @if (placeholder()) {
+    @if (placeholder() && showPlaceholder()) {
       <option value="">{{ placeholder() }}</option>
     }
     @for (option of options(); track option.value) {

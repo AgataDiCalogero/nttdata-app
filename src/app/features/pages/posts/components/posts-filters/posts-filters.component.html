@@ -3,17 +3,11 @@
     size="compact"
     [control]="$any(searchForm().get('title'))"
     placeholder="Search by title"
-    ariaLabel="Search by title"
+    label="Search posts by title"
   />
   <app-select
     [control]="$any(searchForm().get('userId'))"
     [options]="userSelectOptions()"
-  ></app-select>
-  <app-select
-    [control]="perPageControl"
-    [options]="perPageSelectOptions()"
-    (selectionChange)="changePerPage.emit(+$event)"
-    aria-label="Posts per page"
   ></app-select>
   <button appButton variant="ghost" type="button" (click)="onReset()">Reset</button>
 </form>

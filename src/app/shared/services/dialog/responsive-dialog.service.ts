@@ -44,10 +44,10 @@ export class ResponsiveDialogService {
     const mobileBase: ResponsiveDialogConfig<TData, R, C> = {
       ...sharedConfig,
       height: '100%',
-      width: '30rem',
+      width: '100vw',
       maxWidth: '100vw',
       panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'app-dialog-panel'),
-      positionStrategy: this.overlay.position().global().top('0').right('0'),
+      // center the dialog on mobile; allow scrolling inside panel
     };
     const mobileConfig = this.mergeConfig(mobileBase, options.mobile);
 

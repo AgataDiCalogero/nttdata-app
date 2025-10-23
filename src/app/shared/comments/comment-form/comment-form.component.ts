@@ -8,7 +8,6 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
@@ -19,7 +18,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, AlertComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './comment-form.component.html',
   styleUrls: ['./comment-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

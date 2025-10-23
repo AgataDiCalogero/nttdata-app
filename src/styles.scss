@@ -179,11 +179,8 @@ select:focus-visible {
 
 body.ui-overlay-blocked .app-navbar .controls {
   pointer-events: none;
-  filter: blur(2px);
   opacity: 0.55;
-  transition:
-    filter 0.2s ease,
-    opacity 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 body.ui-overlay-blocked .app-navbar app-appearance-switcher,
@@ -193,7 +190,6 @@ body.ui-overlay-blocked .app-navbar .logout-btn {
 }
 
 body.ui-overlay-blocked .app-navbar .logout-btn {
-  filter: blur(2px);
   opacity: 0.5;
 }
 

@@ -14,9 +14,6 @@
     <app-posts-filters
       [searchForm]="searchForm()"
       [userOptions]="userOptions()"
-      [perPageOptions]="perPageOptions()"
-      [currentPerPage]="currentPerPage()"
-      (changePerPage)="changePerPage.emit($event)"
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
 
@@ -54,7 +51,16 @@
         [page]="currentPage()"
         [pageCount]="totalPages()"
         (pageChange)="changePage.emit($event)"
-      />
+      >
+        <app-select
+          pagination-extra
+          [control]="perPageControl"
+          [options]="perPageSelectOptions()"
+          (selectionChange)="changePerPage.emit(+$event)"
+          aria-label="Posts per page"
+          [showPlaceholder]="false"
+        ></app-select>
+      </app-pagination>
     }
   </div>
 </section>

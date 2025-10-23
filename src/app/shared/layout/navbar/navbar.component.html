@@ -1,7 +1,9 @@
 <mat-toolbar class="app-navbar" color="primary">
   @if (!isLoginRoute() && isLogged()) {
     <button
-      mat-icon-button
+      appButton
+      [iconOnly]="true"
+      variant="secondary"
       class="menu-trigger"
       type="button"
       aria-label="Apri navigazione"
@@ -65,13 +67,13 @@
     @if (!isLoginRoute() && isLogged()) {
       <button appButton variant="secondary" type="button" class="logout-btn" (click)="logout()">
         <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
-        <span class="logout-text">Logout</span>
+        <span class="logout-text sr-only">Logout</span>
       </button>
     }
   </div>
 </mat-toolbar>
 
-<mat-menu #navMenu="matMenu" class="nav-menu">
+<mat-menu #navMenu="matMenu" class="nav-menu" yPosition="above" [overlapTrigger]="false">
   @if (!isLoginRoute()) {
     @if (!isLogged()) {
       <button mat-menu-item routerLink="/login" (click)="closeMenu()">Login</button>

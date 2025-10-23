@@ -1,7 +1,0 @@
-@use '../../../../../../styles/mixins' as *;
-
-.posts-filters {
-  @include flex-row(var(--space-md), center, center);
-  flex-wrap: wrap;
-  width: 100%;
-}

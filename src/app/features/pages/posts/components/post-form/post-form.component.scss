@@ -4,7 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(var(--space-lg), 4vw, var(--space-xxl));
   min-height: 100%;
 }
 
@@ -40,8 +39,4 @@
   resize: vertical;
 }
 
-@include mixins.mobile {
-  :host {
-    padding: var(--space-lg);
-  }
-}
+/* Padding handled by .form-dialog; host has no extra padding to avoid overflow */

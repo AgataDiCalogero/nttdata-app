@@ -12,5 +12,6 @@
   color: var(--color-on-surface);
   border: 1px solid var(--dialog-border);
   box-shadow: var(--shadow-xl);
-  overflow: hidden;
+  overflow: auto;
+  max-height: calc(100vh - var(--space-xl));
 }

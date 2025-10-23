@@ -12,7 +12,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
@@ -28,7 +27,6 @@ import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service'
     NgOptimizedImage,
     AppearanceSwitcherComponent,
     MatToolbarModule,
-    MatButtonModule,
     ButtonComponent,
     MatIconModule,
     MatMenuModule,

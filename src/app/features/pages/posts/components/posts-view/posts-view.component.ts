@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import type { Comment, Post, User } from '@/app/shared/models';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
@@ -23,7 +22,6 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
     SelectComponent,
     ButtonComponent,
     PaginationComponent,
-    MatButtonModule,
     MatIconModule,
     LoaderComponent,
     AlertComponent,
@@ -68,6 +66,17 @@ export class PostsViewComponent {
   readonly perPageSelectOptions = computed(() =>
     this.perPageOptions().map((size) => ({ value: size, label: size.toString() })),
   );
+
+  protected readonly perPageControl = new FormControl<number>(10, { nonNullable: true });
+
+  constructor() {
+    effect(() => {
+      const v = this.currentPerPage();
+      if (typeof v === 'number' && this.perPageControl.value !== v) {
+        this.perPageControl.setValue(v, { emitEvent: false });
+      }
+    });
+  }
 
   isDeleting(postId: number): boolean {
     return this.deletingId() === postId;

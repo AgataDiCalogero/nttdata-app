@@ -52,7 +52,7 @@ export class UserDetail {
 
   private readonly commentsMap = signal<Record<number, Comment[]>>({});
   private readonly commentsLoading = signal<Record<number, boolean>>({});
-  private readonly commentsCount = signal<Record<number, number>>({});
+  readonly commentsCount = signal<Record<number, number>>({});
 
   constructor() {
     const idParam = this.route.snapshot.paramMap.get('id') ?? '';
@@ -74,6 +74,7 @@ export class UserDetail {
         console.error('Failed to load user:', err);
         this.toast.show('error', 'Unable to load user details');
         this.error.set('Unable to load user details');
+        this.loading.set(false);
       },
       complete: () => this.loading.set(false),
     });
@@ -85,19 +86,29 @@ export class UserDetail {
         const list = items ?? [];
         this.posts.set(list);
         // Prefetch comment counts for preview badges
-        list.forEach((p) => {
-          this.postsApi.listComments(p.id).subscribe({
-            next: (comments) => {
-              this.commentsCount.update((state) => ({
-                ...state,
-                [p.id]: Array.isArray(comments) ? comments.length : 0,
-              }));
-            },
-            error: () => {
-              this.commentsCount.update((state) => ({ ...state, [p.id]: 0 }));
-            },
+        // Prefetch comment counts with basic caching and limited concurrency
+        const known = this.commentsCount();
+        const toFetch = list.filter((p) => known[p.id] === undefined);
+        if (toFetch.length) {
+          import('rxjs').then(({ from, mergeMap, of, catchError }) => {
+            from(toFetch)
+              .pipe(
+                mergeMap(
+                  (p) =>
+                    this.postsApi
+                      .listComments(p.id)
+                      .pipe(catchError(() => of(null as unknown as Comment[]))),
+                  3,
+                ),
+              )
+              .subscribe((comments: any) => {
+                const post = toFetch.shift();
+                if (!post) return;
+                const count = Array.isArray(comments) ? comments.length : 0;
+                this.commentsCount.update((state) => ({ ...state, [post.id]: count }));
+              });
           });
-        });
+        }
       },
       error: (err) => {
         console.error('Failed to load posts for user:', err);

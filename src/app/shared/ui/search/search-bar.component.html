@@ -1,8 +1,9 @@
 <label
   class="app-search"
-  [class.app-search--wide]="isWide"
-  [class.app-search--compact]="isCompact"
+  [class.app-search--wide]="isWide()"
+  [class.app-search--compact]="isCompact()"
 >
+  <span class="sr-only" [id]="labelId()">{{ labelText() }}</span>
   <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
 
   @if (control()) {
@@ -10,8 +11,8 @@
       type="search"
       class="app-search__input"
       [attr.placeholder]="placeholder()"
-      [attr.aria-label]="ariaLabel() || placeholder()"
-      [formControl]="control()"
+      [attr.aria-labelledby]="labelId()"
+      [formControl]="$any(control())"
       [appDebounceInput]="debounceTime()"
       (debounced)="onDebounced($event)"
     />
@@ -20,10 +21,9 @@
       type="search"
       class="app-search__input"
       [attr.placeholder]="placeholder()"
-      [attr.aria-label]="ariaLabel() || placeholder()"
+      [attr.aria-labelledby]="labelId()"
       [appDebounceInput]="debounceTime()"
       (debounced)="onDebounced($event)"
     />
   }
 </label>
-
