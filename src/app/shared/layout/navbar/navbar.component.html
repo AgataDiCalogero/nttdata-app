@@ -8,7 +8,7 @@
       height="40"
       priority
     />
-    <span class="brand__label">NTT Data App</span>
+    <span class="brand__label">NTT Data APP</span>
   </a>
 
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
@@ -47,35 +47,21 @@
   <span class="spacer" aria-hidden="true"></span>
 
   <div class="controls">
-    <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
+    <div class="toolbar-menu-trigger">
+      <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
 
-    @if (!isLoginRoute() && isLogged()) {
-      <button appButton variant="secondary" type="button" class="logout-btn" (click)="logout()">
-        <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
-        <span class="logout-text sr-only">Logout</span>
-      </button>
-    }
+      @if (!isLoginRoute() && isLogged()) {
+        <button appButton variant="secondary" type="button" class="logout-btn" (click)="logout()">
+          <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
+          <span class="logout-text sr-only">Logout</span>
+        </button>
+      }
+    </div>
   </div>
 </mat-toolbar>
 
-<!-- Floating hamburger menu - only on mobile, only when logged, never on login -->
-@if (!isLoginRoute() && isLogged() && isMobile()) {
-  <button
-    appButton
-    [iconOnly]="true"
-    variant="secondary"
-    class="floating-menu-trigger"
-    type="button"
-    aria-label="Apri navigazione"
-    [matMenuTriggerFor]="navMenu"
-    [attr.aria-controls]="navMenu?.panelId"
-    [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
-    (menuOpened)="onMenuOpened()"
-    (menuClosed)="onMenuClosed()"
-  >
-    <mat-icon svgIcon="lucide:menu" aria-hidden="true"></mat-icon>
-  </button>
-}
+<!-- Floating hamburger button is rendered at app level (App template)
+     to avoid duplication. Removed local copy here. -->
 
 <mat-menu
   #navMenu="matMenu"

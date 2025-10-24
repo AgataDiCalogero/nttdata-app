@@ -19,7 +19,7 @@
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* use spacer to push controls */
 
   .menu-trigger {
     display: none;
@@ -35,8 +35,13 @@
     padding-inline: var(--space-md);
     color: var(--color-on-surface);
 
-    /* remove underline specifically for the brand link and ensure focus doesn't reintroduce it */
-    text-decoration: none;
+    /* ensure the brand never shows default link underline/purple visited */
+    &,
+    &:link,
+    &:visited {
+      text-decoration: none;
+      color: inherit;
+    }
     &:focus-visible,
     &:focus {
       text-decoration: none;
@@ -51,6 +56,10 @@
       display: inline-flex;
       align-items: center;
       text-decoration: none; /* ensure no underline */
+      color: var(--color-accent); /* NTT Data APP in orange */
+      font-weight: var(--font-weight-extrabold);
+      font-size: clamp(1.125rem, 2.2vw, 1.6rem);
+      letter-spacing: var(--letter-spacing-tight);
     }
 
     &.active {
@@ -64,6 +73,8 @@
   .controls {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-sm);
+    margin-left: auto; /* keep controls docked to the right */
     .toolbar-menu-trigger {
       margin-left: auto; /* push controls to the far right */
 
@@ -83,6 +94,11 @@
         }
       }
     }
+  }
+
+  /* spacer element pushes controls to the far right */
+  .spacer {
+    flex: 1 1 auto;
   }
 
   /* Ensure nav links are always legible and have clear states */
