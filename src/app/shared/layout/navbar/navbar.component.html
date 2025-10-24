@@ -1,5 +1,5 @@
 <mat-toolbar class="app-navbar" color="primary">
-  <a class="brand" routerLink="/" (click)="closeMenu()">
+  <a class="brand" routerLink="/" (click)="closeMenu()" style="text-decoration: none">
     <img
       ngSrc="assets/logo.svg"
       alt="NTT Data"
@@ -8,7 +8,11 @@
       height="40"
       priority
     />
-    <span class="brand__label">NTT Data APP</span>
+    <span
+      class="brand__label"
+      style="color: var(--color-accent); font-weight: 900; text-shadow: 0 1px 0 rgba(255,255,255,.25), 0 8px 22px rgba(249,115,22,.25)"
+      >NTT Data App</span
+    >
   </a>
 
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
@@ -60,8 +64,24 @@
   </div>
 </mat-toolbar>
 
-<!-- Floating hamburger button is rendered at app level (App template)
-     to avoid duplication. Removed local copy here. -->
+<!-- Floating hamburger menu - only on mobile, only when logged, never on login -->
+@if (!isLoginRoute() && isLogged() && isMobile()) {
+  <button
+    appButton
+    [iconOnly]="true"
+    variant="secondary"
+    class="floating-menu-trigger"
+    type="button"
+    aria-label="Apri navigazione"
+    [matMenuTriggerFor]="navMenu"
+    [attr.aria-controls]="navMenu?.panelId"
+    [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
+    (menuOpened)="onMenuOpened()"
+    (menuClosed)="onMenuClosed()"
+  >
+    <mat-icon svgIcon="lucide:menu" aria-hidden="true"></mat-icon>
+  </button>
+}
 
 <mat-menu
   #navMenu="matMenu"

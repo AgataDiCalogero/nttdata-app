@@ -16,3 +16,20 @@
 }
 
 /* Padding handled by .form-dialog; host has no extra padding to avoid overflow */
+
+/* Ensure all fields have uniform width and never overflow the dialog */
+.user-form__form .form-field,
+.user-form__form .form-input,
+.user-form__form .form-select,
+.user-form__form .form-textarea,
+.user-form__form .select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+/* Avoid visual overflow from focus rings within the dialog */
+:host ::ng-deep .form-dialog {
+  overflow: hidden;
+}

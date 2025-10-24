@@ -19,42 +19,52 @@
         </div>
       </app-alert>
     } @else if (user(); as detail) {
-      <article class="user-card">
-        <div class="user-card__avatar" aria-hidden="true">
-          {{ (detail.name || '').slice(0, 2).toUpperCase() }}
-        </div>
-        <div class="user-card__meta">
-          <h1 class="app-page__title">{{ detail.name }}</h1>
-          <p class="user-card__email">
-            <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
-            <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
-          </p>
-          <div class="user-card__badges">
-            <span class="user-card__badge">
-              <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
-              {{ detail.gender || 'Not specified' }}
-            </span>
-            <app-status-badge
-              [status]="detail.status"
-              [ariaLabel]="detail.status === 'active' ? 'Active user' : 'Inactive user'"
-            ></app-status-badge>
+      <mat-card class="user-card">
+        <mat-card-header>
+          <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
+            {{ (detail.name || '').slice(0, 2).toUpperCase() }}
           </div>
-        </div>
-        <div class="user-card__summary">
-          <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
-          <span>
-            {{ posts().length }}
-            {{ posts().length === 1 ? 'post shared' : 'posts shared' }}
-          </span>
-        </div>
-      </article>
+          <div class="user-card__title-wrapper">
+            <mat-card-title class="user-card__name">{{ detail.name }}</mat-card-title>
+            <mat-card-subtitle class="user-card__email">
+              <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
+              <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
+            </mat-card-subtitle>
+          </div>
+          <div class="user-card__status">
+            <mat-slide-toggle
+              [checked]="detail.status === 'active'"
+              (change)="onToggleStatus($event.checked)"
+              aria-label="Toggle active status"
+            >
+              {{ detail.status === 'active' ? 'Active' : 'Inactive' }}
+            </mat-slide-toggle>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="user-card__meta">
+            <div class="user-card__badges">
+              <span class="user-card__badge">
+                <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
+                {{ detail.gender || 'Not specified' }}
+              </span>
+            </div>
+            <div class="user-card__summary">
+              <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
+              <span>
+                {{ posts().length }}
+                {{ posts().length === 1 ? 'post shared' : 'posts shared' }}
+              </span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
       <section class="user-posts" aria-labelledby="user-posts-title">
         <header class="user-posts__header" data-app-header="true">
           <h2 id="user-posts-title" class="app-section-title">Posts from {{ detail.name }}</h2>
-          <p class="app-subtitle">
-            Browse the ideas and reports submitted by this citizen. Comments can be opened inline.
-          </p>
+          <p class="app-subtitle">Posts by this user. Comments open inline.</p>
         </header>
 
         @if (postsLoading()) {

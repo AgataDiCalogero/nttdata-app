@@ -33,6 +33,10 @@
 
 .posts-filters {
   @include mixins.flex-row(var(--space-sm), center);
+
+  .posts-filters__perpage {
+    min-width: 5.5rem;
+  }
 }
 
 @include mixins.mobile {
@@ -47,7 +51,12 @@
   }
 
   .posts-filters {
-    flex-wrap: wrap;
+    @include mixins.flex-column(var(--space-sm), stretch);
     width: 100%;
+
+    button[appButton] {
+      align-self: center;
+      min-width: 7rem;
+    }
   }
 }

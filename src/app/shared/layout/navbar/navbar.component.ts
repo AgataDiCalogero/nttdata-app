@@ -20,7 +20,6 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
-import { NavMenuService } from './nav-menu.service';
 
 @Component({
   selector: 'app-navbar',
@@ -48,7 +47,6 @@ export class Navbar implements OnInit, AfterViewInit {
   private readonly _lucideIcons = inject(LucideMatIconService);
 
   @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
-  private readonly navMenuService = inject(NavMenuService);
 
   // Initialize from location.pathname synchronously to avoid router timing on refresh
   // Initialize from location.pathname when available (SSR/client) so the login route is detected synchronously on initial render
@@ -123,14 +121,6 @@ export class Navbar implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // register the internal MatMenuTrigger so external floating triggers can control it
-    this.navMenuService.register(this.menuTrigger ?? null, 'toolbar');
-    // set menu reference (mat-menu) by querying the template reference - this avoids direct MatMenu import here
-    const menuEl = document.querySelector('mat-menu.nav-menu');
-    // Note: NavMenuService primarily uses the trigger, but setting menu ref keeps the API consistent
-    if (menuEl) {
-      // nothing else required here; trigger has reference to menu from MatMenuTrigger
-    }
     try {
       const isLocal = String(globalThis?.location?.hostname) === 'localhost';
       if (!isLocal || globalThis.window === undefined || globalThis.document === undefined) {

@@ -72,7 +72,7 @@
   right: 0;
   top: calc(100% + 0.6rem);
   min-width: 11.25rem;
-  @extend %app-menu-panel;
+  @include app-menu-panel;
   z-index: 110;
   max-height: calc(100vh - 6rem);
   max-height: calc(100dvh - 6rem);
@@ -112,7 +112,7 @@
 }
 
 .appearance-option {
-  @extend %app-menu-item;
+  @include app-menu-item;
   border-radius: calc(var(--radius-lg) + 0.125rem);
   font-size: 0.8rem;
 

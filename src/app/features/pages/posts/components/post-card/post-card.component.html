@@ -5,45 +5,57 @@
   @let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
 
   <div card-header class="posts-card__header">
-    <button type="button" class="posts-card__author" (click)="onAuthorClick()">
-      <div class="posts-card__avatar" aria-hidden="true">
-        {{ author.charAt(0).toUpperCase() }}
-      </div>
-      <div class="posts-card__author-meta">
-        <h3 class="posts-card__title">{{ postModel?.title }}</h3>
-        <span class="posts-card__subtitle">Shared by {{ author }}</span>
-      </div>
-    </button>
+    <div class="posts-card__hero">
+      <div class="posts-card__avatar-row">
+        <button
+          type="button"
+          class="posts-card__avatar-button"
+          (click)="onAuthorClick()"
+          aria-label="View author {{ author }}"
+        >
+          <div class="posts-card__avatar" aria-hidden="true">
+            {{ author.charAt(0).toUpperCase() }}
+          </div>
+        </button>
 
-    @if (allowManage()) {
-      <div class="posts-card__actions">
-        <button
-          appButton
-          variant="ghost"
-          size="sm"
-          type="button"
-          class="posts-card__action"
-          (click)="edit.emit()"
-          aria-label="Edit post {{ postModel?.title }}"
-        >
-          <lucide-icon [img]="Pencil"></lucide-icon>
-          Edit
+        <button type="button" class="posts-card__author" (click)="onAuthorClick()">
+          <div class="posts-card__author-meta">
+            <h3 class="posts-card__title">{{ postModel?.title }}</h3>
+            <span class="posts-card__subtitle">Shared by {{ author }}</span>
+          </div>
         </button>
-        <button
-          appButton
-          variant="ghost"
-          size="sm"
-          type="button"
-          class="posts-card__action posts-card__action--danger"
-          (click)="delete.emit()"
-          [disabled]="deleting"
-          aria-label="Delete post {{ postModel?.title }}"
-        >
-          <lucide-icon [img]="Trash2"></lucide-icon>
-          Delete
-        </button>
+
+        @if (allowManage()) {
+          <div class="posts-card__actions-inline">
+            <button
+              appButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              [iconOnly]="true"
+              class="posts-card__action posts-card__action--edit"
+              (click)="edit.emit()"
+              aria-label="Edit post {{ postModel?.title }}"
+            >
+              <lucide-icon [img]="Pencil"></lucide-icon>
+            </button>
+            <button
+              appButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              [iconOnly]="true"
+              class="posts-card__action posts-card__action--danger posts-card__action--delete"
+              (click)="delete.emit()"
+              [disabled]="deleting"
+              aria-label="Delete post {{ postModel?.title }}"
+            >
+              <lucide-icon [img]="Trash2"></lucide-icon>
+            </button>
+          </div>
+        }
       </div>
-    }
+    </div>
   </div>
 
   <div card-body class="posts-card__body">

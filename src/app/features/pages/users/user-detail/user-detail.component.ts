@@ -7,6 +7,8 @@ import { CommentsCacheService } from '@/app/shared/services/comments-cache/comme
 import type { User, Post, Comment } from '@/app/shared/models';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import { ButtonComponent, StatusBadgeComponent } from '@/app/shared/ui';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
@@ -32,6 +34,8 @@ import {
     PostCardComponent,
     LucideAngularModule,
     StatusBadgeComponent,
+    MatSlideToggleModule,
+    MatCardModule,
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
@@ -209,5 +213,10 @@ export class UserDetail {
 
   trackPostId(_idx: number, post: Post): number {
     return post.id;
+  }
+
+  // Update user status from template-safe handler
+  onToggleStatus(checked: boolean): void {
+    this.user.update((u) => (u ? { ...u, status: checked ? 'active' : 'inactive' } : u));
   }
 }

@@ -21,6 +21,14 @@
   align-items: center;
   justify-content: flex-start; /* use spacer to push controls */
 
+  /* Make sure Material internal wrappers use flex so spacer works */
+  .mat-toolbar-row,
+  .mat-toolbar-layout {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
   .menu-trigger {
     display: none;
   }
@@ -35,16 +43,16 @@
     padding-inline: var(--space-md);
     color: var(--color-on-surface);
 
-    /* ensure the brand never shows default link underline/purple visited */
+    /* forza rimozione underline e colore ereditato su tutti gli stati del link */
     &,
     &:link,
-    &:visited {
-      text-decoration: none;
-      color: inherit;
-    }
-    &:focus-visible,
-    &:focus {
-      text-decoration: none;
+    &:visited,
+    &:hover,
+    &:active,
+    &:focus,
+    &:focus-visible {
+      text-decoration: none !important;
+      color: inherit !important;
     }
 
     mat-icon {
@@ -52,14 +60,29 @@
       font-size: 1.125rem;
     }
 
+    .brand__logo {
+      display: inline-block;
+      width: 2.5rem;
+      height: 2.5rem;
+      object-fit: contain;
+    }
+
     .brand__label {
       display: inline-flex;
-      align-items: center;
+      align-items: center; /* vertical center relative al logo */
+      line-height: 1.05;
       text-decoration: none; /* ensure no underline */
-      color: var(--color-accent); /* NTT Data APP in orange */
+      color: var(--color-accent) !important; /* fallback forte in arancione */
       font-weight: var(--font-weight-extrabold);
-      font-size: clamp(1.125rem, 2.2vw, 1.6rem);
+      font-size: clamp(1.2rem, 2.4vw, 1.7rem);
       letter-spacing: var(--letter-spacing-tight);
+
+      /* Effetto luce dorata tipo pulsanti (fallback: text-shadow) */
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.25),
+        0 8px 22px rgba(249, 115, 22, 0.25);
+
+      /* niente gradient clip: evitiamo interferenze con stati dei link */
     }
 
     &.active {
@@ -70,11 +93,22 @@
 
   /* Removed light-theme only override for active nav links to keep consistent, accessible colors across themes */
 
+  /* push controls to the far right even inside Material wrappers */
+  > .controls {
+    margin-left: auto !important;
+  }
+  .mat-toolbar-row > .controls {
+    margin-left: auto !important;
+  }
+  .mat-toolbar-layout > .controls {
+    margin-left: auto !important;
+  }
+
   .controls {
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    margin-left: auto; /* keep controls docked to the right */
+    /* margin-left handled on direct child to avoid nesting issues */
     .toolbar-menu-trigger {
       margin-left: auto; /* push controls to the far right */
 
@@ -98,6 +132,9 @@
 
   /* spacer element pushes controls to the far right */
   .spacer {
+    flex: 1 1 auto;
+  }
+  .mat-toolbar-row .spacer {
     flex: 1 1 auto;
   }
 
@@ -191,7 +228,7 @@
    (no !important). */
   .cdk-overlay-pane .nav-menu {
     min-width: 14rem;
-    @extend %app-menu-panel;
+    @include app-menu-panel;
     border-radius: calc(var(--radius-2xl) * 1.1);
   }
   /* Material uses CSS variables for menu text color; set them on the panel so
@@ -217,7 +254,7 @@
   .cdk-overlay-pane .nav-menu button.mat-menu-item:link,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:visited,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:link {
-    @extend %app-menu-item;
+    @include app-menu-item;
     color: var(--color-on-surface);
   }
 
@@ -274,7 +311,7 @@
     padding-inline: var(--app-page-gutter-tight);
 
     .nav-links {
-      display: none;
+      display: none !important; /* ensure top links are hidden on mobile */
     }
 
     /* target the actual button element with the appButton directive for specificity */
@@ -320,7 +357,7 @@
       min-width: auto;
       width: min(18rem, calc(100vw - 2rem));
       border-radius: calc(var(--radius-2xl) * 1.1);
-      @extend %app-menu-panel;
+      @include app-menu-panel;
       color: var(--color-on-surface);
       margin-bottom: 0.5rem;
       transform-origin: bottom right;

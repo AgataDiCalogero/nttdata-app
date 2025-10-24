@@ -6,8 +6,8 @@ import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsCacheService {
-  private commentsMap = new Map<number, Comment[]>();
-  private inFlight = new Map<number, Observable<Comment[] | null>>();
+  readonly commentsMap = new Map<number, Comment[]>();
+  readonly inFlight = new Map<number, Observable<Comment[] | null>>();
 
   constructor(private readonly postsApi: PostsApiService) {}
 
