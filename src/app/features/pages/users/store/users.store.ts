@@ -1,4 +1,4 @@
-import { inject, computed, Type } from '@angular/core';
+import { inject, computed, Type, DestroyRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
 import type { User, DeleteConfirmData } from '@/app/shared/models';
@@ -11,6 +11,7 @@ import { DeleteConfirmComponent } from '../../../../shared/dialog/delete-confirm
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { tap, take } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 interface SortState {
@@ -99,6 +100,7 @@ export const UsersStoreAdapter = signalStore(
 
   withMethods((store) => {
     const usersApi = inject(UsersApiService);
+    const destroyRef = inject(DestroyRef);
     const toast = inject(ToastService);
     const router = inject(Router);
     const route = inject(ActivatedRoute);
@@ -121,19 +123,22 @@ export const UsersStoreAdapter = signalStore(
 
     const loadUsers = () => {
       patchState(store, { loading: true, error: null });
-      usersApi.list().subscribe({
-        next: ({ items }) => {
-          patchState(store, {
-            users: items ?? [],
-            loading: false,
-          });
-          setPage(store.pageState().page, store.pageState().per_page, false);
-        },
-        error: (err) => {
-          console.error('Failed to load users:', err);
-          patchState(store, { error: mapHttpError(err).message, loading: false });
-        },
-      });
+      usersApi
+        .list()
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe({
+          next: ({ items }) => {
+            patchState(store, {
+              users: items ?? [],
+              loading: false,
+            });
+            setPage(store.pageState().page, store.pageState().per_page, false);
+          },
+          error: (err) => {
+            console.error('Failed to load users:', err);
+            patchState(store, { error: mapHttpError(err).message, loading: false });
+          },
+        });
     };
 
     const onSearch = (value: string) => {

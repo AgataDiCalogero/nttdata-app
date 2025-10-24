@@ -1,5 +1,6 @@
 @use '../../../../styles/_appearance' as *;
 @use '../../../../styles/mixins';
+@use '../../../../styles/menu' as *;
 
 .appearance-switcher {
   position: relative;
@@ -71,21 +72,7 @@
   right: 0;
   top: calc(100% + 0.6rem);
   min-width: 11.25rem;
-
-  background: var(--color-surface-solid);
-  color: var(--color-on-surface);
-  border-radius: var(--radius-2xl);
-
-  border: none;
-  padding: var(--space-md);
-
-  box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-
-  background-clip: padding-box !important;
-  outline: none !important;
-  @include mixins.flex-column(var(--space-xs));
+  @extend %app-menu-panel;
   z-index: 110;
   max-height: calc(100vh - 6rem);
   max-height: calc(100dvh - 6rem);
@@ -116,7 +103,6 @@
   background: transparent !important;
 }
 
-.appearance-switcher__panel,
 .appearance-switcher__panel *,
 .appearance-switcher__panel *::before,
 .appearance-switcher__panel *::after {
@@ -126,20 +112,9 @@
 }
 
 .appearance-option {
-  @include mixins.flex-row(var(--space-xs));
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  padding: var(--space-sm) var(--space-md);
+  @extend %app-menu-item;
   border-radius: calc(var(--radius-lg) + 0.125rem);
-  border: 0.125rem solid transparent;
-  background: transparent;
-  color: var(--color-on-surface);
-  cursor: pointer;
-  font-weight: 500;
   font-size: 0.8rem;
-  text-align: left;
-  @include mixins.transition-group((background, border-color, transform));
 
   &:hover {
     background: color-mix(in srgb, var(--color-accent) 6%, transparent);

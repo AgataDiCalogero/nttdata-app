@@ -24,6 +24,7 @@ import type {
 import type { PostsService } from './posts.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 
@@ -84,6 +85,7 @@ export const PostsStoreAdapter = signalStore(
   withMethods((store) => {
     const postsApi = inject(PostsApiService);
     const usersApi = inject(UsersApiService);
+    const commentsCache = inject(CommentsCacheService);
     const toast = inject(ToastService);
     const fb = inject(FormBuilder);
     const destroyRef = inject(DestroyRef);
@@ -126,7 +128,8 @@ export const PostsStoreAdapter = signalStore(
             if (shouldGoPrev) {
               patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));
             }
-            patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
+            // Avoid manual reloadToken bump here: page/perPage changes and the computed queryCriteria
+            // already drive list reloads. This prevents duplicate network calls.
           },
           error: (err) => {
             console.error('Failed to delete post:', err);
@@ -192,15 +195,15 @@ export const PostsStoreAdapter = signalStore(
         patchState(store, (state) => ({
           commentsLoading: { ...state.commentsLoading, [postId]: true },
         }));
-        postsApi
-          .listComments(postId)
+        commentsCache
+          .fetchComments(postId)
           .pipe(takeUntilDestroyed(destroyRef))
           .subscribe({
             next: (comments) => {
               patchState(store, (state) => ({
                 commentsMap: { ...state.commentsMap, [postId]: comments ?? [] },
                 commentsCountMap: {
-                  ...((state as any).commentsCountMap ?? {}),
+                  ...state.commentsCountMap,
                   [postId]: Array.isArray(comments) ? comments.length : 0,
                 },
               }));
@@ -227,10 +230,9 @@ export const PostsStoreAdapter = signalStore(
             [postId]: [comment, ...(state.commentsMap[postId] ?? [])],
           },
           commentsCountMap: {
-            ...((state as any).commentsCountMap ?? {}),
+            ...state.commentsCountMap,
             [postId]:
-              1 +
-              ((state as any).commentsCountMap?.[postId] ?? state.commentsMap[postId]?.length ?? 0),
+              1 + (state.commentsCountMap?.[postId] ?? state.commentsMap[postId]?.length ?? 0),
           },
         }));
       },
@@ -247,7 +249,7 @@ export const PostsStoreAdapter = signalStore(
               ),
             },
             commentsCountMap: {
-              ...((state as any).commentsCountMap ?? {}),
+              ...state.commentsCountMap,
               [postId]: current.length,
             },
           };
@@ -331,7 +333,7 @@ export const PostsStoreAdapter = signalStore(
     }
 
     function prefetchCommentCounts(items: Post[]): void {
-      const existing = (store as any).commentsCountMap?.() as Record<number, number> | undefined;
+      const existing = store.commentsCountMap?.();
       const known = existing || {};
       const toFetch = items.filter((p) => known[p.id] === undefined);
       if (!toFetch.length) return;
@@ -340,8 +342,8 @@ export const PostsStoreAdapter = signalStore(
         .pipe(
           mergeMap(
             (post) =>
-              postsApi.listComments(post.id).pipe(
-                catchError(() => of(null as any)),
+              commentsCache.fetchComments(post.id).pipe(
+                catchError(() => of<Comment[] | null>(null)),
                 map((comments) => ({ post, comments })),
               ),
             3,
@@ -351,7 +353,7 @@ export const PostsStoreAdapter = signalStore(
         .subscribe(({ post, comments }) => {
           const count = Array.isArray(comments) ? comments.length : 0;
           patchState(store, (state) => ({
-            commentsCountMap: { ...((state as any).commentsCountMap ?? {}), [post.id]: count },
+            commentsCountMap: { ...state.commentsCountMap, [post.id]: count },
           }));
         });
     }

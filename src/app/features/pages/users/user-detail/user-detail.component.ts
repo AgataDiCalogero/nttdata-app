@@ -3,6 +3,7 @@ import { Component, ChangeDetectionStrategy, DestroyRef, inject, signal } from '
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import type { User, Post, Comment } from '@/app/shared/models';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import { ButtonComponent, StatusBadgeComponent } from '@/app/shared/ui';
@@ -40,6 +41,7 @@ export class UserDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly usersApi = inject(UsersApiService);
   private readonly postsApi = inject(PostsApiService);
+  private readonly commentsCache = inject(CommentsCacheService);
   private readonly toast = inject(ToastService);
 
   readonly Mail = Mail;
@@ -103,15 +105,15 @@ export class UserDetail {
             .pipe(
               mergeMap(
                 (post) =>
-                  this.postsApi.listComments(post.id).pipe(
-                    catchError(() => of(null as unknown as Comment[])),
+                  this.commentsCache.fetchComments(post.id).pipe(
+                    catchError(() => of<Comment[] | null>(null)),
                     map((comments) => ({ post, comments })),
                   ),
                 3,
               ),
               takeUntilDestroyed(this.destroyRef),
             )
-            .subscribe(({ post, comments }: any) => {
+            .subscribe(({ post, comments }: { post: Post; comments: Comment[] | null }) => {
               const count = Array.isArray(comments) ? comments.length : 0;
               this.commentsCount.update((state) => ({ ...state, [post.id]: count }));
             });
@@ -142,8 +144,8 @@ export class UserDetail {
     }
 
     this.commentsLoading.update((state) => ({ ...state, [postId]: true }));
-    this.postsApi
-      .listComments(postId)
+    this.commentsCache
+      .fetchComments(postId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (comments) => {

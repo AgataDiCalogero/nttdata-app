@@ -1,3 +1,5 @@
+@use './mixins' as *;
+
 :root {
   --app-page-max-width: clamp(64rem, 90vw, 80rem);
   --app-page-wide-width: clamp(72rem, 94vw, 96rem);
@@ -60,6 +62,13 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-lg);
+}
+
+/* Standard page heading wrapper: title + subtitle/meta */
+.app-page__heading {
+  @include flex-column(var(--space-xxs));
+  align-items: flex-start;
+  text-align: left;
 }
 
 :where(h1, .app-page__title, .app-page-title) {
@@ -143,7 +152,22 @@
     align-items: stretch;
   }
 
+  /* Center standard headings on small screens */
   :where(h1, .app-page__title, .app-page-title) {
-    text-align: left;
+    text-align: center;
+  }
+
+  .app-page__heading {
+    align-items: center;
+    text-align: center;
+  }
+
+  /* CTA buttons in page headers stretch on mobile */
+  .app-page__header button[appButton],
+  .app-page__header a[appButton],
+  [data-app-header='true'] button[appButton],
+  [data-app-header='true'] a[appButton] {
+    width: 100%;
+    justify-content: center;
   }
 }

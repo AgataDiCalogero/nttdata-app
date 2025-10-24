@@ -11,10 +11,6 @@
     flex-wrap: wrap;
   }
 
-  &__heading {
-    @include flex-column(var(--space-xxs));
-  }
-
   /* Title/meta typography provided by global .app-page__title and .app-page__meta */
 
   &__alert {

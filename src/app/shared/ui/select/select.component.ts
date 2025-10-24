@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  input,
+  output,
+  inject,
+  computed,
+} from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { IdService } from '@app/shared/services/id/id.service';
 import { CommonModule } from '@angular/common';
 
 export type SelectVariant = 'default' | 'compact';
@@ -26,6 +35,12 @@ export class SelectComponent {
   readonly ariaDescribedBy = input<string>('');
 
   readonly selectionChange = output<string>();
+
+  private readonly idService = inject(IdService);
+  // fallback id generated once per component instance
+  protected readonly _fallbackId = this.idService.next('select');
+
+  protected readonly resolvedId = computed(() => (this.id() ? this.id() : this._fallbackId));
 
   constructor() {
     effect(() => {

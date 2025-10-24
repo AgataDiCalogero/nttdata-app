@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { LucideAngularModule, Search } from 'lucide-angular';
-import { createUniqueId } from '@app/shared/utils/id';
+import { IdService } from '@app/shared/services/id/id.service';
 
 type SearchSize = 'wide' | 'compact' | 'small' | 'full';
 const SIZE_SET = new Set<SearchSize>(['wide', 'compact', 'small', 'full']);
@@ -23,12 +23,15 @@ const SIZE_SET = new Set<SearchSize>(['wide', 'compact', 'small', 'full']);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBarComponent {
+  private readonly idService = inject(IdService);
   readonly Search = Search;
 
   readonly size = input<SearchSize>('wide');
   readonly placeholder = input<string>('Search');
   readonly ariaLabel = input<string>('');
   readonly label = input<string>('');
+  // optional explicit id for accessibility (recommended)
+  readonly id = input<string>('');
   readonly debounceTime = input<number | ''>(300);
 
   // Optional reactive forms control
@@ -40,7 +43,16 @@ export class SearchBarComponent {
   protected readonly labelText = computed(
     () => this.label() || this.ariaLabel() || this.placeholder(),
   );
-  protected readonly labelId: string = createUniqueId('searchbar-label');
+
+  // If consumer provides an id we use it, otherwise generate one per-instance via IdService
+  private readonly _generatedId = this.idService.next('searchbar');
+  protected readonly labelId = computed(() =>
+    this.id() ? `${this.id()}-label` : `${this._generatedId}-label`,
+  );
+
+  protected readonly inputId = computed(() =>
+    this.id() ? `${this.id()}-input` : `${this._generatedId}-input`,
+  );
 
   protected readonly isWide = computed(() =>
     SIZE_SET.has(this.size()) ? this.size() === 'wide' : true,

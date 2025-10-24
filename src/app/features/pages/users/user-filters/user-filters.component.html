@@ -1,6 +1,7 @@
 <div class="user-filters">
   <app-search-bar
     size="full"
+    [id]="searchId"
     placeholder="Search by name or email..."
     label="Search users by name or email"
     (debounced)="onDebounced($event)"

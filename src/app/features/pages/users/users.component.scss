@@ -9,10 +9,6 @@
     flex-wrap: wrap;
   }
 
-  &__heading {
-    @include flex-column(var(--space-xxs));
-  }
-
   /* Title/subtitle typography provided by global .app-page__title and .app-subtitle */
 
   /* Header CTA uses shared appButton styles */
@@ -79,16 +75,5 @@
 }
 
 @media (max-width: 48rem) {
-  .users-page__header {
-    flex-direction: column;
-    align-items: stretch;
-
-    button[appButton],
-    a[appButton] {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-
   /* .app-pagination responsive handled by shared styles */
 }

@@ -4,7 +4,7 @@
   <section class="users-page" data-app-page="true">
     <div class="users-container app-container app-container--full app-container--flush">
       <header class="users-page__header app-page__header">
-        <div class="users-page__heading">
+        <div class="app-page__heading">
           <h1 class="app-page__title">Users</h1>
           <p class="app-subtitle">Manage and view all registered users</p>
         </div>
@@ -40,7 +40,13 @@
                   <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
                   <p>{{ err }}</p>
                 </div>
-                <button appButton variant="ghost" type="button" (click)="clearError()" [disabled]="loading()">
+                <button
+                  appButton
+                  variant="ghost"
+                  type="button"
+                  (click)="clearError()"
+                  [disabled]="loading()"
+                >
                   Retry
                 </button>
               </mat-card-content>
@@ -76,4 +82,3 @@
     </div>
   </section>
 }
-

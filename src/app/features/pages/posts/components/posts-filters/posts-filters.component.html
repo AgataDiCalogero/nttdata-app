@@ -2,16 +2,19 @@
   <app-search-bar
     size="compact"
     [control]="$any(searchForm().get('title'))"
+    [id]="searchId"
     placeholder="Search by title"
     label="Search posts by title"
   />
   <app-select
+    [id]="userSelectId"
     [control]="$any(searchForm().get('userId'))"
     [options]="userSelectOptions()"
   ></app-select>
   <app-select
     class="posts-filters__perpage"
-    [control]="$any(searchForm().get('perPage'))"
+    [id]="perPageSelectId"
+    [control]="$any(perPageControl() ? perPageControl() : searchForm().get('perPage'))"
     [options]="perPageSelectOptions()"
     (selectionChange)="onPerPageChange($event)"
     [ariaLabel]="'Posts per page'"

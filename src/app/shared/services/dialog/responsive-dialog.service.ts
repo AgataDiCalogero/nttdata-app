@@ -41,9 +41,10 @@ export class ResponsiveDialogService {
 
     const mobileBase: ResponsiveDialogConfig<TData, R, C> = {
       ...sharedConfig,
-      height: '100%',
+      // Use a maxHeight that respects safe-area insets and leaves a small gap from viewport edges
       width: '100vw',
       maxWidth: '100vw',
+      maxHeight: 'calc(100vh - 2.5rem - env(safe-area-inset-bottom))',
       panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'app-dialog-panel'),
       // center the dialog on mobile; allow scrolling inside panel
     };

@@ -5,7 +5,7 @@
   [class.app-search--small]="isSmall()"
   [class.app-search--full]="isFull()"
 >
-  <span class="sr-only" [id]="labelId">{{ labelText() }}</span>
+  <span class="sr-only" [id]="labelId()">{{ labelText() }}</span>
   <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
 
   @if (control()) {
@@ -13,7 +13,8 @@
       type="search"
       class="app-search__input"
       [attr.placeholder]="placeholder()"
-      [attr.aria-labelledby]="labelId"
+      [attr.aria-labelledby]="labelId()"
+      [attr.id]="inputId()"
       [formControl]="$any(control())"
       [appDebounceInput]="debounceTime()"
       (debounced)="onDebounced($event)"
@@ -23,7 +24,8 @@
       type="search"
       class="app-search__input"
       [attr.placeholder]="placeholder()"
-      [attr.aria-labelledby]="labelId"
+      [attr.aria-labelledby]="labelId()"
+      [attr.id]="inputId()"
       [appDebounceInput]="debounceTime()"
       (debounced)="onDebounced($event)"
     />

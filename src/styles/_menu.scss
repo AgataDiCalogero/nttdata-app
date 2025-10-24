@@ -1,0 +1,40 @@
+@use './mixins' as *;
+
+/* Shared menu/overlay panel styles (appearance switcher, nav menu, etc.) */
+
+%app-menu-panel {
+  background: var(--color-surface-solid);
+  color: var(--color-on-surface);
+  border-radius: var(--radius-2xl);
+  border: 0.0625rem solid var(--color-border);
+  padding: var(--space-md);
+  @include shadow('xl');
+  background-clip: padding-box;
+  outline: none;
+  @include flex-column(var(--space-xs));
+}
+
+%app-menu-item {
+  @include flex-row(var(--space-xs));
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 0.125rem solid transparent;
+  background: transparent;
+  color: var(--color-on-surface);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-align: left;
+  @include transition-group((background, border-color, transform, box-shadow));
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

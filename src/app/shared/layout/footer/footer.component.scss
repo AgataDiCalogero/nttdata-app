@@ -27,14 +27,17 @@
 
 .app-footer__meta {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-sm);
   margin: 0;
   font-size: var(--font-size-sm);
   color: color-mix(in srgb, var(--color-on-surface) 72%, transparent);
 
   mat-icon {
-    font-size: 1.25rem;
+    font-size: 0.7em;
+    display: inline-block;
+    vertical-align: baseline;
+    margin-top: 0;
   }
 }
 

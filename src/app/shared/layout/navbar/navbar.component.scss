@@ -1,4 +1,5 @@
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/menu' as *;
 
 :host {
   display: block;
@@ -174,12 +175,8 @@
    (no !important). */
   .cdk-overlay-pane .nav-menu {
     min-width: 14rem;
-    /* Theme options style: darker bluish surface, white text, and rounded panel */
-    background: var(--color-surface-elevated, #0f2b3b); /* fallback bluish */
-    color: var(--color-on-surface, #ffffff);
+    @extend %app-menu-panel;
     border-radius: calc(var(--radius-2xl) * 1.1);
-    box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
-    border: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.06));
   }
   /* Material uses CSS variables for menu text color; set them on the panel so
        internal Material rules pick the right colors without needing !important. */
@@ -204,6 +201,7 @@
   .cdk-overlay-pane .nav-menu button.mat-menu-item:link,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:visited,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:link {
+    @extend %app-menu-item;
     color: var(--color-on-surface);
   }
 
@@ -306,9 +304,7 @@
       min-width: auto;
       width: min(18rem, calc(100vw - 2rem));
       border-radius: calc(var(--radius-2xl) * 1.1);
-      background: var(--color-surface-elevated, #0f2b3b);
-      box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
-      border: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.06));
+      @extend %app-menu-panel;
       color: var(--color-on-surface);
       margin-bottom: 0.5rem;
       transform-origin: bottom right;

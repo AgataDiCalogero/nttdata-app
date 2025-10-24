@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
+import { IdService } from '@app/shared/services/id/id.service';
 
 @Component({
   standalone: true,
@@ -36,6 +37,12 @@ export class PostsFiltersComponent {
   readonly resetFilters = output<void>();
 
   readonly perPageSelectOptions = computed(() => this.perPageOptions() ?? []);
+
+  // generated ids for a11y (per-instance)
+  private readonly idService = inject(IdService);
+  protected readonly searchId = this.idService.next('posts-search');
+  protected readonly userSelectId = this.idService.next('posts-user-select');
+  protected readonly perPageSelectId = this.idService.next('posts-perpage-select');
 
   onPerPageChange(value: number | string): void {
     // normalize to number and forward to parent

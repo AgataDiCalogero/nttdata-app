@@ -1,11 +1,11 @@
 @if (label()) {
-  <label [for]="id() || 'select-control'" class="select-label">{{ label() }}</label>
+  <label [for]="resolvedId()" class="select-label">{{ label() }}</label>
 }
 @if (control()) {
   <select
     class="select"
     [class.select--compact]="variant() === 'compact'"
-    [id]="id() || 'select-control'"
+    [id]="resolvedId()"
     title="Select option"
     [attr.aria-label]="ariaLabel() || label() || placeholder() || 'Select option'"
     [attr.aria-describedby]="ariaDescribedBy() || null"
@@ -24,13 +24,13 @@
   </select>
 }
 @if (label() && !control()) {
-  <label [for]="id() || 'select-no-control'" class="select-label">{{ label() }}</label>
+  <label [for]="resolvedId()" class="select-label">{{ label() }}</label>
 }
 @if (!control()) {
   <select
     class="select"
     [class.select--compact]="variant() === 'compact'"
-    [id]="id() || 'select-no-control'"
+    [id]="resolvedId()"
     title="Select option"
     [attr.aria-label]="ariaLabel() || label() || placeholder() || 'Select option'"
     [attr.aria-describedby]="ariaDescribedBy() || null"
