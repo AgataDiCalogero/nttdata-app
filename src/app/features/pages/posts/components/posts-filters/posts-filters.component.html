@@ -1,20 +1,22 @@
-<form class="posts-filters" [formGroup]="searchForm()" (submit)="$event.preventDefault()">
+@let formGroup = searchForm();
+
+<form class="posts-filters" [formGroup]="formGroup" (submit)="$event.preventDefault()">
   <app-search-bar
     size="compact"
-    [control]="$any(searchForm().get('title'))"
+    [control]="formGroup.controls.title"
     [id]="searchId"
     placeholder="Search by title"
     label="Search posts by title"
   />
   <app-select
     [id]="userSelectId"
-    [control]="$any(searchForm().get('user_id'))"
+    [control]="formGroup.controls.user_id"
     [options]="userSelectOptions()"
   ></app-select>
   <app-select
     class="posts-filters__perpage"
     [id]="perPageSelectId"
-    [control]="$any(perPageControl() ? perPageControl() : searchForm().get('perPage'))"
+    [control]="perPageControl()"
     [options]="perPageSelectOptions()"
     (selectionChange)="onPerPageChange($event)"
     [ariaLabel]="'Posts per page'"

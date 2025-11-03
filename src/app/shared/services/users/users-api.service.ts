@@ -1,13 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { map, shareReplay, tap, type Observable } from 'rxjs';
-import type {
-  User,
-  CreateUser,
-  UpdateUser,
-  ListResponse,
-  PaginationMeta,
-} from '@/app/shared/models';
+import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
+import type { ListResponse } from '@/app/shared/models/list-response';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {

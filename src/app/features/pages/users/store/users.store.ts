@@ -2,7 +2,8 @@ import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID } from '@angula
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
-import type { User, PaginationMeta } from '@/app/shared/models';
+import type { User } from '@/app/shared/models/user';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { SortField, UsersService } from './users.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';

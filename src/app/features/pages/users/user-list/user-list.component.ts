@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import type { User } from '@/app/shared/models';
+import type { User } from '@/app/shared/models/user';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
-import { StatusBadgeComponent } from '@/app/shared/ui';
+import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 import { DeviceTypeService } from '@/app/shared/services/device-type.service';
 
 @Component({

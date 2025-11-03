@@ -12,6 +12,13 @@ import { IdService } from '@app/shared/services/id/id.service';
 import { CommonModule } from '@angular/common';
 
 export type SelectVariant = 'default' | 'compact';
+type SelectValue = string | number;
+type SelectControl =
+  | FormControl<string>
+  | FormControl<number>
+  | FormControl<string | null>
+  | FormControl<number | null>;
+type SelectOption = { value: SelectValue; label: string };
 
 @Component({
   standalone: true,
@@ -22,8 +29,8 @@ export type SelectVariant = 'default' | 'compact';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent {
-  readonly control = input<FormControl | null>(null);
-  readonly options = input<{ value: unknown; label: string }[]>([]);
+  readonly control = input<SelectControl | null>(null);
+  readonly options = input<ReadonlyArray<SelectOption>>([]);
   readonly placeholder = input<string>('');
   readonly showPlaceholder = input<boolean>(true);
   readonly variant = input<SelectVariant>('default');

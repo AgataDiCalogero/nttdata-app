@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
 import { IdService } from '@app/shared/services/id/id.service';
+import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
 
 @Component({
   standalone: true,
@@ -20,10 +21,10 @@ import { IdService } from '@app/shared/services/id/id.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsFiltersComponent {
-  readonly searchForm = input.required<FormGroup>();
+  readonly searchForm = input.required<PostsFiltersFormGroup>();
   readonly userOptions = input<{ id: number; name?: string }[]>([]);
   // optional control & output for per-page selection
-  readonly perPageControl = input<FormControl | null>(null);
+  readonly perPageControl = input<FormControl<number> | FormControl<string> | null>(null);
   readonly perPageOptions = input<{ value: number; label: string }[]>([]);
   readonly perPageChange = output<number>();
 

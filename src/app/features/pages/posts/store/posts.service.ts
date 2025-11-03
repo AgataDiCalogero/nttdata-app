@@ -1,7 +1,9 @@
 import { Signal } from '@angular/core';
-import type { Post, Comment, User, PaginationMeta, PostFilters } from '@/app/shared/models';
-import type { FormGroup } from '@angular/forms';
+import type { Post, Comment, PostFilters } from '@/app/shared/models/post';
+import type { User } from '@/app/shared/models/user';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Observable } from 'rxjs';
+import type { PostsFiltersFormGroup } from './posts-filters.service';
 
 export interface PostsService {
   loading: Signal<boolean>;
@@ -14,7 +16,7 @@ export interface PostsService {
   userOptions: Signal<User[]>;
   userLookup: Signal<Record<number, string>>;
   deletingId: Signal<number | null>;
-  searchForm: Signal<FormGroup>;
+  searchForm: Signal<PostsFiltersFormGroup>;
   perPageOptions: Signal<number[]>;
   currentPage: Signal<number>;
   totalPages: Signal<number>;

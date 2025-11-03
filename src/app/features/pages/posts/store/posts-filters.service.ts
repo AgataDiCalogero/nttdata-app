@@ -1,16 +1,21 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs';
-import type { PostFilters } from '@/app/shared/models';
+import type { PostFilters } from '@/app/shared/models/post';
+
+export type PostsFiltersFormGroup = FormGroup<{
+  title: FormControl<string>;
+  user_id: FormControl<number>;
+}>;
 
 @Injectable()
 export class PostsFiltersService {
   private readonly fb = inject(FormBuilder);
 
-  readonly form = this.fb.nonNullable.group({
-    title: this.fb.nonNullable.control(''),
-    user_id: this.fb.nonNullable.control(0),
+  readonly form: PostsFiltersFormGroup = this.fb.nonNullable.group({
+    title: this.fb.nonNullable.control<string>(''),
+    user_id: this.fb.nonNullable.control<number>(0),
   });
 
   private readonly titleChanges = toSignal(

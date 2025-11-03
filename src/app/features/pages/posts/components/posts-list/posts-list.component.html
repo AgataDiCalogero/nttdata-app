@@ -3,8 +3,6 @@
     <div class="post-wrapper">
       <app-post-card
         [post]="post"
-        [interactive]="true"
-        padding="spacious"
         [isDeleting]="isDeleting(post.id)"
         [comments]="commentsFor(post.id) ?? null"
         [commentsLoading]="commentsAreLoading(post.id)"

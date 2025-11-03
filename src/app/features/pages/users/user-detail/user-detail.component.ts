@@ -10,12 +10,13 @@ import {
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, firstValueFrom, map, of, tap } from 'rxjs';
-import type { User, Post, Comment } from '@/app/shared/models';
+import type { User } from '@/app/shared/models/user';
+import type { Post, Comment } from '@/app/shared/models/post';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
-import { ButtonComponent } from '@/app/shared/ui';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';

@@ -8,9 +8,9 @@ import type {
   CreateComment,
   UpdatePost,
   UpdateComment,
-  PaginationMeta,
-  ListResponse,
-} from '@/app/shared/models';
+} from '@/app/shared/models/post';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type { ListResponse } from '@/app/shared/models/list-response';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {

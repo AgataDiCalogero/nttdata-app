@@ -12,7 +12,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/models';
+import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/models/user';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';

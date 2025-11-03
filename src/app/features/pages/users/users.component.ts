@@ -9,7 +9,7 @@ import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import type { User } from '@/app/shared/models';
+import type { User } from '@/app/shared/models/user';
 import type { SortField } from './store/users.service';
 import { provideUsersService, injectUsersService } from './store/users.inject';
 import { UsersUiService } from './users-ui.service';

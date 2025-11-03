@@ -11,14 +11,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, from, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import type {
-  Comment,
-  PaginationMeta,
-  Post,
-  User,
-  PostFilters,
-  QueryCriteria,
-} from '@/app/shared/models';
+import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type { User } from '@/app/shared/models/user';
 import type { PostsService } from './posts.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';

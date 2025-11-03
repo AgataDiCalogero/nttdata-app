@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/cor
 import { Router, ActivatedRoute } from '@angular/router';
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
 import { providePostsService, injectPostsService } from './store/posts.inject';
-import type { Post, Comment, User } from '@/app/shared/models';
+import type { Post, Comment } from '@/app/shared/models/post';
+import type { User } from '@/app/shared/models/user';
 import { PostsUiService } from './posts-ui.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsFiltersService } from './store/posts-filters.service';

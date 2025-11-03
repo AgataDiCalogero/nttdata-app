@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
-import type { Comment, Post, User } from '@/app/shared/models';
+import type { Comment, Post } from '@/app/shared/models/post';
+import type { User } from '@/app/shared/models/user';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
 import { PostsListComponent } from '../posts-list/posts-list.component';
+import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
 
 @Component({
   selector: 'app-posts-view',
@@ -31,7 +33,7 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsViewComponent {
-  readonly searchForm = input.required<FormGroup>();
+  readonly searchForm = input.required<PostsFiltersFormGroup>();
   readonly userOptions = input.required<User[]>();
   readonly loading = input.required<boolean>();
   readonly error = input<string | null>(null);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
-import type { Comment } from '@/app/shared/models';
+import type { Comment } from '@/app/shared/models/post';
 import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
 
 @Injectable({ providedIn: 'root' })

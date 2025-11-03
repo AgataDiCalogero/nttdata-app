@@ -8,10 +8,10 @@ import {
   input,
   output,
 } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { CardComponent } from '@app/shared/ui/card/card.component';
 import { LucideAngularModule, MessageSquare, Pencil, Trash2 } from 'lucide-angular';
-import type { Comment as ModelComment, Post } from '@/app/shared/models';
+import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
 import { PostCommentsComponent } from '../post-comments/post-comments.component';
 
 @Component({
@@ -20,8 +20,8 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
   imports: [
     CommonModule,
     LucideAngularModule,
+    MatCardModule,
     ButtonComponent,
-    CardComponent,
     PostCommentsComponent,
   ],
   templateUrl: './post-card.component.html',
@@ -32,8 +32,6 @@ export class PostCardComponent implements AfterViewChecked {
   @ViewChild('commentsSection') commentsSection?: ElementRef<HTMLElement>;
 
   readonly post = input.required<Post>();
-  readonly interactive = input(false);
-  readonly padding = input<'none' | 'compact' | 'default' | 'spacious'>('default');
   readonly isDeleting = input(false);
   readonly comments = input<ModelComment[] | null | undefined>(undefined);
   readonly commentsLoading = input(false);

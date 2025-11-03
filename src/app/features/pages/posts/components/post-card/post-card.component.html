@@ -1,65 +1,61 @@
-<app-card class="posts-card" [interactive]="interactive()" [padding]="padding()">
-  @let postModel = post();
-  @let deleting = isDeleting();
-  @let commentsList = comments();
-  @let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
+@let postModel = post();
+@let deleting = isDeleting();
+@let commentsList = comments();
+@let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
 
-  <div card-header class="posts-card__header">
-    <div class="posts-card__hero">
-      <div class="posts-card__avatar-row">
-        <button
-          type="button"
-          class="posts-card__avatar-button"
-          (click)="onAuthorClick()"
-          aria-label="View author {{ author }}"
-        >
-          <div class="posts-card__avatar" aria-hidden="true">
-            {{ author.charAt(0).toUpperCase() }}
-          </div>
-        </button>
+<mat-card class="post-card">
+  <div class="post-card__header">
+    <button
+      type="button"
+      class="post-card__avatar-button"
+      (click)="onAuthorClick()"
+      [attr.aria-label]="'View author ' + author"
+    >
+      <span class="post-card__avatar" aria-hidden="true">
+        {{ author.charAt(0).toUpperCase() }}
+      </span>
+    </button>
 
-        <button type="button" class="posts-card__author" (click)="onAuthorClick()">
-          <div class="posts-card__author-meta">
-            <h3 class="posts-card__title">{{ postModel?.title }}</h3>
-            <span class="posts-card__subtitle">Shared by {{ author }}</span>
-          </div>
-        </button>
-
-        @if (allowManage()) {
-          <div class="posts-card__actions-inline">
-            <button
-              appButton
-              variant="ghost"
-              size="sm"
-              type="button"
-              [iconOnly]="true"
-              class="posts-card__action posts-card__action--edit"
-              (click)="edit.emit()"
-              aria-label="Edit post {{ postModel?.title }}"
-            >
-              <lucide-icon [img]="Pencil"></lucide-icon>
-            </button>
-            <button
-              appButton
-              variant="ghost"
-              size="sm"
-              type="button"
-              [iconOnly]="true"
-              class="posts-card__action posts-card__action--danger posts-card__action--delete"
-              (click)="delete.emit()"
-              [disabled]="deleting"
-              aria-label="Delete post {{ postModel?.title }}"
-            >
-              <lucide-icon [img]="Trash2"></lucide-icon>
-            </button>
-          </div>
-        }
-      </div>
+    <div class="post-card__heading">
+      <button type="button" class="post-card__author" (click)="onAuthorClick()">
+        <h3 class="post-card__title">{{ postModel?.title }}</h3>
+        <span class="post-card__subtitle">Shared by {{ author }}</span>
+      </button>
     </div>
+
+    @if (allowManage()) {
+      <div class="post-card__manage">
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [iconOnly]="true"
+          (click)="edit.emit()"
+          class="post-card__icon-button"
+          aria-label="Edit post {{ postModel?.title }}"
+        >
+          <lucide-icon [img]="Pencil"></lucide-icon>
+        </button>
+        <button
+          appButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [iconOnly]="true"
+          (click)="delete.emit()"
+          class="post-card__icon-button post-card__icon-button--danger"
+          [disabled]="deleting"
+          aria-label="Delete post {{ postModel?.title }}"
+        >
+          <lucide-icon [img]="Trash2"></lucide-icon>
+        </button>
+      </div>
+    }
   </div>
 
-  <div card-body class="posts-card__body">
-    <p class="posts-card__content" [attr.aria-expanded]="isExpanded">
+  <mat-card-content class="post-card__content">
+    <p class="post-card__body" [attr.aria-expanded]="isExpanded">
       @if (!isExpanded && shouldTruncate()) {
         {{ previewText() }}
       } @else {
@@ -73,50 +69,47 @@
         variant="ghost"
         size="sm"
         type="button"
-        class="posts-card__toggle"
+        class="post-card__toggle"
         (click)="toggleExpansion()"
       >
         {{ isExpanded ? 'Show less' : 'Show more' }}
       </button>
     }
-  </div>
+  </mat-card-content>
 
-  <div card-footer class="posts-card__footer">
-    <div class="posts-card__comment-actions">
-      @if (openSection !== 'composer') {
-        <button
-          appButton
-          variant="primary"
-          size="sm"
-          type="button"
-          class="posts-card__comment-compose"
-          (click)="openComposer()"
-        >
-          Post comment
-        </button>
-      }
-
+  <mat-card-actions align="end" class="post-card__actions">
+    @if (openSection !== 'composer') {
       <button
         appButton
-        variant="ghost"
+        variant="primary"
         size="sm"
         type="button"
-        class="posts-card__comment-toggle"
-        (click)="openCommentsList()"
-        [attr.aria-pressed]="openSection === 'comments' ? 'true' : 'false'"
+        (click)="openComposer()"
       >
-        <lucide-icon [img]="MessageSquare"></lucide-icon>
-        {{ openSection === 'comments' ? 'Hide comments' : 'View comments' }}
-        <span class="posts-card__comment-count">({{ commentCount }})</span>
+        Post comment
       </button>
-    </div>
-  </div>
+    }
+
+    <button
+      appButton
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="openCommentsList()"
+      [attr.aria-pressed]="openSection === 'comments' ? 'true' : 'false'"
+      class="post-card__comments-toggle"
+    >
+      <lucide-icon [img]="MessageSquare"></lucide-icon>
+      {{ openSection === 'comments' ? 'Hide comments' : 'View comments' }}
+      <span class="post-card__comment-count">({{ commentCount }})</span>
+    </button>
+  </mat-card-actions>
 
   @if (openSection !== 'none' && postModel) {
-    <div class="posts-card__expanded">
+    <section class="post-card__expanded">
       <app-post-comments
         #commentsSection
-        class="posts-card__comments"
+        class="post-card__comments"
         [postId]="postModel.id"
         [comments]="commentsList ?? []"
         [loading]="commentsLoading()"
@@ -126,6 +119,6 @@
         (commentDeleted)="onInternalCommentDeleted($event)"
         (composerCancelled)="onComposerCancelledFromChild()"
       ></app-post-comments>
-    </div>
+    </section>
   }
-</app-card>
+</mat-card>

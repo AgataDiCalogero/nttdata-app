@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import type { Post, Comment } from '@/app/shared/models';
+import type { Post, Comment } from '@/app/shared/models/post';
 import { PostCardComponent } from '../post-card/post-card.component';
 
 @Component({

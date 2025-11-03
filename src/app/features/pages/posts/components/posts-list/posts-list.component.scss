@@ -12,8 +12,12 @@
   flex-direction: column;
 }
 
-.post-wrapper > app-post-card,
-.post-wrapper app-card {
+.post-wrapper > app-post-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-wrapper mat-card {
   display: flex;
   flex-direction: column;
 }

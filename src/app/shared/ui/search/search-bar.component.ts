@@ -8,6 +8,8 @@ import { IdService } from '@app/shared/services/id/id.service';
 type SearchSize = 'wide' | 'compact' | 'small' | 'full';
 const SIZE_SET = new Set<SearchSize>(['wide', 'compact', 'small', 'full']);
 
+type SearchControl = FormControl<string> | FormControl<string | null>;
+
 @Component({
   standalone: true,
   selector: 'app-search-bar',
@@ -35,7 +37,7 @@ export class SearchBarComponent {
   readonly debounceTime = input<number | ''>(300);
 
   // Optional reactive forms control
-  readonly control = input<FormControl | null>(null);
+  readonly control = input<SearchControl | null>(null);
 
   // Debounced value output for consumers that rely on events
   readonly debounced = output<string>();

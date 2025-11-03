@@ -74,8 +74,7 @@ export class TokenValidationService {
 
   private mapUiErrorToResult(uiError: UiError): TokenValidationResult {
     const defaultMessage = 'Unable to verify the token right now. Please try again.';
-    const message =
-      typeof (uiError as any).message === 'string' ? (uiError as any).message : defaultMessage;
+    const message = typeof uiError.message === 'string' ? uiError.message : defaultMessage;
     switch (uiError.kind) {
       case 'network':
         return { success: false, code: 'network', message };

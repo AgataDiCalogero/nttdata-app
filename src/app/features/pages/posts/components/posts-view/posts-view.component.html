@@ -20,7 +20,7 @@
     <app-posts-filters
       [searchForm]="searchForm()"
       [userOptions]="userOptions()"
-      [perPageControl]="$any(perPageControl)"
+      [perPageControl]="perPageControl"
       [perPageOptions]="perPageSelectOptions()"
       (perPageChange)="changePerPage.emit($event)"
       (resetFilters)="resetFilters.emit()"
