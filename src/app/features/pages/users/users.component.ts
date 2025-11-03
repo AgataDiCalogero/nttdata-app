@@ -56,7 +56,9 @@ export class Users {
   }
 
   isChildRouteActive(): boolean {
-    return this.router.url !== '/users';
+    const [pathWithoutQuery] = this.router.url.split('?');
+    const basePath = pathWithoutQuery.split('#')[0];
+    return basePath !== '/users';
   }
 
   goToDetail(userId: number): void {

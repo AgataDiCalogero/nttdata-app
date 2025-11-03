@@ -63,10 +63,9 @@ export class TokenValidationService {
     // 401 ⇒ token invalido/expired
     return this.http.post<unknown>('/users', {}, { headers, context, observe: 'response' }).pipe(
       map((res: HttpResponse<unknown>) => {
-        if (res.status === 201 || res.status === 200) {
+        if (res.status >= 200 && res.status < 300) {
           return { success: true } satisfies TokenValidationResult;
         }
-        // qualunque 2xx lo consideriamo valido
         return { success: true } satisfies TokenValidationResult;
       }),
       catchError((error: unknown) => {
