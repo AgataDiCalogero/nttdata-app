@@ -152,7 +152,7 @@ export class PostForm {
     this.loadingUsers.set(true);
     this.loadError.set(null);
     this.usersApi
-      .list({ per_page: 50 })
+      .list({ per_page: 50 }, { cache: true })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: ({ items }) => {

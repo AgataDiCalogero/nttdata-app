@@ -108,16 +108,14 @@ export class UserDetail {
             .pipe(
               mergeMap(
                 (post) =>
-                  this.commentsCache.fetchComments(post.id).pipe(
-                    catchError(() => of<Comment[] | null>(null)),
-                    map((comments) => ({ post, comments })),
+                  this.commentsCache.fetchCommentCount(post.id).pipe(
+                    map((count) => ({ post, count })),
                   ),
                 3,
               ),
               takeUntilDestroyed(this.destroyRef),
             )
-            .subscribe(({ post, comments }: { post: Post; comments: Comment[] | null }) => {
-              const count = Array.isArray(comments) ? comments.length : 0;
+            .subscribe(({ post, count }: { post: Post; count: number }) => {
               this.commentsCount.update((state) => ({ ...state, [post.id]: count }));
             });
         },

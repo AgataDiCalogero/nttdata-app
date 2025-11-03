@@ -53,6 +53,21 @@ export class PostsApiService {
     return this.http.get<Comment[]>(`${this.base}/${postId}/comments`);
   }
 
+  countComments(postId: number): Observable<number> {
+    const params = new HttpParams().set('per_page', '1');
+    return this.http
+      .get<Comment[]>(`${this.base}/${postId}/comments`, { params, observe: 'response' })
+      .pipe(
+        map((resp) => {
+          const header = Number(resp.headers.get('X-Pagination-Total'));
+          if (Number.isFinite(header) && header >= 0) {
+            return header;
+          }
+          return resp.body?.length ?? 0;
+        }),
+      );
+  }
+
   createComment(postId: number, payload: CreateComment): Observable<Comment> {
     return this.http.post<Comment>(`${this.base}/${postId}/comments`, payload);
   }

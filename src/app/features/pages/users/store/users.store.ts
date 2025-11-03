@@ -1,4 +1,5 @@
-import { inject, computed, Type, DestroyRef } from '@angular/core';
+import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
 import type { User, DeleteConfirmData, PaginationMeta } from '@/app/shared/models';
@@ -13,6 +14,7 @@ import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive
 import { tap, take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 
 interface SortState {
   field: SortField;
@@ -88,12 +90,26 @@ export const UsersStoreAdapter = signalStore(
     const dialog = inject(Dialog);
     const dialogLayouts = inject(ResponsiveDialogService);
     const overlays = inject(UiOverlayService);
+    const platformId = inject(PLATFORM_ID);
+    const auth = inject(AuthService);
+    const isBrowser = isPlatformBrowser(platformId);
+    let bootstrapped = false;
 
     const loadUsers = (options: LoadUsersOptions = {}) => {
       const pushUrl = options.pushUrl ?? true;
       const targetPage = normalizePage(options.page, store.page());
       const targetPerPage = normalizePage(options.perPage, store.perPage());
       const term = (options.searchTerm ?? store.searchTerm()).trim();
+
+      const token = auth.token();
+      if (!token || !token.trim()) {
+        patchState(store, {
+          loading: false,
+          error: null,
+          searchTerm: term,
+        });
+        return;
+      }
 
       patchState(store, {
         loading: true,
@@ -192,6 +208,43 @@ export const UsersStoreAdapter = signalStore(
         perPage: initialPerPage,
         searchTerm: initialSearch,
         pushUrl: false,
+      });
+    };
+
+    const initializeBootstrap = () => {
+      if (!isBrowser) {
+        patchState(store, { loading: false });
+        return;
+      }
+
+      const attempt = () => {
+        if (bootstrapped) {
+          return;
+        }
+        const token = auth.token();
+        if (!token || !token.trim()) {
+          return;
+        }
+        bootstrapped = true;
+        setupInitialState();
+      };
+
+      attempt();
+
+      effect(() => {
+        const token = auth.token();
+        if (token && token.trim()) {
+          attempt();
+        } else if (bootstrapped) {
+          bootstrapped = false;
+          patchState(store, {
+            items: [],
+            pagination: null,
+            loading: false,
+            error: null,
+            deletingId: null,
+          });
+        }
       });
     };
 
@@ -315,7 +368,7 @@ export const UsersStoreAdapter = signalStore(
       });
     };
 
-    setupInitialState();
+    initializeBootstrap();
 
     return {
       loadUsers,

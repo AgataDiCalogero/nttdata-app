@@ -1,4 +1,10 @@
-import { HttpClient, HttpContext, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpContext,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
@@ -29,13 +35,12 @@ export class TokenValidationService {
         success: false,
         code: 'empty',
         message: 'Access token is required. Paste your personal token to continue.',
-      });
+      } satisfies TokenValidationResult);
     }
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${normalized}`,
-    });
-    // dev-only masked log to help debug token validation (no full token printed)
+    const headers = new HttpHeaders({ Authorization: `Bearer ${normalized}` });
+
+    // Dev-only masked log (non stampa il token completo)
     try {
       const maybeLocation = (globalThis as unknown as { location?: { hostname?: string } })
         .location;
@@ -46,17 +51,42 @@ export class TokenValidationService {
         );
       }
     } catch {
-      // ignore
+      /* ignore */
     }
+
+    // Evita toast/redirect globali durante la validazione
     const context = new HttpContext().set(SKIP_GLOBAL_ERROR, true);
 
-    return this.http.post('/users', {}, { headers, context }).pipe(
-      map(() => ({ success: true as const })),
-      catchError((error: unknown) => {
-        if (error instanceof HttpErrorResponse && error.status === 422) {
-          return of({ success: true as const });
+    // GoRest: POST /users richiede token.
+    // 201/200 ⇒ valido (qui non mandiamo body valido, quindi tipicamente 422)
+    // 422 ⇒ valido ma dati mancanti
+    // 401 ⇒ token invalido/expired
+    return this.http.post<unknown>('/users', {}, { headers, context, observe: 'response' }).pipe(
+      map((res: HttpResponse<unknown>) => {
+        if (res.status === 201 || res.status === 200) {
+          return { success: true } satisfies TokenValidationResult;
         }
-        return of(this.mapUiErrorToResult(mapHttpError(error)));
+        // qualunque 2xx lo consideriamo valido
+        return { success: true } satisfies TokenValidationResult;
+      }),
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 422) {
+            // Token valido: mancano solo i campi richiesti
+            return of({ success: true } satisfies TokenValidationResult);
+          }
+          if (error.status === 401) {
+            return of({
+              success: false,
+              code: 'unauthorized',
+              message:
+                'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
+            } satisfies TokenValidationResult);
+          }
+        }
+        // network / rate-limit / unknown — mappa centralizzata
+        const mapped = this.mapUiErrorToResult(mapHttpError(error));
+        return of(mapped);
       }),
     );
   }
@@ -64,16 +94,12 @@ export class TokenValidationService {
   private mapUiErrorToResult(uiError: UiError): TokenValidationResult {
     const defaultMessage = 'Unable to verify the token right now. Please try again.';
     const maybeMsg = uiError as unknown as Record<string, unknown>;
-    const message: string =
-      typeof maybeMsg?.message === 'string' ? maybeMsg.message : defaultMessage;
+    const message =
+      typeof maybeMsg?.message === 'string' ? (maybeMsg.message as string) : defaultMessage;
 
     switch (uiError.kind) {
       case 'network':
-        return {
-          success: false,
-          code: 'network',
-          message,
-        };
+        return { success: false, code: 'network', message };
       case 'unauthorized':
         return {
           success: false,
@@ -82,23 +108,11 @@ export class TokenValidationService {
             'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
         };
       case 'rate-limit':
-        return {
-          success: false,
-          code: 'rate_limited',
-          message,
-        };
+        return { success: false, code: 'rate_limited', message };
       case 'forbidden':
-        return {
-          success: false,
-          code: 'unauthorized',
-          message,
-        };
+        return { success: false, code: 'unauthorized', message };
       default:
-        return {
-          success: false,
-          code: 'unknown',
-          message,
-        };
+        return { success: false, code: 'unknown', message };
     }
   }
 }

@@ -1,4 +1,5 @@
-import { inject, signal, computed, DestroyRef, Type } from '@angular/core';
+import { inject, signal, computed, DestroyRef, Type, effect, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -27,6 +28,7 @@ import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
+import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 
 interface PostsState {
   posts: Post[];
@@ -89,6 +91,10 @@ export const PostsStoreAdapter = signalStore(
     const toast = inject(ToastService);
     const fb = inject(FormBuilder);
     const destroyRef = inject(DestroyRef);
+    const platformId = inject(PLATFORM_ID);
+    const auth = inject(AuthService);
+    const isBrowser = isPlatformBrowser(platformId);
+    let userOptionsRequested = false;
 
     const searchForm = fb.nonNullable.group({
       title: fb.nonNullable.control(''),
@@ -97,7 +103,7 @@ export const PostsStoreAdapter = signalStore(
 
     initializeSearchFormListeners(searchForm);
     initializePostsStream();
-    loadUsersForFilter();
+    setupUserOptionsBootstrap();
 
     const performDeletePost = (post: Post) => {
       const shouldGoPrev =
@@ -200,13 +206,15 @@ export const PostsStoreAdapter = signalStore(
           .pipe(takeUntilDestroyed(destroyRef))
           .subscribe({
             next: (comments) => {
+              const list = comments ?? [];
               patchState(store, (state) => ({
-                commentsMap: { ...state.commentsMap, [postId]: comments ?? [] },
+                commentsMap: { ...state.commentsMap, [postId]: list },
                 commentsCountMap: {
                   ...state.commentsCountMap,
                   [postId]: Array.isArray(comments) ? comments.length : 0,
                 },
               }));
+              commentsCache.setComments(postId, list);
             },
             error: (err) => {
               console.error('Failed to load comments:', err);
@@ -224,29 +232,37 @@ export const PostsStoreAdapter = signalStore(
       },
 
       onCommentCreated(postId: number, comment: Comment): void {
-        patchState(store, (state) => ({
-          commentsMap: {
-            ...state.commentsMap,
-            [postId]: [comment, ...(state.commentsMap[postId] ?? [])],
-          },
-          commentsCountMap: {
-            ...state.commentsCountMap,
-            [postId]:
-              1 + (state.commentsCountMap?.[postId] ?? state.commentsMap[postId]?.length ?? 0),
-          },
-        }));
-      },
-
-      onCommentUpdated(postId: number, comment: Comment): void {
+        let updated: Comment[] = [];
         patchState(store, (state) => {
-          const current = state.commentsMap[postId];
-          if (!current) return state;
+          const current = state.commentsMap[postId] ?? [];
+          updated = [comment, ...current];
           return {
             commentsMap: {
               ...state.commentsMap,
-              [postId]: current.map((existing) =>
-                existing.id === comment.id ? comment : existing,
-              ),
+              [postId]: updated,
+            },
+            commentsCountMap: {
+              ...state.commentsCountMap,
+              [postId]:
+                1 + (state.commentsCountMap?.[postId] ?? state.commentsMap[postId]?.length ?? 0),
+            },
+          };
+        });
+        commentsCache.setComments(postId, updated);
+      },
+
+      onCommentUpdated(postId: number, comment: Comment): void {
+        let updated: Comment[] | null = null;
+        patchState(store, (state) => {
+          const current = state.commentsMap[postId];
+          if (!current) return state;
+          updated = current.map((existing) =>
+            existing.id === comment.id ? comment : existing,
+          );
+          return {
+            commentsMap: {
+              ...state.commentsMap,
+              [postId]: updated,
             },
             commentsCountMap: {
               ...state.commentsCountMap,
@@ -254,6 +270,9 @@ export const PostsStoreAdapter = signalStore(
             },
           };
         });
+        if (updated) {
+          commentsCache.setComments(postId, updated);
+        }
       },
 
       onPostUpdated(updated: Post): void {
@@ -333,6 +352,9 @@ export const PostsStoreAdapter = signalStore(
     }
 
     function prefetchCommentCounts(items: Post[]): void {
+      if (!isBrowser) {
+        return;
+      }
       const existing = store.commentsCountMap?.();
       const known = existing || {};
       const toFetch = items.filter((p) => known[p.id] === undefined);
@@ -342,16 +364,14 @@ export const PostsStoreAdapter = signalStore(
         .pipe(
           mergeMap(
             (post) =>
-              commentsCache.fetchComments(post.id).pipe(
-                catchError(() => of<Comment[] | null>(null)),
-                map((comments) => ({ post, comments })),
+              commentsCache.fetchCommentCount(post.id).pipe(
+                map((count) => ({ post, count })),
               ),
             3,
           ),
           takeUntilDestroyed(destroyRef),
         )
-        .subscribe(({ post, comments }) => {
-          const count = Array.isArray(comments) ? comments.length : 0;
+        .subscribe(({ post, count }) => {
           patchState(store, (state) => ({
             commentsCountMap: { ...state.commentsCountMap, [post.id]: count },
           }));
@@ -360,7 +380,7 @@ export const PostsStoreAdapter = signalStore(
 
     function loadUsersForFilter(): void {
       usersApi
-        .list({ per_page: 50 })
+        .list({ per_page: 50 }, { cache: true })
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe({
           next: ({ items }) => {
@@ -373,8 +393,39 @@ export const PostsStoreAdapter = signalStore(
           },
           error: (err) => {
             console.error('Failed to load users for filters:', err);
+            userOptionsRequested = false;
           },
         });
+    }
+
+    function setupUserOptionsBootstrap(): void {
+      if (!isBrowser) {
+        return;
+      }
+
+      const tryLoad = () => {
+        if (userOptionsRequested) {
+          return;
+        }
+        const token = auth.token();
+        if (!token || !token.trim()) {
+          return;
+        }
+        userOptionsRequested = true;
+        loadUsersForFilter();
+      };
+
+      tryLoad();
+
+      effect(() => {
+        const token = auth.token();
+        if (token && token.trim()) {
+          tryLoad();
+        } else {
+          userOptionsRequested = false;
+          patchState(store, { userOptions: [], userLookup: {} });
+        }
+      });
     }
   }),
 ) satisfies Type<PostsService>;

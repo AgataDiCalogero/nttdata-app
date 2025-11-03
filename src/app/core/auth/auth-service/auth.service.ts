@@ -1,6 +1,8 @@
 import { Injectable, signal, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
+const STORAGE_KEY = 'auth-token';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly platformId = inject(PLATFORM_ID);
@@ -8,7 +10,7 @@ export class AuthService {
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      const saved = localStorage.getItem('auth-token');
+      const saved = localStorage.getItem(STORAGE_KEY); // <-- usa costante
       this.tokenSignal.set(saved);
     }
   }
@@ -17,22 +19,22 @@ export class AuthService {
     return this.tokenSignal.asReadonly();
   }
 
-  isAuthenticated(): boolean {
-    const current = this.tokenSignal();
-    return typeof current === 'string' && current.trim().length > 0;
+  // + aggiungi, comodo per template/guard future
+  get isLoggedIn(): boolean {
+    const t = this.tokenSignal();
+    return !!t && t.trim().length > 0;
   }
 
   setToken(token: string) {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('auth-token', token);
+      localStorage.setItem(STORAGE_KEY, token.trim()); // <-- trim qui
     }
-    this.tokenSignal.set(token);
-    // intentionally no logging here to avoid accidental secret leakage
+    this.tokenSignal.set(token.trim());
   }
 
   clearToken() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('auth-token');
+      localStorage.removeItem(STORAGE_KEY);
     }
     this.tokenSignal.set(null);
   }

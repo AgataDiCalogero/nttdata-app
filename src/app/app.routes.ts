@@ -1,10 +1,15 @@
-import { Routes } from '@angular/router';
+import { Router, Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth-guard/auth-guard.service';
+import { inject } from '@angular/core';
+import { AuthService } from './core/auth/auth-service/auth.service';
 
 export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.Login),
+    canActivate: [
+      () => !inject(AuthService).isLoggedIn || inject(Router).createUrlTree(['/users']),
+    ],
   },
   {
     path: 'users',
