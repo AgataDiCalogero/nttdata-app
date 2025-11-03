@@ -20,6 +20,7 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
+import { DeviceTypeService } from '../../services/device-type.service';
 
 @Component({
   selector: 'app-navbar',
@@ -45,6 +46,7 @@ export class Navbar implements OnInit, AfterViewInit {
   private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly _lucideIcons = inject(LucideMatIconService);
+  private readonly _deviceType = inject(DeviceTypeService);
 
   @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
 
@@ -56,9 +58,7 @@ export class Navbar implements OnInit, AfterViewInit {
       : this.router.url.startsWith('/login'),
   );
   // Mobile breakpoint matches the SCSS media query (max-width: 62rem)
-  readonly isMobile = signal(
-    Boolean(globalThis?.window && globalThis.window.matchMedia?.('(max-width: 62rem)')?.matches),
-  );
+  readonly isMobile = this._deviceType.isMobile;
   // helper for template binding to avoid inline object literals which can confuse the template parser
   readonly routerLinkExact = { exact: true } as const;
   readonly isLogged = computed(() => this.auth.token() !== null);
@@ -66,33 +66,33 @@ export class Navbar implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Keep a live isMobile signal in sync with viewport changes so template can conditionally render
-    try {
-      const win = globalThis.window as Window | undefined;
-      const doc = globalThis.document as Document | undefined;
-      if (!win) return;
+    // try {
+    //   const win = globalThis.window as Window | undefined;
+    //   const doc = globalThis.document as Document | undefined;
+    //   if (!win) return;
 
-      // Compute breakpoint in pixels based on root font-size so `62rem` matches SCSS
-      const rootFontSize = doc
-        ? Number.parseFloat(getComputedStyle(doc.documentElement).fontSize || '16')
-        : 16;
-      const breakpointPx = 62 * (Number.isFinite(rootFontSize) ? rootFontSize : 16);
+    //   // Compute breakpoint in pixels based on root font-size so `62rem` matches SCSS
+    //   const rootFontSize = doc
+    //     ? Number.parseFloat(getComputedStyle(doc.documentElement).fontSize || '16')
+    //     : 16;
+    //   const breakpointPx = 62 * (Number.isFinite(rootFontSize) ? rootFontSize : 16);
 
-      const update = () => this.isMobile.set(win.innerWidth <= breakpointPx);
+    //   const update = () => this.isMobile.set(win.innerWidth <= breakpointPx);
 
-      // initialize
-      update();
+    //   // initialize
+    //   update();
 
-      win.addEventListener('resize', update, { passive: true });
-      this.destroyRef.onDestroy(() => {
-        try {
-          win.removeEventListener('resize', update);
-        } catch {
-          // ignore
-        }
-      });
-    } catch {
-      // server-rendered or unsupported environment
-    }
+    //   win.addEventListener('resize', update, { passive: true });
+    //   this.destroyRef.onDestroy(() => {
+    //     try {
+    //       win.removeEventListener('resize', update);
+    //     } catch {
+    //       // ignore
+    //     }
+    //   });
+    // } catch {
+    //   // server-rendered or unsupported environment
+    // }
     // Ensure body class matches current route immediately to avoid visual flashes
     if (typeof document !== 'undefined') {
       if (this.isLoginRoute()) {

@@ -24,15 +24,15 @@
 .user-card {
   /* Use material card visual but keep custom layout for header */
   width: 100%;
-  max-width: 32rem;
   box-sizing: border-box;
   margin-inline: auto;
 
   mat-card-header {
-    display: grid;
-    grid-template-columns: min-content minmax(0, 1fr) auto;
+    display: flex;
     gap: var(--space-md) var(--space-lg);
     align-items: center;
+    justify-content: space-between; /* place avatar+name left and status right */
+    width: 100%;
     padding: var(--space-md) var(--space-lg);
   }
 
@@ -75,6 +75,14 @@
     gap: var(--space-2xs);
   }
 
+  /* wrapper used in template around avatar + name so they behave as a single left block */
+  .avatar-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    min-width: 0;
+  }
+
   &__name {
     margin: 0;
     font-size: clamp(var(--font-size-lg), 2.6vw, var(--font-size-2xl));
@@ -88,7 +96,7 @@
   &__email {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-md);
     margin: 0;
     color: var(--color-muted);
 
@@ -107,6 +115,13 @@
         text-decoration: underline;
       }
     }
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
   }
 
   &__badges {
@@ -140,10 +155,12 @@
 
   @media (max-width: 40rem) {
     mat-card-header {
-      grid-template-columns: min-content minmax(0, 1fr);
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
       gap: var(--space-md);
-      align-items: start;
-      padding: var(--space-md);
     }
 
     &__status {
@@ -155,6 +172,13 @@
       padding: 0 var(--space-md) var(--space-md);
     }
   }
+}
+
+.user-card mat-card-subtitle {
+  display: flex;
+  padding: 0 var(--space-lg) 0;
+  align-items: center;
+  gap: var(--space-md);
 }
 
 .user-posts {

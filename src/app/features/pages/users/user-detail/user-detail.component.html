@@ -21,15 +21,13 @@
     } @else if (user(); as detail) {
       <mat-card class="user-card">
         <mat-card-header>
-          <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
-            {{ (detail.name || '').slice(0, 2).toUpperCase() }}
-          </div>
-          <div class="user-card__title-wrapper">
-            <mat-card-title class="user-card__name">{{ detail.name }}</mat-card-title>
-            <mat-card-subtitle class="user-card__email">
-              <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
-              <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
-            </mat-card-subtitle>
+          <div class="avatar-name-wrapper">
+            <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
+              {{ (detail.name || '').slice(0, 2).toUpperCase() }}
+            </div>
+            <div class="user-card__title-wrapper">
+              <mat-card-title class="user-card__name">{{ detail.name }}</mat-card-title>
+            </div>
           </div>
           <div class="user-card__status">
             <mat-slide-toggle
@@ -41,7 +39,10 @@
             </mat-slide-toggle>
           </div>
         </mat-card-header>
-
+        <mat-card-subtitle class="user-card__email">
+          <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
+          <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
+        </mat-card-subtitle>
         <mat-card-content>
           <div class="user-card__meta">
             <div class="user-card__badges">
