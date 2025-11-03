@@ -39,39 +39,21 @@ export class TokenValidationService {
     }
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${normalized}` });
-
-    // Dev-only masked log (non stampa il token completo)
-    try {
-      const maybeLocation = (globalThis as unknown as { location?: { hostname?: string } })
-        .location;
-      if (maybeLocation && maybeLocation.hostname === 'localhost') {
-        console.debug(
-          'TokenValidationService: validating token (masked):',
-          `${normalized.slice(0, 6)}...`,
-        );
-      }
-    } catch {
-      /* ignore */
-    }
-
-    // Evita toast/redirect globali durante la validazione
     const context = new HttpContext().set(SKIP_GLOBAL_ERROR, true);
 
-    // GoRest: POST /users richiede token.
-    // 201/200 ⇒ valido (qui non mandiamo body valido, quindi tipicamente 422)
-    // 422 ⇒ valido ma dati mancanti
-    // 401 ⇒ token invalido/expired
     return this.http.post<unknown>('/users', {}, { headers, context, observe: 'response' }).pipe(
       map((res: HttpResponse<unknown>) => {
+        // Considera qualsiasi 2xx come “token valido”
         if (res.status >= 200 && res.status < 300) {
           return { success: true } satisfies TokenValidationResult;
         }
+        // Per sicurezza, gestisci altri 2xx allo stesso modo
         return { success: true } satisfies TokenValidationResult;
       }),
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 422) {
-            // Token valido: mancano solo i campi richiesti
+            // Token valido ma corpo richiesto mancante
             return of({ success: true } satisfies TokenValidationResult);
           }
           if (error.status === 401) {
@@ -83,7 +65,7 @@ export class TokenValidationService {
             } satisfies TokenValidationResult);
           }
         }
-        // network / rate-limit / unknown — mappa centralizzata
+        // Altri errori (rete, rate-limit, ecc.)
         const mapped = this.mapUiErrorToResult(mapHttpError(error));
         return of(mapped);
       }),
@@ -92,10 +74,8 @@ export class TokenValidationService {
 
   private mapUiErrorToResult(uiError: UiError): TokenValidationResult {
     const defaultMessage = 'Unable to verify the token right now. Please try again.';
-    const maybeMsg = uiError as unknown as Record<string, unknown>;
     const message =
-      typeof maybeMsg?.message === 'string' ? (maybeMsg.message as string) : defaultMessage;
-
+      typeof (uiError as any).message === 'string' ? (uiError as any).message : defaultMessage;
     switch (uiError.kind) {
       case 'network':
         return { success: false, code: 'network', message };

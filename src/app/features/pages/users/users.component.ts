@@ -12,6 +12,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import type { User } from '@/app/shared/models';
 import type { SortField } from './store/users.service';
 import { provideUsersService, injectUsersService } from './store/users.inject';
+import { UsersUiService } from './users-ui.service';
 
 @Component({
   standalone: true,
@@ -31,10 +32,11 @@ import { provideUsersService, injectUsersService } from './store/users.inject';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideUsersService()],
+  providers: [provideUsersService(), UsersUiService],
 })
 export class Users {
   public readonly usersService = injectUsersService();
+  private readonly usersUi = inject(UsersUiService);
   private readonly router = inject(Router);
 
   readonly loading = this.usersService.loading;
@@ -110,15 +112,15 @@ export class Users {
   }
 
   openNewUserModal(): void {
-    this.usersService.openNewUserModal();
+    this.usersUi.openCreateUserModal();
   }
 
   openEditUserModal(userId: number): void {
-    this.usersService.openEditUserModal(userId);
+    this.usersUi.openEditUserModal(userId);
   }
 
   onDelete(user: User): void {
-    this.usersService.onDelete(user);
+    this.usersUi.confirmDelete(user);
   }
 
   clearError(): void {

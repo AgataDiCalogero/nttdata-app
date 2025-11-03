@@ -1,18 +1,10 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
-import { Dialog } from '@angular/cdk/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
 import { providePostsService, injectPostsService } from './store/posts.inject';
-import { PostForm } from './components/post-form/post-form.component';
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
-import type { Post, Comment, DeleteConfirmData, User } from '@/app/shared/models';
-import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import type { Post, Comment, User } from '@/app/shared/models';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { take } from 'rxjs';
-
-type DialogResult = { status: 'created' | 'updated'; post?: Post };
-type PostFormDialogData = { users: User[]; post?: Post };
+import { PostsUiService } from './posts-ui.service';
 
 @Component({
   selector: 'app-posts',
@@ -20,16 +12,14 @@ type PostFormDialogData = { users: User[]; post?: Post };
   imports: [PostsViewComponent],
   templateUrl: './posts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [providePostsService()],
+  providers: [providePostsService(), PostsUiService],
 })
 export class Posts {
   protected readonly store = injectPostsService();
-  private readonly dialog = inject(Dialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly dialogLayouts = inject(ResponsiveDialogService);
-  private readonly overlays = inject(UiOverlayService);
   private readonly toast = inject(ToastService);
+  private readonly ui = inject(PostsUiService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
 
@@ -46,10 +36,7 @@ export class Posts {
   }
 
   handleCreatePost(): void {
-    this.openPostFormDialog({
-      label: 'New post',
-      data: { users: this.store.userOptions() },
-    });
+    this.ui.openCreateDialog();
   }
 
   handleResetFilters(): void {
@@ -61,41 +48,11 @@ export class Posts {
   }
 
   handleEditPost(post: Post): void {
-    this.openPostFormDialog({
-      label: `Edit post ${post.title}`,
-      data: { users: this.store.userOptions(), post },
-    });
+    this.ui.openEditDialog(post);
   }
 
   handleDeletePost(post: Post): void {
-    const data: DeleteConfirmData = {
-      title: 'Delete Post',
-      message: `Are you sure you want to delete "${post.title}"? This action cannot be undone.`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
-      inProgressText: 'Deleting...',
-      errorMessage: 'Unable to delete this post right now. Please try again.',
-      confirmAction: () => this.store.deletePostRequest(post),
-    };
-
-    const ref = this.dialog.open(DeleteConfirmComponent, {
-      width: '26.25rem',
-      maxWidth: '90vw',
-      backdropClass: 'app-dialog-overlay',
-      panelClass: 'app-dialog-panel',
-      ariaLabel: 'Delete post confirmation',
-      autoFocus: true,
-      restoreFocus: true,
-      data,
-    });
-    this.overlays.activate({
-      key: 'post-delete-confirm',
-      close: () => ref.close(),
-      blockGlobalControls: true,
-    });
-    ref.closed.pipe(take(1)).subscribe(() => {
-      this.overlays.release('post-delete-confirm');
-    });
+    this.ui.confirmDelete(post);
   }
 
   handleCommentCreated(event: { postId: number; comment: Comment }): void {
@@ -121,41 +78,6 @@ export class Posts {
 
   handleChangePerPage(perPage: number): void {
     this.store.changePerPage(perPage);
-  }
-
-  private openPostFormDialog(config: { label: string; data: PostFormDialogData }): void {
-    const dialogConfig = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
-      ariaLabel: config.label,
-      desktop: { width: '38.75rem' },
-      data: config.data,
-    });
-    const ref = this.dialog.open<DialogResult, PostFormDialogData, PostForm>(
-      PostForm,
-      dialogConfig,
-    );
-
-    this.overlays.activate({
-      key: 'post-form',
-      close: () => ref.close(),
-      blockGlobalControls: true,
-    });
-
-    ref.closed.pipe(take(1)).subscribe((result) => {
-      this.overlays.release('post-form');
-      if (!result || typeof result !== 'object' || !('status' in result)) {
-        return;
-      }
-
-      if (result.status === 'created') {
-        this.store.setPage(1);
-        this.store.refresh();
-        return;
-      }
-
-      if (result.status === 'updated' && result.post) {
-        this.store.onPostUpdated(result.post);
-      }
-    });
   }
 
   private syncQueryParams(page: number, perPage: number): void {

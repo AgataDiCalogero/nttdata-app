@@ -25,7 +25,5 @@ export interface UsersService {
   toggleSort(field: SortField): void;
   setPage(page: number): void;
   setPerPage(perPage: number): void;
-  onDelete(user: User): void;
-  openNewUserModal(): void;
-  openEditUserModal(userId: number): void;
+  setDeleting(userId: number | null): void;
 }

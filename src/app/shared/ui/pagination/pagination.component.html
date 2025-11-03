@@ -5,6 +5,7 @@
     type="button"
     (click)="prev()"
     [disabled]="!canPrev()"
+    aria-label="Go to previous page"
     [attr.aria-disabled]="!canPrev() ? 'true' : null"
   >
     Previous
@@ -20,6 +21,7 @@
     type="button"
     (click)="next()"
     [disabled]="!canNext()"
+    aria-label="Go to next page"
     [attr.aria-disabled]="!canNext() ? 'true' : null"
   >
     Next
