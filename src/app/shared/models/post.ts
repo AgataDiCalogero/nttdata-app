@@ -21,7 +21,7 @@ export type UpdateComment = Partial<Omit<Comment, 'id' | 'post_id'>>;
 
 export interface PostFilters {
   title: string | null;
-  userId: number | null;
+  user_id: number | null;
 }
 
 export interface QueryCriteria {

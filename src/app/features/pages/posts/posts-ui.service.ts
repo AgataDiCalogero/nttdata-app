@@ -5,7 +5,7 @@ import { take } from 'rxjs';
 import type { Post, Comment, DeleteConfirmData, User } from '@/app/shared/models';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { injectPostsService } from './store/posts.inject';
 import { PostForm } from './components/post-form/post-form.component';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
@@ -18,7 +18,7 @@ export class PostsUiService {
   private readonly dialog = inject(Dialog);
   private readonly dialogLayouts = inject(ResponsiveDialogService);
   private readonly overlays = inject(UiOverlayService);
-  private readonly toast = inject(ToastService);
+  private readonly notifications = inject(NotificationsService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly store = injectPostsService();
 
@@ -95,11 +95,13 @@ export class PostsUiService {
       if (result.status === 'created') {
         this.store.setPage(1);
         this.store.refresh();
+        this.notifications.showSuccess('Post created');
         return;
       }
 
       if (result.status === 'updated' && result.post) {
         this.store.onPostUpdated(result.post);
+        this.notifications.showSuccess('Post updated');
       }
     });
   }

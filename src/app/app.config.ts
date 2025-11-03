@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 import { apiPrefixInterceptor } from './core/interceptors/api-prefix.interceptor';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { providePaginationConfig } from './shared/config/pagination.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(LayoutModule, MatIconModule),
     provideAnimations(),
+    providePaginationConfig(),
   ],
 };

@@ -8,6 +8,11 @@ import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
+import {
+  DEFAULT_PAGINATION_CONFIG,
+  PAGINATION_CONFIG,
+  type PaginationConfig,
+} from '@/app/shared/config/pagination.config';
 
 interface SortState {
   field: SortField;
@@ -46,9 +51,9 @@ export const UsersStoreAdapter = signalStore(
     deletingId: null,
     searchTerm: '',
     sortState: { field: 'name', dir: 1 },
-    page: 1,
-    perPage: 10,
-    perPageOptions: [10, 20, 50],
+    page: DEFAULT_PAGINATION_CONFIG.defaultPage,
+    perPage: DEFAULT_PAGINATION_CONFIG.defaultPerPage,
+    perPageOptions: DEFAULT_PAGINATION_CONFIG.perPageOptions,
   }),
 
   withComputed((store) => ({
@@ -81,8 +86,17 @@ export const UsersStoreAdapter = signalStore(
     const route = inject(ActivatedRoute);
     const platformId = inject(PLATFORM_ID);
     const auth = inject(AuthService);
+    const pagination =
+      inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
+      DEFAULT_PAGINATION_CONFIG;
     const isBrowser = isPlatformBrowser(platformId);
     let bootstrapped = false;
+
+    patchState(store, {
+      page: pagination.defaultPage,
+      perPage: pagination.defaultPerPage,
+      perPageOptions: pagination.perPageOptions,
+    });
 
     const loadUsers = (options: LoadUsersOptions = {}) => {
       const pushUrl = options.pushUrl ?? true;
@@ -182,8 +196,11 @@ export const UsersStoreAdapter = signalStore(
 
     const setupInitialState = () => {
       const qp = route.snapshot.queryParamMap;
-      const initialPage = normalizePage(Number(qp.get('page')), store.page());
-      const initialPerPage = normalizePage(Number(qp.get('per_page')), store.perPage());
+      const initialPage = normalizePage(Number(qp.get('page')), pagination.defaultPage);
+      const initialPerPage = normalizePage(
+        Number(qp.get('per_page')),
+        pagination.defaultPerPage,
+      );
       const initialSearch = (qp.get('search') ?? '').trim();
 
       patchState(store, {
@@ -238,7 +255,12 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const onSearch = (value: string) => {
-      loadUsers({ page: 1, perPage: store.perPage(), searchTerm: value ?? '', pushUrl: true });
+      loadUsers({
+        page: pagination.defaultPage,
+        perPage: store.perPage(),
+        searchTerm: value ?? '',
+        pushUrl: true,
+      });
     };
 
     const toggleSort = (field: SortField) => {
@@ -257,7 +279,7 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const setPerPage = (perPage: number) => {
-      loadUsers({ page: 1, perPage, pushUrl: true });
+      loadUsers({ page: pagination.defaultPage, perPage, pushUrl: true });
     };
 
     const setDeleting = (userId: number | null) => {

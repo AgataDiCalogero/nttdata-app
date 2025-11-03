@@ -6,8 +6,7 @@ import type { User, DeleteConfirmData } from '@/app/shared/models';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { mapHttpError } from '@/app/shared/utils/error-mapper';
+import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { injectUsersService } from './store/users.inject';
 import { UserForm } from './user-form/user-form.component';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
@@ -17,7 +16,7 @@ export class UsersUiService {
   private readonly dialog = inject(Dialog);
   private readonly overlays = inject(UiOverlayService);
   private readonly dialogLayouts = inject(ResponsiveDialogService);
-  private readonly toast = inject(ToastService);
+  private readonly notifications = inject(NotificationsService);
   private readonly usersApi = inject(UsersApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly usersStore = injectUsersService();
@@ -62,7 +61,7 @@ export class UsersUiService {
         },
         error: (err) => {
           console.error('Failed to load user for edit:', err);
-          this.toast.show('error', mapHttpError(err).message);
+          this.notifications.showHttpError(err, 'Unable to load user details');
         },
       });
   }
@@ -80,14 +79,16 @@ export class UsersUiService {
         return this.usersApi.delete(user.id).pipe(
           tap({
             next: () => {
-              this.toast.show('success', 'User deleted');
+              this.notifications.showSuccess('User deleted');
               this.usersStore.loadUsers({ pushUrl: false });
             },
             error: (err) => {
               console.error('Delete failed:', err);
-              const mapped = mapHttpError(err);
-              this.toast.show('error', mapped.message);
-              throw new Error(mapped.message);
+              const message = this.notifications.showHttpError(
+                err,
+                'Unable to delete user right now. Please try again.',
+              );
+              throw new Error(message);
             },
           }),
           finalize(() => this.usersStore.setDeleting(null)),

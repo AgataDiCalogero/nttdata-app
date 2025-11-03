@@ -3,8 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
 import { providePostsService, injectPostsService } from './store/posts.inject';
 import type { Post, Comment, User } from '@/app/shared/models';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { PostsUiService } from './posts-ui.service';
+import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { PostsFiltersService } from './store/posts-filters.service';
 
 @Component({
   selector: 'app-posts',
@@ -12,13 +13,13 @@ import { PostsUiService } from './posts-ui.service';
   imports: [PostsViewComponent],
   templateUrl: './posts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [providePostsService(), PostsUiService],
+  providers: [providePostsService(), PostsUiService, PostsFiltersService],
 })
 export class Posts {
   protected readonly store = injectPostsService();
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly toast = inject(ToastService);
+  private readonly notifications = inject(NotificationsService);
   private readonly ui = inject(PostsUiService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
@@ -66,7 +67,7 @@ export class Posts {
   handleViewAuthor(userId: number): void {
     const exists = Boolean(this.store.userLookup()[userId]);
     if (!exists) {
-      this.toast.show('info', 'Author not available for this post');
+      this.notifications.showInfo('Author not available for this post');
       return;
     }
     this.router.navigate(['/users', userId]).catch(() => {});

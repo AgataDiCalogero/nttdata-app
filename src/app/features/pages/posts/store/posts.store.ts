@@ -1,19 +1,16 @@
-import { inject, signal, computed, DestroyRef, Type, effect, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { FormBuilder } from '@angular/forms';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-  tap,
-  catchError,
-  of,
-  from,
-  mergeMap,
-} from 'rxjs';
-import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
+  PLATFORM_ID,
+  DestroyRef,
+  Type,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, from, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import type {
   Comment,
   PaginationMeta,
@@ -26,9 +23,14 @@ import type { PostsService } from './posts.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { mapHttpError } from '@/app/shared/utils/error-mapper';
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
+import {
+  DEFAULT_PAGINATION_CONFIG,
+  PAGINATION_CONFIG,
+  type PaginationConfig,
+} from '@/app/shared/config/pagination.config';
+import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { PostsFiltersService } from './posts-filters.service';
 
 interface PostsState {
   posts: Post[];
@@ -41,69 +43,81 @@ interface PostsState {
   deletingId: number | null;
   loading: boolean;
   error: string | null;
-
-  filters: PostFilters;
   page: number;
   perPage: number;
   reloadToken: number;
 }
 
-export const PostsStoreAdapter = signalStore(
-  withState<PostsState>({
-    posts: [],
-    pagination: null,
-    commentsMap: {},
-    commentsLoading: {},
-    commentsCountMap: {},
-    userOptions: [],
-    userLookup: {},
-    deletingId: null,
-    loading: false,
-    error: null,
-    filters: { title: null, userId: null },
-    page: 1,
-    perPage: 10,
-    reloadToken: 0,
-  }),
+const defaultState: PostsState = {
+  posts: [],
+  pagination: null,
+  commentsMap: {},
+  commentsLoading: {},
+  commentsCountMap: {},
+  userOptions: [],
+  userLookup: {},
+  deletingId: null,
+  loading: false,
+  error: null,
+  page: 1,
+  perPage: 10,
+  reloadToken: 0,
+};
 
-  withComputed((store) => ({
-    queryCriteria: computed<QueryCriteria>(() => ({
-      page: store.page(),
-      per_page: store.perPage(),
-      title: store.filters().title ?? undefined,
-      user_id: store.filters().userId ?? undefined,
-      reload: store.reloadToken(),
-    })),
-    hasPagination: computed(() => {
-      const meta = store.pagination();
-      return Boolean(meta && meta.pages > 1);
-    }),
-    currentPage: computed(() => store.pagination()?.page ?? store.page()),
-    totalPages: computed(() => store.pagination()?.pages ?? 1),
-    currentPerPage: computed(() => store.pagination()?.limit ?? store.perPage()),
-    postsCount: computed(() => store.posts().length),
-  })),
+export const PostsStoreAdapter = signalStore(
+  withState<PostsState>(defaultState),
+
+  withComputed((store) => {
+    const filtersService = inject(PostsFiltersService);
+
+    return {
+      filters: computed(() => filtersService.filters()),
+      queryCriteria: computed<QueryCriteria>(() => {
+        const filters = filtersService.filters();
+        return {
+          page: store.page(),
+          per_page: store.perPage(),
+          title: filters.title ?? undefined,
+          user_id: filters.user_id ?? undefined,
+          reload: store.reloadToken(),
+        };
+      }),
+      hasPagination: computed(() => {
+        const meta = store.pagination();
+        return Boolean(meta && meta.pages > 1);
+      }),
+      currentPage: computed(() => store.pagination()?.page ?? store.page()),
+      totalPages: computed(() => store.pagination()?.pages ?? 1),
+      currentPerPage: computed(() => store.pagination()?.limit ?? store.perPage()),
+      postsCount: computed(() => store.posts().length),
+    };
+  }),
 
   withMethods((store) => {
     const postsApi = inject(PostsApiService);
     const usersApi = inject(UsersApiService);
     const commentsCache = inject(CommentsCacheService);
-    const toast = inject(ToastService);
-    const fb = inject(FormBuilder);
+    const notifications = inject(NotificationsService);
     const destroyRef = inject(DestroyRef);
     const platformId = inject(PLATFORM_ID);
     const auth = inject(AuthService);
+    const filtersService = inject(PostsFiltersService);
+    const pagination =
+      inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
+      DEFAULT_PAGINATION_CONFIG;
     const isBrowser = isPlatformBrowser(platformId);
-    let userOptionsRequested = false;
 
-    const searchForm = fb.nonNullable.group({
-      title: fb.nonNullable.control(''),
-      userId: fb.nonNullable.control(0),
+    patchState(store, {
+      page: pagination.defaultPage,
+      perPage: pagination.defaultPerPage,
     });
 
-    initializeSearchFormListeners(searchForm);
+    const searchForm = signal(filtersService.form);
+    const perPageOptions = signal([...pagination.perPageOptions]);
+
     initializePostsStream();
     setupUserOptionsBootstrap();
+    syncPaginationOnFilterChange();
 
     const performDeletePost = (post: Post) => {
       const shouldGoPrev =
@@ -124,38 +138,40 @@ export const PostsStoreAdapter = signalStore(
                     pages: Math.max(
                       1,
                       Math.ceil(
-                        (state.pagination.total - 1) / (state.pagination.limit || store.perPage()),
+                        Math.max(state.pagination.total - 1, 0) /
+                          (state.pagination.limit || store.perPage()),
                       ),
                     ),
                   }
                 : null,
             }));
-            toast.show('success', 'Post deleted');
+            notifications.showSuccess('Post deleted');
             if (shouldGoPrev) {
               patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));
             }
-            // Avoid manual reloadToken bump here: page/perPage changes and the computed queryCriteria
-            // already drive list reloads. This prevents duplicate network calls.
           },
           error: (err) => {
             console.error('Failed to delete post:', err);
             patchState(store, { deletingId: null });
-            const mapped = mapHttpError(err);
-            toast.show('error', mapped.message);
-            throw new Error(mapped.message);
           },
+        }),
+        catchError((err) => {
+          const message = notifications.showHttpError(
+            err,
+            'Unable to delete this post right now. Please try again.',
+          );
+          return throwError(() => new Error(message));
         }),
       );
     };
 
     return {
-      searchForm: signal(searchForm),
-      perPageOptions: signal([5, 10, 20]),
+      searchForm,
+      perPageOptions,
 
       initializePaging(page: number, perPage: number): void {
         const sanitizedPerPage = Math.max(1, perPage);
         const sanitizedPage = Math.max(1, page);
-        // Changing page/perPage is sufficient to trigger data reload via queryCriteria
         patchState(store, { perPage: sanitizedPerPage, page: sanitizedPage });
       },
 
@@ -170,8 +186,11 @@ export const PostsStoreAdapter = signalStore(
       },
 
       resetFilters(): void {
-        searchForm.reset({ title: '', userId: 0 });
-        patchState(store, { filters: { title: null, userId: null }, page: 1, perPage: 10 });
+        filtersService.reset();
+        patchState(store, {
+          page: pagination.defaultPage,
+          perPage: pagination.defaultPerPage,
+        });
       },
 
       deletePost(post: Post): void {
@@ -201,6 +220,7 @@ export const PostsStoreAdapter = signalStore(
         patchState(store, (state) => ({
           commentsLoading: { ...state.commentsLoading, [postId]: true },
         }));
+
         commentsCache
           .fetchComments(postId)
           .pipe(takeUntilDestroyed(destroyRef))
@@ -218,7 +238,7 @@ export const PostsStoreAdapter = signalStore(
             },
             error: (err) => {
               console.error('Failed to load comments:', err);
-              toast.show('error', mapHttpError(err).message);
+              notifications.showHttpError(err, 'Unable to load comments');
               patchState(store, (state) => ({
                 commentsLoading: { ...state.commentsLoading, [postId]: false },
               }));
@@ -284,37 +304,13 @@ export const PostsStoreAdapter = signalStore(
       changePerPage(perPage: number): void {
         const sanitized = Math.max(1, perPage);
         if (sanitized === store.perPage()) return;
-        patchState(store, { perPage: sanitized, page: 1 });
+        patchState(store, { perPage: sanitized, page: pagination.defaultPage });
       },
 
       setFilters(filters: PostFilters): void {
-        patchState(store, { filters, page: 1 });
+        filtersService.patch(filters);
       },
     };
-
-    function initializeSearchFormListeners(form: typeof searchForm): void {
-      form.controls.title.valueChanges
-        .pipe(
-          debounceTime(300),
-          map((value) => value.trim()),
-          takeUntilDestroyed(destroyRef),
-        )
-        .subscribe((value) => {
-          patchState(store, (state) => ({
-            filters: { ...state.filters, title: value.length ? value : null },
-          }));
-          patchState(store, { page: 1 });
-        });
-
-      form.controls.userId.valueChanges
-        .pipe(distinctUntilChanged(), takeUntilDestroyed(destroyRef))
-        .subscribe((value) => {
-          patchState(store, (state) => ({
-            filters: { ...state.filters, userId: value > 0 ? value : null },
-          }));
-          patchState(store, { page: 1 });
-        });
-    }
 
     function initializePostsStream(): void {
       toObservable(store.queryCriteria)
@@ -341,7 +337,8 @@ export const PostsStoreAdapter = signalStore(
               }),
               catchError((err) => {
                 console.error('Failed to load posts:', err);
-                patchState(store, { error: mapHttpError(err).message, loading: false });
+                const message = notifications.showHttpError(err, 'Unable to load posts');
+                patchState(store, { error: message, loading: false });
                 return of(null);
               }),
             );
@@ -355,23 +352,29 @@ export const PostsStoreAdapter = signalStore(
       if (!isBrowser) {
         return;
       }
-      const existing = store.commentsCountMap?.();
-      const known = existing || {};
+      const known = store.commentsCountMap() ?? {};
       const toFetch = items.filter((p) => known[p.id] === undefined);
       if (!toFetch.length) return;
-      // Throttle concurrency and cache results to reduce UI churn
+
       from(toFetch)
         .pipe(
           mergeMap(
             (post) =>
               commentsCache.fetchCommentCount(post.id).pipe(
                 map((count) => ({ post, count })),
+                catchError((err) => {
+                  console.error('Failed to load comment count:', err);
+                  notifications.showHttpError(err, 'Unable to load comment count');
+                  return of<{ post: Post; count: number } | null>(null);
+                }),
               ),
             3,
           ),
           takeUntilDestroyed(destroyRef),
         )
-        .subscribe(({ post, count }) => {
+        .subscribe((payload) => {
+          if (!payload) return;
+          const { post, count } = payload;
           patchState(store, (state) => ({
             commentsCountMap: { ...state.commentsCountMap, [post.id]: count },
           }));
@@ -393,7 +396,7 @@ export const PostsStoreAdapter = signalStore(
           },
           error: (err) => {
             console.error('Failed to load users for filters:', err);
-            userOptionsRequested = false;
+            notifications.showHttpError(err, 'Unable to load users list');
           },
         });
     }
@@ -402,6 +405,8 @@ export const PostsStoreAdapter = signalStore(
       if (!isBrowser) {
         return;
       }
+
+      let userOptionsRequested = false;
 
       const tryLoad = () => {
         if (userOptionsRequested) {
@@ -425,6 +430,24 @@ export const PostsStoreAdapter = signalStore(
           userOptionsRequested = false;
           patchState(store, { userOptions: [], userLookup: {} });
         }
+      });
+    }
+
+    function syncPaginationOnFilterChange(): void {
+      let previous: PostFilters | null = null;
+      effect(() => {
+        const filters = filtersService.filters();
+        if (
+          previous &&
+          previous.title === filters.title &&
+          previous.user_id === filters.user_id
+        ) {
+          return;
+        }
+        if (previous) {
+          patchState(store, { page: pagination.defaultPage });
+        }
+        previous = filters;
       });
     }
   }),

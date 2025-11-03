@@ -1,4 +1,12 @@
-import { Component, output, input, inject, computed, effect } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  output,
+  input,
+  inject,
+  computed,
+  effect,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { LucideAngularModule, Plus } from 'lucide-angular';
@@ -19,6 +27,7 @@ import { FormControl } from '@angular/forms';
     SearchBarComponent,
     SelectComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFiltersComponent {
   readonly Plus = Plus;
