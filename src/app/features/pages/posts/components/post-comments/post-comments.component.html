@@ -87,7 +87,6 @@
                     formControlName="body"
                     rows="3"
                     placeholder="Update your comment"
-                    [disabled]="submittingEdit()"
                     [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
                   ></textarea>
                   <div class="post-comments__edit-actions">

@@ -254,8 +254,8 @@
   .cdk-overlay-pane .nav-menu button.mat-menu-item:link,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:visited,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item:link {
-    @include app-menu-item;
     color: var(--color-on-surface);
+    @include app-menu-item;
   }
 
   /* Ensure the inner Material button wrapper / label text uses the on-surface color

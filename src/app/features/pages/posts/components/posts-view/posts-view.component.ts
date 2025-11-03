@@ -4,7 +4,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import type { Comment, Post, User } from '@/app/shared/models';
-import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
@@ -19,7 +18,6 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
     CommonModule,
     ReactiveFormsModule,
     LucideAngularModule,
-    SelectComponent,
     ButtonComponent,
     PaginationComponent,
     MatIconModule,

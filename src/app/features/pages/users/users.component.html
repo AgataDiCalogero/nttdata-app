@@ -22,7 +22,7 @@
 
       <app-user-filters
         [showCreate]="false"
-        [perPageOptions]="perPageOptions()"
+        [perPageOptions]="perPageOptionsMutable()"
         [perPage]="perPage()"
         (searchChange)="onSearch($event)"
         (perPageChange)="onPerPageChange($event)"

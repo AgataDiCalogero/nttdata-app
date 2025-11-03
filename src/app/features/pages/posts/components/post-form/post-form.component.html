@@ -44,7 +44,6 @@
       <mat-select
         id="post-user"
         formControlName="userId"
-        [disabled]="submitting() || loadingUsers() || !users().length"
         [attr.aria-invalid]="userIdInvalid ? 'true' : null"
       >
         <mat-option [value]="0" disabled>Select author</mat-option>
@@ -74,7 +73,6 @@
         formControlName="title"
         placeholder="Post title"
         appAutoFocus
-        [disabled]="submitting()"
         [attr.aria-invalid]="titleInvalid ? 'true' : null"
         maxlength="120"
       />
@@ -97,7 +95,6 @@
         formControlName="body"
         rows="8"
         placeholder="Describe your idea or report"
-        [disabled]="submitting()"
         [attr.aria-invalid]="bodyInvalid ? 'true' : null"
         maxlength="500"
       ></textarea>

@@ -7,8 +7,8 @@
 
   background: var(--color-surface-container-low);
   border: 0.0625rem solid var(--color-outline-variant);
-  @include mixins.radius('lg');
   padding: var(--space-md);
+  @include mixins.radius('lg');
   @include mixins.shadow('xs');
 
   @supports (background: color-mix(in srgb, var(--color-surface-container-low) 95%, transparent)) {

@@ -22,17 +22,18 @@
 .toast {
   list-style: none;
   padding: 1rem 1.25rem;
-  @include mixins.radius('lg');
+  border-radius: var(--radius-lg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  @include mixins.flex-row(0.875rem);
+  display: flex;
   align-items: flex-start;
+  gap: 0.875rem;
   width: 100%;
   pointer-events: auto;
   animation: toast-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
-  @include mixins.transition-group((transform, box-shadow, opacity));
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+  @include mixins.transition-group((transform, box-shadow, opacity));
 
   &:hover {
     transform: translateX(-0.25rem);
@@ -44,9 +45,9 @@
   flex-shrink: 0;
   width: 1.5rem;
   height: 1.5rem;
-  @include mixins.flex-center;
   border-radius: 50%;
   margin-top: 0.125rem;
+  @include mixins.flex-center;
 
   svg {
     width: 1.125rem;
@@ -71,14 +72,14 @@
   flex-shrink: 0;
   width: 1.75rem;
   height: 1.75rem;
-  @include mixins.flex-center;
   background: transparent;
   border: none;
   cursor: pointer;
-  @include mixins.radius('sm');
   opacity: 0.6;
-  @include mixins.transition-group((opacity, background));
   margin-top: -0.125rem;
+  @include mixins.flex-center;
+  @include mixins.radius('sm');
+  @include mixins.transition-group((opacity, background));
 
   svg {
     width: 1rem;

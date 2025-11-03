@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
   inject,
   input,
   output,
@@ -121,6 +122,18 @@ export class PostCommentsComponent {
   readonly editForm = this.fb.nonNullable.group({
     body: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
   });
+
+  constructor() {
+    effect(() => {
+      const disable = this.submittingEdit();
+      const control = this.editForm.controls.body;
+      if (disable && control.enabled) {
+        control.disable({ emitEvent: false });
+      } else if (!disable && control.disabled) {
+        control.enable({ emitEvent: false });
+      }
+    });
+  }
 
   startEdit(comment: ModelComment): void {
     this.editingId.set(comment.id);

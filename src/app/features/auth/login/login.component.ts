@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -92,6 +93,15 @@ export class Login {
   );
 
   constructor() {
+    effect(() => {
+      const isLoading = this.loading();
+      if (isLoading && this.tokenControl.enabled) {
+        this.tokenControl.disable({ emitEvent: false });
+      } else if (!isLoading && this.tokenControl.disabled) {
+        this.tokenControl.enable({ emitEvent: false });
+      }
+    });
+
     this.tokenControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.tokenControl.hasError('api')) {
         const existing: ValidationErrors = (this.tokenControl.errors ?? {}) as ValidationErrors;

@@ -59,8 +59,8 @@
 @mixin app-card($padding: var(--space-md), $radius: 'lg', $shadow-level: 'md') {
   background: var(--color-surface);
   border: 0.0625rem solid var(--color-border);
-  @include radius($radius);
   padding: $padding;
+  @include radius($radius);
   @include shadow($shadow-level);
 }
 
@@ -147,24 +147,30 @@
 }
 
 @mixin shadow($level: 'md') {
+  $shadow-token: null;
+
   @if $level == 'xs' {
-    box-shadow: var(--shadow-xs);
+    $shadow-token: var(--shadow-xs);
   } @else if $level == 'sm' {
-    box-shadow: var(--shadow-sm);
+    $shadow-token: var(--shadow-sm);
   } @else if $level == 'md' {
-    box-shadow: var(--shadow-md);
+    $shadow-token: var(--shadow-md);
   } @else if $level == 'lg' {
-    box-shadow: var(--shadow-lg);
+    $shadow-token: var(--shadow-lg);
   } @else if $level == 'xl' {
-    box-shadow: var(--shadow-xl);
+    $shadow-token: var(--shadow-xl);
   } @else if $level == '2xl' {
-    box-shadow: var(--shadow-2xl);
+    $shadow-token: var(--shadow-2xl);
   } @else if $level == 'accent' {
-    box-shadow: var(--shadow-accent);
+    $shadow-token: var(--shadow-accent);
   } @else if $level == 'accent-lg' {
-    box-shadow: var(--shadow-accent-lg);
+    $shadow-token: var(--shadow-accent-lg);
   } @else if $level == 'none' {
-    box-shadow: var(--shadow-none);
+    $shadow-token: var(--shadow-none);
+  }
+
+  @if $shadow-token != null {
+    box-shadow: $shadow-token;
   }
 }
 

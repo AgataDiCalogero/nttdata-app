@@ -66,9 +66,8 @@
 
 /* Standard page heading wrapper: title + subtitle/meta */
 .app-page__heading {
-  @include flex-column(var(--space-xxs));
-  align-items: flex-start;
   text-align: left;
+  @include flex-column(var(--space-xxs), flex-start);
 }
 
 :where(h1, .app-page__title, .app-page-title) {

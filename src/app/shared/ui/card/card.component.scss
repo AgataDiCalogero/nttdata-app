@@ -8,13 +8,13 @@
   --card-padding-x: var(--space-lg);
   --card-padding-y: var(--space-lg);
 
-  @include mixins.flex-column(var(--space-sm));
   padding: var(--card-padding-y) var(--card-padding-x);
   background: var(--card-bg);
   border: 0.0625rem solid var(--card-border);
   border-radius: var(--card-radius);
   box-shadow: var(--card-shadow);
   color: var(--color-on-surface);
+  @include mixins.flex-column(var(--space-sm));
   @include mixins.transition-group((transform, box-shadow, background, border-color));
 
   @supports (background: color-mix(in srgb, var(--color-surface) 94%, transparent)) {

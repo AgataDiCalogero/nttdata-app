@@ -24,7 +24,6 @@
             formControlName="token"
             autocomplete="off"
             placeholder="Paste your personal access token"
-            [disabled]="loading()"
             [attr.aria-invalid]="showTokenInvalidState() ? 'true' : null"
             [attr.aria-describedby]="tokenError ? tokenErrorId : null"
           />

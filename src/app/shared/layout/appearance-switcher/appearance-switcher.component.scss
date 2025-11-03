@@ -112,9 +112,9 @@
 }
 
 .appearance-option {
-  @include app-menu-item;
   border-radius: calc(var(--radius-lg) + 0.125rem);
   font-size: 0.8rem;
+  @include app-menu-item;
 
   &:hover {
     background: color-mix(in srgb, var(--color-accent) 6%, transparent);
@@ -265,13 +265,13 @@
 
   background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06)) !important;
   border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18)) !important;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease !important;
   @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
     background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface)) !important;
     border: 0.125rem solid color-mix(in srgb, var(--color-accent) 20%, var(--color-surface)) !important;
   }
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease !important;
 }
 .appearance-toggle .mat-slide-toggle-thumb {
   width: calc(var(--toggle-height) - 0.25rem) !important;

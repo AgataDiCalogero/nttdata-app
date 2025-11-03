@@ -6,7 +6,7 @@ import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import type { User, Post, Comment } from '@/app/shared/models';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
-import { ButtonComponent, StatusBadgeComponent } from '@/app/shared/ui';
+import { ButtonComponent } from '@/app/shared/ui';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
@@ -33,7 +33,6 @@ import {
     LoaderComponent,
     PostCardComponent,
     LucideAngularModule,
-    StatusBadgeComponent,
     MatSlideToggleModule,
     MatCardModule,
   ],

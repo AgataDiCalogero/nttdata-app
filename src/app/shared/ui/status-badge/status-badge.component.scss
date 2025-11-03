@@ -8,13 +8,13 @@
   border: 1px solid var(--status-color);
   color: var(--status-color);
   background-color: rgba(0, 0, 0, 0.02);
-  @supports (color: color-mix(in srgb, var(--status-color) 14%, transparent)) {
-    background-color: color-mix(in srgb, var(--status-color) 14%, transparent);
-  }
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   text-transform: capitalize;
   line-height: 1;
+  @supports (color: color-mix(in srgb, var(--status-color) 14%, transparent)) {
+    background-color: color-mix(in srgb, var(--status-color) 14%, transparent);
+  }
 }
 
 .status-badge__icon {

@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -124,6 +125,27 @@ export class PostForm {
     if (!this.users().length) {
       this.fetchUsers();
     }
+
+    effect(() => {
+      const disableUser = this.submitting() || this.loadingUsers() || this.users().length === 0;
+      if (disableUser && this.userIdControl.enabled) {
+        this.userIdControl.disable({ emitEvent: false });
+      } else if (!disableUser && this.userIdControl.disabled) {
+        this.userIdControl.enable({ emitEvent: false });
+      }
+    });
+
+    effect(() => {
+      const disableFields = this.submitting();
+      const controls = [this.titleControl, this.bodyControl];
+      controls.forEach((control) => {
+        if (disableFields && control.enabled) {
+          control.disable({ emitEvent: false });
+        } else if (!disableFields && control.disabled) {
+          control.enable({ emitEvent: false });
+        }
+      });
+    });
   }
 
   private fetchUsers(): void {

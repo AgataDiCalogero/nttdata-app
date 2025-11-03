@@ -4,10 +4,10 @@
   display: flex;
   width: 100%;
   padding: var(--space-md);
-  @include mixins.radius('md');
   border: 1px solid transparent;
   font-size: 0.9375rem;
   line-height: 1.5;
+  @include mixins.radius('md');
   @include mixins.transition-group((opacity, transform));
 }
 
@@ -41,8 +41,8 @@
   background: transparent;
   color: currentColor;
   cursor: pointer;
-  @include mixins.radius('xs');
   opacity: 0.7;
+  @include mixins.radius('xs');
   @include mixins.transition-group((opacity, background));
 
   &:hover {

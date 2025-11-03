@@ -8,9 +8,9 @@
   border-radius: var(--radius-2xl);
   border: 0.0625rem solid var(--color-border);
   padding: var(--space-md);
-  @include shadow('xl');
   background-clip: padding-box;
   outline: none;
+  @include shadow('xl');
   @include flex-column(var(--space-xs));
 }
 
@@ -19,9 +19,6 @@
 }
 
 @mixin app-menu-item {
-  @include flex-row(var(--space-xs));
-  align-items: center;
-  justify-content: flex-start;
   position: relative;
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-lg);
@@ -32,6 +29,7 @@
   font-weight: 500;
   font-size: 0.85rem;
   text-align: left;
+  @include flex-row(var(--space-xs), center, flex-start);
   @include transition-group((background, border-color, transform, box-shadow));
 
   &:hover {

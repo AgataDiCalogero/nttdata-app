@@ -46,6 +46,10 @@ export class Users {
   readonly perPage = this.usersService.perPage;
   readonly perPageOptions = this.usersService.perPageOptions;
 
+  perPageOptionsMutable(): number[] {
+    return [...this.perPageOptions()];
+  }
+
   sortDir(field: SortField): number {
     const sort = this.usersService.sortState();
     return sort.field === field ? sort.dir : 0;
