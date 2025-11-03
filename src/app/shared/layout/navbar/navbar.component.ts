@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -10,8 +9,9 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
+import { DOCUMENT, NgOptimizedImage } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,7 +20,6 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
-import { DeviceTypeService } from '../../services/device-type.service';
 
 @Component({
   selector: 'app-navbar',
@@ -41,174 +40,41 @@ import { DeviceTypeService } from '../../services/device-type.service';
     '[attr.data-menu-open]': 'menuOpen() ? "true" : "false"',
   },
 })
-export class Navbar implements OnInit, AfterViewInit {
+export class Navbar implements OnInit {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly document = inject(DOCUMENT);
   private readonly _lucideIcons = inject(LucideMatIconService);
-  private readonly _deviceType = inject(DeviceTypeService);
 
   @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
 
-  // Initialize from location.pathname synchronously to avoid router timing on refresh
-  // Initialize from location.pathname when available (SSR/client) so the login route is detected synchronously on initial render
-  readonly isLoginRoute = signal(
-    globalThis?.location?.pathname
-      ? globalThis.location.pathname.startsWith('/login')
-      : this.router.url.startsWith('/login'),
-  );
-  // Mobile breakpoint matches the SCSS media query (max-width: 62rem)
-  readonly isMobile = this._deviceType.isMobile;
-  // helper for template binding to avoid inline object literals which can confuse the template parser
+  readonly isLoginRoute = signal(this.router.url.startsWith('/login'));
+  readonly isMobile = signal(false);
   readonly routerLinkExact = { exact: true } as const;
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
 
   ngOnInit(): void {
-    // Keep a live isMobile signal in sync with viewport changes so template can conditionally render
-    // try {
-    //   const win = globalThis.window as Window | undefined;
-    //   const doc = globalThis.document as Document | undefined;
-    //   if (!win) return;
+    this.breakpointObserver
+      .observe('(max-width: 62rem)')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({ matches }) => this.isMobile.set(matches));
 
-    //   // Compute breakpoint in pixels based on root font-size so `62rem` matches SCSS
-    //   const rootFontSize = doc
-    //     ? Number.parseFloat(getComputedStyle(doc.documentElement).fontSize || '16')
-    //     : 16;
-    //   const breakpointPx = 62 * (Number.isFinite(rootFontSize) ? rootFontSize : 16);
+    this.syncBodyClass(this.isLoginRoute());
 
-    //   const update = () => this.isMobile.set(win.innerWidth <= breakpointPx);
-
-    //   // initialize
-    //   update();
-
-    //   win.addEventListener('resize', update, { passive: true });
-    //   this.destroyRef.onDestroy(() => {
-    //     try {
-    //       win.removeEventListener('resize', update);
-    //     } catch {
-    //       // ignore
-    //     }
-    //   });
-    // } catch {
-    //   // server-rendered or unsupported environment
-    // }
-    // Ensure body class matches current route immediately to avoid visual flashes
-    if (typeof document !== 'undefined') {
-      if (this.isLoginRoute()) {
-        document.body.classList.add('login-route');
-      } else {
-        document.body.classList.remove('login-route');
-      }
-    }
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((event) => {
-        this.isLoginRoute.set(event.urlAfterRedirects.startsWith('/login'));
+        const isLogin = event.urlAfterRedirects.startsWith('/login');
+        this.isLoginRoute.set(isLogin);
+        this.syncBodyClass(isLogin);
         this.closeMenu();
-        // Toggle a body class so we can style the page for the login route (non-scrollable header etc.)
-        if (typeof document !== 'undefined') {
-          if (this.isLoginRoute()) {
-            document.body.classList.add('login-route');
-          } else {
-            document.body.classList.remove('login-route');
-          }
-        }
       });
-  }
-
-  ngAfterViewInit(): void {
-    try {
-      const isLocal = String(globalThis?.location?.hostname) === 'localhost';
-      if (!isLocal || globalThis.window === undefined || globalThis.document === undefined) {
-        return;
-      }
-      const nav = globalThis.document.querySelector('.app-navbar');
-      const sample = globalThis.document.querySelector('.app-navbar .nav-links a[appButton]');
-      if (!nav || !sample) return;
-
-      const bg = getComputedStyle(nav).backgroundColor;
-      const fg = getComputedStyle(sample).color;
-
-      const ratio = this.#contrastRatio(fg, bg);
-      // 4.5:1 for normal text, 3:1 for large. Our nav is medium; target 4.5.
-      console.debug(`[A11Y] Navbar default contrast ratio: ${ratio.toFixed(2)} (target ≥ 4.5)`);
-
-      // Create ephemeral elements to measure active and hover states
-      const activeEl = sample.cloneNode(true) as HTMLElement;
-      activeEl.classList.add('active');
-      activeEl.style.position = 'absolute';
-      activeEl.style.visibility = 'hidden';
-      nav.appendChild(activeEl);
-      const activeBg = getComputedStyle(activeEl).backgroundColor;
-      const activeFg = getComputedStyle(activeEl).color;
-      const activeRatio = this.#contrastRatio(activeFg, activeBg);
-      console.debug(
-        `[A11Y] Navbar active contrast ratio: ${activeRatio.toFixed(2)} (target ≥ 4.5)`,
-      );
-
-      const hoverEl = sample.cloneNode(true) as HTMLElement;
-      hoverEl.style.position = 'absolute';
-      hoverEl.style.visibility = 'hidden';
-      // Simulate hover colors based on variables used in SCSS
-      const root = document.documentElement;
-      const hoverBg = getComputedStyle(root).getPropertyValue('--accent-hover')?.trim();
-      hoverEl.style.background = hoverBg || '';
-      hoverEl.style.color = getComputedStyle(root).getPropertyValue('--color-on-surface') || '';
-      nav.appendChild(hoverEl);
-      const hoverRatio = this.#contrastRatio(
-        getComputedStyle(hoverEl).color,
-        getComputedStyle(hoverEl).backgroundColor,
-      );
-      console.debug(`[A11Y] Navbar hover contrast ratio: ${hoverRatio.toFixed(2)} (target ≥ 4.5)`);
-
-      activeEl.remove();
-      hoverEl.remove();
-    } catch {
-      // ignore
-    }
-  }
-
-  // Parse rgb/rgba hex colors and compute WCAG 2.1 contrast ratio
-  #contrastRatio(fg: string, bg: string): number {
-    const f = this.#relativeLuminance(this.#toRgb(fg));
-    const b = this.#relativeLuminance(this.#toRgb(bg));
-    const [L1, L2] = f > b ? [f, b] : [b, f];
-    return (L1 + 0.05) / (L2 + 0.05);
-  }
-
-  #toRgb(input: string): { r: number; g: number; b: number } {
-    // rgb(a) or hex #rrggbb
-    const rgbExec = /rgba?\((\d+),\s*(\d+),\s*(\d+)/i.exec(input);
-    if (rgbExec) {
-      return { r: +rgbExec[1], g: +rgbExec[2], b: +rgbExec[3] };
-    }
-
-    const hex = input.trim();
-    if (hex.startsWith('#')) {
-      const v = hex.slice(1);
-      const n =
-        v.length === 3
-          ? v
-              .split('')
-              .map((c) => c + c)
-              .join('')
-          : v;
-      const num = Number.parseInt(n, 16);
-      return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
-    }
-    // Fallback to black
-    return { r: 0, g: 0, b: 0 };
-  }
-
-  #relativeLuminance({ r, g, b }: { r: number; g: number; b: number }): number {
-    const srgb = [r, g, b]
-      .map((v) => v / 255)
-      .map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
-    return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
   }
 
   logout(): void {
@@ -227,5 +93,11 @@ export class Navbar implements OnInit, AfterViewInit {
   closeMenu(): void {
     this.menuTrigger?.closeMenu();
     this.menuOpen.set(false);
+  }
+
+  private syncBodyClass(isLogin: boolean): void {
+    const doc = this.document as Document | null;
+    if (!doc) return;
+    doc.body.classList.toggle('login-route', isLogin);
   }
 }

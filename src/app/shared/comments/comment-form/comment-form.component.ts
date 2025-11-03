@@ -6,6 +6,7 @@ import {
   input,
   output,
   signal,
+  effect, // <-- aggiungi
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -43,6 +44,13 @@ export class CommentFormComponent {
     body: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(10)]),
   });
 
+  // Sync stato disabled del form con `submitting`
+  private readonly syncDisabled = effect(() => {
+    const isSubmitting = this.submitting();
+    if (isSubmitting) this.form.disable({ emitEvent: false });
+    else this.form.enable({ emitEvent: false });
+  });
+
   get bodyLength(): number {
     return this.form.controls.body.value.length;
   }
@@ -68,7 +76,7 @@ export class CommentFormComponent {
         next: (comment) => {
           this.toast.show('success', 'Comment posted successfully');
           this.created.emit(comment);
-          this.form.controls.body.reset('');
+          this.form.controls.body.reset(''); // mantieni name/email
         },
         error: (err) => {
           console.error('Failed to create comment:', err);

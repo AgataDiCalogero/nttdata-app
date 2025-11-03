@@ -8,7 +8,6 @@
         type="text"
         formControlName="name"
         placeholder="Your name"
-        [disabled]="submitting()"
         [attr.aria-invalid]="
           form.controls.name.invalid && form.controls.name.touched ? 'true' : null
         "
@@ -27,7 +26,6 @@
         type="email"
         formControlName="email"
         placeholder="name@email.com"
-        [disabled]="submitting()"
         [attr.aria-invalid]="
           form.controls.email.invalid && form.controls.email.touched ? 'true' : null
         "
@@ -47,7 +45,6 @@
       formControlName="body"
       rows="4"
       [placeholder]="placeholder()"
-      [disabled]="submitting()"
       [attr.aria-invalid]="form.controls.body.invalid && form.controls.body.touched ? 'true' : null"
       maxlength="500"
       required
@@ -82,5 +79,4 @@
       {{ submitting() ? 'Publishing...' : 'Post comment' }}
     </button>
   </div>
-  <!-- Errors are surfaced via ToastService; keep local field errors inline only -->
 </form>

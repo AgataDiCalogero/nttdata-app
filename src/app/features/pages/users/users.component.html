@@ -20,61 +20,69 @@
         </button>
       </header>
 
-      <app-user-filters [showCreate]="false" (searchChange)="onSearch($event)"></app-user-filters>
+      <app-user-filters
+        [showCreate]="false"
+        [perPageOptions]="perPageOptions()"
+        [perPage]="perPage()"
+        (searchChange)="onSearch($event)"
+        (perPageChange)="onPerPageChange($event)"
+      ></app-user-filters>
 
-      @if (displayed(); as data) {
-        @if (loading()) {
-          <div class="users-loader" aria-live="polite">
-            <mat-progress-spinner
-              mode="indeterminate"
-              diameter="36"
-              strokeWidth="3"
-            ></mat-progress-spinner>
-            <span>Loading users…</span>
-          </div>
+      @if (loading()) {
+        <div class="users-loader" aria-live="polite">
+          <mat-progress-spinner
+            mode="indeterminate"
+            diameter="36"
+            strokeWidth="3"
+          ></mat-progress-spinner>
+          <span>Loading users…</span>
+        </div>
+      } @else {
+        @if (error(); as err) {
+          <mat-card class="users-error" appearance="outlined">
+            <mat-card-content>
+              <div class="users-error__content">
+                <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
+                <p>{{ err }}</p>
+              </div>
+              <button
+                appButton
+                variant="ghost"
+                type="button"
+                (click)="clearError()"
+                [disabled]="loading()"
+              >
+                Retry
+              </button>
+            </mat-card-content>
+          </mat-card>
         } @else {
-          @if (error(); as err) {
-            <mat-card class="users-error" appearance="outlined">
+          @if (users().length > 0) {
+            <div class="users-list-wrapper">
+              <div class="users-list-wrapper__meta" aria-live="polite">
+                Showing {{ users().length }} of {{ totalUsers() }} users
+              </div>
+
+              <app-user-list
+                [items]="users()"
+                (view)="goToDetail($event)"
+                (edit)="openEditUserModal($event)"
+                (delete)="onDelete($event)"
+              ></app-user-list>
+
+              <app-pagination
+                [page]="page()"
+                [pageCount]="pagination()?.pages ?? 1"
+                (pageChange)="onPageChange($event)"
+              />
+            </div>
+          } @else {
+            <mat-card class="users-empty" appearance="outlined">
               <mat-card-content>
-                <div class="users-error__content">
-                  <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
-                  <p>{{ err }}</p>
-                </div>
-                <button
-                  appButton
-                  variant="ghost"
-                  type="button"
-                  (click)="clearError()"
-                  [disabled]="loading()"
-                >
-                  Retry
-                </button>
+                <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+                <p>No users found.</p>
               </mat-card-content>
             </mat-card>
-          } @else {
-            @if (data.total > 0) {
-              <div class="users-list-wrapper">
-                <app-user-list
-                  [items]="data.items"
-                  (view)="goToDetail($event)"
-                  (edit)="openEditUserModal($event)"
-                  (delete)="onDelete($event)"
-                ></app-user-list>
-
-                <app-pagination
-                  [page]="currentPage().page"
-                  [pageCount]="totalPages(data.total)"
-                  (pageChange)="setPage($event, currentPage().per_page)"
-                />
-              </div>
-            } @else {
-              <mat-card class="users-empty" appearance="outlined">
-                <mat-card-content>
-                  <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-                  <p>No users found.</p>
-                </mat-card-content>
-              </mat-card>
-            }
           }
         }
       }

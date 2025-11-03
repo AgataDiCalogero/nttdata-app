@@ -25,7 +25,7 @@ import {
   User,
   Check,
   X,
-} from 'lucide-angular/src/icons';
+} from 'lucide-angular';
 
 type RegisteredIcon = {
   name: string;

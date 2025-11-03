@@ -40,20 +40,15 @@ export class Users {
   readonly loading = this.usersService.loading;
   readonly error = this.usersService.error;
   readonly deletingId = this.usersService.deletingId;
-  readonly displayed = this.usersService.displayed;
+  readonly users = this.usersService.users;
+  readonly pagination = this.usersService.pagination;
+  readonly page = this.usersService.page;
+  readonly perPage = this.usersService.perPage;
+  readonly perPageOptions = this.usersService.perPageOptions;
 
   sortDir(field: SortField): number {
     const sort = this.usersService.sortState();
     return sort.field === field ? sort.dir : 0;
-  }
-
-  currentPage(): { page: number; per_page: number } {
-    return this.usersService.pageState();
-  }
-
-  totalPages(total: number): number {
-    const perPage = this.usersService.pageState().per_page || 1;
-    return Math.max(1, Math.ceil(total / perPage));
   }
 
   isChildRouteActive(): boolean {
@@ -96,8 +91,12 @@ export class Users {
     return `Sort ${label} ${nextDir}`;
   }
 
-  setPage(page: number, per_page: number, pushUrl = true): void {
-    this.usersService.setPage(page, per_page, pushUrl);
+  onPageChange(page: number): void {
+    this.usersService.setPage(page);
+  }
+
+  onPerPageChange(perPage: number): void {
+    this.usersService.setPerPage(perPage);
   }
 
   trackById(_idx: number, user: User): number {
@@ -118,5 +117,9 @@ export class Users {
 
   clearError(): void {
     this.usersService.loadUsers();
+  }
+
+  totalUsers(): number {
+    return this.pagination()?.total ?? this.users().length;
   }
 }

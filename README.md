@@ -1,114 +1,66 @@
 # NTT DATA Angular App
 
-Single-page Angular app on the GoREST API for users, posts and comments. It demonstrates token-based auth, protected routes, CRUD, accessibility and theming.
-
-````markdown
-# NTT DATA Angular App
-
-A polished Angular single‑page application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases modern Angular patterns: standalone components, Signals for state, SSR hydration, accessibility, and a themed UI.
+Single-page Angular application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases token-based authentication, protected routes, CRUD workflows, accessibility-first templates, and a themed UI built with Angular standalone components and signals.
 
 ## Features
 
-- Secure login with personal API token (stored in localStorage)
-- Protected routes for Users and Posts
-- Users: list, view details, create, update, delete
-- Posts: list with filters (title, author), pagination, inline comments load/create, delete
-- Consistent design system (buttons, cards, toasts, loaders) and light/dark theme
-- Accessibility‑minded templates and focus management
+- Secure login with personal API token stored in `localStorage`
+- Guard-protected areas for Users and Posts
+- Users: list, search, view details, create, update, delete, and inspect related posts/comments
+- Posts: list with filters (title, author), pagination, inline comments load/create/delete, and new post dialog
+- Consistent design system (buttons, cards, toasts, loaders) with light/dark themes
+- Accessibility-conscious focus management and ARIA labelling
 
 ## Tech stack
 
-- Angular 20 (standalone, OnPush, Signals)
-- Router with lazy loaded features and guard‑protected routes
-- Interceptors: API prefix, Auth (Bearer), Error mapping
+- Angular 20 (standalone components, Signals, `OnPush`)
+- Angular Router with lazy loaded feature areas and guards
+- RxJS + `@ngrx/signals` for state management
+- Angular Material, Angular CDK Dialog, lucide-angular icon set
+- Tooling: ESLint, Prettier, Karma + Jasmine, Husky + lint-staged
 
-# NTT DATA Angular App
-
-A polished Angular single-page application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases modern Angular patterns: standalone components, Signals for state, SSR hydration, accessibility, and a themed UI.
-
-## Features
-
-- Secure login with personal API token (stored in localStorage)
-- Protected routes for Users and Posts
-- Users: list, view details, create, update, delete
-- Posts: list with filters (title, author), pagination, inline comments load/create, delete
-- Consistent design system (buttons, cards, toasts, loaders) and light/dark theme
-- Accessibility-minded templates and focus management
-
-## Tech stack
-
-- Angular 20+ (standalone, OnPush, Signals)
-- Router with lazy loaded features and guard-protected routes
-- Interceptors: API prefix, Auth (Bearer), Error mapping
-- UI: Angular CDK Dialog, lucide-angular icons
-- Tooling: ESLint + Prettier, Karma + Jasmine, Husky + lint-staged
-
-## Getting started (Windows)
-
-Prerequisites
+## Prerequisites
 
 - Node.js 20+
 - npm 10+
 - A GoREST access token from <https://gorest.co.in/consumer/login>
 
-Install dependencies
+## Installation
 
-```bat
+```bash
 npm install
-```
+Running locally
+bash
 
-Run locally (development server)
-
-```bat
 npm start
-```
+Open http://localhost:4200, paste your token on first access, and the session will persist until logout.
 
-Open <http://localhost:4200> and paste your token on first access. The token is persisted in localStorage until logout.
+Quality checks
+bash
 
-Lightweight checks
-
-```bat
 npm run lint
 npm test
+Full CI runs (production build and headless tests) are handled separately; local development typically relies on the commands above.
+
+Configuration
+API base URLs live in src/environments/*.ts. Interceptors automatically prefix relative paths with the configured base URL and attach the Bearer token when available.
+
+Project structure
+src/app/core – guards, interceptors, theming services
+src/app/features – feature modules (Auth, Users, Posts)
+src/app/shared – reusable UI components, dialogs, directives, utilities
+src/app/shared/services – REST clients (UsersApiService, PostsApiService, etc.)
+src/app/shared/models – shared TypeScript interfaces and helper types
+Testing
+Unit tests target at least 60% coverage (to be completed). Tests run with Karma + Jasmine; use npm test for watch mode and npm run test:ci for headless execution.
+
+External libraries
+Angular Material & CDK (layout, dialogs, menus)
+lucide-angular icon set
+@ngrx/signals for signal-based stores
+ngx-toastr-inspired toast service (custom)
+License
+This project is provided for educational purposes. Extend or replace the license terms as required for your use case.
+
+
 ```
-
-Full test runs and production builds are intended to run in CI; local developers should avoid running heavy production builds on every change.
-
-## Configuration
-
-API base URL is defined in `src/environments/*.ts` (see `baseUrl`). Interceptors automatically prefix relative URLs and attach the Bearer token when available.
-
-## Project structure
-
-- `src/app/core` – guards, interceptors, theme service
-- `src/app/services` – REST clients (`UsersApiService`, `PostsApiService`)
-- `src/app/features` – feature areas (Auth, Users, Posts)
-- `src/app/shared` – reusable UI (button, card, toast, loader), directives, dialogs
-- `src/app/models` – shared TypeScript models
-
-## Conventions
-
-- Use `input()`/`output()` helpers, Signals for local state, and `ChangeDetectionStrategy.OnPush`.
-- Prefer control flow `@if`/`@for` in templates and always provide `track` for lists.
-- Prefer feature-level signal stores. When RxJS interoperability is required expose a minimal bridge (e.g. `asObservable()` / `toObservable()`), keeping the signal store as the source-of-truth.
-- Inside `<ul>/<ol>/<select>`, ensure `@for` produces valid child elements (`<li>`/`<option>`) — wrapping `@for` output in `<template>` is acceptable.
-- Host bindings/listeners go in the `host` block of decorators.
-
-## Accessibility
-
-- Toasts are announced through a polite live region
-- Lists and controls have labels and valid structures
-- Focus is preserved/restored in dialogs and drawers
-
-## Scripts
-
-- `npm start` – dev server
-- `npm run build` – production build (intended for CI)
-- `npm run lint` – linting
-- `npm test` – unit tests (interactive)
-- `npm run test:ci` – unit tests (headless)
-
-## License
-
-This project is provided for educational purposes. Replace or extend licensing as needed for your use case.
-````

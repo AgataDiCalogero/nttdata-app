@@ -6,10 +6,23 @@
     label="Search users by name or email"
     (debounced)="onDebounced($event)"
   />
-  @if (showCreate()) {
-    <button appButton variant="primary" (click)="onCreate()" aria-label="Create new user">
-      <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
-      New User
-    </button>
-  }
+
+  <div class="user-filters__actions">
+    <app-select
+      class="user-filters__per-page"
+      [id]="perPageSelectId"
+      [control]="perPageControl"
+      [options]="perPageSelectOptions()"
+      [showPlaceholder]="false"
+      [ariaLabel]="'Users per page'"
+      (selectionChange)="onPerPageSelected($event)"
+    ></app-select>
+
+    @if (showCreate()) {
+      <button appButton variant="primary" (click)="onCreate()" aria-label="Create new user">
+        <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
+        New User
+      </button>
+    }
+  </div>
 </div>

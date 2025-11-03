@@ -1,7 +1,7 @@
 import { inject, computed, Type, DestroyRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
-import type { User, DeleteConfirmData } from '@/app/shared/models';
+import type { User, DeleteConfirmData, PaginationMeta } from '@/app/shared/models';
 import type { SortField, UsersService } from './users.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
@@ -19,83 +19,64 @@ interface SortState {
   dir: 1 | -1;
 }
 
-interface PageState {
-  page: number;
-  per_page: number;
-}
-
-interface PaginatedUsers {
-  items: User[];
-  total: number;
-  page: number;
-  per_page: number;
-  totalPages: number;
-}
-
-function buildPaginatedUsers(
-  users: User[],
-  searchTerm: string,
-  sortState: SortState,
-  pageState: PageState,
-): PaginatedUsers {
-  const query = searchTerm.trim().toLowerCase();
-  const filtered = query
-    ? users.filter((user) => {
-        const name = String(user.name ?? '').toLowerCase();
-        const email = String(user.email ?? '').toLowerCase();
-        return name.includes(query) || email.includes(query);
-      })
-    : [...users];
-
-  const sorted = filtered.sort((a, b) => {
-    const fa = String(a[sortState.field] ?? '').toLowerCase();
-    const fb = String(b[sortState.field] ?? '').toLowerCase();
-    if (fa < fb) return -1 * sortState.dir;
-    if (fa > fb) return 1 * sortState.dir;
-    return 0;
-  });
-
-  const perPage = Math.max(1, pageState.per_page);
-  const total = sorted.length;
-  const totalPages = Math.max(1, Math.ceil(Math.max(total, 1) / perPage));
-  const safePage = Math.max(1, Math.min(pageState.page, totalPages));
-  const start = (safePage - 1) * perPage;
-  const items = sorted.slice(start, start + perPage);
-
-  return {
-    items,
-    total,
-    page: safePage,
-    per_page: perPage,
-    totalPages,
-  };
-}
-
 interface UsersState {
-  users: User[];
+  items: User[];
+  pagination: PaginationMeta | null;
   loading: boolean;
   error: string | null;
   deletingId: number | null;
   searchTerm: string;
-  sortState: { field: SortField; dir: 1 | -1 };
-  pageState: { page: number; per_page: number };
+  sortState: SortState;
+  page: number;
+  perPage: number;
+  perPageOptions: readonly number[];
 }
+
+interface LoadUsersOptions {
+  page?: number;
+  perPage?: number;
+  searchTerm?: string;
+  pushUrl?: boolean;
+}
+
+const normalizePage = (value: number | undefined, fallback: number) =>
+  Math.max(1, Number.isFinite(value as number) ? Math.floor(value as number) : fallback);
 
 export const UsersStoreAdapter = signalStore(
   withState<UsersState>({
-    users: [],
+    items: [],
+    pagination: null,
     loading: true,
     error: null,
     deletingId: null,
     searchTerm: '',
     sortState: { field: 'name', dir: 1 },
-    pageState: { page: 1, per_page: 10 },
+    page: 1,
+    perPage: 10,
+    perPageOptions: [10, 20, 50],
   }),
 
   withComputed((store) => ({
-    displayed: computed(() =>
-      buildPaginatedUsers(store.users(), store.searchTerm(), store.sortState(), store.pageState()),
-    ),
+    users: computed(() => {
+      const { field, dir } = store.sortState();
+
+      const getValue = (u: User) => {
+        const v = u[field]; // SortField ⊂ keyof User → ok per TS
+        const s = typeof v === 'string' ? v : String(v ?? '');
+        return s.toLowerCase();
+      };
+
+      return store
+        .items()
+        .slice()
+        .sort((a, b) => {
+          const av = getValue(a);
+          const bv = getValue(b);
+          if (av < bv) return -1 * dir;
+          if (av > bv) return 1 * dir;
+          return 0;
+        });
+    }),
   })),
 
   withMethods((store) => {
@@ -108,42 +89,114 @@ export const UsersStoreAdapter = signalStore(
     const dialogLayouts = inject(ResponsiveDialogService);
     const overlays = inject(UiOverlayService);
 
-    const setupInitialState = () => {
-      const qp = route.snapshot.queryParamMap;
-      const page = Number(qp.get('page') ?? 1) || 1;
-      const perPage = Number(qp.get('per_page') ?? 10) || 10;
-      patchState(store, {
-        pageState: {
-          page: Math.max(1, page),
-          per_page: Math.max(1, perPage),
-        },
-      });
-      loadUsers();
-    };
+    const loadUsers = (options: LoadUsersOptions = {}) => {
+      const pushUrl = options.pushUrl ?? true;
+      const targetPage = normalizePage(options.page, store.page());
+      const targetPerPage = normalizePage(options.perPage, store.perPage());
+      const term = (options.searchTerm ?? store.searchTerm()).trim();
 
-    const loadUsers = () => {
-      patchState(store, { loading: true, error: null });
+      patchState(store, {
+        loading: true,
+        error: null,
+        searchTerm: term,
+      });
+
+      const params: {
+        page: number;
+        per_page: number;
+        name?: string;
+        email?: string;
+      } = {
+        page: targetPage,
+        per_page: targetPerPage,
+      };
+
+      if (term) {
+        params.name = term;
+        if (term.includes('@')) {
+          params.email = term;
+        }
+      }
+
       usersApi
-        .list()
+        .list(params)
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe({
-          next: ({ items }) => {
+          next: ({ items, pagination }) => {
+            const resolvedLimit = Math.max(1, pagination?.limit ?? targetPerPage);
+            const resolvedTotal = pagination?.total ?? items.length;
+            const resolvedPages =
+              pagination?.pages ??
+              (resolvedTotal ? Math.ceil(Math.max(resolvedTotal, 1) / resolvedLimit) : 1);
+            const resolvedPage = Math.min(
+              Math.max(1, pagination?.page ?? targetPage),
+              Math.max(1, resolvedPages),
+            );
+
+            const meta: PaginationMeta = {
+              total: resolvedTotal,
+              pages: Math.max(1, resolvedPages),
+              page: resolvedPage,
+              limit: resolvedLimit,
+            };
+
             patchState(store, {
-              users: items ?? [],
+              items: items ?? [],
+              pagination: meta,
               loading: false,
+              page: meta.page,
+              perPage: meta.limit,
             });
-            setPage(store.pageState().page, store.pageState().per_page, false);
+
+            if (pushUrl) {
+              router.navigate([], {
+                relativeTo: route,
+                queryParams: {
+                  page: meta.page,
+                  per_page: meta.limit,
+                  search: term || null,
+                },
+                queryParamsHandling: 'merge',
+                replaceUrl: true,
+              });
+            }
+
+            if (!items.length && meta.total > 0 && meta.page > meta.pages) {
+              loadUsers({ page: meta.pages, perPage: meta.limit, searchTerm: term, pushUrl });
+            }
           },
           error: (err) => {
             console.error('Failed to load users:', err);
-            patchState(store, { error: mapHttpError(err).message, loading: false });
+            patchState(store, {
+              loading: false,
+              error: mapHttpError(err).message,
+            });
           },
         });
     };
 
+    const setupInitialState = () => {
+      const qp = route.snapshot.queryParamMap;
+      const initialPage = normalizePage(Number(qp.get('page')), store.page());
+      const initialPerPage = normalizePage(Number(qp.get('per_page')), store.perPage());
+      const initialSearch = (qp.get('search') ?? '').trim();
+
+      patchState(store, {
+        page: initialPage,
+        perPage: initialPerPage,
+        searchTerm: initialSearch,
+      });
+
+      loadUsers({
+        page: initialPage,
+        perPage: initialPerPage,
+        searchTerm: initialSearch,
+        pushUrl: false,
+      });
+    };
+
     const onSearch = (value: string) => {
-      patchState(store, { searchTerm: value ?? '' });
-      setPage(1, store.pageState().per_page, false);
+      loadUsers({ page: 1, perPage: store.perPage(), searchTerm: value ?? '', pushUrl: true });
     };
 
     const toggleSort = (field: SortField) => {
@@ -155,26 +208,14 @@ export const UsersStoreAdapter = signalStore(
       } else {
         patchState(store, { sortState: { field, dir: 1 } });
       }
-      setPage(1, store.pageState().per_page, false);
     };
 
-    const setPage = (page: number, per_page: number, pushUrl = true) => {
-      const next = buildPaginatedUsers(store.users(), store.searchTerm(), store.sortState(), {
-        page,
-        per_page,
-      });
+    const setPage = (page: number) => {
+      loadUsers({ page, perPage: store.perPage(), pushUrl: true });
+    };
 
-      patchState(store, {
-        pageState: { page: next.page, per_page: next.per_page },
-      });
-
-      if (pushUrl) {
-        router.navigate([], {
-          relativeTo: route,
-          queryParams: { page: next.page, per_page: next.per_page },
-          queryParamsHandling: 'merge',
-        });
-      }
+    const setPerPage = (perPage: number) => {
+      loadUsers({ page: 1, perPage, pushUrl: true });
     };
 
     const openNewUserModal = () => {
@@ -191,7 +232,7 @@ export const UsersStoreAdapter = signalStore(
       ref.closed.pipe(take(1)).subscribe((result) => {
         overlays.release('user-form');
         if (result === 'success') {
-          loadUsers();
+          loadUsers({ pushUrl: false });
         }
       });
     };
@@ -213,7 +254,7 @@ export const UsersStoreAdapter = signalStore(
           ref.closed.pipe(take(1)).subscribe((result) => {
             overlays.release('user-form');
             if (result === 'success') {
-              loadUsers();
+              loadUsers({ pushUrl: false });
             }
           });
         },
@@ -238,14 +279,9 @@ export const UsersStoreAdapter = signalStore(
           return usersApi.delete(user.id).pipe(
             tap({
               next: () => {
-                const updatedUsers = store.users().filter((item) => item.id !== user.id);
-                patchState(store, {
-                  users: updatedUsers,
-                  deletingId: null,
-                });
+                patchState(store, { deletingId: null });
                 toast.show('success', 'User deleted');
-                const { page, per_page } = store.pageState();
-                setPage(page, per_page, false);
+                loadUsers({ pushUrl: false });
               },
               error: (err) => {
                 console.error('Delete failed:', err);
@@ -286,6 +322,7 @@ export const UsersStoreAdapter = signalStore(
       onSearch,
       toggleSort,
       setPage,
+      setPerPage,
       openNewUserModal,
       openEditUserModal,
       onDelete,

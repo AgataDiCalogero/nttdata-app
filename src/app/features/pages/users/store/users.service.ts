@@ -1,29 +1,30 @@
 import type { Signal } from '@angular/core';
-import type { User } from '@/app/shared/models';
+import type { User, PaginationMeta } from '@/app/shared/models';
 
-export type SortField = 'name' | 'email' | 'status';
+export type SortField = Extract<keyof User, 'name' | 'email' | 'role' | 'createdAt'>;
 
 export interface UsersService {
   readonly users: Signal<User[]>;
+  readonly pagination: Signal<PaginationMeta | null>;
   readonly loading: Signal<boolean>;
   readonly error: Signal<string | null>;
   readonly deletingId: Signal<number | null>;
   readonly searchTerm: Signal<string>;
   readonly sortState: Signal<{ field: SortField; dir: 1 | -1 }>;
-  readonly pageState: Signal<{ page: number; per_page: number }>;
+  readonly page: Signal<number>;
+  readonly perPage: Signal<number>;
+  readonly perPageOptions: Signal<readonly number[]>;
 
-  readonly displayed: Signal<{
-    items: User[];
-    total: number;
-    page: number;
-    per_page: number;
-    totalPages: number;
-  }>;
-
-  loadUsers(): void;
+  loadUsers(options?: {
+    page?: number;
+    perPage?: number;
+    searchTerm?: string;
+    pushUrl?: boolean;
+  }): void;
   onSearch(value: string): void;
   toggleSort(field: SortField): void;
-  setPage(page: number, per_page: number, pushUrl?: boolean): void;
+  setPage(page: number): void;
+  setPerPage(perPage: number): void;
   onDelete(user: User): void;
   openNewUserModal(): void;
   openEditUserModal(userId: number): void;
