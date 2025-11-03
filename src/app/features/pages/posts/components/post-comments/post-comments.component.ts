@@ -42,7 +42,7 @@ import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.ser
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCommentsComponent {
-  readonly comments = input<ModelComment[] | null | undefined>(null);
+  readonly comments = input<ModelComment[]>([]);
   readonly loading = input(false);
   readonly postId = input.required<number>();
 

@@ -11,17 +11,21 @@ export class UsersApiService {
   private readonly base = '/users';
   private readonly listCache = new Map<string, Observable<ListResponse<User>>>();
 
-  list(params?: {
-    page?: number;
-    per_page?: number;
-    name?: string;
-    email?: string;
-  }, options?: { cache?: boolean }): Observable<ListResponse<User>> {
+  list(
+    params: {
+      page?: number;
+      perPage?: number;
+      name?: string;
+      email?: string;
+    } = {},
+    options?: { cache?: boolean },
+  ): Observable<ListResponse<User>> {
     let httpParams = new HttpParams();
-    if (params?.page) httpParams = httpParams.set('page', String(params.page));
-    if (params?.per_page) httpParams = httpParams.set('per_page', String(params.per_page));
-    if (params?.name) httpParams = httpParams.set('name', params.name);
-    if (params?.email) httpParams = httpParams.set('email', params.email);
+    const { page, perPage, name, email } = params;
+    if (page) httpParams = httpParams.set('page', String(page));
+    if (perPage) httpParams = httpParams.set('per_page', String(perPage));
+    if (name) httpParams = httpParams.set('name', name);
+    if (email) httpParams = httpParams.set('email', email);
 
     const cacheKey = options?.cache ? this.getCacheKey(httpParams) : null;
     if (cacheKey) {
@@ -57,21 +61,17 @@ export class UsersApiService {
   }
 
   create(payload: CreateUser): Observable<User> {
-    return this.http.post<User>(this.base, payload).pipe(
-      tap(() => this.listCache.clear()),
-    );
+    return this.http.post<User>(this.base, payload).pipe(tap(() => this.listCache.clear()));
   }
 
   update(id: number, payload: UpdateUser): Observable<User> {
-    return this.http.patch<User>(`${this.base}/${id}`, payload).pipe(
-      tap(() => this.listCache.clear()),
-    );
+    return this.http
+      .patch<User>(`${this.base}/${id}`, payload)
+      .pipe(tap(() => this.listCache.clear()));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/${id}`).pipe(
-      tap(() => this.listCache.clear()),
-    );
+    return this.http.delete<void>(`${this.base}/${id}`).pipe(tap(() => this.listCache.clear()));
   }
 
   private mapResponse(resp: HttpResponse<User[]>): ListResponse<User> {

@@ -2,7 +2,7 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs';
-import type { Post, Comment } from '@/app/shared/models/post';
+import type { Post } from '@/app/shared/models/post';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { User } from '@/app/shared/models/user';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
@@ -95,15 +95,15 @@ export class PostsUiService {
       }
 
       if (result.status === 'created') {
+        this.notifications.showSuccess('Post created');
         this.store.setPage(1);
         this.store.refresh();
-        this.notifications.showSuccess('Post created');
         return;
       }
 
       if (result.status === 'updated' && result.post) {
-        this.store.onPostUpdated(result.post);
         this.notifications.showSuccess('Post updated');
+        this.store.onPostUpdated(result.post);
       }
     });
   }

@@ -10,17 +10,21 @@
   />
   <app-select
     [id]="userSelectId"
-    [control]="formGroup.controls.user_id"
+    [control]="formGroup.controls.userId"
     [options]="userSelectOptions()"
+    label="Filter by author"
+    [ariaLabel]="'Filter posts by author'"
   ></app-select>
   <app-select
-    class="posts-filters__perpage"
     [id]="perPageSelectId"
     [control]="perPageControl()"
     [options]="perPageSelectOptions()"
     (selectionChange)="onPerPageChange($event)"
-    [ariaLabel]="'Posts per page'"
+    label="Posts per page"
+    [ariaLabel]="'Change posts per page'"
     [showPlaceholder]="false"
   ></app-select>
-  <button appButton variant="ghost" type="button" (click)="onReset()">Reset</button>
+  <div class="posts-filters__actions">
+    <button appButton variant="ghost" type="button" (click)="onReset()">Reset</button>
+  </div>
 </form>

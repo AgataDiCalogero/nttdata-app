@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
 import { providePostsService, injectPostsService } from './store/posts.inject';
 import type { Post, Comment } from '@/app/shared/models/post';
-import type { User } from '@/app/shared/models/user';
 import { PostsUiService } from './posts-ui.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsFiltersService } from './store/posts-filters.service';
@@ -63,6 +62,10 @@ export class Posts {
 
   handleCommentUpdated(event: { postId: number; comment: Comment }): void {
     this.store.onCommentUpdated(event.postId, event.comment);
+  }
+
+  handleCommentDeleted(event: { postId: number; commentId: number }): void {
+    this.store.onCommentDeleted(event.postId, event.commentId);
   }
 
   handleViewAuthor(userId: number): void {

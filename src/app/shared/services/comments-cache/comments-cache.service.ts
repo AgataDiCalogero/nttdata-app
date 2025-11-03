@@ -71,8 +71,7 @@ export class CommentsCacheService {
   }
 
   adjustCount(postId: number, delta: number): void {
-    const current =
-      this.countMap.get(postId) ?? this.commentsMap.get(postId)?.length ?? 0;
+    const current = this.countMap.get(postId) ?? this.commentsMap.get(postId)?.length ?? 0;
     this.countMap.set(postId, Math.max(0, current + delta));
   }
 

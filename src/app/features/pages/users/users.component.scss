@@ -1,11 +1,12 @@
-@use '../../../../styles/mixins' as *;
-
 .users-page {
   padding-inline: 0;
-  color: var(--color-on-surface);
+  color: var(--mat-sys-on-surface, #1d1b20);
 
   &__header {
-    @include flex-row(var(--space-md), center, space-between);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
   }
 
@@ -17,31 +18,31 @@
 .users-container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: 2rem;
   width: 100%;
 }
 
 .users-loader {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-md);
-  color: var(--color-muted);
-  font-size: var(--font-size-sm);
+  gap: 1rem;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.64));
+  font-size: 0.9rem;
 }
 
 .users-error mat-card-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 1rem;
   align-items: flex-start;
 
   .users-error__content {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: 0.75rem;
 
     mat-icon {
-      color: var(--color-danger);
+      color: var(--mat-sys-error, #b3261e);
     }
 
     p {
@@ -53,20 +54,20 @@
 .users-list-wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: 2rem;
 }
 
 /* Rely on shared .app-pagination styles */
 
 .users-empty mat-card-content {
   display: grid;
-  gap: var(--space-md);
+  gap: 1rem;
   justify-items: center;
   text-align: center;
 
   mat-icon {
     font-size: 2rem;
-    color: var(--color-muted);
+    color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.64));
   }
 
   button {

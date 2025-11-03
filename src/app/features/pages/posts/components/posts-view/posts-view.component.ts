@@ -38,9 +38,9 @@ export class PostsViewComponent {
   readonly loading = input.required<boolean>();
   readonly error = input<string | null>(null);
   readonly posts = input.required<Post[]>();
-  readonly commentsMap = input.required<Record<number, Comment[] | undefined>>();
+  readonly commentsMap = input.required<Partial<Record<number, Comment[]>>>();
   readonly commentsLoading = input.required<Record<number, boolean>>();
-  readonly commentsCountMap = input.required<Record<number, number>>();
+  readonly commentsCountMap = input.required<Partial<Record<number, number>>>();
   readonly perPageOptions = input.required<number[]>();
   readonly currentPage = input.required<number>();
   readonly totalPages = input.required<number>();
@@ -56,6 +56,7 @@ export class PostsViewComponent {
   readonly deletePost = output<Post>();
   readonly commentCreated = output<{ postId: number; comment: Comment }>();
   readonly commentUpdated = output<{ postId: number; comment: Comment }>();
+  readonly commentDeleted = output<{ postId: number; commentId: number }>();
   readonly changePage = output<number>();
   readonly changePerPage = output<number>();
   readonly editPost = output<Post>();
@@ -64,7 +65,7 @@ export class PostsViewComponent {
   readonly Plus = Plus;
 
   readonly perPageSelectOptions = computed(() =>
-    this.perPageOptions().map((size) => ({ value: size, label: size.toString() })),
+    this.perPageOptions().map((size) => ({ value: size, label: `${size} / page` })),
   );
 
   protected readonly perPageControl = new FormControl<number>(10, { nonNullable: true });
@@ -82,8 +83,8 @@ export class PostsViewComponent {
     return this.deletingId() === postId;
   }
 
-  commentsFor(postId: number): Comment[] | undefined {
-    return this.commentsMap()[postId];
+  commentsFor(postId: number): Comment[] {
+    return this.commentsMap()[postId] ?? [];
   }
 
   commentsAreLoading(postId: number): boolean {
@@ -100,6 +101,10 @@ export class PostsViewComponent {
 
   onCommentUpdated(postId: number, comment: Comment): void {
     this.commentUpdated.emit({ postId, comment });
+  }
+
+  onCommentDeleted(postId: number, commentId: number): void {
+    this.commentDeleted.emit({ postId, commentId });
   }
 
   onViewAuthor(userId: number): void {

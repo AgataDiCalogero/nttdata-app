@@ -10,9 +10,9 @@ export interface PostsService {
   error: Signal<string | null>;
   posts: Signal<Post[]>;
   pagination: Signal<PaginationMeta | null>;
-  commentsMap: Signal<Record<number, Comment[]>>;
-  commentsLoading: Signal<Record<number, boolean>>;
-  commentsCountMap: Signal<Record<number, number>>;
+  commentsMap: Signal<Partial<Record<number, Comment[]>>>;
+  commentsLoading: Signal<Partial<Record<number, boolean>>>;
+  commentsCountMap: Signal<Partial<Record<number, number>>>;
   userOptions: Signal<User[]>;
   userLookup: Signal<Record<number, string>>;
   deletingId: Signal<number | null>;
@@ -34,6 +34,7 @@ export interface PostsService {
   onPostUpdated(post: Post): void;
   onCommentCreated(postId: number, comment: Comment): void;
   onCommentUpdated(postId: number, comment: Comment): void;
+  onCommentDeleted(postId: number, commentId: number): void;
   changePerPage(perPage: number): void;
   setFilters(filters: PostFilters): void;
 }

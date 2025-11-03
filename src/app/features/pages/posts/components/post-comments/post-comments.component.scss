@@ -1,170 +1,122 @@
-@use '../../../../../../styles/mixins' as *;
-
 .post-comments {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 1rem;
   width: 100%;
 
   &__composer {
-    border: 0.0625rem solid var(--border-mix-60);
-    border-radius: var(--radius-lg);
-    padding: var(--space-md);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-xs);
+    border: 1px solid var(--mat-sys-outline-variant, rgba(121, 116, 126, 0.36));
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background: var(--mat-sys-surface, #fffbfe);
   }
 
   &__divider {
     width: 100%;
-    height: 0.0625rem;
-    background: var(--comment-border);
-    opacity: 0.6;
-  }
-
-  &__loading {
-    font-size: 0.9rem;
-    color: var(--color-muted);
-  }
-
-  &__empty {
-    font-size: 0.9rem;
-  }
-
-  &__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-
-    padding-right: var(--space-sm);
+    height: 1px;
+    background: var(--mat-sys-outline-variant, rgba(121, 116, 126, 0.36));
   }
 
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-
-    max-height: 28rem;
+    gap: 1rem;
+    max-height: 26rem;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: var(--space-xs);
-
-    @supports selector(::-webkit-scrollbar) {
-      &::-webkit-scrollbar {
-        width: 0.375rem;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: var(--color-surface-container-low);
-        border-radius: var(--radius-sm);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: var(--color-outline);
-        border-radius: var(--radius-sm);
-        transition: background 0.2s ease;
-
-        &:hover {
-          background: var(--color-primary);
-        }
-      }
-    }
-
-    @supports (scrollbar-width: thin) {
-      scrollbar-width: thin;
-      scrollbar-color: var(--color-outline) var(--color-surface-container-low);
-    }
+    padding-right: 0.5rem;
   }
 
+  &__list,
   &__scrollable {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 1rem;
   }
 
   &__item {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-lg);
-    background: var(--comment-bg);
-    border: 0.0625rem solid var(--comment-border);
-    box-shadow: var(--shadow-xs);
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--mat-sys-surface-container, #f3edf7);
+    border: 1px solid var(--mat-sys-outline-variant, rgba(121, 116, 126, 0.36));
   }
 
   &__item-header {
-    @include flex-row(var(--space-sm), flex-start, space-between);
-    gap: var(--space-sm);
+    display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
 
   &__avatar {
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: var(--radius-full);
-    background: var(--color-accent);
-    color: var(--color-on-accent);
+    border-radius: 50%;
+    background: var(--mat-sys-primary-container, #eaddff);
+    color: var(--mat-sys-on-primary-container, #21005d);
     font-weight: 600;
-    font-size: 0.9rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
   }
 
   &__meta {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2xs);
+    gap: 0.25rem;
     min-width: 0;
     flex: 1;
   }
 
   &__author {
     font-weight: 600;
-    color: var(--color-on-surface);
     word-break: break-word;
   }
 
   &__email {
-    font-size: 0.8rem;
-    color: var(--color-muted);
+    font-size: 0.8125rem;
+    color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.64));
   }
 
   &__item-actions {
-    @include flex-row(var(--space-xs));
+    display: flex;
+    gap: 0.5rem;
     flex-shrink: 0;
   }
 
   &__body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: 0.75rem;
   }
 
   &__text {
     margin: 0;
-    font-size: 0.95rem;
-    color: var(--color-on-surface);
-    line-height: 1.5;
+    line-height: 1.6;
     word-break: break-word;
   }
 
   &__edit-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: 0.75rem;
   }
 
   &__edit-actions {
-    @include flex-row(var(--space-xs));
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 }
 
-@include mobile {
+@media (max-width: 40rem) {
   .post-comments {
     &__inner {
-      max-height: 24rem;
+      max-height: 22rem;
     }
 
     &__item-header {

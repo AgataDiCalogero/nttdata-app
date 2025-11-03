@@ -63,10 +63,6 @@ export class Users {
     return basePath !== '/users';
   }
 
-  goToDetail(userId: number): void {
-    this.router.navigate(['/users', userId]).catch(() => {});
-  }
-
   onSearch(value: string): void {
     this.usersService.onSearch(value);
   }

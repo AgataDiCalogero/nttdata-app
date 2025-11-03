@@ -6,13 +6,21 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 import { DeviceTypeService } from '@/app/shared/services/device-type.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  imports: [CommonModule, MatCardModule, ButtonComponent, MatIconModule, StatusBadgeComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatCardModule,
+    ButtonComponent,
+    MatIconModule,
+    StatusBadgeComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {
@@ -22,7 +30,6 @@ export class UserListComponent {
   // signal used by the template to switch which delete button is rendered
   protected readonly isMobile = this._deviceType.isMobile;
 
-  readonly view = output<number>();
   readonly edit = output<number>();
   readonly delete = output<User>();
 
@@ -36,11 +43,6 @@ export class UserListComponent {
     // bo.observe('(max-width: 40rem)')
     //   .pipe(takeUntilDestroyed(destroyRef))
     //   .subscribe((s) => this.isMobile.set(Boolean(s.matches)));
-  }
-
-  onView(user: User, event?: Event): void {
-    event?.stopPropagation();
-    this.view.emit(user.id);
   }
 
   onEdit(user: User, event?: Event): void {

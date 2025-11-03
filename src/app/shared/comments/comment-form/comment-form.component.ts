@@ -6,7 +6,7 @@ import {
   input,
   output,
   signal,
-  effect, // <-- aggiungi
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -74,11 +74,14 @@ export class CommentFormComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (comment) => {
+          this.submitting.set(false);
           this.toast.show('success', 'Comment posted successfully');
           this.created.emit(comment);
-          this.form.controls.body.reset(''); // mantieni name/email
+          this.submitError.set(null);
+          this.form.reset();
         },
         error: (err) => {
+          this.submitting.set(false);
           console.error('Failed to create comment:', err);
           const status = err?.status;
           if (status === 422) {
@@ -91,9 +94,6 @@ export class CommentFormComponent {
             this.toast.show('error', 'Unable to publish the comment. Please retry.');
             this.submitError.set('Unable to publish the comment. Please retry.');
           }
-        },
-        complete: () => {
-          this.submitting.set(false);
         },
       });
   }

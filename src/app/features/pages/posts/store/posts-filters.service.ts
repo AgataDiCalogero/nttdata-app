@@ -6,16 +6,16 @@ import type { PostFilters } from '@/app/shared/models/post';
 
 export type PostsFiltersFormGroup = FormGroup<{
   title: FormControl<string>;
-  user_id: FormControl<number>;
+  userId: FormControl<number | null>;
 }>;
 
 @Injectable()
 export class PostsFiltersService {
   private readonly fb = inject(FormBuilder);
 
-  readonly form: PostsFiltersFormGroup = this.fb.nonNullable.group({
+  readonly form: PostsFiltersFormGroup = this.fb.group({
     title: this.fb.nonNullable.control<string>(''),
-    user_id: this.fb.nonNullable.control<number>(0),
+    userId: this.fb.control<number | null>(0),
   });
 
   private readonly titleChanges = toSignal(
@@ -28,16 +28,16 @@ export class PostsFiltersService {
   );
 
   private readonly userIdChanges = toSignal(
-    this.form.controls.user_id.valueChanges.pipe(
-      startWith(this.form.controls.user_id.value),
+    this.form.controls.userId.valueChanges.pipe(
+      startWith(this.form.controls.userId.value),
       distinctUntilChanged(),
     ),
-    { initialValue: this.form.controls.user_id.value },
+    { initialValue: this.form.controls.userId.value },
   );
 
   private readonly internalFilters = signal<PostFilters>({
     title: this.normalizeTitle(this.titleChanges()),
-    user_id: this.normalizeUserId(this.userIdChanges()),
+    userId: this.normalizeUserId(this.userIdChanges()),
   });
 
   readonly filters = computed(() => this.internalFilters());
@@ -47,21 +47,21 @@ export class PostsFiltersService {
       const title = this.normalizeTitle(this.titleChanges());
       const userId = this.normalizeUserId(this.userIdChanges());
       const current = this.internalFilters();
-      if (current.title === title && current.user_id === userId) {
+      if (current.title === title && current.userId === userId) {
         return;
       }
-      this.internalFilters.set({ title, user_id: userId });
+      this.internalFilters.set({ title, userId });
     });
   }
 
   reset(): void {
-    this.form.reset({ title: '', user_id: 0 });
+    this.form.reset({ title: '', userId: 0 });
   }
 
   patch(filters: PostFilters): void {
     this.form.patchValue({
       title: filters.title ?? '',
-      user_id: filters.user_id ?? 0,
+      userId: filters.userId ?? 0,
     });
   }
 
@@ -70,7 +70,7 @@ export class PostsFiltersService {
     return trimmed.length ? trimmed : null;
   }
 
-  private normalizeUserId(value: number): number | null {
+  private normalizeUserId(value: number | null): number | null {
     const parsed = Number(value);
     return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : null;
   }

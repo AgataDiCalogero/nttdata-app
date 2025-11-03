@@ -18,13 +18,14 @@ import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
     SearchBarComponent,
   ],
   templateUrl: './posts-filters.component.html',
+  styleUrls: ['./posts-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsFiltersComponent {
   readonly searchForm = input.required<PostsFiltersFormGroup>();
   readonly userOptions = input<{ id: number; name?: string }[]>([]);
   // optional control & output for per-page selection
-  readonly perPageControl = input<FormControl<number> | FormControl<string> | null>(null);
+  readonly perPageControl = input<FormControl<number> | null>(null);
   readonly perPageOptions = input<{ value: number; label: string }[]>([]);
   readonly perPageChange = output<number>();
 

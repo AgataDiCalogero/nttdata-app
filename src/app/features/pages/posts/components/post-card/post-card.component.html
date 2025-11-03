@@ -79,13 +79,7 @@
 
   <mat-card-actions align="end" class="post-card__actions">
     @if (openSection !== 'composer') {
-      <button
-        appButton
-        variant="primary"
-        size="sm"
-        type="button"
-        (click)="openComposer()"
-      >
+      <button appButton variant="primary" size="sm" type="button" (click)="openComposer()">
         Post comment
       </button>
     }
@@ -111,7 +105,7 @@
         #commentsSection
         class="post-card__comments"
         [postId]="postModel.id"
-        [comments]="commentsList ?? []"
+        [comments]="commentsList"
         [loading]="commentsLoading()"
         [hideComposer]="openSection === 'comments'"
         (commentCreated)="onInternalCommentCreated($event)"

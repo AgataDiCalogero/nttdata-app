@@ -21,6 +21,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
+import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 import {
   LucideAngularModule,
   Mail,
@@ -48,6 +49,7 @@ import {
     LucideAngularModule,
     MatSlideToggleModule,
     MatCardModule,
+    StatusBadgeComponent,
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
@@ -114,8 +116,12 @@ export class UserDetail {
     });
   }
 
-  commentsFor(postId: number): Comment[] | undefined {
-    return this.commentsMapSignal()[postId];
+  commentsFor(postId: number): Comment[] {
+    return this.commentsMapSignal()[postId] ?? [];
+  }
+
+  commentsLoaded(postId: number): boolean {
+    return Object.prototype.hasOwnProperty.call(this.commentsMapSignal(), postId);
   }
 
   commentsAreLoading(postId: number): boolean {
@@ -138,7 +144,7 @@ export class UserDetail {
       this.commentsMapSignal.update((state) => ({ ...state, [postId]: list }));
       this.commentsCount.update((state) => ({
         ...state,
-        [postId]: Array.isArray(list) ? list.length : 0,
+        [postId]: list.length,
       }));
       this.commentsCache.setComments(postId, list);
     } catch (err) {
@@ -150,14 +156,20 @@ export class UserDetail {
   }
 
   onCommentCreated(postId: number, comment: Comment): void {
+    let nextLength = 1;
+    let nextComments: Comment[] = [];
     this.commentsMapSignal.update((state) => {
       const current = state[postId] ?? [];
-      return { ...state, [postId]: [comment, ...current] };
+      const next = [comment, ...current];
+      nextLength = next.length;
+      nextComments = next;
+      return { ...state, [postId]: next };
     });
     this.commentsCount.update((state) => ({
       ...state,
-      [postId]: 1 + (state[postId] ?? this.commentsMapSignal()[postId]?.length ?? 0),
+      [postId]: nextLength,
     }));
+    this.commentsCache.setComments(postId, nextComments);
   }
 
   onCommentUpdated(postId: number, comment: Comment): void {
@@ -166,28 +178,36 @@ export class UserDetail {
       if (!current) {
         return state;
       }
+      const updated = current.map((existing) => (existing.id === comment.id ? comment : existing));
+      this.commentsCache.setComments(postId, updated);
       return {
         ...state,
-        [postId]: current.map((existing) => (existing.id === comment.id ? comment : existing)),
+        [postId]: updated,
       };
     });
   }
 
   onCommentDeleted(postId: number, commentId: number): void {
+    let nextLength = 0;
+    let nextComments: Comment[] | undefined;
     this.commentsMapSignal.update((state) => {
       const current = state[postId];
       if (!current) {
         return state;
       }
+      const filtered = current.filter((existing) => existing.id !== commentId);
+      nextLength = filtered.length;
+      nextComments = filtered;
       return {
         ...state,
-        [postId]: current.filter((existing) => existing.id !== commentId),
+        [postId]: filtered,
       };
     });
     this.commentsCount.update((state) => ({
       ...state,
-      [postId]: Math.max(0, (state[postId] ?? this.commentsMapSignal()[postId]?.length ?? 1) - 1),
+      [postId]: nextLength,
     }));
+    this.commentsCache.setComments(postId, nextComments ?? []);
   }
 
   trackPostId(_idx: number, post: Post): number {
@@ -226,20 +246,18 @@ export class UserDetail {
 
   private createPostsSignal(): Signal<Post[]> {
     return toSignal(
-      this.postsApi
-        .list({ user_id: this.userId!, per_page: this.postsFetchLimit })
-        .pipe(
-          map((result) => result?.items ?? []),
-          tap(() => {
-            this.postsLoading.set(false);
-          }),
-          catchError((err) => {
-            console.error('Failed to load posts for user:', err);
-            this.notifications.showHttpError(err, 'Unable to load user posts');
-            this.postsLoading.set(false);
-            return of<Post[]>([]);
-          }),
-        ),
+      this.postsApi.list({ userId: this.userId!, perPage: this.postsFetchLimit }).pipe(
+        map((result) => result?.items ?? []),
+        tap(() => {
+          this.postsLoading.set(false);
+        }),
+        catchError((err) => {
+          console.error('Failed to load posts for user:', err);
+          this.notifications.showHttpError(err, 'Unable to load user posts');
+          this.postsLoading.set(false);
+          return of<Post[]>([]);
+        }),
+      ),
       { initialValue: [] },
     );
   }

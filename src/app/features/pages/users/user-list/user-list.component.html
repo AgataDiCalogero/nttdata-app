@@ -42,7 +42,13 @@
       </mat-card-content>
 
       <mat-card-actions align="end">
-        <button appButton variant="ghost" type="button" (click)="onView(user, $event)">
+        <button
+          appButton
+          variant="ghost"
+          type="button"
+          [routerLink]="['/users', user.id]"
+          aria-label="View user details"
+        >
           <mat-icon svgIcon="lucide:eye" aria-hidden="true"></mat-icon>
           <span>View</span>
         </button>

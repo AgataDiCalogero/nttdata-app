@@ -16,7 +16,7 @@
 
     @if (loading()) {
       <app-loader [text]="'Loading comments...'"></app-loader>
-    } @else if ((comments()?.length ?? 0) === 0 && hideComposer()) {
+    } @else if (comments().length === 0 && hideComposer()) {
       <app-alert variant="info">
         <div class="post-comments-empty">
           <p>Be the first to start the conversation.</p>

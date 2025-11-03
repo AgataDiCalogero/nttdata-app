@@ -32,6 +32,7 @@ export class UsersUiService {
     ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
       this.overlays.release('user-form');
       if (result === 'success') {
+        this.notifications.showSuccess('User created');
         this.usersStore.loadUsers({ pushUrl: false });
       }
     });
@@ -56,6 +57,7 @@ export class UsersUiService {
           ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
             this.overlays.release('user-form');
             if (result === 'success') {
+              this.notifications.showSuccess('User updated');
               this.usersStore.loadUsers({ pushUrl: false });
             }
           });

@@ -13,9 +13,9 @@ import { PostCardComponent } from '../post-card/post-card.component';
 })
 export class PostsListComponent {
   readonly posts = input([] as Post[]);
-  readonly commentsMap = input({} as Record<number, Comment[] | undefined>);
-  readonly commentsCountMap = input({} as Record<number, number>);
-  readonly commentsLoading = input({} as Record<number, boolean>);
+  readonly commentsMap = input({} as Partial<Record<number, Comment[]>>);
+  readonly commentsCountMap = input({} as Partial<Record<number, number>>);
+  readonly commentsLoading = input({} as Partial<Record<number, boolean>>);
   readonly deletingId = input(null as number | null);
   readonly userLookup = input({} as Record<number, string>);
 
@@ -23,6 +23,7 @@ export class PostsListComponent {
   readonly toggleComments = output<number>();
   readonly commentCreated = output<{ postId: number; comment: Comment }>();
   readonly commentUpdated = output<{ postId: number; comment: Comment }>();
+  readonly commentDeleted = output<{ postId: number; commentId: number }>();
   readonly editPost = output<Post>();
   readonly viewAuthor = output<number>();
 
@@ -30,8 +31,13 @@ export class PostsListComponent {
     return this.deletingId() === postId;
   }
 
-  commentsFor(postId: number): Comment[] | undefined {
-    return this.commentsMap()[postId];
+  commentsFor(postId: number): Comment[] {
+    return this.commentsMap()[postId] ?? [];
+  }
+
+  commentsLoaded(postId: number): boolean {
+    const map = this.commentsMap();
+    return Object.prototype.hasOwnProperty.call(map, postId);
   }
 
   onCommentCreated(postId: number, comment: Comment): void {
@@ -44,6 +50,10 @@ export class PostsListComponent {
 
   onCommentUpdated(postId: number, comment: Comment): void {
     this.commentUpdated.emit({ postId, comment });
+  }
+
+  onCommentDeleted(postId: number, commentId: number): void {
+    this.commentDeleted.emit({ postId, commentId });
   }
 
   authorName(post: Post): string | undefined {

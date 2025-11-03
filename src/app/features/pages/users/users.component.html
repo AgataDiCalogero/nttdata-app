@@ -65,7 +65,6 @@
 
               <app-user-list
                 [items]="users()"
-                (view)="goToDetail($event)"
                 (edit)="openEditUserModal($event)"
                 (delete)="onDelete($event)"
               ></app-user-list>

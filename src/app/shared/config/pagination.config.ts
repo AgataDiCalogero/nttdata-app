@@ -14,9 +14,7 @@ export const DEFAULT_PAGINATION_CONFIG: PaginationConfig = {
 
 export const PAGINATION_CONFIG = new InjectionToken<PaginationConfig>('PAGINATION_CONFIG');
 
-export function providePaginationConfig(
-  config: Partial<PaginationConfig> = {},
-): Provider {
+export function providePaginationConfig(config: Partial<PaginationConfig> = {}): Provider {
   const perPageOptions = config.perPageOptions ?? DEFAULT_PAGINATION_CONFIG.perPageOptions;
   return {
     provide: PAGINATION_CONFIG,

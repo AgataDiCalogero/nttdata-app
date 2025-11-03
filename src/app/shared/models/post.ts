@@ -21,13 +21,13 @@ export type UpdateComment = Partial<Omit<Comment, 'id' | 'post_id'>>;
 
 export interface PostFilters {
   title: string | null;
-  user_id: number | null;
+  userId: number | null;
 }
 
 export interface QueryCriteria {
   page: number;
-  per_page: number;
+  perPage: number;
   title?: string;
-  user_id?: number;
+  userId?: number;
   reload: number;
 }

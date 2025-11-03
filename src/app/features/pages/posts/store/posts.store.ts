@@ -1,12 +1,4 @@
-import {
-  PLATFORM_ID,
-  DestroyRef,
-  Type,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, from, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
@@ -30,9 +22,9 @@ import { PostsFiltersService } from './posts-filters.service';
 interface PostsState {
   posts: Post[];
   pagination: PaginationMeta | null;
-  commentsMap: Record<number, Comment[]>;
-  commentsLoading: Record<number, boolean>;
-  commentsCountMap: Record<number, number>;
+  commentsMap: Partial<Record<number, Comment[]>>;
+  commentsLoading: Partial<Record<number, boolean>>;
+  commentsCountMap: Partial<Record<number, number>>;
   userOptions: User[];
   userLookup: Record<number, string>;
   deletingId: number | null;
@@ -71,9 +63,9 @@ export const PostsStoreAdapter = signalStore(
         const filters = filtersService.filters();
         return {
           page: store.page(),
-          per_page: store.perPage(),
+          perPage: store.perPage(),
           title: filters.title ?? undefined,
-          user_id: filters.user_id ?? undefined,
+          userId: filters.userId ?? undefined,
           reload: store.reloadToken(),
         };
       }),
@@ -226,7 +218,7 @@ export const PostsStoreAdapter = signalStore(
                 commentsMap: { ...state.commentsMap, [postId]: list },
                 commentsCountMap: {
                   ...state.commentsCountMap,
-                  [postId]: Array.isArray(comments) ? comments.length : 0,
+                  [postId]: list.length,
                 },
               }));
               commentsCache.setComments(postId, list);
@@ -258,8 +250,7 @@ export const PostsStoreAdapter = signalStore(
             },
             commentsCountMap: {
               ...state.commentsCountMap,
-              [postId]:
-                1 + (state.commentsCountMap?.[postId] ?? state.commentsMap[postId]?.length ?? 0),
+              [postId]: updated.length,
             },
           };
         });
@@ -271,9 +262,7 @@ export const PostsStoreAdapter = signalStore(
         patchState(store, (state) => {
           const current = state.commentsMap[postId];
           if (!current) return state;
-          updated = current.map((existing) =>
-            existing.id === comment.id ? comment : existing,
-          );
+          updated = current.map((existing) => (existing.id === comment.id ? comment : existing));
           return {
             commentsMap: {
               ...state.commentsMap,
@@ -281,7 +270,29 @@ export const PostsStoreAdapter = signalStore(
             },
             commentsCountMap: {
               ...state.commentsCountMap,
-              [postId]: current.length,
+              [postId]: updated.length,
+            },
+          };
+        });
+        if (updated) {
+          commentsCache.setComments(postId, updated);
+        }
+      },
+
+      onCommentDeleted(postId: number, commentId: number): void {
+        let updated: Comment[] | null = null;
+        patchState(store, (state) => {
+          const current = state.commentsMap[postId];
+          if (!current) return state;
+          updated = current.filter((existing) => existing.id !== commentId);
+          return {
+            commentsMap: {
+              ...state.commentsMap,
+              [postId]: updated,
+            },
+            commentsCountMap: {
+              ...state.commentsCountMap,
+              [postId]: updated.length,
             },
           };
         });
@@ -310,15 +321,12 @@ export const PostsStoreAdapter = signalStore(
     function initializePostsStream(): void {
       toObservable(store.queryCriteria)
         .pipe(
-          map((criteria) => {
-            const params: Record<string, unknown> = {
-              page: criteria.page,
-              per_page: criteria.per_page,
-            };
-            if (criteria.title) params.title = criteria.title;
-            if (criteria.user_id) params.user_id = criteria.user_id;
-            return params;
-          }),
+          map((criteria) => ({
+            page: criteria.page,
+            perPage: criteria.perPage,
+            title: criteria.title,
+            userId: criteria.userId,
+          })),
           switchMap((params) => {
             patchState(store, { loading: true, error: null });
             return postsApi.list(params).pipe(
@@ -378,7 +386,7 @@ export const PostsStoreAdapter = signalStore(
 
     function loadUsersForFilter(): void {
       usersApi
-        .list({ per_page: 50 }, { cache: true })
+        .list({ perPage: 50 }, { cache: true })
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe({
           next: ({ items }) => {
@@ -432,11 +440,7 @@ export const PostsStoreAdapter = signalStore(
       let previous: PostFilters | null = null;
       effect(() => {
         const filters = filtersService.filters();
-        if (
-          previous &&
-          previous.title === filters.title &&
-          previous.user_id === filters.user_id
-        ) {
+        if (previous && previous.title === filters.title && previous.userId === filters.userId) {
           return;
         }
         if (previous) {

@@ -43,6 +43,28 @@ interface LoadUsersOptions {
 const normalizePage = (value: number | undefined, fallback: number) =>
   Math.max(1, Number.isFinite(value as number) ? Math.floor(value as number) : fallback);
 
+const findNearestPerPage = (
+  value: number,
+  options: readonly number[],
+  fallback: number,
+): number => {
+  if (options.includes(value)) {
+    return value;
+  }
+  if (options.includes(fallback)) {
+    return fallback;
+  }
+  const sorted = options
+    .filter((option) => Number.isFinite(option) && option > 0)
+    .map((option) => Math.floor(option))
+    .sort((a, b) => a - b);
+  if (!sorted.length) {
+    return Math.max(1, value, fallback);
+  }
+  const candidate = sorted.find((option) => option >= value) ?? sorted[sorted.length - 1];
+  return candidate ?? fallback;
+};
+
 export const UsersStoreAdapter = signalStore(
   withState<UsersState>({
     items: [],
@@ -99,10 +121,20 @@ export const UsersStoreAdapter = signalStore(
       perPageOptions: pagination.perPageOptions,
     });
 
+    const ensurePerPage = (value: number | undefined): number => {
+      const normalized = normalizePage(value, pagination.defaultPerPage);
+      const options = store.perPageOptions();
+      return findNearestPerPage(normalized, options, pagination.defaultPerPage);
+    };
+
+    const ensurePage = (value: number | undefined): number =>
+      normalizePage(value, pagination.defaultPage);
+
     const loadUsers = (options: LoadUsersOptions = {}) => {
       const pushUrl = options.pushUrl ?? true;
-      const targetPage = normalizePage(options.page, store.page());
-      const targetPerPage = normalizePage(options.perPage, store.perPage());
+      const currentPerPage = ensurePerPage(store.perPage());
+      const targetPerPage = ensurePerPage(options.perPage ?? currentPerPage);
+      const targetPage = ensurePage(options.page ?? store.page());
       const term = (options.searchTerm ?? store.searchTerm()).trim();
 
       const token = auth.token();
@@ -123,12 +155,12 @@ export const UsersStoreAdapter = signalStore(
 
       const params: {
         page: number;
-        per_page: number;
+        perPage: number;
         name?: string;
         email?: string;
       } = {
         page: targetPage,
-        per_page: targetPerPage,
+        perPage: targetPerPage,
       };
 
       if (term) {
@@ -160,20 +192,23 @@ export const UsersStoreAdapter = signalStore(
               limit: resolvedLimit,
             };
 
+            const normalizedLimit = ensurePerPage(meta.limit);
+            const adjustedMeta: PaginationMeta = { ...meta, limit: normalizedLimit };
+
             patchState(store, {
               items: items ?? [],
-              pagination: meta,
+              pagination: adjustedMeta,
               loading: false,
-              page: meta.page,
-              perPage: meta.limit,
+              page: adjustedMeta.page,
+              perPage: normalizedLimit,
             });
 
             if (pushUrl) {
               router.navigate([], {
                 relativeTo: route,
                 queryParams: {
-                  page: meta.page,
-                  per_page: meta.limit,
+                  page: adjustedMeta.page,
+                  per_page: normalizedLimit,
                   search: term || null,
                 },
                 queryParamsHandling: 'merge',
@@ -181,8 +216,13 @@ export const UsersStoreAdapter = signalStore(
               });
             }
 
-            if (!items.length && meta.total > 0 && meta.page > meta.pages) {
-              loadUsers({ page: meta.pages, perPage: meta.limit, searchTerm: term, pushUrl });
+            if (!items.length && adjustedMeta.total > 0 && adjustedMeta.page > adjustedMeta.pages) {
+              loadUsers({
+                page: adjustedMeta.pages,
+                perPage: normalizedLimit,
+                searchTerm: term,
+                pushUrl,
+              });
             }
           },
           error: (err) => {
@@ -197,11 +237,8 @@ export const UsersStoreAdapter = signalStore(
 
     const setupInitialState = () => {
       const qp = route.snapshot.queryParamMap;
-      const initialPage = normalizePage(Number(qp.get('page')), pagination.defaultPage);
-      const initialPerPage = normalizePage(
-        Number(qp.get('per_page')),
-        pagination.defaultPerPage,
-      );
+      const initialPage = ensurePage(Number(qp.get('page')));
+      const initialPerPage = ensurePerPage(Number(qp.get('per_page')));
       const initialSearch = (qp.get('search') ?? '').trim();
 
       patchState(store, {
@@ -256,10 +293,11 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const onSearch = (value: string) => {
+      const sanitizedTerm = typeof value === 'string' ? value : '';
       loadUsers({
         page: pagination.defaultPage,
         perPage: store.perPage(),
-        searchTerm: value ?? '',
+        searchTerm: sanitizedTerm,
         pushUrl: true,
       });
     };
@@ -276,11 +314,13 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const setPage = (page: number) => {
-      loadUsers({ page, perPage: store.perPage(), pushUrl: true });
+      const nextPage = ensurePage(page);
+      loadUsers({ page: nextPage, perPage: store.perPage(), pushUrl: true });
     };
 
     const setPerPage = (perPage: number) => {
-      loadUsers({ page: pagination.defaultPage, perPage, pushUrl: true });
+      const nextPerPage = ensurePerPage(perPage);
+      loadUsers({ page: pagination.defaultPage, perPage: nextPerPage, pushUrl: true });
     };
 
     const setDeleting = (userId: number | null) => {

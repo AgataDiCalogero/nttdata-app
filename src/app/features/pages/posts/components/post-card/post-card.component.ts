@@ -33,9 +33,10 @@ export class PostCardComponent implements AfterViewChecked {
 
   readonly post = input.required<Post>();
   readonly isDeleting = input(false);
-  readonly comments = input<ModelComment[] | null | undefined>(undefined);
+  readonly comments = input<ModelComment[]>([]);
   readonly commentsLoading = input(false);
   readonly authorName = input<string | null>(null);
+  readonly commentsLoaded = input(false);
   // Optional pre-fetched count to show in preview (before comments are loaded)
   readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
@@ -54,8 +55,7 @@ export class PostCardComponent implements AfterViewChecked {
   get commentCount(): number {
     const preview = this.commentsPreviewCount();
     if (typeof preview === 'number' && preview >= 0) return preview;
-    const list = this.comments();
-    return Array.isArray(list) ? list.length : 0;
+    return this.comments().length;
   }
 
   isExpanded = false;
@@ -118,7 +118,7 @@ export class PostCardComponent implements AfterViewChecked {
     this.openSection = 'composer';
 
     const current = this.post();
-    if (current && !this.comments()) {
+    if (current && !this.commentsLoaded() && !this.commentsLoading()) {
       this.pendingCommentsReveal = true;
       this.toggleComments.emit();
     }
