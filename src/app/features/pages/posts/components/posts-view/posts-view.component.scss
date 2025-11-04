@@ -33,3 +33,10 @@
 }
 
 /* Rely on shared .app-pagination margin */
+
+.app-results-summary {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+  color: var(--color-on-surface-muted, rgba(255, 255, 255, 0.64));
+}

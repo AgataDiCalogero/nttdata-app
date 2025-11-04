@@ -139,21 +139,24 @@
   }
 
   /* Ensure nav links are always legible and have clear states */
-  .app-navbar .nav-links {
+  .nav-links {
     display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
 
     a[appButton] {
-      --_hover-bg: var(--accent-hover);
-      --_active-bg: var(--accent-hover);
-      /* Use on-surface for text so it remains readable on light active backgrounds */
+      --_hover-bg: color-mix(in srgb, var(--color-accent) 18%, transparent);
+      --_hover-fg: var(--color-on-surface);
+      --_active-bg: color-mix(in srgb, var(--color-accent) 36%, transparent);
       --_active-fg: var(--color-on-surface);
+      --_active-border: color-mix(in srgb, var(--color-accent) 45%, transparent);
+      --_active-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 32%, transparent) inset;
 
       border-radius: var(--radius-lg);
       color: var(--color-on-surface);
       text-decoration: none;
       font-weight: var(--font-weight-medium);
+      border: 1px solid transparent;
       transition:
         background var(--duration-normal) var(--ease-in-out),
         color var(--duration-normal) var(--ease-in-out);
@@ -166,13 +169,15 @@
       &:hover,
       &:focus-visible {
         background: var(--_hover-bg);
-        color: var(--color-on-surface);
+        color: var(--_hover-fg);
         text-decoration: none;
       }
 
       &.active {
         background: var(--_active-bg);
         color: var(--_active-fg);
+        border-color: var(--_active-border);
+        box-shadow: var(--_active-shadow);
 
         mat-icon {
           color: var(--_active-fg);
@@ -191,7 +196,6 @@
   :host-context(body.login-route) {
     /* Hide navigation elements including hamburger - target the actual button to avoid !important */
     .menu-trigger,
-    .nav-links,
     button[appButton].logout-btn {
       display: none;
       visibility: hidden;
@@ -289,8 +293,8 @@
     /* active selection: pill with accent backdrop to mimic Theme options */
     background: linear-gradient(
       90deg,
-      color-mix(in srgb, var(--color-accent) 18%, transparent),
-      color-mix(in srgb, var(--color-accent) 14%, transparent)
+      color-mix(in srgb, var(--color-accent) 32%, transparent),
+      color-mix(in srgb, var(--color-accent) 24%, transparent)
     );
     color: var(--color-on-surface);
 

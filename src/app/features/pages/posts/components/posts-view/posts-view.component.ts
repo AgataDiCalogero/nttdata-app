@@ -33,6 +33,7 @@ import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsViewComponent {
+  private readonly numberFormatter = new Intl.NumberFormat('en-US');
   readonly searchForm = input.required<PostsFiltersFormGroup>();
   readonly userOptions = input.required<User[]>();
   readonly loading = input.required<boolean>();
@@ -47,8 +48,23 @@ export class PostsViewComponent {
   readonly currentPerPage = input.required<number>();
   readonly hasPagination = input.required<boolean>();
   readonly deletingId = input<number | null>(null);
-  readonly postsCount = input.required<number>();
+  readonly totalPosts = input.required<number>();
   readonly userLookup = input.required<Record<number, string>>();
+  readonly resultsSummary = computed(() => {
+    if (this.loading()) {
+      return 'Loading posts...';
+    }
+    const visible = this.posts().length;
+    const total = this.totalPosts();
+    if (!total) {
+      return 'No posts found';
+    }
+    if (visible === total) {
+      const noun = total === 1 ? 'post' : 'posts';
+      return `${this.numberFormatter.format(total)} ${noun}`;
+    }
+    return `Showing ${this.numberFormatter.format(visible)} of ${this.numberFormatter.format(total)} posts`;
+  });
 
   readonly createPost = output<void>();
   readonly resetFilters = output<void>();

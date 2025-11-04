@@ -52,9 +52,9 @@ export class Navbar implements OnInit {
 
   @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
 
-  readonly isLoginRoute = signal(this.router.url.startsWith('/login'));
+  readonly currentUrl = signal(this.router.url || '/');
+  readonly isLoginRoute = computed(() => this.currentUrl().startsWith('/login'));
   readonly isMobile = signal(false);
-  readonly routerLinkExact = { exact: true } as const;
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
   readonly Menu = Menu;
@@ -73,11 +73,20 @@ export class Navbar implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((event) => {
-        const isLogin = event.urlAfterRedirects.startsWith('/login');
-        this.isLoginRoute.set(isLogin);
-        this.syncBodyClass(isLogin);
+        this.currentUrl.set(event.urlAfterRedirects || '/');
+        this.syncBodyClass(this.isLoginRoute());
         this.closeMenu();
       });
+  }
+
+  isRouteActive(path: string): boolean {
+    const current = this.currentUrl();
+    if (path === '/') return current === '/' || current === '';
+    return current === path || current.startsWith(`${path}/`) || current.startsWith(`${path}?`);
+  }
+
+  ariaCurrent(path: string): 'page' | null {
+    return this.isRouteActive(path) ? 'page' : null;
   }
 
   logout(): void {

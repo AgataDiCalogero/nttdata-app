@@ -20,6 +20,12 @@
   flex-direction: column;
   gap: 2rem;
   width: 100%;
+
+  .app-results-summary {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--color-on-surface-muted, rgba(255, 255, 255, 0.64));
+  }
 }
 
 .users-loader {

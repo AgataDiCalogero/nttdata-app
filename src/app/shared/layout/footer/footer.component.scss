@@ -46,24 +46,8 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.app-footer__author-link {
-  color: var(--color-accent);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-}
-
-.app-footer__author-link:hover,
-.app-footer__author-link:focus-visible {
-  text-decoration: underline;
-}
-
 @media (max-width: 40rem) {
   .app-footer__inner {
     flex-direction: column;
-  }
-
-  .app-footer__link {
-    width: 100%;
-    justify-content: center;
   }
 }

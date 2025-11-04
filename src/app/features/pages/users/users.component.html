@@ -28,6 +28,10 @@
         (perPageChange)="onPerPageChange($event)"
       ></app-user-filters>
 
+      <div class="app-results-summary" aria-live="polite">
+        {{ usersSummary() }}
+      </div>
+
       @if (loading()) {
         <div class="users-loader" aria-live="polite">
           <mat-progress-spinner
@@ -59,10 +63,6 @@
         } @else {
           @if (users().length > 0) {
             <div class="users-list-wrapper">
-              <div class="users-list-wrapper__meta" aria-live="polite">
-                Showing {{ users().length }} of {{ totalUsers() }} users
-              </div>
-
               <app-user-list
                 [items]="users()"
                 (edit)="openEditUserModal($event)"

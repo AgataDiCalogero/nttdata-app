@@ -12,33 +12,31 @@
   </a>
 
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
-    @if (!isLoginRoute() && !isMobile()) {
-      @if (!isLogged()) {
-        <a appButton variant="ghost" routerLink="/login" (click)="closeMenu()">Login</a>
-      }
-
-      @if (isLogged()) {
-        <a
-          appButton
-          variant="ghost"
-          routerLink="/users"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-          <span>Users</span>
-        </a>
-        <a
-          appButton
-          variant="ghost"
-          routerLink="/posts"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-          <span>Posts</span>
-        </a>
-      }
+    @if (!isLoginRoute() && !isMobile() && isLogged()) {
+      <a
+        appButton
+        variant="ghost"
+        routerLink="/users"
+        routerLinkActive="active"
+        [class.active]="isRouteActive('/users')"
+        [attr.aria-current]="ariaCurrent('/users')"
+        (click)="closeMenu()"
+      >
+        <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+        <span>Users</span>
+      </a>
+      <a
+        appButton
+        variant="ghost"
+        routerLink="/posts"
+        routerLinkActive="active"
+        [class.active]="isRouteActive('/posts')"
+        [attr.aria-current]="ariaCurrent('/posts')"
+        (click)="closeMenu()"
+      >
+        <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+        <span>Posts</span>
+      </a>
     }
   </nav>
 
@@ -83,19 +81,26 @@
   [yPosition]="isMobile() ? 'above' : 'below'"
   [overlapTrigger]="false"
 >
-  @if (!isLoginRoute()) {
-    @if (!isLogged()) {
-      <button mat-menu-item routerLink="/login" (click)="closeMenu()">Login</button>
-    }
-    @if (isLogged()) {
-      <button mat-menu-item routerLink="/users" routerLinkActive="active" (click)="closeMenu()">
-        <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-        <span>Users</span>
-      </button>
-      <button mat-menu-item routerLink="/posts" routerLinkActive="active" (click)="closeMenu()">
-        <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-        <span>Posts</span>
-      </button>
-    }
+  @if (!isLoginRoute() && isLogged()) {
+    <button
+      mat-menu-item
+      routerLink="/users"
+      routerLinkActive="active"
+      [class.active]="isRouteActive('/users')"
+      (click)="closeMenu()"
+    >
+      <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+      <span>Users</span>
+    </button>
+    <button
+      mat-menu-item
+      routerLink="/posts"
+      routerLinkActive="active"
+      [class.active]="isRouteActive('/posts')"
+      (click)="closeMenu()"
+    >
+      <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+      <span>Posts</span>
+    </button>
   }
 </mat-menu>

@@ -22,7 +22,7 @@ export interface PostsService {
   totalPages: Signal<number>;
   currentPerPage: Signal<number>;
   hasPagination: Signal<boolean>;
-  postsCount: Signal<number>;
+  totalPosts: Signal<number>;
 
   initializePaging(page: number, perPage: number): void;
   setPage(page: number): void;

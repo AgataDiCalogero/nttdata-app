@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,6 +38,7 @@ export class Users {
   public readonly usersService = injectUsersService();
   private readonly usersUi = inject(UsersUiService);
   private readonly router = inject(Router);
+  private readonly numberFormatter = new Intl.NumberFormat('en-US');
 
   readonly loading = this.usersService.loading;
   readonly error = this.usersService.error;
@@ -47,6 +48,23 @@ export class Users {
   readonly page = this.usersService.page;
   readonly perPage = this.usersService.perPage;
   readonly perPageOptions = this.usersService.perPageOptions;
+  readonly visibleUsersCount = computed(() => this.users().length);
+  readonly totalUsersCount = computed(() => this.pagination()?.total ?? this.visibleUsersCount());
+  readonly usersSummary = computed(() => {
+    if (this.loading()) {
+      return 'Loading users...';
+    }
+    const visible = this.visibleUsersCount();
+    const total = this.totalUsersCount();
+    if (total === 0) {
+      return 'No users found';
+    }
+    const noun = total === 1 ? 'user' : 'users';
+    if (visible === total) {
+      return `${this.numberFormatter.format(total)} ${noun}`;
+    }
+    return `Showing ${this.numberFormatter.format(visible)} of ${this.numberFormatter.format(total)} users`;
+  });
 
   perPageOptionsMutable(): number[] {
     return [...this.perPageOptions()];
@@ -125,9 +143,5 @@ export class Users {
 
   clearError(): void {
     this.usersService.loadUsers();
-  }
-
-  totalUsers(): number {
-    return this.pagination()?.total ?? this.users().length;
   }
 }

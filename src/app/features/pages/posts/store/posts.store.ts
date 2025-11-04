@@ -76,7 +76,7 @@ export const PostsStoreAdapter = signalStore(
       currentPage: computed(() => store.pagination()?.page ?? store.page()),
       totalPages: computed(() => store.pagination()?.pages ?? 1),
       currentPerPage: computed(() => store.pagination()?.limit ?? store.perPage()),
-      postsCount: computed(() => store.posts().length),
+      totalPosts: computed(() => store.pagination()?.total ?? store.posts().length),
     };
   }),
 

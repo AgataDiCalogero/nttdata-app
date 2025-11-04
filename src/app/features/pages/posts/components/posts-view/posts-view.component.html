@@ -3,7 +3,7 @@
     <header class="posts-page__header app-page__header">
       <div class="app-page__heading">
         <h1 class="app-page__title">Posts</h1>
-        <p class="app-page__meta">{{ postsCount() }} posts</p>
+        <p class="app-page__meta">{{ totalPosts() }} total posts</p>
       </div>
       <button
         appButton
@@ -25,6 +25,10 @@
       (perPageChange)="changePerPage.emit($event)"
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
+
+    <div class="app-results-summary" aria-live="polite">
+      {{ resultsSummary() }}
+    </div>
 
     <!-- server errors are surfaced via global ToastService -->
 
