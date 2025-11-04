@@ -58,4 +58,11 @@
   &--compact {
     padding: var(--space-xs) var(--space-sm);
   }
+
+  /* Handle select dropdown overflow in modals */
+  &--in-modal {
+    /* For modals, we need to ensure the dropdown doesn't overflow */
+    /* Since native select dropdowns can't be contained, we'll use a different approach */
+    /* This class can be used for future custom dropdown implementation */
+  }
 }

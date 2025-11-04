@@ -20,6 +20,7 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
+import { LucideAngularModule, Menu } from 'lucide-angular';
 
 @Component({
   selector: 'app-navbar',
@@ -31,6 +32,7 @@ import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service'
     ButtonComponent,
     MatIconModule,
     MatMenuModule,
+    LucideAngularModule,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
@@ -55,6 +57,7 @@ export class Navbar implements OnInit {
   readonly routerLinkExact = { exact: true } as const;
   readonly isLogged = computed(() => this.auth.token() !== null);
   readonly menuOpen = signal(false);
+  readonly Menu = Menu;
 
   ngOnInit(): void {
     this.breakpointObserver

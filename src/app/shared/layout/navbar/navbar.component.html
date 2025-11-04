@@ -1,5 +1,5 @@
 <mat-toolbar class="app-navbar" color="primary">
-  <a class="brand" routerLink="/" (click)="closeMenu()" style="text-decoration: none">
+  <a class="brand" routerLink="/" (click)="closeMenu()">
     <img
       ngSrc="assets/logo.svg"
       alt="NTT Data"
@@ -8,17 +8,7 @@
       height="40"
       priority
     />
-    <span
-      class="brand__label"
-      style="
-        color: var(--color-accent);
-        font-weight: 900;
-        text-shadow:
-          0 1px 0 rgba(255, 255, 255, 0.25),
-          0 8px 22px rgba(249, 115, 22, 0.25);
-      "
-      >NTT Data App</span
-    >
+    <span class="brand__label">NTT Data App</span>
   </a>
 
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
@@ -33,7 +23,6 @@
           variant="ghost"
           routerLink="/users"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
           (click)="closeMenu()"
         >
           <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
@@ -44,7 +33,6 @@
           variant="ghost"
           routerLink="/posts"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
           (click)="closeMenu()"
         >
           <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
@@ -85,7 +73,7 @@
     (menuOpened)="onMenuOpened()"
     (menuClosed)="onMenuClosed()"
   >
-    <mat-icon svgIcon="lucide:menu" aria-hidden="true"></mat-icon>
+    <lucide-icon [img]="Menu" aria-hidden="true"></lucide-icon>
   </button>
 }
 
@@ -100,23 +88,11 @@
       <button mat-menu-item routerLink="/login" (click)="closeMenu()">Login</button>
     }
     @if (isLogged()) {
-      <button
-        mat-menu-item
-        routerLink="/users"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="routerLinkExact"
-        (click)="closeMenu()"
-      >
+      <button mat-menu-item routerLink="/users" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
         <span>Users</span>
       </button>
-      <button
-        mat-menu-item
-        routerLink="/posts"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="routerLinkExact"
-        (click)="closeMenu()"
-      >
+      <button mat-menu-item routerLink="/posts" routerLinkActive="active" (click)="closeMenu()">
         <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
         <span>Posts</span>
       </button>

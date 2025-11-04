@@ -6,6 +6,8 @@ import {
   output,
   inject,
   computed,
+  HostBinding,
+  ElementRef,
 } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { IdService } from '@app/shared/services/id/id.service';
@@ -44,10 +46,23 @@ export class SelectComponent {
   readonly selectionChange = output<string>();
 
   private readonly idService = inject(IdService);
+  private readonly elementRef = inject(ElementRef);
   // fallback id generated once per component instance
   protected readonly _fallbackId = this.idService.next('select');
 
   protected readonly resolvedId = computed(() => (this.id() ? this.id() : this._fallbackId));
+
+  @HostBinding('class.select--in-modal')
+  get isInModal(): boolean {
+    let element = this.elementRef.nativeElement as HTMLElement;
+    while (element && element !== document.body) {
+      if (element.classList.contains('cdk-overlay-pane')) {
+        return true;
+      }
+      element = element.parentElement!;
+    }
+    return false;
+  }
 
   constructor() {
     effect(() => {

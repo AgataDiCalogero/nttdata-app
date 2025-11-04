@@ -102,7 +102,9 @@ export class PostCardComponent implements AfterViewChecked {
     this.openSection = 'comments';
 
     const current = this.post();
-    if (current) this.toggleComments.emit();
+    if (current && !this.commentsLoaded()) {
+      this.toggleComments.emit();
+    }
   }
 
   openComposer(): void {

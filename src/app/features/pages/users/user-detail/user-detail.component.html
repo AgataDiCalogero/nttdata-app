@@ -64,11 +64,14 @@
         @if (postsLoading()) {
           <app-loader [text]="'Loading posts...'" class="user-posts__loader"></app-loader>
         } @else if (posts().length === 0) {
-          <app-alert variant="info">
-            <div class="user-posts-empty">
-              <p>No posts published yet.</p>
-            </div>
-          </app-alert>
+          <div class="user-posts-empty">
+            <lucide-icon
+              [img]="MessageSquare"
+              [size]="64"
+              class="user-posts-empty__icon"
+            ></lucide-icon>
+            <p class="user-posts-empty__text">No posts published yet.</p>
+          </div>
         } @else {
           <div class="user-posts__grid">
             @for (post of posts(); track trackPostId($index, post)) {

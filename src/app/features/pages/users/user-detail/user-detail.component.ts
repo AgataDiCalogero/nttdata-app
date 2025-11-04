@@ -30,6 +30,7 @@ import {
   User as UserIcon,
   MessageSquare,
   ArrowLeft,
+  FileText,
 } from 'lucide-angular';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import {
@@ -71,6 +72,7 @@ export class UserDetail {
   readonly UserIcon = UserIcon;
   readonly MessageSquare = MessageSquare;
   readonly ArrowLeft = ArrowLeft;
+  readonly FileText = FileText;
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);

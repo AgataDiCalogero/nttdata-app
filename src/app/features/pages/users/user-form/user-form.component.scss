@@ -29,7 +29,12 @@
   display: block;
 }
 
-/* Avoid visual overflow from focus rings within the dialog */
+/* Allow select dropdowns to be visible while keeping other overflow hidden */
 :host ::ng-deep .form-dialog {
+  overflow: visible;
+}
+
+/* But ensure the dialog content itself doesn't overflow */
+:host ::ng-deep .form-dialog__body {
   overflow: hidden;
 }

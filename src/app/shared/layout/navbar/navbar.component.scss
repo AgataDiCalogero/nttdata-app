@@ -6,9 +6,9 @@
 }
 
 .app-navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: var(--z-sticky);
+  z-index: 9999;
   width: 100%;
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -146,7 +146,7 @@
 
     a[appButton] {
       --_hover-bg: var(--accent-hover);
-      --_active-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
+      --_active-bg: var(--accent-hover);
       /* Use on-surface for text so it remains readable on light active backgrounds */
       --_active-fg: var(--color-on-surface);
 
