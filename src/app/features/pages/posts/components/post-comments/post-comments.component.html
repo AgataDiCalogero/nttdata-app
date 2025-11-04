@@ -41,23 +41,23 @@
                     variant="ghost"
                     size="sm"
                     type="button"
+                    [iconOnly]="true"
                     (click)="startEdit(comment)"
                     aria-label="Edit comment from {{ comment.name }}"
                   >
                     <lucide-icon [img]="Pencil"></lucide-icon>
-                    Edit
                   </button>
                   <button
                     appButton
                     variant="ghost"
                     size="sm"
                     type="button"
+                    [iconOnly]="true"
                     (click)="deleteComment(comment)"
                     [disabled]="deletingId() === comment.id"
                     aria-label="Delete comment from {{ comment.name }}"
                   >
                     <lucide-icon [img]="Trash2"></lucide-icon>
-                    Delete
                   </button>
                 } @else {
                   <button
@@ -65,11 +65,11 @@
                     variant="ghost"
                     size="sm"
                     type="button"
+                    [iconOnly]="true"
                     (click)="cancelEdit()"
                     aria-label="Cancel editing comment from {{ comment.name }}"
                   >
                     <lucide-icon [img]="X"></lucide-icon>
-                    Cancel
                   </button>
                 }
               </div>

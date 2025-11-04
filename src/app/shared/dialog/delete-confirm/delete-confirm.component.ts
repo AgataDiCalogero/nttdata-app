@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ButtonComponent } from '@/app/shared/ui/button/button.component';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
-import { DeleteConfirmData } from '../../models';
+import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import { firstValueFrom, isObservable } from 'rxjs';
 
 @Component({

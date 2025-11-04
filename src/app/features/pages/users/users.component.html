@@ -67,6 +67,7 @@
                 [items]="users()"
                 (edit)="openEditUserModal($event)"
                 (delete)="onDelete($event)"
+                (statusChange)="onStatusChange($event)"
               ></app-user-list>
 
               <app-pagination

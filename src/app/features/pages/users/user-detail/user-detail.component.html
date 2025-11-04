@@ -35,15 +35,9 @@
             <app-status-badge
               [status]="detail.status"
               [ariaLabel]="detail.status === 'active' ? 'Active user' : 'Inactive user'"
+              [clickable]="true"
+              (statusChange)="onStatusChange($event)"
             ></app-status-badge>
-            <mat-slide-toggle
-              class="user-detail-card__toggle"
-              [checked]="detail.status === 'active'"
-              (change)="onToggleStatus($event.checked)"
-              aria-label="Toggle active status"
-            >
-              {{ detail.status === 'active' ? 'Active' : 'Inactive' }}
-            </mat-slide-toggle>
           </div>
         </mat-card-header>
         <mat-card-content>
@@ -80,8 +74,6 @@
             @for (post of posts(); track trackPostId($index, post)) {
               <app-post-card
                 [post]="post"
-                [interactive]="true"
-                padding="spacious"
                 [allowManage]="false"
                 [comments]="commentsFor(post.id)"
                 [commentsLoaded]="commentsLoaded(post.id)"

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   effect,
   inject,
   signal,
@@ -10,6 +11,7 @@ import {
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, firstValueFrom, map, of, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { User } from '@/app/shared/models/user';
 import type { Post, Comment } from '@/app/shared/models/post';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
@@ -17,7 +19,7 @@ import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
@@ -47,7 +49,6 @@ import {
     LoaderComponent,
     PostCardComponent,
     LucideAngularModule,
-    MatSlideToggleModule,
     MatCardModule,
     StatusBadgeComponent,
   ],
@@ -61,6 +62,7 @@ export class UserDetail {
   private readonly postsApi = inject(PostsApiService);
   private readonly commentsCache = inject(CommentsCacheService);
   private readonly notifications = inject(NotificationsService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly pagination =
     inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
     DEFAULT_PAGINATION_CONFIG;
@@ -214,9 +216,33 @@ export class UserDetail {
     return post.id;
   }
 
-  onToggleStatus(checked: boolean): void {
-    const nextStatus = checked ? 'active' : 'inactive';
-    this.user.update((current) => (current ? { ...current, status: nextStatus } : current));
+  onStatusChange(status: 'active' | 'inactive'): void {
+    const currentUser = this.user();
+    if (!currentUser || !this.userId) {
+      return;
+    }
+
+    // Optimistically update the UI
+    this.user.update((current) => (current ? { ...current, status } : current));
+
+    // Make the API call
+    this.usersApi
+      .update(this.userId, { status })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (updatedUser: User) => {
+          // Update with the server response
+          this.user.set(updatedUser);
+        },
+        error: (err) => {
+          console.error('Failed to update user status:', err);
+          this.notifications.showHttpError(err, 'Unable to update user status');
+          // Revert the optimistic update
+          this.user.update((current) =>
+            current ? { ...current, status: currentUser.status } : current,
+          );
+        },
+      });
   }
 
   private resolveUserId(): number | null {

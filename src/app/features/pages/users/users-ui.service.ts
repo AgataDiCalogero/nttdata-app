@@ -6,7 +6,10 @@ import type { User } from '@/app/shared/models/user';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import {
+  UiOverlayService,
+  type OverlayKey,
+} from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { injectUsersService } from './store/users.inject';
 import { UserForm } from './user-form/user-form.component';
@@ -115,7 +118,7 @@ export class UsersUiService {
     });
   }
 
-  private activateOverlay(key: string, ref: { close(): void }): void {
+  private activateOverlay(key: OverlayKey, ref: { close(): void }): void {
     this.overlays.activate({
       key,
       close: () => ref.close(),

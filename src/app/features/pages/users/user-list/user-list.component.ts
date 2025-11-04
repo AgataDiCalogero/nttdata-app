@@ -32,6 +32,7 @@ export class UserListComponent {
 
   readonly edit = output<number>();
   readonly delete = output<User>();
+  readonly statusChange = output<{ user: User; status: 'active' | 'inactive' }>();
 
   trackById(_index: number, item: User): number {
     return item.id;
@@ -53,6 +54,10 @@ export class UserListComponent {
   onDelete(user: User, event?: Event): void {
     event?.stopPropagation();
     this.delete.emit(user);
+  }
+
+  onStatusChange(user: User, status: 'active' | 'inactive'): void {
+    this.statusChange.emit({ user, status });
   }
 
   initials(user?: User): string {

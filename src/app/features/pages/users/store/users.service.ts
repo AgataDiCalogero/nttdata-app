@@ -27,4 +27,5 @@ export interface UsersService {
   setPage(page: number): void;
   setPerPage(perPage: number): void;
   setDeleting(userId: number | null): void;
+  updateStatus(userId: number, status: 'active' | 'inactive'): void;
 }

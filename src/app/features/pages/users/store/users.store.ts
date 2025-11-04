@@ -2,7 +2,7 @@ import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID } from '@angula
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
-import type { User } from '@/app/shared/models/user';
+import type { User, UserStatus } from '@/app/shared/models/user';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { SortField, UsersService } from './users.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
@@ -323,6 +323,55 @@ export const UsersStoreAdapter = signalStore(
       loadUsers({ page: pagination.defaultPage, perPage: nextPerPage, pushUrl: true });
     };
 
+    const updateStatus = (userId: number, status: 'active' | 'inactive') => {
+      const currentItems = store.items();
+      const userIndex = currentItems.findIndex((u) => u.id === userId);
+      if (userIndex === -1) {
+        return;
+      }
+
+      // Optimistically update the UI
+      const updatedUser = { ...currentItems[userIndex], status };
+      const updatedItems = [...currentItems];
+      updatedItems[userIndex] = updatedUser;
+
+      patchState(store, { items: updatedItems });
+
+      // Make the API call
+      usersApi
+        .update(userId, { status })
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe({
+          next: (updatedUser) => {
+            // Update with the server response
+            const currentItems = store.items();
+            const userIndex = currentItems.findIndex((u) => u.id === userId);
+            if (userIndex !== -1) {
+              const finalItems = [...currentItems];
+              finalItems[userIndex] = updatedUser;
+              patchState(store, { items: finalItems });
+            }
+          },
+          error: (err) => {
+            console.error('Failed to update user status:', err);
+            // Revert the optimistic update
+            const currentItems = store.items();
+            const userIndex = currentItems.findIndex((u) => u.id === userId);
+            if (userIndex !== -1) {
+              const originalStatus: UserStatus =
+                currentItems[userIndex].status === 'active' ? 'inactive' : 'active';
+              const originalUser: User = {
+                ...currentItems[userIndex],
+                status: originalStatus,
+              };
+              const revertedItems = [...currentItems];
+              revertedItems[userIndex] = originalUser;
+              patchState(store, { items: revertedItems });
+            }
+          },
+        });
+    };
+
     const setDeleting = (userId: number | null) => {
       patchState(store, { deletingId: userId });
     };
@@ -336,6 +385,7 @@ export const UsersStoreAdapter = signalStore(
       setPage,
       setPerPage,
       setDeleting,
+      updateStatus,
     };
   }),
 ) satisfies Type<UsersService>;

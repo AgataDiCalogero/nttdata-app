@@ -119,6 +119,10 @@ export class Users {
     this.usersUi.confirmDelete(user);
   }
 
+  onStatusChange({ user, status }: { user: User; status: 'active' | 'inactive' }): void {
+    this.usersService.updateStatus(user.id, status);
+  }
+
   clearError(): void {
     this.usersService.loadUsers();
   }

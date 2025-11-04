@@ -1,7 +1,7 @@
 .posts-list {
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  grid-template-columns: 1fr;
   padding: 0;
   margin: 0;
   list-style: none;

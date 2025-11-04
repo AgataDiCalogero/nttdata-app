@@ -24,8 +24,9 @@
 
   mat-card-header {
     display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
   }
 
   &__avatar {
@@ -76,14 +77,8 @@
 
   &__status {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.5rem;
-    min-width: fit-content;
-  }
-
-  &__toggle {
-    font-size: 0.85rem;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   &__meta {
@@ -103,15 +98,12 @@
   @media (max-width: 48rem) {
     mat-card-header {
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
       gap: 1rem;
     }
 
     &__status {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
+      justify-content: center;
     }
   }
 }
@@ -130,12 +122,6 @@
   &__grid {
     display: grid;
     gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  }
-
-  @media (max-width: 60rem) {
-    &__grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
+    grid-template-columns: 1fr;
   }
 }

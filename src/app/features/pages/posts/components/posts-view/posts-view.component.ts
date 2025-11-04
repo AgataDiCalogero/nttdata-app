@@ -39,7 +39,7 @@ export class PostsViewComponent {
   readonly error = input<string | null>(null);
   readonly posts = input.required<Post[]>();
   readonly commentsMap = input.required<Partial<Record<number, Comment[]>>>();
-  readonly commentsLoading = input.required<Record<number, boolean>>();
+  readonly commentsLoading = input.required<Partial<Record<number, boolean>>>();
   readonly commentsCountMap = input.required<Partial<Record<number, number>>>();
   readonly perPageOptions = input.required<number[]>();
   readonly currentPage = input.required<number>();

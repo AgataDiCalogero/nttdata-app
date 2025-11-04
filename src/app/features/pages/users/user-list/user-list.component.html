@@ -12,6 +12,8 @@
           <app-status-badge
             [status]="user.status"
             [ariaLabel]="user.status === 'active' ? 'Active user' : 'Inactive user'"
+            [clickable]="true"
+            (statusChange)="onStatusChange(user, $event)"
           ></app-status-badge>
           @if (isMobile()) {
             <button
