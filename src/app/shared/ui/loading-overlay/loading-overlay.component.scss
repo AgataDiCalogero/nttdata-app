@@ -1,0 +1,16 @@
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 23, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 11000;
+  padding: var(--space-md);
+}
+
+.loading-overlay mat-progress-bar {
+  width: min(22rem, 60vw);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}

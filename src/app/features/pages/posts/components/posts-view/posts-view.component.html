@@ -33,7 +33,14 @@
     <!-- server errors are surfaced via global ToastService -->
 
     @if (loading()) {
-      <app-loader class="posts-page__loader" [text]="'Loading posts...'"></app-loader>
+      <div class="app-progress posts-page__loader" role="status" aria-live="polite">
+        <mat-progress-bar
+          mode="indeterminate"
+          color="accent"
+          class="app-progress-bar"
+        ></mat-progress-bar>
+        <span class="app-progress__text">Loading posts...</span>
+      </div>
     }
 
     @if (!loading() && !error() && posts().length === 0) {

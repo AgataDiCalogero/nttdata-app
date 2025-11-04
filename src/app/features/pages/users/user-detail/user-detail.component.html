@@ -8,7 +8,14 @@
     </div>
 
     @if (loading()) {
-      <app-loader [text]="'Loading user details...'"></app-loader>
+      <div class="app-progress" role="status" aria-live="polite">
+        <mat-progress-bar
+          mode="indeterminate"
+          color="accent"
+          class="app-progress-bar"
+        ></mat-progress-bar>
+        <span class="app-progress__text">Loading user details...</span>
+      </div>
     } @else if (error()) {
       <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
         <div class="user-detail-alert-content">
@@ -62,7 +69,14 @@
         </header>
 
         @if (postsLoading()) {
-          <app-loader [text]="'Loading posts...'" class="user-posts__loader"></app-loader>
+          <div class="app-progress user-posts__loader" role="status" aria-live="polite">
+            <mat-progress-bar
+              mode="indeterminate"
+              color="accent"
+              class="app-progress-bar"
+            ></mat-progress-bar>
+            <span class="app-progress__text">Loading posts...</span>
+          </div>
         } @else if (posts().length === 0) {
           <div class="user-posts-empty">
             <lucide-icon

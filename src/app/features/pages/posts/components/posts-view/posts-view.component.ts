@@ -7,11 +7,11 @@ import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
-import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
 import { PostsListComponent } from '../posts-list/posts-list.component';
 import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-posts-view',
@@ -23,7 +23,7 @@ import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
     ButtonComponent,
     PaginationComponent,
     MatIconModule,
-    LoaderComponent,
+    MatProgressBarModule,
     AlertComponent,
     PostsFiltersComponent,
     PostsListComponent,

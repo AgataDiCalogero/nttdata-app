@@ -5,16 +5,17 @@
   width: 100%;
 
   &__composer {
-    border: 1px solid var(--mat-sys-outline-variant, rgba(121, 116, 126, 0.36));
-    border-radius: 0.75rem;
-    padding: 1rem;
-    background: var(--mat-sys-surface, #fffbfe);
+    border: 1px solid color-mix(in srgb, var(--mat-field-border) 120%, transparent);
+    border-radius: var(--radius-card);
+    padding: 1.25rem;
+    background: color-mix(in srgb, var(--color-surface-solid) 78%, transparent);
+    box-shadow: var(--shadow-lg);
   }
 
   &__divider {
     width: 100%;
     height: 1px;
-    background: var(--mat-sys-outline-variant, rgba(121, 116, 126, 0.36));
+    background: color-mix(in srgb, var(--mat-field-border) 140%, transparent);
   }
 
   &__inner {
@@ -38,10 +39,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
-    background: var(--mat-sys-surface-container, #f3edf7);
-    border: 1px solid var(--mat-sys-outline-variant, rgba(121, 116, 126, 0.36));
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface-solid) 65%, transparent);
+    border: 1px solid color-mix(in srgb, var(--mat-field-border) 150%, transparent);
+    box-shadow: var(--shadow-md);
   }
 
   &__item-header {
@@ -56,12 +58,17 @@
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 50%;
-    background: var(--mat-sys-primary-container, #eaddff);
-    color: var(--mat-sys-on-primary-container, #21005d);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-accent) 65%, transparent),
+      color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
+    );
+    color: var(--color-on-accent);
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25);
   }
 
   &__meta {
@@ -75,11 +82,12 @@
   &__author {
     font-weight: 600;
     word-break: break-word;
+    color: var(--color-on-surface);
   }
 
   &__email {
     font-size: 0.8125rem;
-    color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.64));
+    color: color-mix(in srgb, var(--color-on-surface) 70%, transparent);
   }
 
   &__item-actions {
@@ -110,6 +118,27 @@
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+  }
+
+  &-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem 1rem;
+    color: color-mix(in srgb, var(--color-on-surface) 82%, transparent);
+
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: inherit;
+    }
+
+    mat-icon,
+    svg {
+      color: color-mix(in srgb, var(--color-on-surface) 70%, transparent);
+      opacity: 0.8;
+    }
   }
 }
 

@@ -22,7 +22,6 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { MatCardModule } from '@angular/material/card';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
-import { LoaderComponent } from '@/app/shared/ui/loader/loader.component';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 import {
   LucideAngularModule,
@@ -38,6 +37,7 @@ import {
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-user-detail',
@@ -47,11 +47,11 @@ import {
     RouterLink,
     ButtonComponent,
     AlertComponent,
-    LoaderComponent,
     PostCardComponent,
     LucideAngularModule,
     MatCardModule,
     StatusBadgeComponent,
+    MatProgressBarModule,
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],

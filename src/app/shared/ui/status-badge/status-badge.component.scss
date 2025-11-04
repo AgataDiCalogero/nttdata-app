@@ -43,6 +43,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: inherit !important;
+}
+
+.status-badge__icon ::ng-deep svg {
+  stroke: currentColor !important;
 }
 
 .status-badge__label {

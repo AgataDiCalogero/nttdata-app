@@ -18,12 +18,12 @@ import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
-import { LoaderComponent } from '@app/shared/ui/loader/loader.component';
 import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap, take } from 'rxjs';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   standalone: true,
@@ -34,8 +34,8 @@ import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.ser
     ReactiveFormsModule,
     ButtonComponent,
     AlertComponent,
-    LoaderComponent,
     LucideAngularModule,
+    MatProgressBarModule,
   ],
   templateUrl: './post-comments.component.html',
   styleUrls: ['./post-comments.component.scss'],

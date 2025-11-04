@@ -5,15 +5,11 @@
   flex-direction: column;
   gap: var(--space-md);
 
-  background: var(--color-surface-container-low);
-  border: 0.0625rem solid var(--color-outline-variant);
-  padding: var(--space-md);
-  @include mixins.radius('lg');
-  @include mixins.shadow('xs');
-
-  @supports (background: color-mix(in srgb, var(--color-surface-container-low) 95%, transparent)) {
-    background: color-mix(in srgb, var(--color-surface-container-low) 95%, transparent);
-  }
+  background: var(--mat-card-bg);
+  border: 1px solid var(--mat-card-border);
+  padding: calc(var(--space-md) + 0.25rem);
+  @include mixins.radius('xl');
+  @include mixins.shadow('lg');
 }
 
 .comment-form__grid {
@@ -36,12 +32,24 @@
   }
 }
 
+.comment-form :is(.form-input, .form-textarea) {
+  background: color-mix(in srgb, var(--mat-field-bg) 120%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mat-field-border) 140%, transparent);
+  box-shadow: none;
+
+  &:focus-visible {
+    border-color: var(--mat-field-border-focus);
+    box-shadow: var(--shadow-focus);
+    background: color-mix(in srgb, var(--mat-field-bg-hover) 120%, transparent);
+  }
+}
+
 .comment-form__actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: calc(var(--space-sm) + 0.25rem);
-  margin-top: var(--space-sm);
+  margin-top: var(--space-md);
 
   > button {
     min-height: 2.5rem;

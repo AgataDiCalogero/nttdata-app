@@ -15,7 +15,14 @@
     <hr class="post-comments__divider" />
 
     @if (loading()) {
-      <app-loader [text]="'Loading comments...'"></app-loader>
+      <div class="app-progress" role="status" aria-live="polite">
+        <mat-progress-bar
+          mode="indeterminate"
+          color="accent"
+          class="app-progress-bar"
+        ></mat-progress-bar>
+        <span class="app-progress__text">Loading comments...</span>
+      </div>
     } @else if (comments().length === 0 && hideComposer()) {
       <app-alert variant="info">
         <div class="post-comments-empty">

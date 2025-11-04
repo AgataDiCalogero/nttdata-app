@@ -8,10 +8,11 @@ import {
   computed,
   HostBinding,
   ElementRef,
+  PLATFORM_ID,
 } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { IdService } from '@app/shared/services/id/id.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 export type SelectVariant = 'default' | 'compact';
 type SelectValue = string | number;
@@ -47,6 +48,9 @@ export class SelectComponent {
 
   private readonly idService = inject(IdService);
   private readonly elementRef = inject(ElementRef);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly documentRef = inject(DOCUMENT, { optional: true });
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   // fallback id generated once per component instance
   protected readonly _fallbackId = this.idService.next('select');
 
@@ -54,12 +58,15 @@ export class SelectComponent {
 
   @HostBinding('class.select--in-modal')
   get isInModal(): boolean {
-    let element = this.elementRef.nativeElement as HTMLElement;
-    while (element && element !== document.body) {
-      if (element.classList.contains('cdk-overlay-pane')) {
+    if (!this.isBrowser) return false;
+    const doc = this.documentRef;
+    if (!doc) return false;
+    let element: HTMLElement | null = this.elementRef.nativeElement as HTMLElement | null;
+    while (element && element !== doc.body) {
+      if (element.classList?.contains('cdk-overlay-pane')) {
         return true;
       }
-      element = element.parentElement!;
+      element = element.parentElement;
     }
     return false;
   }
