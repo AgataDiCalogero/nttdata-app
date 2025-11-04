@@ -10,28 +10,25 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="login-form">
         @let tokenError = tokenErrorMessage();
 
-        <mat-form-field
-          appearance="outline"
-          color="accent"
-          class="login-field"
-          floatLabel="always"
-          [class.login-field--invalid]="showTokenInvalidState()"
-        >
-          <mat-label>Access token</mat-label>
-          <input
-            matInput
-            type="password"
-            formControlName="token"
-            autocomplete="off"
-            placeholder="Paste your personal access token"
-            [attr.aria-invalid]="showTokenInvalidState() ? 'true' : null"
-            [attr.aria-describedby]="tokenError ? tokenErrorId : null"
-          />
-          <mat-icon matSuffix svgIcon="lucide:key" aria-hidden="true"></mat-icon>
+        <div class="login-field">
+          <label class="login-field__label" for="access-token">Access token</label>
+          <div class="login-field__control" [class.login-field__control--invalid]="showTokenInvalidState()">
+            <input
+              id="access-token"
+              class="login-field__input"
+              type="password"
+              formControlName="token"
+              autocomplete="off"
+              placeholder="Paste your personal access token"
+              [attr.aria-invalid]="showTokenInvalidState() ? 'true' : null"
+              [attr.aria-describedby]="tokenError ? tokenErrorId : null"
+            />
+            <mat-icon svgIcon="lucide:key" aria-hidden="true"></mat-icon>
+          </div>
           @if (tokenError) {
-            <mat-error [id]="tokenErrorId">{{ tokenError }}</mat-error>
+            <p class="login-field__error" [id]="tokenErrorId">{{ tokenError }}</p>
           }
-        </mat-form-field>
+        </div>
 
         <!-- Global submission messages are shown via ToastService to avoid duplicate UIs -->
 

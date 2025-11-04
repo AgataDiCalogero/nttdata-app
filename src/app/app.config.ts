@@ -8,7 +8,6 @@ import { routes } from './app.routes';
 import { apiPrefixInterceptor } from './core/interceptors/api-prefix.interceptor';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
-import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { providePaginationConfig } from './shared/config/pagination.config';
 
 export const appConfig: ApplicationConfig = {
@@ -16,12 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withEnabledBlockingInitialNavigation()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([
-        apiPrefixInterceptor,
-        authInterceptor,
-        errorInterceptor,
-        loadingInterceptor,
-      ]),
+      withInterceptors([apiPrefixInterceptor, authInterceptor, errorInterceptor]),
     ),
     importProvidersFrom(LayoutModule, MatIconModule),
     provideAnimations(),

@@ -91,15 +91,74 @@
 }
 
 .login-field {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  text-align: left;
 
-  mat-icon[matSuffix] {
-    opacity: 0.48;
+  &__label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--color-on-surface) 85%, transparent);
   }
 
-  &--invalid mat-icon[matSuffix] {
+  &__control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-input);
+    border: 1px solid color-mix(in srgb, var(--mat-field-border) 120%, transparent);
+    background: color-mix(in srgb, var(--mat-field-bg) 110%, transparent);
+    transition:
+      border-color var(--duration-normal) var(--ease-in-out),
+      box-shadow var(--duration-normal) var(--ease-in-out),
+      background var(--duration-normal) var(--ease-in-out);
+  }
+
+  &__control:hover,
+  &__control:focus-within {
+    border-color: var(--mat-field-border-focus);
+    background: color-mix(in srgb, var(--mat-field-bg-hover) 120%, transparent);
+    box-shadow: var(--shadow-focus);
+  }
+
+  &__control mat-icon {
+    opacity: 0.48;
+    color: color-mix(in srgb, var(--color-on-surface) 80%, transparent);
+  }
+
+  &__control--invalid {
+    border-color: var(--color-danger-border);
+    box-shadow: var(--shadow-focus-danger);
+  }
+
+  &__control--invalid mat-icon {
     color: var(--color-danger);
     opacity: 1;
+  }
+
+  &__input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--color-on-surface);
+    font: inherit;
+    padding: 0;
+
+    &::placeholder {
+      color: var(--mat-field-placeholder);
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__error {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-danger);
   }
 }
 
