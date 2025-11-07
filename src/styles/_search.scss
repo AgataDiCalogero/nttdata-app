@@ -8,6 +8,14 @@
   max-width: 100%;
 }
 
+.app-search label {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .app-search__icon {
   position: absolute;
   left: var(--space-md);

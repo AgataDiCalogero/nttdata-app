@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { DialogConfig, DialogRef } from '@angular/cdk/dialog';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Injectable, inject } from '@angular/core';
 
 const MOBILE_QUERY = '(max-width: 639.98px)';
 

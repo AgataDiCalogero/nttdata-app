@@ -1,16 +1,19 @@
-import { DestroyRef, Injectable, inject } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs';
-import type { Post } from '@/app/shared/models/post';
+
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+
+import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
+import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { injectPostsService } from './store/posts.inject';
+
 import { PostForm } from './components/post-form/post-form.component';
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import { injectPostsService } from './store/posts.inject';
 
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
 type PostFormDialogData = { users: User[]; post?: Post };

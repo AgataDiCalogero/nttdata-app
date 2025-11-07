@@ -7,12 +7,14 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { LucideAngularModule, Sun, Moon, BookOpenCheck, Monitor } from 'lucide-angular';
+
 import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
 import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ThemeService, type ThemePreference } from '../../services/theme/theme.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+
+import { ThemeService, type ThemePreference } from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-appearance-switcher',

@@ -25,69 +25,63 @@
     <div
       class="appearance-switcher__panel"
       id="appearance-switcher-menu"
-      role="menu"
       aria-labelledby="appearance-switcher-trigger"
     >
       <div class="appearance-switcher__section">
         <fieldset class="appearance-switcher__options" aria-label="Theme options">
           <legend class="visually-hidden">Theme options</legend>
-          <button
-            type="button"
-            class="appearance-option"
-            [class.appearance-option--active]="isLightPreference()"
-            role="menuitemradio"
-            [attr.aria-checked]="isLightPreference() ? 'true' : 'false'"
-            (click)="setPreference('light')"
-            [attr.aria-label]="
-              isLightPreference() ? 'Light theme (current)' : 'Switch to light theme'
-            "
-          >
+
+          <label class="appearance-option" [class.appearance-option--active]="isLightPreference()">
+            <input
+              type="radio"
+              name="theme-preference"
+              value="light"
+              [checked]="isLightPreference()"
+              (change)="setPreference('light')"
+              class="visually-hidden"
+            />
             <span class="appearance-option__icon">
               <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Light</span>
-          </button>
+          </label>
 
-          <button
-            type="button"
-            class="appearance-option"
-            [class.appearance-option--active]="isDarkPreference()"
-            role="menuitemradio"
-            [attr.aria-checked]="isDarkPreference() ? 'true' : 'false'"
-            (click)="setPreference('dark')"
-            [attr.aria-label]="
-              isDarkPreference() ? 'Dark theme (current)' : 'Switch to dark theme'
-            "
-          >
+          <label class="appearance-option" [class.appearance-option--active]="isDarkPreference()">
+            <input
+              type="radio"
+              name="theme-preference"
+              value="dark"
+              [checked]="isDarkPreference()"
+              (change)="setPreference('dark')"
+              class="visually-hidden"
+            />
             <span class="appearance-option__icon">
               <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Dark</span>
-          </button>
+          </label>
 
-          <button
-            type="button"
-            class="appearance-option"
-            [class.appearance-option--active]="isSystemPreference()"
-            role="menuitemradio"
-            [attr.aria-checked]="isSystemPreference() ? 'true' : 'false'"
-            (click)="setPreference('system')"
-            [attr.aria-label]="
-              isSystemPreference() ? 'System theme (current)' : 'Use system theme'
-            "
-          >
+          <label class="appearance-option" [class.appearance-option--active]="isSystemPreference()">
+            <input
+              type="radio"
+              name="theme-preference"
+              value="system"
+              [checked]="isSystemPreference()"
+              (change)="setPreference('system')"
+              class="visually-hidden"
+            />
             <span class="appearance-option__icon">
               <lucide-icon [img]="Monitor" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">System</span>
-          </button>
+          </label>
         </fieldset>
       </div>
 
       <div class="appearance-switcher__divider"></div>
 
       <div class="appearance-switcher__section">
-        <div class="appearance-option appearance-option--toggle" role="menuitem">
+        <div class="appearance-option appearance-option--toggle">
           <span class="appearance-option__icon">
             <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
           </span>
@@ -97,7 +91,6 @@
             aria-label="Reading mode"
             [checked]="isReadingMode()"
             (change)="toggleReadingMode()"
-            [attr.aria-pressed]="isReadingMode() ? 'true' : 'false'"
           ></mat-slide-toggle>
         </div>
       </div>

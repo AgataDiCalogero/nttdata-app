@@ -1,18 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LucideAngularModule, Plus } from 'lucide-angular';
-import type { Comment, Post } from '@/app/shared/models/post';
-import type { User } from '@/app/shared/models/user';
+
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
+
+import type { Comment, Post } from '@/app/shared/models/post';
+import type { User } from '@/app/shared/models/user';
+
+import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
 import { PostsListComponent } from '../posts-list/posts-list.component';
-import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 
 @Component({
   selector: 'app-posts-view',

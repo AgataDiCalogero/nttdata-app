@@ -1,3 +1,5 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { DOCUMENT, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,20 +11,21 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { DOCUMENT, NgOptimizedImage } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
-import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { filter } from 'rxjs';
-import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { LucideAngularModule, Menu } from 'lucide-angular';
-import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { filter } from 'rxjs';
+
 import { LanguageSwitcherComponent } from '@app/shared/i18n/language-switcher.component';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+
+import { AuthService } from '@/app/core/auth/auth-service/auth.service';
+
+import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 
 @Component({
   selector: 'app-navbar',

@@ -1,5 +1,6 @@
-import { Routes, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { Routes, Router } from '@angular/router';
+
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 
 export const LOGIN_ROUTES: Routes = [

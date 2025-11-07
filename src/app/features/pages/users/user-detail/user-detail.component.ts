@@ -8,21 +8,10 @@ import {
   signal,
   type Signal,
 } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, firstValueFrom, map, of, tap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import type { User } from '@/app/shared/models/user';
-import type { Post, Comment } from '@/app/shared/models/post';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
-import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-
+import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
-import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
-import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
   LucideAngularModule,
   Mail,
@@ -31,13 +20,24 @@ import {
   ArrowLeft,
   FileText,
 } from 'lucide-angular';
-import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { catchError, firstValueFrom, map, of, tap } from 'rxjs';
+
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
+
+import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import type { Post, Comment } from '@/app/shared/models/post';
+import type { User } from '@/app/shared/models/user';
+import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
+import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -125,7 +125,7 @@ export class UserDetail {
   }
 
   commentsLoaded(postId: number): boolean {
-    return Object.prototype.hasOwnProperty.call(this.commentsMapSignal(), postId);
+    return Object.hasOwn(this.commentsMapSignal(), postId);
   }
 
   commentsAreLoading(postId: number): boolean {

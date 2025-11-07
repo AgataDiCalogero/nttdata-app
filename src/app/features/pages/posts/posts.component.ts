@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PostsViewComponent } from './components/posts-view/posts-view.component';
-import { providePostsService, injectPostsService } from './store/posts.inject';
+
 import type { Post, Comment } from '@/app/shared/models/post';
-import { PostsUiService } from './posts-ui.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+
+import { PostsViewComponent } from './components/posts-view/posts-view.component';
+import { PostsUiService } from './posts-ui.service';
 import { PostsFiltersService } from './store/posts-filters.service';
+import { providePostsService, injectPostsService } from './store/posts.inject';
 
 @Component({
   selector: 'app-posts',

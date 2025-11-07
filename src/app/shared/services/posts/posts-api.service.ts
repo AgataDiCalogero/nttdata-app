@@ -1,16 +1,7 @@
-import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { map, type Observable } from 'rxjs';
-import type {
-  Post,
-  Comment,
-  CreatePost,
-  CreateComment,
-  UpdatePost,
-  UpdateComment,
-} from '@/app/shared/models/post';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
-import type { ListResponse } from '@/app/shared/models/list-response';
+
 import {
   type CommentDto,
   type CreateCommentDto,
@@ -27,6 +18,16 @@ import {
   mapUpdateCommentToDto,
   mapUpdatePostToDto,
 } from '@/app/shared/models/dto/post.dto';
+import type { ListResponse } from '@/app/shared/models/list-response';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type {
+  Post,
+  Comment,
+  CreatePost,
+  CreateComment,
+  UpdatePost,
+  UpdateComment,
+} from '@/app/shared/models/post';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {

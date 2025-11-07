@@ -7,10 +7,12 @@ import {
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError, timer, retry } from 'rxjs';
-import { AuthService } from '../auth/auth-service/auth.service';
+
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
+
 import { SKIP_GLOBAL_ERROR } from './http-context-tokens';
+import { AuthService } from '../auth/auth-service/auth.service';
 
 const MAX_RATE_LIMIT_RETRIES = 1;
 

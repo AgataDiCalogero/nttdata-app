@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { LucideAngularModule, Search } from 'lucide-angular';
+
+import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
 import { IdService } from '@app/shared/services/id/id.service';
 
 type SearchSize = 'wide' | 'compact' | 'small' | 'full';

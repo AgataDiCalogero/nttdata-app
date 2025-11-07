@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
-import type { Comment } from '@/app/shared/models/post';
+
 import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
+
+import type { Comment } from '@/app/shared/models/post';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsCacheService {
@@ -124,7 +126,11 @@ export class CommentsCacheService {
     this.countExpiry.delete(postId);
   }
 
-  private setExpiry(store: Map<number, number>, postId: number, ttl = CommentsCacheService.DEFAULT_TTL_MS) {
+  private setExpiry(
+    store: Map<number, number>,
+    postId: number,
+    ttl = CommentsCacheService.DEFAULT_TTL_MS,
+  ) {
     store.set(postId, Date.now() + ttl);
   }
 

@@ -1,8 +1,10 @@
 import { Signal } from '@angular/core';
+import type { Observable } from 'rxjs';
+
+import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Post, Comment, PostFilters } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
-import type { Observable } from 'rxjs';
+
 import type { PostsFiltersFormGroup } from './posts-filters.service';
 
 export interface PostsService {

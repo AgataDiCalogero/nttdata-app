@@ -1,23 +1,25 @@
-import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, from, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
-import type { User } from '@/app/shared/models/user';
-import type { PostsService } from './posts.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
+import { catchError, from, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
+import type { User } from '@/app/shared/models/user';
+import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+
 import { PostsFiltersService } from './posts-filters.service';
+import type { PostsService } from './posts.service';
 
 interface PostsState {
   posts: Post[];

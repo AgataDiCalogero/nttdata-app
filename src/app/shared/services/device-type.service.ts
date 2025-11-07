@@ -1,5 +1,5 @@
-import { Injectable, signal } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { Injectable, signal } from '@angular/core';
 
 export type DeviceType = 'mobile' | 'tablet' | 'desktop';
 

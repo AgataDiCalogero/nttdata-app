@@ -1,3 +1,4 @@
+import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,22 +8,23 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+
+import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
+
 import type { CreatePost, Post, UpdatePost } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 interface PostFormDialogData {
   users?: User[];
@@ -140,13 +142,13 @@ export class PostForm {
     effect(() => {
       const disableFields = this.submitting();
       const controls = [this.titleControl, this.bodyControl];
-      controls.forEach((control) => {
+      for (const control of controls) {
         if (disableFields && control.enabled) {
           control.disable({ emitEvent: false });
         } else if (!disableFields && control.disabled) {
           control.enable({ emitEvent: false });
         }
-      });
+      }
     });
   }
 

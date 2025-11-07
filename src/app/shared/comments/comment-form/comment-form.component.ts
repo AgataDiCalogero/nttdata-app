@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,13 +9,14 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import type { Comment, CreateComment } from '@/app/shared/models/post';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
+
+import type { Comment, CreateComment } from '@/app/shared/models/post';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 
 @Component({
   selector: 'app-comment-form',

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { authGuard } from '@/app/core/auth/auth-guard/auth-guard.service';
 
 export const USERS_ROUTES: Routes = [
@@ -9,13 +10,11 @@ export const USERS_ROUTES: Routes = [
     children: [
       {
         path: 'new',
-        loadComponent: () =>
-          import('./user-form/user-form.component').then((m) => m.UserForm),
+        loadComponent: () => import('./user-form/user-form.component').then((m) => m.UserForm),
       },
       {
         path: ':id/edit',
-        loadComponent: () =>
-          import('./user-form/user-form.component').then((m) => m.UserForm),
+        loadComponent: () => import('./user-form/user-form.component').then((m) => m.UserForm),
       },
       {
         path: ':id',

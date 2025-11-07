@@ -1,3 +1,4 @@
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,8 +12,8 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+
 import { IdService } from '@app/shared/services/id/id.service';
-import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 export type SelectVariant = 'default' | 'compact';
 type SelectValue = string | number;

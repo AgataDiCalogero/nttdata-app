@@ -1,11 +1,12 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
+import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ButtonComponent } from '@/app/shared/ui/button/button.component';
-import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
-import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import { firstValueFrom, isObservable } from 'rxjs';
+
+import type { DeleteConfirmData } from '@/app/shared/models/dialog';
+import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
+import { ButtonComponent } from '@/app/shared/ui/button/button.component';
 
 @Component({
   selector: 'app-delete-confirm',

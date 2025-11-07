@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +8,13 @@ import {
   computed,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { FormControl } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
+
+import { IdService } from '@app/shared/services/id/id.service';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
-import { IdService } from '@app/shared/services/id/id.service';
-import { FormControl } from '@angular/forms';
 
 @Component({
   standalone: true,

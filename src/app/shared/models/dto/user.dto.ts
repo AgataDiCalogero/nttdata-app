@@ -24,7 +24,9 @@ export const mapUsersDto = (list: UserDto[] | null | undefined): User[] =>
 
 export const mapCreateUserToDto = (payload: CreateUser): CreateUserDto => ({
   name: String(payload.name ?? '').trim(),
-  email: String(payload.email ?? '').trim().toLowerCase(),
+  email: String(payload.email ?? '')
+    .trim()
+    .toLowerCase(),
   gender: payload.gender ?? 'male',
   status: payload.status ?? 'active',
 });

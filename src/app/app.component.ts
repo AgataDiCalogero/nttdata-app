@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { FooterComponent } from './shared/layout/footer/footer.component';
 import { Navbar } from './shared/layout/navbar/navbar.component';
 import { ToastComponent } from './shared/ui/toast/toast.component';
-import { FooterComponent } from './shared/layout/footer/footer.component';
 
 @Component({
   selector: 'app-root',

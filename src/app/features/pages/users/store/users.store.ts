@@ -1,19 +1,21 @@
-import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
-import type { User, UserStatus } from '@/app/shared/models/user';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
-import type { SortField, UsersService } from './users.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import { mapHttpError } from '@/app/shared/utils/error-mapper';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type { User } from '@/app/shared/models/user';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { mapHttpError } from '@/app/shared/utils/error-mapper';
+
+import type { SortField, UsersService } from './users.service';
 
 interface SortState {
   field: SortField;
@@ -62,7 +64,7 @@ const findNearestPerPage = (
   if (!sorted.length) {
     return Math.max(1, value, fallback);
   }
-  const candidate = sorted.find((option) => option >= value) ?? sorted[sorted.length - 1];
+  const candidate = sorted.find((option) => option >= value) ?? sorted.at(-1);
   return candidate ?? fallback;
 };
 
@@ -95,7 +97,7 @@ export const UsersStoreAdapter = signalStore(
       return store
         .ids()
         .map((id) => entities[id])
-        .filter((user): user is User => Boolean(user))
+        .filter(Boolean)
         .sort((a, b) => {
           const av = getValue(a);
           const bv = getValue(b);
@@ -142,7 +144,7 @@ export const UsersStoreAdapter = signalStore(
       const term = (options.searchTerm ?? store.searchTerm()).trim();
 
       const token = auth.token();
-      if (!token || !token.trim()) {
+      if (!token?.trim()) {
         patchState(store, {
           loading: false,
           error: null,
@@ -280,7 +282,7 @@ export const UsersStoreAdapter = signalStore(
           return;
         }
         const token = auth.token();
-        if (!token || !token.trim()) {
+        if (!token?.trim()) {
           return;
         }
         bootstrapped = true;
@@ -291,7 +293,7 @@ export const UsersStoreAdapter = signalStore(
 
       effect(() => {
         const token = auth.token();
-        if (token && token.trim()) {
+        if (token?.trim()) {
           attempt();
         } else if (bootstrapped) {
           bootstrapped = false;

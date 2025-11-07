@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+
 import { I18nService, type Locale } from './i18n.service';
 
 @Component({

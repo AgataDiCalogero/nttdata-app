@@ -1,5 +1,5 @@
-import { Injectable, signal, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Injectable, signal, inject, PLATFORM_ID } from '@angular/core';
 
 const STORAGE_KEY = 'auth-token';
 

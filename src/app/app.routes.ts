@@ -7,13 +7,11 @@ export const routes: Routes = [
   },
   {
     path: 'users',
-    loadChildren: () =>
-      import('./features/pages/users/users.routes').then((m) => m.USERS_ROUTES),
+    loadChildren: () => import('./features/pages/users/users.routes').then((m) => m.USERS_ROUTES),
   },
   {
     path: 'posts',
-    loadChildren: () =>
-      import('./features/pages/posts/posts.routes').then((m) => m.POSTS_ROUTES),
+    loadChildren: () => import('./features/pages/posts/posts.routes').then((m) => m.POSTS_ROUTES),
   },
   {
     path: '',

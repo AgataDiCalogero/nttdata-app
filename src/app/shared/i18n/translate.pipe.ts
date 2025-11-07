@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
+
 import { I18nService, type Locale } from './i18n.service';
 
 @Pipe({

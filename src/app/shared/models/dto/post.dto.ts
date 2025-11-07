@@ -58,9 +58,7 @@ export const mapCreateCommentToDto = (
   body: payload.body?.trim() ?? '',
 });
 
-export const mapUpdateCommentToDto = (
-  payload: UpdateComment,
-): UpdateCommentDto => ({
+export const mapUpdateCommentToDto = (payload: UpdateComment): UpdateCommentDto => ({
   ...payload,
   body: typeof payload.body === 'string' ? payload.body.trim() : undefined,
 });

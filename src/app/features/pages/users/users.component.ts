@@ -1,19 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCardModule } from '@angular/material/card';
+import { Router, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
-import { UserFiltersComponent } from './user-filters/user-filters.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { UserListSkeletonComponent } from './user-list/user-list-skeleton.component';
-import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
+
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
+
 import type { User } from '@/app/shared/models/user';
-import type { SortField } from './store/users.service';
+
 import { provideUsersService, injectUsersService } from './store/users.inject';
+import type { SortField } from './store/users.service';
+import { UserFiltersComponent } from './user-filters/user-filters.component';
+import { UserListSkeletonComponent } from './user-list/user-list-skeleton.component';
+import { UserListComponent } from './user-list/user-list.component';
 import { UsersUiService } from './users-ui.service';
 
 @Component({

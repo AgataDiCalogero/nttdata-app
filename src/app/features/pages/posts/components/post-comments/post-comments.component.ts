@@ -1,3 +1,4 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -9,21 +10,22 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { Dialog } from '@angular/cdk/dialog';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import type { Comment as ModelComment } from '@/app/shared/models/post';
-import type { DeleteConfirmData } from '@/app/shared/models/dialog';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
-import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { tap, take } from 'rxjs';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
+import { tap, take } from 'rxjs';
+
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
+
+import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
+import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import type { DeleteConfirmData } from '@/app/shared/models/dialog';
+import type { Comment as ModelComment } from '@/app/shared/models/post';
+import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 
 @Component({
   standalone: true,

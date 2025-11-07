@@ -1,6 +1,7 @@
 import type { Signal } from '@angular/core';
-import type { User } from '@/app/shared/models/user';
+
 import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type { User } from '@/app/shared/models/user';
 
 export type SortField = Extract<keyof User, 'name' | 'email' | 'role' | 'createdAt'>;
 

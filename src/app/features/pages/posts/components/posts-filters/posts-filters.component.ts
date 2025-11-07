@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { SelectComponent } from '@app/shared/ui/select/select.component';
-import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
+
 import { IdService } from '@app/shared/services/id/id.service';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
+import { SelectComponent } from '@app/shared/ui/select/select.component';
+
 import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
 
 @Component({

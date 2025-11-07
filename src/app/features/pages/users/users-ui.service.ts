@@ -1,19 +1,22 @@
-import { DestroyRef, Injectable, inject } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, take, tap } from 'rxjs';
-import type { User } from '@/app/shared/models/user';
-import type { DeleteConfirmData } from '@/app/shared/models/dialog';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
+
 import {
   UiOverlayService,
   type OverlayKey,
 } from '@app/shared/services/ui-overlay/ui-overlay.service';
+
+import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import type { DeleteConfirmData } from '@/app/shared/models/dialog';
+import type { User } from '@/app/shared/models/user';
+import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+
 import { injectUsersService } from './store/users.inject';
 import { UserForm } from './user-form/user-form.component';
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 
 @Injectable()
 export class UsersUiService {

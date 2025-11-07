@@ -1,9 +1,7 @@
-import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { map, shareReplay, tap, type Observable } from 'rxjs';
-import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
-import type { ListResponse } from '@/app/shared/models/list-response';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
+
 import {
   type CreateUserDto,
   type UpdateUserDto,
@@ -13,6 +11,9 @@ import {
   mapUserDto,
   mapUsersDto,
 } from '@/app/shared/models/dto/user.dto';
+import type { ListResponse } from '@/app/shared/models/list-response';
+import type { PaginationMeta } from '@/app/shared/models/pagination';
+import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
@@ -71,16 +72,18 @@ export class UsersApiService {
 
   create(payload: CreateUser): Observable<User> {
     const dto: CreateUserDto = mapCreateUserToDto(payload);
-    return this.http
-      .post<UserDto>(this.base, dto)
-      .pipe(map(mapUserDto), tap(() => this.listCache.clear()));
+    return this.http.post<UserDto>(this.base, dto).pipe(
+      map(mapUserDto),
+      tap(() => this.listCache.clear()),
+    );
   }
 
   update(id: number, payload: UpdateUser): Observable<User> {
     const dto: UpdateUserDto = mapUpdateUserToDto(payload);
-    return this.http
-      .patch<UserDto>(`${this.base}/${id}`, dto)
-      .pipe(map(mapUserDto), tap(() => this.listCache.clear()));
+    return this.http.patch<UserDto>(`${this.base}/${id}`, dto).pipe(
+      map(mapUserDto),
+      tap(() => this.listCache.clear()),
+    );
   }
 
   delete(id: number): Observable<void> {

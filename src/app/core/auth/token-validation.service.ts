@@ -7,7 +7,9 @@ import {
 } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
+
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
+
 import { SKIP_GLOBAL_ERROR } from '../interceptors/http-context-tokens';
 
 export type TokenValidationErrorCode =

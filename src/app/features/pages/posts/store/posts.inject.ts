@@ -1,6 +1,7 @@
 import { InjectionToken, Provider, inject } from '@angular/core';
-import { PostsStoreAdapter } from './posts.store';
+
 import type { PostsService } from './posts.service';
+import { PostsStoreAdapter } from './posts.store';
 
 export const postsServiceInjectionToken = new InjectionToken<PostsService>('posts-service');
 

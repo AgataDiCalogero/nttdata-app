@@ -1,3 +1,5 @@
+import { join } from 'node:path';
+
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -5,7 +7,6 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
-import { join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -34,7 +35,7 @@ if (isMainModule(import.meta.url)) {
       throw error;
     }
 
-  console.info(`Node Express server listening on http://localhost:${port}`);
+    console.info(`Node Express server listening on http://localhost:${port}`);
   });
 }
 

@@ -9,9 +9,12 @@ import {
   output,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { LucideAngularModule, MessageSquare, Pencil, Trash2 } from 'lucide-angular';
+
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+
 import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
+
 import { PostCommentsComponent } from '../post-comments/post-comments.component';
 
 @Component({

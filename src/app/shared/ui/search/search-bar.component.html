@@ -1,20 +1,21 @@
-<label
+<div
   class="app-search"
   [class.app-search--wide]="isWide()"
   [class.app-search--compact]="isCompact()"
   [class.app-search--small]="isSmall()"
   [class.app-search--full]="isFull()"
 >
-  <span class="sr-only" [id]="labelId()">{{ labelText() }}</span>
+  <label [attr.for]="control() ? inputId() : null">{{ labelText() }}</label>
   <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
 
   @if (control(); as ctrl) {
     <input
       type="search"
       class="app-search__input"
-      [attr.placeholder]="placeholder()"
-      [attr.aria-labelledby]="labelId()"
-      [attr.id]="inputId()"
+      placeholder="{{ placeholder() }}"
+      title="{{ labelText() }}"
+      aria-label="{{ labelText() }}"
+      id="{{ inputId() }}"
       [formControl]="ctrl"
       [appDebounceInput]="debounceTime()"
       (debounced)="onDebounced($event)"
@@ -23,11 +24,11 @@
     <input
       type="search"
       class="app-search__input"
-      [attr.placeholder]="placeholder()"
-      [attr.aria-labelledby]="labelId()"
-      [attr.id]="inputId()"
+      placeholder="{{ placeholder() }}"
+      title="{{ labelText() }}"
+      aria-label="{{ labelText() }}"
       [appDebounceInput]="debounceTime()"
       (debounced)="onDebounced($event)"
     />
   }
-</label>
+</div>

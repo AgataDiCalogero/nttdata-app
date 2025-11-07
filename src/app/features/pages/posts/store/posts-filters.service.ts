@@ -1,7 +1,8 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs';
+
 import type { PostFilters } from '@/app/shared/models/post';
 
 export type PostsFiltersFormGroup = FormGroup<{

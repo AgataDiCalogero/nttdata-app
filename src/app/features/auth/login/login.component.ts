@@ -1,3 +1,4 @@
+import { Dialog } from '@angular/cdk/dialog';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,23 +8,25 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Dialog } from '@angular/cdk/dialog';
-import { take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { TokenValidationService } from '@app/core/auth/token-validation.service';
-import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
+import { FormBuilder, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
+
+import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { ToastService } from '@app/shared/ui/toast/toast.service';
+
+import { AuthService } from '@/app/core/auth/auth-service/auth.service';
+
+import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
 
 @Component({
   selector: 'app-login',
