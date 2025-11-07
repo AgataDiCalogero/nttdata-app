@@ -7,23 +7,301 @@
     "posts": "Post",
     "logout": "Esci"
   },
+  "language": {
+    "label": "Lingua",
+    "menuAria": "Seleziona la lingua"
+  },
   "login": {
     "title": "Bentornato",
     "subtitle": "Inserisci il tuo token di accesso per continuare.",
     "tokenLabel": "Token di accesso",
     "tokenPlaceholder": "Incolla il tuo personal access token",
     "submit": "Accedi",
-    "help": "Hai perso il token?"
+    "help": "Hai perso il token?",
+    "errors": {
+      "required": "Il token di accesso è obbligatorio.",
+      "minLength": "Il token di accesso deve contenere almeno {{count}} caratteri.",
+      "unableToVerify": "Impossibile verificare il token in questo momento. Riprova."
+    }
+  },
+  "tokenHelp": {
+    "title": "Hai perso il token?",
+    "subtitle": "Nessun problema! Generane uno nuovo dal dashboard di GoRest seguendo questi passaggi.",
+    "steps": {
+      "1": "Visita il sito ufficiale di GoRest ed esegui l'accesso con il tuo account.",
+      "2a": "Seleziona",
+      "2b": "nel dashboard per creare un nuovo token personale.",
+      "3": "Copia il token generato e incollalo nel campo \"Token di accesso\" di questa pagina."
+    },
+    "step2Highlight": "Ottieni il tuo token di accesso",
+    "open": "Apri GoRest",
+    "close": "Ho capito",
+    "closeAria": "Chiudi l'aiuto sul token"
+  },
+  "common": {
+    "actions": {
+      "view": "Visualizza",
+      "edit": "Modifica",
+      "delete": "Elimina",
+      "deleting": "Eliminazione…",
+      "cancel": "Annulla",
+      "retry": "Riprova",
+      "create": "Crea",
+      "update": "Aggiorna",
+      "saving": "Salvataggio…",
+      "postComment": "Pubblica commento",
+      "hideComments": "Nascondi commenti",
+      "showComments": "Mostra commenti",
+      "showMore": "Mostra altro",
+      "showLess": "Mostra meno",
+      "open": "Apri",
+      "close": "Chiudi",
+      "backToUsers": "Torna agli utenti",
+      "backToList": "Torna all'elenco",
+      "newPost": "Nuovo post",
+      "newUser": "Nuovo utente",
+      "gotIt": "Ho capito",
+      "dismissAlert": "Chiudi avviso"
+    },
+    "status": {
+      "active": "Attivo",
+      "inactive": "Inattivo",
+      "aria": {
+        "activeUser": "Utente attivo",
+        "inactiveUser": "Utente inattivo"
+      }
+    },
+    "gender": {
+      "male": "Maschio",
+      "female": "Femmina",
+      "unspecified": "Non specificato"
+    },
+    "placeholders": {
+      "searchUsers": "Cerca per nome o email...",
+      "searchUsersLabel": "Cerca utenti per nome o email",
+      "postTitle": "Titolo del post",
+      "postBody": "Descrivi la tua idea o segnalazione",
+      "comment": "Condividi i tuoi pensieri...",
+      "commentName": "Il tuo nome",
+      "commentEmail": "nome@email.com",
+      "fullName": "Inserisci il nome completo",
+      "email": "utente@example.com"
+    }
   },
   "users": {
     "title": "Utenti",
-    "subtitle": "Gestisci e consulta tutti gli utenti registrati",
     "new": "Nuovo utente",
-    "empty": "Nessun utente trovato."
+    "subtitle": "Gestisci e consulta tutti gli utenti registrati",
+    "filters": {
+      "searchLabel": "Cerca utenti per nome o email",
+      "searchPlaceholder": "Cerca per nome o email...",
+      "perPage": "Utenti per pagina",
+      "perPageOption": "{{value}} / pagina",
+      "createAria": "Crea un nuovo utente"
+    },
+    "summary": {
+      "loading": "Caricamento utenti...",
+      "empty": "Nessun utente trovato",
+      "single": "{{total}} utente",
+      "all": "{{total}} utenti",
+      "partial": "Mostrati {{visible}} di {{total}} utenti"
+    },
+    "loader": "Caricamento utenti…",
+    "errorRetry": "Riprova",
+    "emptyState": "Nessun utente trovato.",
+    "unnamed": "Utente senza nome",
+    "sortButtonLabel": "Ordina {{label}} {{direction}}",
+    "loadingAria": "Caricamento utenti",
+    "delete": {
+      "title": "Elimina utente",
+      "message": "Sei sicuro di voler eliminare {{name}}? Questa azione non può essere annullata.",
+      "confirm": "Elimina",
+      "cancel": "Annulla",
+      "deleting": "Eliminazione...",
+      "error": "Impossibile eliminare l'utente in questo momento. Riprova.",
+      "success": "Utente eliminato"
+    },
+    "create": {
+      "success": "Utente creato",
+      "ariaLabel": "Nuovo utente"
+    },
+    "update": {
+      "success": "Utente aggiornato",
+      "ariaLabel": "Modifica utente"
+    }
+  },
+  "userList": {
+    "viewAria": "Visualizza i dettagli utente",
+    "deleteAria": "Elimina utente"
+  },
+  "userForm": {
+    "titleNew": "Nuovo utente",
+    "titleEdit": "Modifica utente",
+    "fields": {
+      "name": "Nome",
+      "email": "Email",
+      "gender": "Genere",
+      "status": "Stato"
+    },
+    "placeholders": {
+      "name": "Inserisci il nome completo",
+      "email": "utente@example.com"
+    },
+    "errors": {
+      "name": "Inserisci almeno 2 caratteri.",
+      "email": "Indirizzo email non valido.",
+      "gender": "Seleziona un genere."
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "create": "Crea",
+      "update": "Aggiorna",
+      "saving": "Salvataggio…"
+    }
+  },
+  "userDetail": {
+    "back": "Torna agli utenti",
+    "loading": "Caricamento dettagli utente...",
+    "backToList": "Torna all'elenco",
+    "avatarFallback": "Utente",
+    "genderFallback": "Non specificato",
+    "postsTitle": "Post di {{name}}",
+    "postsSubtitle": "Post di questo utente. I commenti si aprono in linea.",
+    "postsLoading": "Caricamento post...",
+    "postsEmpty": "Ancora nessun post pubblicato.",
+    "postsCountSingle": "post pubblicato",
+    "postsCountPlural": "post pubblicati",
+    "invalidUserId": "ID utente non valido",
+    "unableToLoadComments": "Impossibile caricare i commenti",
+    "unableToUpdateStatus": "Impossibile aggiornare lo stato dell'utente",
+    "unableToLoadUser": "Impossibile caricare i dettagli dell'utente",
+    "unableToLoadPosts": "Impossibile caricare i post dell'utente"
   },
   "posts": {
     "title": "Post",
-    "subtitle": "Post dell'utente. I commenti si aprono in linea.",
-    "new": "Nuovo post"
+    "new": "Nuovo post",
+    "summaryHeading": "{{count}} post totali",
+    "emptyState": "Nessun post corrisponde ai filtri. Prova ad aggiornare la ricerca.",
+    "loading": "Caricamento post...",
+    "summary": {
+      "all": "{{total}} post",
+      "partial": "Mostrati {{visible}} di {{total}} post"
+    },
+    "create": {
+      "ariaLabel": "Nuovo post",
+      "success": "Post creato"
+    },
+    "update": {
+      "ariaLabel": "Modifica post {{title}}",
+      "success": "Post aggiornato"
+    },
+    "delete": {
+      "title": "Elimina post",
+      "message": "Sei sicuro di voler eliminare \"{{title}}\"? Questa azione non può essere annullata.",
+      "confirm": "Elimina",
+      "cancel": "Annulla",
+      "deleting": "Eliminazione...",
+      "error": "Impossibile eliminare il post in questo momento. Riprova.",
+      "success": "Post eliminato"
+    }
+  },
+  "postsFilters": {
+    "searchPlaceholder": "Cerca per titolo",
+    "searchLabel": "Cerca post per titolo",
+    "author": "Filtra per autore",
+    "authorAria": "Filtra i post per autore",
+    "authorAll": "Tutti gli autori",
+    "perPage": "Post per pagina",
+    "perPageAria": "Cambia i post per pagina",
+    "reset": "Reimposta"
+  },
+  "postCard": {
+    "sharedBy": "Pubblicato da {{name}}",
+    "viewAuthorAria": "Visualizza autore {{name}}",
+    "editAria": "Modifica il post {{title}}",
+    "deleteAria": "Elimina il post {{title}}",
+    "commentToggleOn": "Nascondi commenti",
+    "commentToggleOff": "Mostra commenti",
+    "postComment": "Pubblica commento",
+    "showMore": "Mostra altro",
+    "showLess": "Mostra meno",
+    "unknownAuthor": "Autore sconosciuto"
+  },
+  "postForm": {
+    "titleNew": "Crea un nuovo post",
+    "titleEdit": "Modifica post",
+    "subtitleNew": "Condividi idee o segnalazioni per migliorare la città.",
+    "subtitleEdit": "Aggiorna il titolo, l'autore o il contenuto di questo post.",
+    "loadingUsers": "Caricamento utenti...",
+    "selectAuthor": "Seleziona un autore",
+    "fields": {
+      "author": "Autore",
+      "title": "Titolo",
+      "content": "Contenuto"
+    },
+    "errors": {
+      "author": "Seleziona un autore valido.",
+      "title": "Il titolo deve contenere almeno 5 caratteri.",
+      "body": "Descrivi il post con almeno 20 caratteri."
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "create": "Crea",
+      "update": "Salva modifiche",
+      "saving": "Salvataggio…"
+    }
+  },
+  "postComments": {
+    "loading": "Caricamento commenti...",
+    "empty": "Sii il primo ad avviare la conversazione.",
+    "composerPlaceholder": "Scrivi un commento...",
+    "anonymous": "Anonimo",
+    "editPlaceholder": "Aggiorna il tuo commento",
+    "editSave": "Salva",
+    "editCancel": "Annulla",
+    "editError": "Il contenuto non è valido. Modificalo e riprova.",
+    "editAria": "Modifica il commento di {{name}}",
+    "deleteAria": "Elimina il commento di {{name}}",
+    "cancelEditAria": "Annulla la modifica del commento di {{name}}",
+    "deleteConfirm": {
+      "title": "Elimina commento",
+      "message": "Sei sicuro di voler eliminare questo commento? Questa azione non può essere annullata.",
+      "cancel": "Annulla",
+      "confirm": "Elimina"
+    }
+  },
+  "commentForm": {
+    "aria": "Aggiungi commento",
+    "fields": {
+      "name": "Nome",
+      "email": "Email",
+      "body": "Commento"
+    },
+    "placeholders": {
+      "name": "Il tuo nome",
+      "email": "nome@email.com",
+      "body": "Condividi i tuoi pensieri..."
+    },
+    "errors": {
+      "name": "Inserisci almeno 2 caratteri.",
+      "email": "Fornisci un indirizzo email valido.",
+      "body": "Il commento deve contenere almeno 10 caratteri."
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "submit": "Pubblica commento",
+      "submitting": "Pubblicazione in corso..."
+    },
+    "toastSuccess": "Commento pubblicato con successo"
+  },
+  "pagination": {
+    "previous": "Precedente",
+    "next": "Successiva",
+    "pageInfo": "Pagina {{page}} di {{total}}",
+    "ariaPrev": "Vai alla pagina precedente",
+    "ariaNext": "Vai alla pagina successiva"
+  },
+  "footer": {
+    "builtBy": "Creato da"
   }
 }

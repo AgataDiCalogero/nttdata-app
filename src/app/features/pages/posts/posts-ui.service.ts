@@ -6,6 +6,7 @@ import { take } from 'rxjs';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
@@ -25,12 +26,13 @@ export class PostsUiService {
   private readonly overlays = inject(UiOverlayService);
   private readonly notifications = inject(NotificationsService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(I18nService);
   private readonly store = injectPostsService();
 
   openCreateDialog(): void {
     const users = this.store.userOptions();
     this.openPostFormDialog({
-      label: 'New post',
+      label: this.i18n.translate('posts.create.ariaLabel'),
       data: { users },
     });
   }
@@ -38,19 +40,19 @@ export class PostsUiService {
   openEditDialog(post: Post): void {
     const users = this.store.userOptions();
     this.openPostFormDialog({
-      label: `Edit post ${post.title}`,
+      label: this.i18n.translate('posts.update.ariaLabel', { title: post.title }),
       data: { users, post },
     });
   }
 
   confirmDelete(post: Post): void {
     const data: DeleteConfirmData = {
-      title: 'Delete Post',
-      message: `Are you sure you want to delete "${post.title}"? This action cannot be undone.`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
-      inProgressText: 'Deleting...',
-      errorMessage: 'Unable to delete this post right now. Please try again.',
+      title: this.i18n.translate('posts.delete.title'),
+      message: this.i18n.translate('posts.delete.message', { title: post.title }),
+      confirmText: this.i18n.translate('posts.delete.confirm'),
+      cancelText: this.i18n.translate('posts.delete.cancel'),
+      inProgressText: this.i18n.translate('posts.delete.deleting'),
+      errorMessage: this.i18n.translate('posts.delete.error'),
       confirmAction: () => this.store.deletePostRequest(post),
     };
 
@@ -59,7 +61,7 @@ export class PostsUiService {
       maxWidth: '90vw',
       backdropClass: 'app-dialog-overlay',
       panelClass: 'app-dialog-panel',
-      ariaLabel: 'Delete post confirmation',
+      ariaLabel: this.i18n.translate('posts.delete.title'),
       autoFocus: true,
       restoreFocus: true,
       data,
@@ -98,14 +100,14 @@ export class PostsUiService {
       }
 
       if (result.status === 'created') {
-        this.notifications.showSuccess('Post created');
+        this.notifications.showSuccess(this.i18n.translate('posts.create.success'));
         this.store.setPage(1);
         this.store.refresh();
         return;
       }
 
       if (result.status === 'updated' && result.post) {
-        this.notifications.showSuccess('Post updated');
+        this.notifications.showSuccess(this.i18n.translate('posts.update.success'));
         this.store.onPostUpdated(result.post);
       }
     });

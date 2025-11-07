@@ -5,7 +5,7 @@
         <app-comment-form
           class="post-comments__composer"
           [postId]="postId()"
-          placeholder="Write a comment..."
+          [placeholder]="'postComments.composerPlaceholder' | appTranslate"
           (created)="onCommentCreated($event)"
           (cancelled)="onComposerCancelled()"
         ></app-comment-form>
@@ -15,18 +15,18 @@
     <hr class="post-comments__divider" />
 
     @if (loading()) {
-      <div class="app-progress" role="status" aria-live="polite">
+      <output class="app-progress" aria-live="polite">
         <mat-progress-bar
           mode="indeterminate"
           color="accent"
           class="app-progress-bar"
         ></mat-progress-bar>
-        <span class="app-progress__text">Loading comments...</span>
-      </div>
+        <span class="app-progress__text">{{ 'postComments.loading' | appTranslate }}</span>
+      </output>
     } @else if (comments().length === 0 && hideComposer()) {
       <app-alert variant="info">
         <div class="post-comments-empty">
-          <p>Be the first to start the conversation.</p>
+          <p>{{ 'postComments.empty' | appTranslate }}</p>
         </div>
       </app-alert>
     } @else if (hideComposer()) {
@@ -38,7 +38,9 @@
                 {{ comment.name.charAt(0).toUpperCase() }}
               </div>
               <div class="post-comments__meta">
-                <span class="post-comments__author">{{ comment.name || 'Anonymous' }}</span>
+                <span class="post-comments__author">
+                  {{ comment.name || ('postComments.anonymous' | appTranslate) }}
+                </span>
                 <span class="post-comments__email">{{ comment.email }}</span>
               </div>
               <div class="post-comments__item-actions">
@@ -50,8 +52,14 @@
                     type="button"
                     [iconOnly]="true"
                     (click)="startEdit(comment)"
-                    aria-label="Edit comment from {{ comment.name }}"
+                    [attr.aria-label]="
+                      'postComments.editAria' | appTranslate: { name: comment.name }
+                    "
+                    title="{{ 'postComments.editAria' | appTranslate: { name: comment.name } }}"
                   >
+                    <span class="sr-only">{{
+                      'postComments.editAria' | appTranslate: { name: comment.name }
+                    }}</span>
                     <lucide-icon [img]="Pencil"></lucide-icon>
                   </button>
                   <button
@@ -62,8 +70,14 @@
                     [iconOnly]="true"
                     (click)="deleteComment(comment)"
                     [disabled]="deletingId() === comment.id"
-                    aria-label="Delete comment from {{ comment.name }}"
+                    [attr.aria-label]="
+                      'postComments.deleteAria' | appTranslate: { name: comment.name }
+                    "
+                    title="{{ 'postComments.deleteAria' | appTranslate: { name: comment.name } }}"
                   >
+                    <span class="sr-only">{{
+                      'postComments.deleteAria' | appTranslate: { name: comment.name }
+                    }}</span>
                     <lucide-icon [img]="Trash2"></lucide-icon>
                   </button>
                 } @else {
@@ -74,8 +88,16 @@
                     type="button"
                     [iconOnly]="true"
                     (click)="cancelEdit()"
-                    aria-label="Cancel editing comment from {{ comment.name }}"
+                    [attr.aria-label]="
+                      'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                    "
+                    title="{{
+                      'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                    }}"
                   >
+                    <span class="sr-only">{{
+                      'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                    }}</span>
                     <lucide-icon [img]="X"></lucide-icon>
                   </button>
                 }
@@ -93,7 +115,7 @@
                     class="form-textarea"
                     formControlName="body"
                     rows="3"
-                    placeholder="Update your comment"
+                    placeholder="{{ 'postComments.editPlaceholder' | appTranslate }}"
                     [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
                   ></textarea>
                   <div class="post-comments__edit-actions">
@@ -104,7 +126,7 @@
                       type="submit"
                       [loading]="submittingEdit()"
                     >
-                      Save
+                      {{ 'postComments.editSave' | appTranslate }}
                     </button>
                     <button
                       appButton
@@ -113,12 +135,12 @@
                       type="button"
                       (click)="cancelEdit()"
                     >
-                      Cancel
+                      {{ 'postComments.editCancel' | appTranslate }}
                     </button>
                   </div>
                   @if (editError()) {
                     <app-alert variant="error" padding="compact">
-                      {{ editError() }}
+                      {{ editError() || ('postComments.editError' | appTranslate) }}
                     </app-alert>
                   }
                 </form>

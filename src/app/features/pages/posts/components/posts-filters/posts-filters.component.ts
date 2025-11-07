@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { IdService } from '@app/shared/services/id/id.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
@@ -18,6 +20,7 @@ import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
     ButtonComponent,
     SelectComponent,
     SearchBarComponent,
+    TranslatePipe,
   ],
   templateUrl: './posts-filters.component.html',
   styleUrls: ['./posts-filters.component.scss'],
@@ -30,12 +33,13 @@ export class PostsFiltersComponent {
   readonly perPageControl = input<FormControl<number> | null>(null);
   readonly perPageOptions = input<{ value: number; label: string }[]>([]);
   readonly perPageChange = output<number>();
+  private readonly i18n = inject(I18nService);
 
   readonly userSelectOptions = computed(() => [
-    { value: 0 as const, label: 'All authors' },
+    { value: 0 as const, label: this.i18n.translate('postsFilters.authorAll') },
     ...this.userOptions().map((user) => ({
       value: user.id,
-      label: user.name || 'Unnamed user',
+      label: user.name || this.i18n.translate('users.unnamed'),
     })),
   ]);
   readonly resetFilters = output<void>();

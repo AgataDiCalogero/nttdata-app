@@ -1,4 +1,8 @@
-<div class="user-skeleton-list" role="status" aria-live="polite" aria-label="Loading users">
+<output
+  class="user-skeleton-list"
+  aria-live="polite"
+  [attr.aria-label]="'users.loadingAria' | appTranslate"
+>
   @for (placeholder of placeholders; track trackByIndex($index)) {
     <div class="user-skeleton-card">
       <div class="user-skeleton-avatar" aria-hidden="true"></div>
@@ -8,4 +12,4 @@
       </div>
     </div>
   }
-</div>
+</output>

@@ -5,15 +5,15 @@
     type="button"
     (click)="prev()"
     [disabled]="!canPrev()"
-    aria-label="Go to previous page"
+    [attr.aria-label]="'pagination.ariaPrev' | appTranslate"
     [attr.aria-disabled]="!canPrev() ? 'true' : null"
   >
-    Previous
+    {{ 'pagination.previous' | appTranslate }}
   </button>
 
-  <span class="app-pagination__info" aria-live="polite" role="status">
-    Page {{ page() }} of {{ pageCount() }}
-  </span>
+  <output class="app-pagination__info" aria-live="polite">
+    {{ 'pagination.pageInfo' | appTranslate: { page: page(), total: pageCount() } }}
+  </output>
 
   <button
     appButton
@@ -21,10 +21,10 @@
     type="button"
     (click)="next()"
     [disabled]="!canNext()"
-    aria-label="Go to next page"
+    [attr.aria-label]="'pagination.ariaNext' | appTranslate"
     [attr.aria-disabled]="!canNext() ? 'true' : null"
   >
-    Next
+    {{ 'pagination.next' | appTranslate }}
   </button>
 
   <ng-content select="[pagination-extra]"></ng-content>

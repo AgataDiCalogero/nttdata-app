@@ -1,10 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -39,6 +48,7 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
 })
 export class PostsViewComponent {
   private readonly numberFormatter = new Intl.NumberFormat('en-US');
+  private readonly i18n = inject(I18nService);
   readonly searchForm = input.required<PostsFiltersFormGroup>();
   readonly userOptions = input.required<User[]>();
   readonly loading = input.required<boolean>();
@@ -57,18 +67,22 @@ export class PostsViewComponent {
   readonly userLookup = input.required<Record<number, string>>();
   readonly resultsSummary = computed(() => {
     if (this.loading()) {
-      return 'Loading posts...';
+      return this.i18n.translate('posts.loading');
     }
     const visible = this.posts().length;
     const total = this.totalPosts();
     if (!total) {
-      return 'No posts found';
+      return this.i18n.translate('posts.emptyState');
     }
+    const formattedVisible = this.numberFormatter.format(visible);
+    const formattedTotal = this.numberFormatter.format(total);
     if (visible === total) {
-      const noun = total === 1 ? 'post' : 'posts';
-      return `${this.numberFormatter.format(total)} ${noun}`;
+      return this.i18n.translate('posts.summary.all', { total: formattedTotal });
     }
-    return `Showing ${this.numberFormatter.format(visible)} of ${this.numberFormatter.format(total)} posts`;
+    return this.i18n.translate('posts.summary.partial', {
+      visible: formattedVisible,
+      total: formattedTotal,
+    });
   });
 
   readonly createPost = output<void>();
@@ -86,7 +100,12 @@ export class PostsViewComponent {
   readonly Plus = Plus;
 
   readonly perPageSelectOptions = computed(() =>
-    this.perPageOptions().map((size) => ({ value: size, label: `${size} / page` })),
+    this.perPageOptions().map((size) => ({
+      value: size,
+      label: this.i18n.translate('users.filters.perPageOption', {
+        value: this.numberFormatter.format(size),
+      }),
+    })),
   );
 
   protected readonly perPageControl = new FormControl<number>(10, { nonNullable: true });

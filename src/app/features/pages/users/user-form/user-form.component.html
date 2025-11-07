@@ -2,9 +2,9 @@
   <header class="form-dialog__header">
     <h2 class="form-dialog__title">
       @if (isEdit()) {
-        Edit User
+        {{ 'userForm.titleEdit' | appTranslate }}
       } @else {
-        New User
+        {{ 'userForm.titleNew' | appTranslate }}
       }
     </h2>
   </header>
@@ -22,37 +22,41 @@
     novalidate
   >
     <div class="form-field">
-      <label class="form-label" for="name">Name</label>
+      <label class="form-label" for="name">{{ 'userForm.fields.name' | appTranslate }}</label>
       <input
         class="form-input"
         id="name"
         type="text"
         formControlName="name"
-        placeholder="Enter full name"
+        placeholder="{{ 'userForm.placeholders.name' | appTranslate }}"
         appAutoFocus
         [attr.aria-invalid]="
           form.controls.name.invalid && form.controls.name.touched ? 'true' : null
         "
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <app-alert variant="error" padding="compact">Please enter at least 2 characters.</app-alert>
+        <app-alert variant="error" padding="compact">{{
+          'userForm.errors.name' | appTranslate
+        }}</app-alert>
       }
     </div>
 
     <div class="form-field">
-      <label class="form-label" for="email">Email</label>
+      <label class="form-label" for="email">{{ 'userForm.fields.email' | appTranslate }}</label>
       <input
         class="form-input"
         id="email"
         type="email"
         formControlName="email"
-        placeholder="user@example.com"
+        placeholder="{{ 'userForm.placeholders.email' | appTranslate }}"
         [attr.aria-invalid]="
           form.controls.email.invalid && form.controls.email.touched ? 'true' : null
         "
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
-        <app-alert variant="error" padding="compact">Invalid email address.</app-alert>
+        <app-alert variant="error" padding="compact">{{
+          'userForm.errors.email' | appTranslate
+        }}</app-alert>
       }
       @if (emailError()) {
         <app-alert variant="error" padding="compact">{{ emailError() }}</app-alert>
@@ -60,35 +64,37 @@
     </div>
 
     <div class="form-field">
-      <label class="form-label" for="gender">Gender</label>
+      <label class="form-label" for="gender">{{ 'userForm.fields.gender' | appTranslate }}</label>
       <app-select
         id="gender"
         [control]="form.controls.gender"
         [options]="[
-          { value: 'male', label: 'male' },
-          { value: 'female', label: 'female' },
+          { value: 'male', label: ('common.gender.male' | appTranslate) },
+          { value: 'female', label: ('common.gender.female' | appTranslate) },
         ]"
       ></app-select>
       @if (form.controls.gender.touched && form.controls.gender.invalid) {
-        <app-alert variant="error" padding="compact">Please select a gender.</app-alert>
+        <app-alert variant="error" padding="compact">{{
+          'userForm.errors.gender' | appTranslate
+        }}</app-alert>
       }
     </div>
 
     <div class="form-field">
-      <label class="form-label" for="status">Status</label>
+      <label class="form-label" for="status">{{ 'userForm.fields.status' | appTranslate }}</label>
       <app-select
         id="status"
         [control]="form.controls.status"
         [options]="[
-          { value: 'active', label: 'active' },
-          { value: 'inactive', label: 'inactive' },
+          { value: 'active', label: ('common.status.active' | appTranslate) },
+          { value: 'inactive', label: ('common.status.inactive' | appTranslate) },
         ]"
       ></app-select>
     </div>
 
     <div class="form-actions form-dialog__actions">
       <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-        Cancel
+        {{ 'common.actions.cancel' | appTranslate }}
       </button>
 
       <button
@@ -99,11 +105,11 @@
         [disabled]="form.invalid || submitting()"
       >
         @if (submitting()) {
-          Saving&hellip;
+          {{ 'userForm.buttons.saving' | appTranslate }}
         } @else if (isEdit()) {
-          Update
+          {{ 'userForm.buttons.update' | appTranslate }}
         } @else {
-          Create
+          {{ 'userForm.buttons.create' | appTranslate }}
         }
       </button>
     </div>

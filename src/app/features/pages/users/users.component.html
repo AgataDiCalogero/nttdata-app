@@ -13,7 +13,7 @@
           variant="primary"
           type="button"
           (click)="openNewUserModal()"
-          aria-label="Create new user"
+          [attr.aria-label]="'users.filters.createAria' | appTranslate"
         >
           <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
           <span>{{ 'users.new' | appTranslate }}</span>
@@ -35,7 +35,7 @@
       @if (loading()) {
         <div class="users-loader" aria-live="polite">
           <app-user-list-skeleton></app-user-list-skeleton>
-          <span class="sr-only">Loading users…</span>
+          <span class="sr-only">{{ 'users.loader' | appTranslate }}</span>
         </div>
       } @else {
         @if (error(); as err) {
@@ -52,7 +52,7 @@
                 (click)="clearError()"
                 [disabled]="loading()"
               >
-                Retry
+                {{ 'common.actions.retry' | appTranslate }}
               </button>
             </mat-card-content>
           </mat-card>
@@ -76,7 +76,7 @@
             <mat-card class="users-empty" appearance="outlined">
               <mat-card-content>
                 <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-                <p>{{ 'users.empty' | appTranslate }}</p>
+                <p>{{ 'users.emptyState' | appTranslate }}</p>
               </mat-card-content>
             </mat-card>
           }

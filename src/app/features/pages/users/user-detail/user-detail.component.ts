@@ -22,6 +22,7 @@ import {
 } from 'lucide-angular';
 import { catchError, firstValueFrom, map, of, tap } from 'rxjs';
 
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 
@@ -31,6 +32,7 @@ import {
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
@@ -52,6 +54,7 @@ import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
     MatCardModule,
     StatusBadgeComponent,
     MatProgressBarModule,
+    TranslatePipe,
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
@@ -64,6 +67,7 @@ export class UserDetail {
   private readonly commentsCache = inject(CommentsCacheService);
   private readonly notifications = inject(NotificationsService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(I18nService);
   private readonly pagination =
     inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
     DEFAULT_PAGINATION_CONFIG;
@@ -98,7 +102,7 @@ export class UserDetail {
     if (this.userId === null) {
       this.userSource = signal<User | null>(null);
       this.user.set(null);
-      this.error.set('Invalid user ID');
+      this.error.set(this.i18n.translate('userDetail.invalidUserId'));
       this.loading.set(false);
       this.postsLoading.set(false);
       return;
@@ -153,7 +157,7 @@ export class UserDetail {
       this.commentsCache.setComments(postId, list);
     } catch (err) {
       console.error('Failed to load comments:', err);
-      this.notifications.showHttpError(err, 'Unable to load comments');
+      this.notifications.showHttpError(err, this.i18n.translate('userDetail.unableToLoadComments'));
     } finally {
       this.commentsLoadingSignal.update((state) => ({ ...state, [postId]: false }));
     }
@@ -238,7 +242,10 @@ export class UserDetail {
         },
         error: (err) => {
           console.error('Failed to update user status:', err);
-          this.notifications.showHttpError(err, 'Unable to update user status');
+          this.notifications.showHttpError(
+            err,
+            this.i18n.translate('userDetail.unableToUpdateStatus'),
+          );
           // Revert the optimistic update
           this.user.update((current) =>
             current ? { ...current, status: currentUser.status } : current,
@@ -262,7 +269,10 @@ export class UserDetail {
         }),
         catchError((err) => {
           console.error('Failed to load user:', err);
-          const message = this.notifications.showHttpError(err, 'Unable to load user details');
+          const message = this.notifications.showHttpError(
+            err,
+            this.i18n.translate('userDetail.unableToLoadUser'),
+          );
           this.error.set(message);
           this.loading.set(false);
           return of(null);
@@ -281,7 +291,10 @@ export class UserDetail {
         }),
         catchError((err) => {
           console.error('Failed to load posts for user:', err);
-          this.notifications.showHttpError(err, 'Unable to load user posts');
+          this.notifications.showHttpError(
+            err,
+            this.i18n.translate('userDetail.unableToLoadPosts'),
+          );
           this.postsLoading.set(false);
           return of<Post[]>([]);
         }),

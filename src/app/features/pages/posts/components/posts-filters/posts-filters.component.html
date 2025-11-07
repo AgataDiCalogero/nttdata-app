@@ -5,26 +5,28 @@
     size="compact"
     [control]="formGroup.controls.title"
     [id]="searchId"
-    placeholder="Search by title"
-    label="Search posts by title"
+    [placeholder]="'postsFilters.searchPlaceholder' | appTranslate"
+    [label]="'postsFilters.searchLabel' | appTranslate"
   />
   <app-select
     [id]="userSelectId"
     [control]="formGroup.controls.userId"
     [options]="userSelectOptions()"
-    label="Filter by author"
-    [ariaLabel]="'Filter posts by author'"
+    [label]="'postsFilters.author' | appTranslate"
+    [ariaLabel]="'postsFilters.authorAria' | appTranslate"
   ></app-select>
   <app-select
     [id]="perPageSelectId"
     [control]="perPageControl()"
     [options]="perPageSelectOptions()"
     (selectionChange)="onPerPageChange($event)"
-    label="Posts per page"
-    [ariaLabel]="'Change posts per page'"
+    [label]="'postsFilters.perPage' | appTranslate"
+    [ariaLabel]="'postsFilters.perPageAria' | appTranslate"
     [showPlaceholder]="false"
   ></app-select>
   <div class="posts-filters__actions">
-    <button appButton variant="ghost" type="button" (click)="onReset()">Reset</button>
+    <button appButton variant="ghost" type="button" (click)="onReset()">
+      {{ 'postsFilters.reset' | appTranslate }}
+    </button>
   </div>
 </form>

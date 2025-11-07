@@ -3,25 +3,27 @@
     <div class="user-detail__top">
       <a routerLink="/users" class="user-detail__back" appButton variant="ghost">
         <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
-        Back to users
+        {{ 'userDetail.back' | appTranslate }}
       </a>
     </div>
 
     @if (loading()) {
-      <div class="app-progress" role="status" aria-live="polite">
+      <output class="app-progress" aria-live="polite">
         <mat-progress-bar
           mode="indeterminate"
           color="accent"
           class="app-progress-bar"
         ></mat-progress-bar>
-        <span class="app-progress__text">Loading user details...</span>
-      </div>
+        <span class="app-progress__text">{{ 'userDetail.loading' | appTranslate }}</span>
+      </output>
     } @else if (error()) {
       <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
         <div class="user-detail-alert-content">
           <p>{{ error() }}</p>
           <div class="user-detail-alert-actions">
-            <a routerLink="/users" appButton variant="ghost" size="sm">Back to list</a>
+            <a routerLink="/users" appButton variant="ghost" size="sm">{{
+              'userDetail.backToList' | appTranslate
+            }}</a>
           </div>
         </div>
       </app-alert>
@@ -29,10 +31,14 @@
       <mat-card class="user-detail-card" appearance="outlined">
         <mat-card-header>
           <div mat-card-avatar class="user-detail-card__avatar" aria-hidden="true">
-            {{ (detail.name || 'User').slice(0, 2).toUpperCase() }}
+            {{
+              (detail.name || ('userDetail.avatarFallback' | appTranslate))
+                .slice(0, 2)
+                .toUpperCase()
+            }}
           </div>
           <div class="user-detail-card__title">
-            <mat-card-title>{{ detail.name || 'Unnamed user' }}</mat-card-title>
+            <mat-card-title>{{ detail.name || ('users.unnamed' | appTranslate) }}</mat-card-title>
             <mat-card-subtitle class="user-detail-card__subtitle">
               <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
               <a [href]="'mailto:' + detail.email">{{ detail.email }}</a>
@@ -41,7 +47,11 @@
           <div class="user-detail-card__status">
             <app-status-badge
               [status]="detail.status"
-              [ariaLabel]="detail.status === 'active' ? 'Active user' : 'Inactive user'"
+              [ariaLabel]="
+                detail.status === 'active'
+                  ? ('common.status.aria.activeUser' | appTranslate)
+                  : ('common.status.aria.inactiveUser' | appTranslate)
+              "
               [clickable]="true"
               (statusChange)="onStatusChange($event)"
             ></app-status-badge>
@@ -51,12 +61,16 @@
           <div class="user-detail-card__meta">
             <mat-card-subtitle class="user-detail-card__meta-item">
               <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
-              {{ detail.gender || 'Not specified' }}
+              {{ detail.gender || ('userDetail.genderFallback' | appTranslate) }}
             </mat-card-subtitle>
             <mat-card-subtitle class="user-detail-card__meta-item">
               <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
               {{ posts().length }}
-              {{ posts().length === 1 ? 'post shared' : 'posts shared' }}
+              {{
+                posts().length === 1
+                  ? ('userDetail.postsCountSingle' | appTranslate)
+                  : ('userDetail.postsCountPlural' | appTranslate)
+              }}
             </mat-card-subtitle>
           </div>
         </mat-card-content>
@@ -64,19 +78,21 @@
 
       <section class="user-posts" aria-labelledby="user-posts-title">
         <header class="user-posts__header" data-app-header="true">
-          <h2 id="user-posts-title" class="app-section-title">Posts from {{ detail.name }}</h2>
-          <p class="app-subtitle">Posts by this user. Comments open inline.</p>
+          <h2 id="user-posts-title" class="app-section-title">
+            {{ 'userDetail.postsTitle' | appTranslate: { name: detail.name } }}
+          </h2>
+          <p class="app-subtitle">{{ 'userDetail.postsSubtitle' | appTranslate }}</p>
         </header>
 
         @if (postsLoading()) {
-          <div class="app-progress user-posts__loader" role="status" aria-live="polite">
+          <output class="app-progress user-posts__loader" aria-live="polite">
             <mat-progress-bar
               mode="indeterminate"
               color="accent"
               class="app-progress-bar"
             ></mat-progress-bar>
-            <span class="app-progress__text">Loading posts...</span>
-          </div>
+            <span class="app-progress__text">{{ 'userDetail.postsLoading' | appTranslate }}</span>
+          </output>
         } @else if (posts().length === 0) {
           <div class="user-posts-empty">
             <lucide-icon
@@ -84,7 +100,7 @@
               [size]="64"
               class="user-posts-empty__icon"
             ></lucide-icon>
-            <p class="user-posts-empty__text">No posts published yet.</p>
+            <p class="user-posts-empty__text">{{ 'userDetail.postsEmpty' | appTranslate }}</p>
           </div>
         } @else {
           <div class="user-posts__grid">

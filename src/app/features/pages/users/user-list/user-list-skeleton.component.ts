@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+
 @Component({
   standalone: true,
   selector: 'app-user-list-skeleton',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './user-list-skeleton.component.html',
   styleUrls: ['./user-list-skeleton.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

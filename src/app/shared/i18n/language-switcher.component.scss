@@ -1,11 +1,55 @@
 .locale-switcher {
+  position: relative;
   display: inline-flex;
-  gap: 0.25rem;
+  align-items: center;
+  height: var(--btn-height-sm, 2.5rem);
+}
+
+.locale-switcher__trigger {
+  min-width: 3.5rem;
+  justify-content: center;
+  padding-inline: var(--space-md);
+  height: 100%;
   align-items: center;
 }
 
-.locale-switcher__button--active {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  font-weight: var(--font-weight-semibold, 600);
+.locale-switcher__panel {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 50%;
+  transform: translate(-50%, 0);
+  min-width: 6rem;
+  padding: var(--space-xs);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-mix, rgba(255, 255, 255, 0.08));
+  z-index: 150;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.locale-switcher__option {
+  width: 100%;
+  text-transform: uppercase;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-on-surface);
+  font-weight: var(--font-weight-semibold);
+  transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+
+  &--active {
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    color: var(--color-accent);
+  }
 }

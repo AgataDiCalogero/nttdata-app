@@ -1,8 +1,8 @@
 <section class="token-help">
   <header class="token-help__header">
-    <h2 class="token-help__title">Lost your token?</h2>
+    <h2 class="token-help__title">{{ 'tokenHelp.title' | appTranslate }}</h2>
     <p class="token-help__subtitle">
-      No worries! Generate a new one from the GoRest dashboard with these quick steps.
+      {{ 'tokenHelp.subtitle' | appTranslate }}
     </p>
   </header>
 
@@ -10,20 +10,21 @@
     <li>
       <span class="token-help__stepnum">1</span>
       <div class="token-help__text">
-        Visit the official GoRest site and sign in with your account.
+        {{ 'tokenHelp.steps.1' | appTranslate }}
       </div>
     </li>
     <li>
       <span class="token-help__stepnum">2</span>
       <div class="token-help__text">
-        Select <strong>Get Your Access Token</strong> in the dashboard to create a new personal
-        token.
+        {{ 'tokenHelp.steps.2a' | appTranslate }}
+        <strong>{{ 'tokenHelp.step2Highlight' | appTranslate }}</strong>
+        {{ 'tokenHelp.steps.2b' | appTranslate }}
       </div>
     </li>
     <li>
       <span class="token-help__stepnum">3</span>
       <div class="token-help__text">
-        Copy the generated token and paste it into the "Access token" field on this page.
+        {{ 'tokenHelp.steps.3' | appTranslate }}
       </div>
     </li>
   </ol>
@@ -38,7 +39,7 @@
       target="_blank"
       rel="noopener noreferrer"
     >
-      Open GoRest
+      {{ 'tokenHelp.open' | appTranslate }}
     </a>
 
     <button
@@ -48,9 +49,9 @@
       class="token-help__btn token-help__btn--primary"
       type="button"
       (click)="close()"
-      aria-label="Close the token help message"
+      [attr.aria-label]="'tokenHelp.closeAria' | appTranslate"
     >
-      Got it
+      {{ 'tokenHelp.close' | appTranslate }}
     </button>
   </footer>
 </section>

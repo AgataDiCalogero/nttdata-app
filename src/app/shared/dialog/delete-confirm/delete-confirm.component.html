@@ -12,7 +12,7 @@
 
   <div class="form-dialog__actions delete-confirm__actions">
     <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-      {{ data.cancelText || 'Cancel' }}
+      {{ data.cancelText || ('common.actions.cancel' | appTranslate) }}
     </button>
 
     <button appButton variant="danger" type="button" (click)="confirm()" [disabled]="submitting()">

@@ -1,50 +1,55 @@
-<form class="comment-form form" [formGroup]="form" (ngSubmit)="submit()" aria-label="Add comment">
+<form
+  class="comment-form form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  [attr.aria-label]="'commentForm.aria' | appTranslate"
+>
   <div class="comment-form__grid">
     <div class="form-field">
-      <label class="form-label" for="comment-name">Name</label>
+      <label class="form-label" for="comment-name">{{ 'commentForm.fields.name' | appTranslate }}</label>
       <input
         class="form-input"
         id="comment-name"
         type="text"
         formControlName="name"
-        placeholder="Your name"
+        [placeholder]="'commentForm.placeholders.name' | appTranslate"
         [attr.aria-invalid]="
           form.controls.name.invalid && form.controls.name.touched ? 'true' : null
         "
         required
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <p class="field-error">Please enter at least 2 characters.</p>
+        <p class="field-error">{{ 'commentForm.errors.name' | appTranslate }}</p>
       }
     </div>
 
     <div class="form-field">
-      <label class="form-label" for="comment-email">Email</label>
+      <label class="form-label" for="comment-email">{{ 'commentForm.fields.email' | appTranslate }}</label>
       <input
         class="form-input"
         id="comment-email"
         type="email"
         formControlName="email"
-        placeholder="name@email.com"
+        [placeholder]="'commentForm.placeholders.email' | appTranslate"
         [attr.aria-invalid]="
           form.controls.email.invalid && form.controls.email.touched ? 'true' : null
         "
         required
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
-        <p class="field-error">Please provide a valid email address.</p>
+        <p class="field-error">{{ 'commentForm.errors.email' | appTranslate }}</p>
       }
     </div>
   </div>
 
   <div class="form-field">
-    <label class="form-label" for="comment-body">Comment</label>
+    <label class="form-label" for="comment-body">{{ 'commentForm.fields.body' | appTranslate }}</label>
     <textarea
       class="form-textarea"
       id="comment-body"
       formControlName="body"
       rows="4"
-      [placeholder]="placeholder()"
+      [placeholder]="placeholderText()"
       [attr.aria-invalid]="form.controls.body.invalid && form.controls.body.touched ? 'true' : null"
       maxlength="500"
       required
@@ -52,7 +57,7 @@
     <div class="field-hint">
       <span>{{ bodyLength }}/500</span>
       @if (form.controls.body.touched && form.controls.body.invalid) {
-        <p class="field-error">The comment must contain at least 10 characters.</p>
+        <p class="field-error">{{ 'commentForm.errors.body' | appTranslate }}</p>
       }
     </div>
   </div>
@@ -66,7 +71,7 @@
       [disabled]="submitting()"
       class="comment-form__cancel"
     >
-      Cancel
+      {{ 'commentForm.buttons.cancel' | appTranslate }}
     </button>
     <button
       appButton
@@ -76,7 +81,11 @@
       [loading]="submitting()"
       class="comment-form__submit"
     >
-      {{ submitting() ? 'Publishing...' : 'Post comment' }}
+      {{
+        submitting()
+          ? ('commentForm.buttons.submitting' | appTranslate)
+          : ('commentForm.buttons.submit' | appTranslate)
+      }}
     </button>
   </div>
 </form>

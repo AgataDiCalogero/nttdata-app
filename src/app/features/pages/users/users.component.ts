@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
@@ -45,6 +46,7 @@ export class Users {
   public readonly usersService = injectUsersService();
   private readonly usersUi = inject(UsersUiService);
   private readonly router = inject(Router);
+  private readonly i18n = inject(I18nService);
   private readonly numberFormatter = new Intl.NumberFormat('en-US');
 
   readonly loading = this.usersService.loading;
@@ -59,18 +61,23 @@ export class Users {
   readonly totalUsersCount = computed(() => this.pagination()?.total ?? this.visibleUsersCount());
   readonly usersSummary = computed(() => {
     if (this.loading()) {
-      return 'Loading users...';
+      return this.i18n.translate('users.summary.loading');
     }
     const visible = this.visibleUsersCount();
     const total = this.totalUsersCount();
     if (total === 0) {
-      return 'No users found';
+      return this.i18n.translate('users.summary.empty');
     }
-    const noun = total === 1 ? 'user' : 'users';
+    const formattedVisible = this.numberFormatter.format(visible);
+    const formattedTotal = this.numberFormatter.format(total);
     if (visible === total) {
-      return `${this.numberFormatter.format(total)} ${noun}`;
+      const key = total === 1 ? 'users.summary.single' : 'users.summary.all';
+      return this.i18n.translate(key, { total: formattedTotal });
     }
-    return `Showing ${this.numberFormatter.format(visible)} of ${this.numberFormatter.format(total)} users`;
+    return this.i18n.translate('users.summary.partial', {
+      visible: formattedVisible,
+      total: formattedTotal,
+    });
   });
 
   perPageOptionsMutable(): number[] {
@@ -117,7 +124,7 @@ export class Users {
   sortButtonLabel(field: SortField, label: string): string {
     const { field: currentField, dir } = this.usersService.sortState();
     const nextDir = currentField === field && dir === 1 ? 'descending' : 'ascending';
-    return `Sort ${label} ${nextDir}`;
+    return this.i18n.translate('users.sortButtonLabel', { label, direction: nextDir });
   }
 
   onPageChange(page: number): void {

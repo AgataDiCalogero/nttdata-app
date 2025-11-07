@@ -65,13 +65,15 @@
     variant="secondary"
     class="floating-menu-trigger"
     type="button"
-    aria-label="Apri navigazione"
+    [attr.aria-label]="'common.actions.open' | appTranslate"
+    [title]="'common.actions.open' | appTranslate"
     [matMenuTriggerFor]="navMenu"
     [attr.aria-controls]="navMenu?.panelId"
     [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
     (menuOpened)="onMenuOpened()"
     (menuClosed)="onMenuClosed()"
   >
+    <span class="sr-only">{{ 'common.actions.open' | appTranslate }}</span>
     <lucide-icon [img]="Menu" aria-hidden="true"></lucide-icon>
   </button>
 }

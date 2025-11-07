@@ -11,7 +11,7 @@
         diameter="24"
         strokeWidth="3"
       ></mat-progress-spinner>
-      <span>Loading authors list…</span>
+      <span>{{ 'postForm.loadingUsers' | appTranslate }}</span>
     </div>
   }
 
@@ -27,7 +27,7 @@
           (click)="retryLoadUsers()"
           [disabled]="loadingUsers()"
         >
-          Retry
+          {{ 'common.actions.retry' | appTranslate }}
         </button>
       </div>
     </app-alert>
@@ -40,22 +40,22 @@
       color="accent"
       [floatLabel]="'always'"
     >
-      <mat-label>Author</mat-label>
+      <mat-label>{{ 'postForm.fields.author' | appTranslate }}</mat-label>
       <mat-select
         id="post-user"
         formControlName="userId"
         [attr.aria-invalid]="userIdInvalid ? 'true' : null"
       >
-        <mat-option [value]="0" disabled>Select author</mat-option>
+        <mat-option [value]="0" disabled>{{ 'postForm.selectAuthor' | appTranslate }}</mat-option>
         @for (option of userOptions(); track option.value) {
           <mat-option [value]="option.value">{{ option.label }}</mat-option>
         }
       </mat-select>
       @if (loadingUsers()) {
-        <mat-hint>Refreshing authors…</mat-hint>
+        <mat-hint>{{ 'postForm.loadingUsers' | appTranslate }}</mat-hint>
       }
       @if (userIdInvalid) {
-        <mat-error>Please select a valid author.</mat-error>
+        <mat-error>{{ 'postForm.errors.author' | appTranslate }}</mat-error>
       }
     </mat-form-field>
 
@@ -65,20 +65,20 @@
       color="accent"
       [floatLabel]="'always'"
     >
-      <mat-label>Title</mat-label>
+      <mat-label>{{ 'postForm.fields.title' | appTranslate }}</mat-label>
       <input
         matInput
         id="post-title"
         type="text"
         formControlName="title"
-        placeholder="Post title"
+        placeholder="{{ 'common.placeholders.postTitle' | appTranslate }}"
         appAutoFocus
         [attr.aria-invalid]="titleInvalid ? 'true' : null"
         maxlength="120"
       />
       <mat-hint align="end">{{ form.controls.title.value.length }}/120</mat-hint>
       @if (titleInvalid) {
-        <mat-error>Title must be at least 5 characters long.</mat-error>
+        <mat-error>{{ 'postForm.errors.title' | appTranslate }}</mat-error>
       }
     </mat-form-field>
 
@@ -88,25 +88,25 @@
       color="accent"
       [floatLabel]="'always'"
     >
-      <mat-label>Content</mat-label>
+      <mat-label>{{ 'postForm.fields.content' | appTranslate }}</mat-label>
       <textarea
         matInput
         id="post-body"
         formControlName="body"
         rows="8"
-        placeholder="Describe your idea or report"
+        placeholder="{{ 'common.placeholders.postBody' | appTranslate }}"
         [attr.aria-invalid]="bodyInvalid ? 'true' : null"
         maxlength="500"
       ></textarea>
       <mat-hint align="end">{{ form.controls.body.value.length }}/500</mat-hint>
       @if (bodyInvalid) {
-        <mat-error>Please describe the post with at least 20 characters.</mat-error>
+        <mat-error>{{ 'postForm.errors.body' | appTranslate }}</mat-error>
       }
     </mat-form-field>
 
     <div class="form-actions form-dialog__actions">
       <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-        Cancel
+        {{ 'common.actions.cancel' | appTranslate }}
       </button>
       <button
         appButton
@@ -115,13 +115,7 @@
         [loading]="submitting()"
         [disabled]="submitting() || !users().length || loadingUsers()"
       >
-        @if (submitting()) {
-          Saving&hellip;
-        } @else if (isEdit()) {
-          Update
-        } @else {
-          Create
-        }
+        {{ submitLabel() }}
       </button>
     </div>
   </form>

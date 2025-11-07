@@ -11,6 +11,8 @@ import {
 import { FormControl } from '@angular/forms';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { IdService } from '@app/shared/services/id/id.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
@@ -27,6 +29,7 @@ import { SelectComponent } from '@app/shared/ui/select/select.component';
     LucideAngularModule,
     SearchBarComponent,
     SelectComponent,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -43,11 +46,12 @@ export class UserFiltersComponent {
   protected readonly searchId = this.idService.next('users-search');
   protected readonly perPageSelectId = this.idService.next('users-perpage');
   protected readonly perPageControl = new FormControl<string>('');
+  private readonly i18n = inject(I18nService);
 
   protected readonly perPageSelectOptions = computed(() =>
     (this.perPageOptions() ?? []).map((value) => ({
       value: String(value),
-      label: `${value} / page`,
+      label: this.i18n.translate('users.filters.perPageOption', { value }),
     })),
   );
 

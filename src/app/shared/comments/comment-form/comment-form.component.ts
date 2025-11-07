@@ -8,10 +8,13 @@ import {
   output,
   signal,
   effect,
+  computed,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
@@ -21,7 +24,7 @@ import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, TranslatePipe],
   templateUrl: './comment-form.component.html',
   styleUrls: ['./comment-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,14 +34,20 @@ export class CommentFormComponent {
   private readonly postsApi = inject(PostsApiService);
   private readonly toast = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(I18nService);
 
   readonly postId = input.required<number>();
-  readonly placeholder = input<string>('Share your thoughts...');
+  readonly placeholder = input<string>('');
   readonly created = output<Comment>();
   readonly cancelled = output<void>();
 
   readonly submitting = signal(false);
   readonly submitError = signal<string | null>(null);
+  protected readonly placeholderText = computed(() =>
+    this.placeholder() && this.placeholder()?.trim().length
+      ? this.placeholder()
+      : this.i18n.translate('commentForm.placeholders.body'),
+  );
 
   protected readonly form = this.fb.nonNullable.group({
     name: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(2)]),
@@ -77,7 +86,7 @@ export class CommentFormComponent {
       .subscribe({
         next: (comment) => {
           this.submitting.set(false);
-          this.toast.show('success', 'Comment posted successfully');
+          this.toast.show('success', this.i18n.translate('commentForm.toastSuccess'));
           this.created.emit(comment);
           this.submitError.set(null);
           this.form.reset();

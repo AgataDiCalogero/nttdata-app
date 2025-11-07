@@ -77,6 +77,7 @@
   max-height: calc(100vh - 6rem);
   max-height: calc(100dvh - 6rem);
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   @supports (scrollbar-gutter: stable) {
     scrollbar-gutter: stable;
@@ -137,15 +138,8 @@
     }
 
     .appearance-option__icon {
-      background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-      color: var(--color-accent);
-      box-shadow: none;
-      border: 0.0625rem solid var(--alpha-accent-28);
-
-      @supports (color: color-mix(in srgb, var(--color-accent) 18%, var(--color-surface))) {
-        background: color-mix(in srgb, var(--color-accent) 18%, var(--color-surface));
-      }
-
+      background: transparent;
+      border: none;
       lucide-icon {
         color: var(--color-accent);
       }
@@ -168,6 +162,9 @@
   width: 2rem;
   height: 2rem;
   border-radius: var(--radius-full);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   @include mixins.transition-group(all);
 
   lucide-icon {
@@ -203,52 +200,6 @@
   }
 
   margin-left: var(--space-sm);
-}
-
-.appearance-option__switch {
-  margin-left: auto;
-  width: 3.25rem;
-  height: 1.9rem;
-  border-radius: var(--radius-full);
-  position: relative;
-
-  background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06));
-  border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
-
-  @supports (color: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))) {
-    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
-  }
-  @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
-    border: 0.125rem solid color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
-  }
-  @include mixins.transition-group((background, border-color, box-shadow));
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0.125rem;
-    left: 0.125rem;
-    width: calc(1.9rem - 0.25rem);
-    height: calc(1.9rem - 0.25rem);
-    border-radius: 50%;
-    background: var(--color-on-surface);
-    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.12);
-    z-index: 2;
-    transform: translateX(0);
-    @include mixins.transition-group(transform, background, box-shadow);
-  }
-
-  &[data-on='true'] {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    box-shadow: var(--shadow-accent-soft, 0 0.5rem 1rem rgba(249, 115, 22, 0.12));
-
-    &::after {
-      transform: translateX(1.35rem);
-      background: var(--color-on-surface);
-      box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
-    }
-  }
 }
 
 .appearance-toggle {

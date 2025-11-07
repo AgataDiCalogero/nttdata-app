@@ -14,6 +14,7 @@ const TRANSLATIONS: Record<Locale, Translations> = {
 };
 
 const LANGUAGE_STORAGE_KEY = 'app-language';
+const AVAILABLE_LOCALES: readonly Locale[] = ['en', 'it'];
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
@@ -22,7 +23,7 @@ export class I18nService {
   private readonly localeSignal = signal<Locale>(this.resolveInitialLocale());
 
   readonly locale = this.localeSignal.asReadonly();
-  readonly availableLocales: readonly Locale[] = ['en', 'it'];
+  readonly availableLocales = AVAILABLE_LOCALES;
 
   constructor() {
     effect(() => {
@@ -77,15 +78,13 @@ export class I18nService {
     }
     try {
       const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY) as Locale | null;
-      if (stored && this.availableLocales.includes(stored)) {
+      if (stored && AVAILABLE_LOCALES.includes(stored)) {
         return stored;
       }
     } catch {
       // ignore
     }
     const navigatorLang = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : 'en';
-    return this.availableLocales.includes(navigatorLang as Locale)
-      ? (navigatorLang as Locale)
-      : 'en';
+    return AVAILABLE_LOCALES.includes(navigatorLang as Locale) ? (navigatorLang as Locale) : 'en';
   }
 }

@@ -15,7 +15,7 @@
         (commentDeleted)="onCommentDeleted(post.id, $event)"
         (edit)="onEditPost(post)"
         (viewAuthor)="onViewAuthor(post)"
-        [authorName]="authorName(post) ?? 'User #' + post.user_id"
+        [authorName]="authorName(post)"
       ></app-post-card>
     </div>
   }

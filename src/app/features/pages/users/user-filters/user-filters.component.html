@@ -2,8 +2,8 @@
   <app-search-bar
     size="full"
     [id]="searchId"
-    placeholder="Search by name or email..."
-    label="Search users by name or email"
+    [placeholder]="'users.filters.searchPlaceholder' | appTranslate"
+    [label]="'users.filters.searchLabel' | appTranslate"
     (debounced)="onDebounced($event)"
   />
 
@@ -14,14 +14,19 @@
       [control]="perPageControl"
       [options]="perPageSelectOptions()"
       [showPlaceholder]="false"
-      [ariaLabel]="'Users per page'"
+      [ariaLabel]="'users.filters.perPage' | appTranslate"
       (selectionChange)="onPerPageSelected($event)"
     ></app-select>
 
     @if (showCreate()) {
-      <button appButton variant="primary" (click)="onCreate()" aria-label="Create new user">
+      <button
+        appButton
+        variant="primary"
+        (click)="onCreate()"
+        [attr.aria-label]="'users.filters.createAria' | appTranslate"
+      >
         <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
-        New User
+        {{ 'common.actions.newUser' | appTranslate }}
       </button>
     }
   </div>

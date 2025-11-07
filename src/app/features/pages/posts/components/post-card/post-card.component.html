@@ -1,7 +1,11 @@
 @let postModel = post();
 @let deleting = isDeleting();
 @let commentsList = comments();
-@let author = authorName() ?? (postModel ? 'User #' + postModel.user_id : 'Unknown author');
+@let author =
+  authorName() ??
+  (postModel
+    ? ('userDetail.avatarFallback' | appTranslate) + ' #' + postModel.user_id
+    : ('postCard.unknownAuthor' | appTranslate));
 
 <mat-card class="post-card">
   <div class="post-card__header">
@@ -9,7 +13,8 @@
       type="button"
       class="post-card__avatar-button"
       (click)="onAuthorClick()"
-      [attr.aria-label]="'View author ' + author"
+      [attr.aria-label]="'postCard.viewAuthorAria' | appTranslate: { name: author }"
+      title="{{ 'postCard.viewAuthorAria' | appTranslate: { name: author } }}"
     >
       <span class="post-card__avatar" aria-hidden="true">
         {{ author.charAt(0).toUpperCase() }}
@@ -17,9 +22,16 @@
     </button>
 
     <div class="post-card__heading">
-      <button type="button" class="post-card__author" (click)="onAuthorClick()">
+      <button
+        type="button"
+        class="post-card__author"
+        (click)="onAuthorClick()"
+        title="{{ postModel?.title }}"
+      >
         <h3 class="post-card__title">{{ postModel?.title }}</h3>
-        <span class="post-card__subtitle">Shared by {{ author }}</span>
+        <span class="post-card__subtitle">
+          {{ 'postCard.sharedBy' | appTranslate: { name: author } }}
+        </span>
       </button>
     </div>
 
@@ -33,8 +45,12 @@
           [iconOnly]="true"
           (click)="edit.emit()"
           class="post-card__icon-button"
-          aria-label="Edit post {{ postModel?.title }}"
+          [attr.aria-label]="'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }"
+          title="{{ 'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' } }}"
         >
+          <span class="sr-only">{{
+            'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }
+          }}</span>
           <lucide-icon [img]="Pencil"></lucide-icon>
         </button>
         <button
@@ -46,8 +62,14 @@
           (click)="delete.emit()"
           class="post-card__icon-button post-card__icon-button--danger"
           [disabled]="deleting"
-          aria-label="Delete post {{ postModel?.title }}"
+          [attr.aria-label]="
+            'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' }
+          "
+          title="{{ 'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' } }}"
         >
+          <span class="sr-only">{{
+            'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' }
+          }}</span>
           <lucide-icon [img]="Trash2"></lucide-icon>
         </button>
       </div>
@@ -72,7 +94,9 @@
         class="post-card__toggle"
         (click)="toggleExpansion()"
       >
-        {{ isExpanded ? 'Show less' : 'Show more' }}
+        {{
+          isExpanded ? ('postCard.showLess' | appTranslate) : ('postCard.showMore' | appTranslate)
+        }}
       </button>
     }
   </mat-card-content>
@@ -80,7 +104,7 @@
   <mat-card-actions align="end" class="post-card__actions">
     @if (openSection !== 'composer') {
       <button appButton variant="primary" size="sm" type="button" (click)="openComposer()">
-        Post comment
+        {{ 'common.actions.postComment' | appTranslate }}
       </button>
     }
 
@@ -94,7 +118,11 @@
       class="post-card__comments-toggle"
     >
       <lucide-icon [img]="MessageSquare"></lucide-icon>
-      {{ openSection === 'comments' ? 'Hide comments' : 'View comments' }}
+      {{
+        openSection === 'comments'
+          ? ('common.actions.hideComments' | appTranslate)
+          : ('common.actions.showComments' | appTranslate)
+      }}
       <span class="post-card__comment-count">({{ commentCount }})</span>
     </button>
   </mat-card-actions>

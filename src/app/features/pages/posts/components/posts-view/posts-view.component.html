@@ -3,17 +3,19 @@
     <header class="posts-page__header app-page__header">
       <div class="app-page__heading">
         <h1 class="app-page__title">{{ 'posts.title' | appTranslate }}</h1>
-        <p class="app-page__meta">{{ totalPosts() }} total posts</p>
+        <p class="app-page__meta">
+          {{ 'posts.summaryHeading' | appTranslate: { count: totalPosts() } }}
+        </p>
       </div>
       <button
         appButton
         variant="primary"
         type="button"
         (click)="createPost.emit()"
-        aria-label="Create new post"
+        [attr.aria-label]="'common.actions.newPost' | appTranslate"
       >
         <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
-        <span>{{ 'posts.new' | appTranslate }}</span>
+        <span>{{ 'common.actions.newPost' | appTranslate }}</span>
       </button>
     </header>
 
@@ -33,19 +35,19 @@
     <!-- server errors are surfaced via global ToastService -->
 
     @if (loading()) {
-      <div class="app-progress posts-page__loader" role="status" aria-live="polite">
+      <output class="app-progress posts-page__loader" aria-live="polite">
         <mat-progress-bar
           mode="indeterminate"
           color="accent"
           class="app-progress-bar"
         ></mat-progress-bar>
-        <span class="app-progress__text">Loading posts...</span>
-      </div>
+        <span class="app-progress__text">{{ 'posts.loading' | appTranslate }}</span>
+      </output>
     }
 
     @if (!loading() && !error() && posts().length === 0) {
       <app-alert variant="info" class="posts-page__alert">
-        No posts match your filters yet. Try adjusting the search or refresh the list.
+        {{ 'posts.emptyState' | appTranslate }}
       </app-alert>
     }
 

@@ -9,6 +9,7 @@ import {
 } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { User } from '@/app/shared/models/user';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
@@ -26,11 +27,12 @@ export class UsersUiService {
   private readonly notifications = inject(NotificationsService);
   private readonly usersApi = inject(UsersApiService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(I18nService);
   private readonly usersStore = injectUsersService();
 
   openCreateUserModal(): void {
     const config = this.dialogLayouts.form<void, 'success' | 'cancel', UserForm>({
-      ariaLabel: 'New user',
+      ariaLabel: this.i18n.translate('users.create.ariaLabel'),
       desktop: { width: '37.5rem' },
     });
     const ref = this.dialog.open<'success' | 'cancel', void, UserForm>(UserForm, config);
@@ -38,7 +40,7 @@ export class UsersUiService {
     ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
       this.overlays.release('user-form');
       if (result === 'success') {
-        this.notifications.showSuccess('User created');
+        this.notifications.showSuccess(this.i18n.translate('users.create.success'));
         this.usersStore.loadUsers({ pushUrl: false });
       }
     });
@@ -51,7 +53,7 @@ export class UsersUiService {
       .subscribe({
         next: (user) => {
           const config = this.dialogLayouts.form<{ user: User }, 'success' | 'cancel', UserForm>({
-            ariaLabel: 'Edit user',
+            ariaLabel: this.i18n.translate('users.update.ariaLabel'),
             desktop: { width: '37.5rem' },
             data: { user },
           });
@@ -63,7 +65,7 @@ export class UsersUiService {
           ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
             this.overlays.release('user-form');
             if (result === 'success') {
-              this.notifications.showSuccess('User updated');
+              this.notifications.showSuccess(this.i18n.translate('users.update.success'));
               this.usersStore.loadUsers({ pushUrl: false });
             }
           });
@@ -77,25 +79,25 @@ export class UsersUiService {
 
   confirmDelete(user: User): void {
     const data: DeleteConfirmData = {
-      title: 'Delete User',
-      message: `Are you sure you want to delete ${user.name}? This action cannot be undone.`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
-      inProgressText: 'Deleting...',
-      errorMessage: 'Unable to delete user right now. Please try again.',
+      title: this.i18n.translate('users.delete.title'),
+      message: this.i18n.translate('users.delete.message', { name: user.name }),
+      confirmText: this.i18n.translate('users.delete.confirm'),
+      cancelText: this.i18n.translate('users.delete.cancel'),
+      inProgressText: this.i18n.translate('users.delete.deleting'),
+      errorMessage: this.i18n.translate('users.delete.error'),
       confirmAction: () => {
         this.usersStore.setDeleting(user.id);
         return this.usersApi.delete(user.id).pipe(
           tap({
             next: () => {
-              this.notifications.showSuccess('User deleted');
+              this.notifications.showSuccess(this.i18n.translate('users.delete.success'));
               this.usersStore.loadUsers({ pushUrl: false });
             },
             error: (err) => {
               console.error('Delete failed:', err);
               const message = this.notifications.showHttpError(
                 err,
-                'Unable to delete user right now. Please try again.',
+                this.i18n.translate('users.delete.error'),
               );
               throw new Error(message);
             },

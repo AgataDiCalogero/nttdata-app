@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
@@ -29,6 +30,7 @@ import { UsersApiService } from '@/app/shared/services/users/users-api.service';
     AlertComponent,
     SelectComponent,
     AutoFocusDirective,
+    TranslatePipe,
   ],
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],

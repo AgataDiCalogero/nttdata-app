@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 @Component({
@@ -8,7 +9,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule, ButtonComponent, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {

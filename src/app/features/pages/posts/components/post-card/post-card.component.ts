@@ -11,6 +11,7 @@ import {
 import { MatCardModule } from '@angular/material/card';
 import { LucideAngularModule, MessageSquare, Pencil, Trash2 } from 'lucide-angular';
 
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
@@ -26,6 +27,7 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
     MatCardModule,
     ButtonComponent,
     PostCommentsComponent,
+    TranslatePipe,
   ],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],

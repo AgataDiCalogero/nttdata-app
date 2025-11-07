@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 
 import { TokenValidationService } from '@app/core/auth/token-validation.service';
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -54,6 +55,7 @@ export class Login {
   private readonly destroyRef = inject(DestroyRef);
   private readonly overlays = inject(UiOverlayService);
   private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   readonly loading = signal(false);
   private readonly apiErrorMessage = signal<string | null>(null);
@@ -76,12 +78,12 @@ export class Login {
     }
 
     if (control.hasError('required')) {
-      return 'Access token is required.';
+      return this.i18n.translate('login.errors.required');
     }
 
     const minlength = control.getError('minlength');
     if (minlength) {
-      return `Access token must be at least ${minlength.requiredLength} characters.`;
+      return this.i18n.translate('login.errors.minLength', { count: minlength.requiredLength });
     }
 
     if (control.hasError('api')) {
@@ -147,8 +149,7 @@ export class Login {
         this.loading.set(false);
 
         if (!result.success) {
-          const message =
-            result.message ?? 'Unable to verify the token right now. Please try again.';
+          const message = result.message ?? this.i18n.translate('login.errors.unableToVerify');
           if (result.code === 'unauthorized' || result.code === 'empty') {
             const existingErrors = this.tokenControl.errors ?? {};
             this.tokenControl.setErrors({ ...existingErrors, api: true });

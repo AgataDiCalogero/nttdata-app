@@ -16,6 +16,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
 import { tap, take } from 'rxjs';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -38,6 +40,7 @@ import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
     AlertComponent,
     LucideAngularModule,
     MatProgressBarModule,
+    TranslatePipe,
   ],
   templateUrl: './post-comments.component.html',
   styleUrls: ['./post-comments.component.scss'],
@@ -59,6 +62,7 @@ export class PostCommentsComponent {
   private readonly postsApi = inject(PostsApiService);
   private readonly toast = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(I18nService);
   private readonly overlays = inject(UiOverlayService);
 
   readonly Pencil = Pencil;
@@ -68,19 +72,19 @@ export class PostCommentsComponent {
   readonly deletingId = signal<number | null>(null);
   deleteComment(comment: ModelComment): void {
     const data: DeleteConfirmData = {
-      title: 'Delete Comment',
-      message: `Are you sure you want to delete this comment? This action cannot be undone.`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
-      inProgressText: 'Deleting...',
-      errorMessage: 'Unable to delete this comment right now.',
+      title: this.i18n.translate('postComments.deleteConfirm.title'),
+      message: this.i18n.translate('postComments.deleteConfirm.message'),
+      confirmText: this.i18n.translate('common.actions.delete'),
+      cancelText: this.i18n.translate('common.actions.cancel'),
+      inProgressText: this.i18n.translate('postComments.deleteConfirm.inProgress'),
+      errorMessage: this.i18n.translate('postComments.deleteConfirm.errorMessage'),
       confirmAction: () => {
         this.deletingId.set(comment.id);
         return this.postsApi.deleteComment(comment.id).pipe(
           takeUntilDestroyed(this.destroyRef),
           tap({
             next: () => {
-              this.toast.show('success', 'Comment deleted');
+              this.toast.show('success', this.i18n.translate('postComments.toast.deleted'));
               this.commentDeleted.emit(comment.id);
               this.deletingId.set(null);
             },
@@ -89,8 +93,8 @@ export class PostCommentsComponent {
               console.error('Failed to delete comment', err);
               const message =
                 err?.status === 429
-                  ? 'Too many attempts. Please wait and retry.'
-                  : 'Unable to delete this comment right now.';
+                  ? this.i18n.translate('postComments.errors.rateLimit')
+                  : this.i18n.translate('postComments.deleteConfirm.errorMessage');
               this.toast.show('error', message);
               throw new Error(message);
             },
@@ -170,7 +174,7 @@ export class PostCommentsComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (updated: ModelComment) => {
-          this.toast.show('success', 'Comment updated');
+          this.toast.show('success', this.i18n.translate('postComments.toast.updated'));
           this.commentUpdated.emit(updated);
           this.submittingEdit.set(false);
           this.cancelEdit();
@@ -180,12 +184,12 @@ export class PostCommentsComponent {
           this.submittingEdit.set(false);
           if (err?.status === 422) {
             // Keep inline validation errors for the edit form
-            this.editError.set('Comment content is not valid. Please revise and try again.');
+            this.editError.set(this.i18n.translate('postComments.errors.editInvalid'));
           } else if (err?.status === 429) {
             // Rate limit / server-level error -> show centralized toast
-            this.toast.show('error', 'Too many attempts. Please wait a moment and retry.');
+            this.toast.show('error', this.i18n.translate('postComments.errors.rateLimit'));
           } else {
-            this.toast.show('error', 'Unable to update this comment right now.');
+            this.toast.show('error', this.i18n.translate('postComments.toast.updateFailed'));
           }
         },
       });

@@ -31,50 +31,32 @@
         <fieldset class="appearance-switcher__options" aria-label="Theme options">
           <legend class="visually-hidden">Theme options</legend>
 
-          <label class="appearance-option" [class.appearance-option--active]="isLightPreference()">
-            <input
-              type="radio"
-              name="theme-preference"
-              value="light"
-              [checked]="isLightPreference()"
-              (change)="setPreference('light')"
-              class="visually-hidden"
-            />
+          <button
+            type="button"
+            class="appearance-option"
+            [class.appearance-option--active]="isLightPreference()"
+            (click)="setPreference('light')"
+            [attr.aria-pressed]="isLightPreference() ? 'true' : 'false'"
+          >
             <span class="appearance-option__icon">
               <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Light</span>
-          </label>
+          </button>
 
-          <label class="appearance-option" [class.appearance-option--active]="isDarkPreference()">
-            <input
-              type="radio"
-              name="theme-preference"
-              value="dark"
-              [checked]="isDarkPreference()"
-              (change)="setPreference('dark')"
-              class="visually-hidden"
-            />
+          <button
+            type="button"
+            class="appearance-option"
+            [class.appearance-option--active]="isDarkPreference()"
+            (click)="setPreference('dark')"
+            [attr.aria-pressed]="isDarkPreference() ? 'true' : 'false'"
+          >
             <span class="appearance-option__icon">
               <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Dark</span>
-          </label>
+          </button>
 
-          <label class="appearance-option" [class.appearance-option--active]="isSystemPreference()">
-            <input
-              type="radio"
-              name="theme-preference"
-              value="system"
-              [checked]="isSystemPreference()"
-              (change)="setPreference('system')"
-              class="visually-hidden"
-            />
-            <span class="appearance-option__icon">
-              <lucide-icon [img]="Monitor" aria-hidden="true"></lucide-icon>
-            </span>
-            <span class="appearance-option__label">System</span>
-          </label>
         </fieldset>
       </div>
 

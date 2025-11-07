@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 
@@ -22,6 +23,7 @@ import { DeviceTypeService } from '@/app/shared/services/device-type.service';
     ButtonComponent,
     MatIconModule,
     StatusBadgeComponent,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

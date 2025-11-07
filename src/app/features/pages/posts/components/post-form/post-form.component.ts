@@ -17,6 +17,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { I18nService } from '@app/shared/i18n/i18n.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
@@ -49,6 +51,7 @@ interface PostFormResult {
     MatSelectModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    TranslatePipe,
   ],
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss'],
@@ -61,6 +64,7 @@ export class PostForm {
   private readonly dialogRef = inject(DialogRef<PostFormResult | 'cancel'>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly dialogData = inject<PostFormDialogData | null>(DIALOG_DATA, { optional: true });
+  private readonly i18n = inject(I18nService);
 
   readonly users = signal<User[]>(this.dialogData?.users ?? []);
   private readonly editablePost = signal<Post | null>(this.dialogData?.post ?? null);
@@ -89,13 +93,23 @@ export class PostForm {
   });
 
   readonly isEdit = computed(() => this.editablePost() !== null);
-  readonly dialogTitle = computed(() => (this.isEdit() ? 'Edit post' : 'Create a new post'));
-  readonly dialogSubtitle = computed(() =>
-    this.isEdit()
-      ? 'Update the title, author, or content of this post.'
-      : 'Share ideas or reports to help improve the city.',
-  );
-  readonly submitLabel = computed(() => (this.isEdit() ? 'Save changes' : 'Create post'));
+  readonly dialogTitle = computed(() => {
+    return this.isEdit()
+      ? this.i18n.translate('postForm.titleEdit')
+      : this.i18n.translate('postForm.titleNew');
+  });
+
+  readonly dialogSubtitle = computed(() => {
+    return this.isEdit()
+      ? this.i18n.translate('postForm.subtitleEdit')
+      : this.i18n.translate('postForm.subtitleNew');
+  });
+
+  readonly submitLabel = computed(() => {
+    if (this.submitting()) return this.i18n.translate('postForm.buttons.saving');
+    if (this.isEdit()) return this.i18n.translate('postForm.buttons.update');
+    return this.i18n.translate('postForm.buttons.create');
+  });
 
   readonly userOptions = computed(() =>
     this.users().map((user) => ({
@@ -165,7 +179,7 @@ export class PostForm {
         },
         error: (err) => {
           console.error('Failed to load users for post form:', err);
-          this.loadError.set('Unable to load users. Please retry.');
+          this.loadError.set(this.i18n.translate('postForm.errors.unableToLoadUsers'));
           this.loadingUsers.set(false);
         },
       });
@@ -225,9 +239,9 @@ export class PostForm {
           this.titleControl.setErrors({ api: true });
         } else if (status === 429) {
           // Global/server error: show a centralized toast
-          this.toast.show('error', 'Too many requests. Please try again later.');
+          this.toast.show('error', this.i18n.translate('postForm.errors.rateLimit'));
         } else {
-          this.toast.show('error', 'Unable to save the post. Please retry.');
+          this.toast.show('error', this.i18n.translate('postForm.errors.saveFailed'));
         }
       },
     });

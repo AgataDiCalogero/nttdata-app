@@ -7,11 +7,15 @@
             {{ initials(user) }}
           </div>
           <div class="user-card__title-wrapper">
-            <mat-card-title>{{ user.name || 'Unnamed user' }}</mat-card-title>
+            <mat-card-title>{{ user.name || ('users.unnamed' | appTranslate) }}</mat-card-title>
           </div>
           <app-status-badge
             [status]="user.status"
-            [ariaLabel]="user.status === 'active' ? 'Active user' : 'Inactive user'"
+            [ariaLabel]="
+              user.status === 'active'
+                ? ('common.status.aria.activeUser' | appTranslate)
+                : ('common.status.aria.inactiveUser' | appTranslate)
+            "
             [clickable]="true"
             (statusChange)="onStatusChange(user, $event)"
           ></app-status-badge>
@@ -22,8 +26,10 @@
               [iconOnly]="true"
               class="user-card__delete-mobile"
               (click)="onDelete(user, $event)"
-              aria-label="Delete user"
+              [attr.aria-label]="'userList.deleteAria' | appTranslate"
+              title="{{ 'userList.deleteAria' | appTranslate }}"
             >
+              <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
               <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
             </button>
           }
@@ -49,14 +55,14 @@
           variant="ghost"
           type="button"
           [routerLink]="['/users', user.id]"
-          aria-label="View user details"
+          [attr.aria-label]="'userList.viewAria' | appTranslate"
         >
           <mat-icon svgIcon="lucide:eye" aria-hidden="true"></mat-icon>
-          <span>View</span>
+          <span>{{ 'common.actions.view' | appTranslate }}</span>
         </button>
         <button appButton variant="secondary" (click)="onEdit(user, $event)">
           <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
-          <span>Edit</span>
+          <span>{{ 'common.actions.edit' | appTranslate }}</span>
         </button>
         @if (!isMobile()) {
           <button
@@ -65,8 +71,10 @@
             [iconOnly]="true"
             class="user-card__delete-desktop"
             (click)="onDelete(user, $event)"
-            aria-label="Delete user"
+            [attr.aria-label]="'userList.deleteAria' | appTranslate"
+            title="{{ 'userList.deleteAria' | appTranslate }}"
           >
+            <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
             <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
           </button>
         }

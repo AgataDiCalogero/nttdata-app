@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject } from '@angular/core';
+
+import { I18nService } from '@app/shared/i18n/i18n.service';
 
 import type { Post, Comment } from '@/app/shared/models/post';
 
@@ -20,6 +22,7 @@ export class PostsListComponent {
   readonly commentsLoading = input({} as Partial<Record<number, boolean>>);
   readonly deletingId = input(null as number | null);
   readonly userLookup = input({} as Record<number, string>);
+  private readonly i18n = inject(I18nService);
 
   readonly deletePost = output<Post>();
   readonly toggleComments = output<number>();
@@ -39,7 +42,7 @@ export class PostsListComponent {
 
   commentsLoaded(postId: number): boolean {
     const map = this.commentsMap();
-    return Object.prototype.hasOwnProperty.call(map, postId);
+    return Object.hasOwn(map, postId);
   }
 
   onCommentCreated(postId: number, comment: Comment): void {
@@ -58,8 +61,10 @@ export class PostsListComponent {
     this.commentDeleted.emit({ postId, commentId });
   }
 
-  authorName(post: Post): string | undefined {
-    return this.userLookup()[post.user_id];
+  authorName(post: Post): string | null {
+    const name = this.userLookup()[post.user_id];
+    if (name) return name;
+    return this.i18n.translate('userDetail.avatarFallback') + ' #' + post.user_id;
   }
 
   commentsAreLoading(postId: number): boolean {
