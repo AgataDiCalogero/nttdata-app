@@ -34,7 +34,7 @@ if (isMainModule(import.meta.url)) {
       throw error;
     }
 
-    console.log(`Node Express server listening on http://localhost:${port}`);
+  console.info(`Node Express server listening on http://localhost:${port}`);
   });
 }
 

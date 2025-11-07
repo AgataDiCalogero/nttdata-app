@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "NTT Data App"
+  },
+  "nav": {
+    "users": "Utenti",
+    "posts": "Post",
+    "logout": "Esci"
+  },
+  "login": {
+    "title": "Bentornato",
+    "subtitle": "Inserisci il tuo token di accesso per continuare.",
+    "tokenLabel": "Token di accesso",
+    "tokenPlaceholder": "Incolla il tuo personal access token",
+    "submit": "Accedi",
+    "help": "Hai perso il token?"
+  },
+  "users": {
+    "title": "Utenti",
+    "subtitle": "Gestisci e consulta tutti gli utenti registrati",
+    "new": "Nuovo utente",
+    "empty": "Nessun utente trovato."
+  },
+  "posts": {
+    "title": "Post",
+    "subtitle": "Post dell'utente. I commenti si aprono in linea.",
+    "new": "Nuovo post"
+  }
+}

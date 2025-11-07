@@ -1,0 +1,15 @@
+<div class="locale-switcher" role="group" [attr.aria-label]="label()">
+  @for (lang of locales; track lang) {
+    <button
+      appButton
+      variant="ghost"
+      size="sm"
+      type="button"
+      [class.locale-switcher__button--active]="locale() === lang"
+      (click)="setLocale(lang)"
+      [attr.aria-pressed]="locale() === lang ? 'true' : 'false'"
+    >
+      {{ lang | uppercase }}
+    </button>
+  }
+</div>

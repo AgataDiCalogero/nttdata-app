@@ -5,8 +5,8 @@
     <div class="users-container app-container app-container--full app-container--flush">
       <header class="users-page__header app-page__header">
         <div class="app-page__heading">
-          <h1 class="app-page__title">Users</h1>
-          <p class="app-subtitle">Manage and view all registered users</p>
+          <h1 class="app-page__title">{{ 'users.title' | appTranslate }}</h1>
+          <p class="app-subtitle">{{ 'users.subtitle' | appTranslate }}</p>
         </div>
         <button
           appButton
@@ -16,7 +16,7 @@
           aria-label="Create new user"
         >
           <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
-          <span>New User</span>
+          <span>{{ 'users.new' | appTranslate }}</span>
         </button>
       </header>
 
@@ -34,12 +34,8 @@
 
       @if (loading()) {
         <div class="users-loader" aria-live="polite">
-          <mat-progress-spinner
-            mode="indeterminate"
-            diameter="36"
-            strokeWidth="3"
-          ></mat-progress-spinner>
-          <span>Loading users…</span>
+          <app-user-list-skeleton></app-user-list-skeleton>
+          <span class="sr-only">Loading users…</span>
         </div>
       } @else {
         @if (error(); as err) {
@@ -80,7 +76,7 @@
             <mat-card class="users-empty" appearance="outlined">
               <mat-card-content>
                 <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-                <p>No users found.</p>
+                <p>{{ 'users.empty' | appTranslate }}</p>
               </mat-card-content>
             </mat-card>
           }

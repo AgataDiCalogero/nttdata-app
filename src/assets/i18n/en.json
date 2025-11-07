@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "NTT Data App"
+  },
+  "nav": {
+    "users": "Users",
+    "posts": "Posts",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Enter your access token to continue.",
+    "tokenLabel": "Access token",
+    "tokenPlaceholder": "Paste your personal access token",
+    "submit": "Sign in",
+    "help": "Lost your token?"
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "Manage and view all registered users",
+    "new": "New User",
+    "empty": "No users found."
+  },
+  "posts": {
+    "title": "Posts",
+    "subtitle": "Posts by this user. Comments open inline.",
+    "new": "New Post"
+  }
+}

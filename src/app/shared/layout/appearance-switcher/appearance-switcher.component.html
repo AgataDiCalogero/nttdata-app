@@ -11,7 +11,7 @@
     class="appearance-switcher__trigger"
     id="appearance-switcher-trigger"
     (click)="toggleMenu()"
-    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
     aria-haspopup="true"
     [attr.aria-controls]="menuOpen() ? 'appearance-switcher-menu' : null"
     aria-label="Open appearance settings"
@@ -34,12 +34,13 @@
           <button
             type="button"
             class="appearance-option"
-            [class.appearance-option--active]="isLight()"
+            [class.appearance-option--active]="isLightPreference()"
             role="menuitemradio"
-            aria-checked="false"
-            [attr.aria-checked]="isLight() ? 'true' : 'false'"
-            (click)="setTheme('light')"
-            [attr.aria-label]="isLight() ? 'Light theme (current)' : 'Switch to light theme'"
+            [attr.aria-checked]="isLightPreference() ? 'true' : 'false'"
+            (click)="setPreference('light')"
+            [attr.aria-label]="
+              isLightPreference() ? 'Light theme (current)' : 'Switch to light theme'
+            "
           >
             <span class="appearance-option__icon">
               <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
@@ -50,17 +51,35 @@
           <button
             type="button"
             class="appearance-option"
-            [class.appearance-option--active]="!isLight()"
+            [class.appearance-option--active]="isDarkPreference()"
             role="menuitemradio"
-            aria-checked="false"
-            [attr.aria-checked]="!isLight() ? 'true' : 'false'"
-            (click)="setTheme('dark')"
-            [attr.aria-label]="!isLight() ? 'Dark theme (current)' : 'Switch to dark theme'"
+            [attr.aria-checked]="isDarkPreference() ? 'true' : 'false'"
+            (click)="setPreference('dark')"
+            [attr.aria-label]="
+              isDarkPreference() ? 'Dark theme (current)' : 'Switch to dark theme'
+            "
           >
             <span class="appearance-option__icon">
               <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
             </span>
             <span class="appearance-option__label">Dark</span>
+          </button>
+
+          <button
+            type="button"
+            class="appearance-option"
+            [class.appearance-option--active]="isSystemPreference()"
+            role="menuitemradio"
+            [attr.aria-checked]="isSystemPreference() ? 'true' : 'false'"
+            (click)="setPreference('system')"
+            [attr.aria-label]="
+              isSystemPreference() ? 'System theme (current)' : 'Use system theme'
+            "
+          >
+            <span class="appearance-option__icon">
+              <lucide-icon [img]="Monitor" aria-hidden="true"></lucide-icon>
+            </span>
+            <span class="appearance-option__label">System</span>
           </button>
         </fieldset>
       </div>
@@ -78,6 +97,7 @@
             aria-label="Reading mode"
             [checked]="isReadingMode()"
             (change)="toggleReadingMode()"
+            [attr.aria-pressed]="isReadingMode() ? 'true' : 'false'"
           ></mat-slide-toggle>
         </div>
       </div>

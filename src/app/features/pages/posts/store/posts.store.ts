@@ -21,6 +21,7 @@ import { PostsFiltersService } from './posts-filters.service';
 
 interface PostsState {
   posts: Post[];
+  postEntities: Record<number, Post>;
   pagination: PaginationMeta | null;
   commentsMap: Partial<Record<number, Comment[]>>;
   commentsLoading: Partial<Record<number, boolean>>;
@@ -37,6 +38,7 @@ interface PostsState {
 
 const defaultState: PostsState = {
   posts: [],
+  postEntities: {},
   pagination: null,
   commentsMap: {},
   commentsLoading: {},
@@ -118,6 +120,11 @@ export const PostsStoreAdapter = signalStore(
             patchState(store, (state) => ({
               deletingId: null,
               posts: state.posts.filter((item) => item.id !== post.id),
+              postEntities: (() => {
+                const next = { ...state.postEntities };
+                delete next[post.id];
+                return next;
+              })(),
               pagination: state.pagination
                 ? {
                     ...state.pagination,
@@ -304,6 +311,10 @@ export const PostsStoreAdapter = signalStore(
       onPostUpdated(updated: Post): void {
         patchState(store, (state) => ({
           posts: state.posts.map((post) => (post.id === updated.id ? updated : post)),
+          postEntities: {
+            ...state.postEntities,
+            [updated.id]: updated,
+          },
         }));
       },
 
@@ -331,12 +342,18 @@ export const PostsStoreAdapter = signalStore(
             patchState(store, { loading: true, error: null });
             return postsApi.list(params).pipe(
               tap((result) => {
+                const list = result?.items ?? [];
+                const entities = list.reduce<Record<number, Post>>((acc, post) => {
+                  acc[post.id] = post;
+                  return acc;
+                }, {});
                 patchState(store, {
                   loading: false,
-                  posts: result?.items ?? [],
+                  posts: list,
+                  postEntities: entities,
                   pagination: result?.pagination ?? null,
                 });
-                prefetchCommentCounts(result?.items ?? []);
+                prefetchCommentCounts(list);
               }),
               catchError((err) => {
                 console.error('Failed to load posts:', err);

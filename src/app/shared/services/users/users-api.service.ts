@@ -4,6 +4,15 @@ import { map, shareReplay, tap, type Observable } from 'rxjs';
 import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
 import type { ListResponse } from '@/app/shared/models/list-response';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
+import {
+  type CreateUserDto,
+  type UpdateUserDto,
+  type UserDto,
+  mapCreateUserToDto,
+  mapUpdateUserToDto,
+  mapUserDto,
+  mapUsersDto,
+} from '@/app/shared/models/dto/user.dto';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
@@ -36,7 +45,7 @@ export class UsersApiService {
     }
 
     const request$ = this.http
-      .get<User[]>(this.base, { params: httpParams, observe: 'response' })
+      .get<UserDto[]>(this.base, { params: httpParams, observe: 'response' })
       .pipe(
         map((resp) => this.mapResponse(resp)),
         tap({
@@ -57,25 +66,29 @@ export class UsersApiService {
   }
 
   getById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.base}/${id}`);
+    return this.http.get<UserDto>(`${this.base}/${id}`).pipe(map(mapUserDto));
   }
 
   create(payload: CreateUser): Observable<User> {
-    return this.http.post<User>(this.base, payload).pipe(tap(() => this.listCache.clear()));
+    const dto: CreateUserDto = mapCreateUserToDto(payload);
+    return this.http
+      .post<UserDto>(this.base, dto)
+      .pipe(map(mapUserDto), tap(() => this.listCache.clear()));
   }
 
   update(id: number, payload: UpdateUser): Observable<User> {
+    const dto: UpdateUserDto = mapUpdateUserToDto(payload);
     return this.http
-      .patch<User>(`${this.base}/${id}`, payload)
-      .pipe(tap(() => this.listCache.clear()));
+      .patch<UserDto>(`${this.base}/${id}`, dto)
+      .pipe(map(mapUserDto), tap(() => this.listCache.clear()));
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/${id}`).pipe(tap(() => this.listCache.clear()));
   }
 
-  private mapResponse(resp: HttpResponse<User[]>): ListResponse<User> {
-    const data = resp.body ?? [];
+  private mapResponse(resp: HttpResponse<UserDto[]>): ListResponse<User> {
+    const data = mapUsersDto(resp.body);
     const totalHeader = Number(resp.headers.get('X-Pagination-Total')) || 0;
     const limitHeader = Number(resp.headers.get('X-Pagination-Limit')) || 0;
     const pagesHeader = Number(resp.headers.get('X-Pagination-Pages')) || 0;

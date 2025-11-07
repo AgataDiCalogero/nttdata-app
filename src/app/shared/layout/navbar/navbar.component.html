@@ -8,7 +8,7 @@
       height="40"
       priority
     />
-    <span class="brand__label">NTT Data App</span>
+    <span class="brand__label">{{ 'app.name' | appTranslate }}</span>
   </a>
 
   <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
@@ -23,7 +23,7 @@
         (click)="closeMenu()"
       >
         <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-        <span>Users</span>
+        <span>{{ 'nav.users' | appTranslate }}</span>
       </a>
       <a
         appButton
@@ -35,7 +35,7 @@
         (click)="closeMenu()"
       >
         <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-        <span>Posts</span>
+        <span>{{ 'nav.posts' | appTranslate }}</span>
       </a>
     }
   </nav>
@@ -44,12 +44,13 @@
 
   <div class="controls">
     <div class="toolbar-menu-trigger">
+      <app-language-switcher></app-language-switcher>
       <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
 
       @if (!isLoginRoute() && isLogged()) {
         <button appButton variant="secondary" type="button" class="logout-btn" (click)="logout()">
           <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
-          <span class="logout-text sr-only">Logout</span>
+          <span class="logout-text sr-only">{{ 'nav.logout' | appTranslate }}</span>
         </button>
       }
     </div>
@@ -90,7 +91,7 @@
       (click)="closeMenu()"
     >
       <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-      <span>Users</span>
+      <span>{{ 'nav.users' | appTranslate }}</span>
     </button>
     <button
       mat-menu-item
@@ -100,7 +101,7 @@
       (click)="closeMenu()"
     >
       <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-      <span>Posts</span>
+      <span>{{ 'nav.posts' | appTranslate }}</span>
     </button>
   }
 </mat-menu>

@@ -9,10 +9,24 @@ export class AuthService {
   private readonly tokenSignal = signal<string | null>(null);
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      const saved = localStorage.getItem(STORAGE_KEY); // <-- usa costante
-      this.tokenSignal.set(saved);
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
     }
+
+    const session = this.getSessionStorage();
+    const local = this.getLocalStorage();
+
+    let saved = session?.getItem(STORAGE_KEY) ?? null;
+    if (!saved) {
+      const legacy = local?.getItem(STORAGE_KEY) ?? null;
+      if (legacy) {
+        saved = legacy;
+        session?.setItem(STORAGE_KEY, legacy);
+        local?.removeItem(STORAGE_KEY);
+      }
+    }
+
+    this.tokenSignal.set(saved);
   }
 
   get token() {
@@ -26,16 +40,36 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(STORAGE_KEY, token.trim()); // <-- trim qui
-    }
-    this.tokenSignal.set(token.trim());
+    const normalized = token.trim();
+    this.getSessionStorage()?.setItem(STORAGE_KEY, normalized);
+    this.tokenSignal.set(normalized);
   }
 
   clearToken() {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    this.getSessionStorage()?.removeItem(STORAGE_KEY);
+    this.getLocalStorage()?.removeItem(STORAGE_KEY);
     this.tokenSignal.set(null);
+  }
+
+  private getSessionStorage(): Storage | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+    try {
+      return globalThis?.sessionStorage ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  private getLocalStorage(): Storage | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+    try {
+      return globalThis?.localStorage ?? null;
+    } catch {
+      return null;
+    }
   }
 }

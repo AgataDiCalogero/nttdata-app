@@ -11,6 +11,22 @@ import type {
 } from '@/app/shared/models/post';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { ListResponse } from '@/app/shared/models/list-response';
+import {
+  type CommentDto,
+  type CreateCommentDto,
+  type CreatePostDto,
+  type PostDto,
+  type UpdateCommentDto,
+  type UpdatePostDto,
+  mapCommentDto,
+  mapCommentsDto,
+  mapCreateCommentToDto,
+  mapCreatePostToDto,
+  mapPostDto,
+  mapPostsDto,
+  mapUpdateCommentToDto,
+  mapUpdatePostToDto,
+} from '@/app/shared/models/dto/post.dto';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {
@@ -32,20 +48,22 @@ export class PostsApiService {
     if (userId) httpParams = httpParams.set('user_id', String(userId));
     if (title) httpParams = httpParams.set('title', title);
     return this.http
-      .get<Post[]>(this.base, { params: httpParams, observe: 'response' })
+      .get<PostDto[]>(this.base, { params: httpParams, observe: 'response' })
       .pipe(map((resp) => this.mapResponse(resp)));
   }
 
   getById(id: number): Observable<Post> {
-    return this.http.get<Post>(`${this.base}/${id}`);
+    return this.http.get<PostDto>(`${this.base}/${id}`).pipe(map(mapPostDto));
   }
 
   create(payload: CreatePost): Observable<Post> {
-    return this.http.post<Post>(this.base, payload);
+    const dto: CreatePostDto = mapCreatePostToDto(payload);
+    return this.http.post<PostDto>(this.base, dto).pipe(map(mapPostDto));
   }
 
   update(id: number, payload: UpdatePost): Observable<Post> {
-    return this.http.patch<Post>(`${this.base}/${id}`, payload);
+    const dto: UpdatePostDto = mapUpdatePostToDto(payload);
+    return this.http.patch<PostDto>(`${this.base}/${id}`, dto).pipe(map(mapPostDto));
   }
 
   delete(id: number): Observable<void> {
@@ -53,13 +71,15 @@ export class PostsApiService {
   }
 
   listComments(postId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.base}/${postId}/comments`);
+    return this.http
+      .get<CommentDto[]>(`${this.base}/${postId}/comments`)
+      .pipe(map((res) => mapCommentsDto(res)));
   }
 
   countComments(postId: number): Observable<number> {
     const params = new HttpParams().set('per_page', '1');
     return this.http
-      .get<Comment[]>(`${this.base}/${postId}/comments`, { params, observe: 'response' })
+      .get<CommentDto[]>(`${this.base}/${postId}/comments`, { params, observe: 'response' })
       .pipe(
         map((resp) => {
           const header = Number(resp.headers.get('X-Pagination-Total'));
@@ -72,19 +92,23 @@ export class PostsApiService {
   }
 
   createComment(postId: number, payload: CreateComment): Observable<Comment> {
-    return this.http.post<Comment>(`${this.base}/${postId}/comments`, payload);
+    const dto: CreateCommentDto = mapCreateCommentToDto(postId, payload);
+    return this.http
+      .post<CommentDto>(`${this.base}/${postId}/comments`, dto)
+      .pipe(map(mapCommentDto));
   }
 
   updateComment(commentId: number, payload: UpdateComment): Observable<Comment> {
-    return this.http.patch<Comment>(`/comments/${commentId}`, payload);
+    const dto: UpdateCommentDto = mapUpdateCommentToDto(payload);
+    return this.http.patch<CommentDto>(`/comments/${commentId}`, dto).pipe(map(mapCommentDto));
   }
 
   deleteComment(commentId: number): Observable<void> {
     return this.http.delete<void>(`/comments/${commentId}`);
   }
 
-  private mapResponse(resp: HttpResponse<Post[]>): ListResponse<Post> {
-    const data = resp.body ?? [];
+  private mapResponse(resp: HttpResponse<PostDto[]>): ListResponse<Post> {
+    const data = mapPostsDto(resp.body);
     const totalHeader = Number(resp.headers.get('X-Pagination-Total')) || 0;
     const limitHeader = Number(resp.headers.get('X-Pagination-Limit')) || 0;
     const pagesHeader = Number(resp.headers.get('X-Pagination-Pages')) || 0;

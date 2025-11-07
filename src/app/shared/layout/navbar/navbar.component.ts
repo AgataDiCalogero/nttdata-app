@@ -21,6 +21,8 @@ import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { filter } from 'rxjs';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
 import { LucideAngularModule, Menu } from 'lucide-angular';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { LanguageSwitcherComponent } from '@app/shared/i18n/language-switcher.component';
 
 @Component({
   selector: 'app-navbar',
@@ -28,6 +30,8 @@ import { LucideAngularModule, Menu } from 'lucide-angular';
     RouterModule,
     NgOptimizedImage,
     AppearanceSwitcherComponent,
+    LanguageSwitcherComponent,
+    TranslatePipe,
     MatToolbarModule,
     ButtonComponent,
     MatIconModule,

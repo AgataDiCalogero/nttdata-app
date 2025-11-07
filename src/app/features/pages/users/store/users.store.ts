@@ -21,7 +21,8 @@ interface SortState {
 }
 
 interface UsersState {
-  items: User[];
+  ids: number[];
+  entities: Record<number, User>;
   pagination: PaginationMeta | null;
   loading: boolean;
   error: string | null;
@@ -67,7 +68,8 @@ const findNearestPerPage = (
 
 export const UsersStoreAdapter = signalStore(
   withState<UsersState>({
-    items: [],
+    ids: [],
+    entities: {},
     pagination: null,
     loading: true,
     error: null,
@@ -82,6 +84,7 @@ export const UsersStoreAdapter = signalStore(
   withComputed((store) => ({
     users: computed(() => {
       const { field, dir } = store.sortState();
+      const entities = store.entities();
 
       const getValue = (u: User) => {
         const v = u[field]; // SortField ⊂ keyof User → ok per TS
@@ -90,8 +93,9 @@ export const UsersStoreAdapter = signalStore(
       };
 
       return store
-        .items()
-        .slice()
+        .ids()
+        .map((id) => entities[id])
+        .filter((user): user is User => Boolean(user))
         .sort((a, b) => {
           const av = getValue(a);
           const bv = getValue(b);
@@ -143,6 +147,9 @@ export const UsersStoreAdapter = signalStore(
           loading: false,
           error: null,
           searchTerm: term,
+          ids: [],
+          entities: {},
+          pagination: null,
         });
         return;
       }
@@ -175,8 +182,9 @@ export const UsersStoreAdapter = signalStore(
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe({
           next: ({ items, pagination }) => {
+            const list = items ?? [];
             const resolvedLimit = Math.max(1, pagination?.limit ?? targetPerPage);
-            const resolvedTotal = pagination?.total ?? items.length;
+            const resolvedTotal = pagination?.total ?? list.length;
             const resolvedPages =
               pagination?.pages ??
               (resolvedTotal ? Math.ceil(Math.max(resolvedTotal, 1) / resolvedLimit) : 1);
@@ -194,9 +202,15 @@ export const UsersStoreAdapter = signalStore(
 
             const normalizedLimit = ensurePerPage(meta.limit);
             const adjustedMeta: PaginationMeta = { ...meta, limit: normalizedLimit };
+            const entities = list.reduce<Record<number, User>>((acc, user) => {
+              acc[user.id] = user;
+              return acc;
+            }, {});
+            const ids = list.map((user) => user.id);
 
             patchState(store, {
-              items: items ?? [],
+              ids,
+              entities,
               pagination: adjustedMeta,
               loading: false,
               page: adjustedMeta.page,
@@ -216,7 +230,7 @@ export const UsersStoreAdapter = signalStore(
               });
             }
 
-            if (!items.length && adjustedMeta.total > 0 && adjustedMeta.page > adjustedMeta.pages) {
+            if (!list.length && adjustedMeta.total > 0 && adjustedMeta.page > adjustedMeta.pages) {
               loadUsers({
                 page: adjustedMeta.pages,
                 perPage: normalizedLimit,
@@ -282,7 +296,8 @@ export const UsersStoreAdapter = signalStore(
         } else if (bootstrapped) {
           bootstrapped = false;
           patchState(store, {
-            items: [],
+            ids: [],
+            entities: {},
             pagination: null,
             loading: false,
             error: null,
@@ -324,18 +339,21 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const updateStatus = (userId: number, status: 'active' | 'inactive') => {
-      const currentItems = store.items();
-      const userIndex = currentItems.findIndex((u) => u.id === userId);
-      if (userIndex === -1) {
+      const entities = store.entities();
+      const existing = entities[userId];
+      if (!existing) {
         return;
       }
 
-      // Optimistically update the UI
-      const updatedUser = { ...currentItems[userIndex], status };
-      const updatedItems = [...currentItems];
-      updatedItems[userIndex] = updatedUser;
+      const original = { ...existing };
+      const optimistic = { ...original, status };
 
-      patchState(store, { items: updatedItems });
+      patchState(store, {
+        entities: {
+          ...entities,
+          [userId]: optimistic,
+        },
+      });
 
       // Make the API call
       usersApi
@@ -343,31 +361,22 @@ export const UsersStoreAdapter = signalStore(
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe({
           next: (updatedUser) => {
-            // Update with the server response
-            const currentItems = store.items();
-            const userIndex = currentItems.findIndex((u) => u.id === userId);
-            if (userIndex !== -1) {
-              const finalItems = [...currentItems];
-              finalItems[userIndex] = updatedUser;
-              patchState(store, { items: finalItems });
-            }
+            patchState(store, {
+              entities: {
+                ...store.entities(),
+                [userId]: updatedUser,
+              },
+            });
           },
           error: (err) => {
             console.error('Failed to update user status:', err);
             // Revert the optimistic update
-            const currentItems = store.items();
-            const userIndex = currentItems.findIndex((u) => u.id === userId);
-            if (userIndex !== -1) {
-              const originalStatus: UserStatus =
-                currentItems[userIndex].status === 'active' ? 'inactive' : 'active';
-              const originalUser: User = {
-                ...currentItems[userIndex],
-                status: originalStatus,
-              };
-              const revertedItems = [...currentItems];
-              revertedItems[userIndex] = originalUser;
-              patchState(store, { items: revertedItems });
-            }
+            patchState(store, {
+              entities: {
+                ...store.entities(),
+                [userId]: original,
+              },
+            });
           },
         });
     };

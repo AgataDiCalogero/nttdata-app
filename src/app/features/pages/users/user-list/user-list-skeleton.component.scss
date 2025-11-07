@@ -1,0 +1,54 @@
+.user-skeleton-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.user-skeleton-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--app-card-bg, rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 0 0 1px var(--app-border-color, rgba(0, 0, 0, 0.05));
+  overflow: hidden;
+}
+
+.user-skeleton-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  animation: app-skeleton-shine 1.6s linear infinite;
+}
+
+.user-skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-skeleton-line {
+  height: 0.8rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  animation: app-skeleton-shine 1.6s linear infinite;
+}
+
+.user-skeleton-line--title {
+  width: 40%;
+}
+
+.user-skeleton-line--subtitle {
+  width: 60%;
+}
+
+@keyframes app-skeleton-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ import { ToastService } from '@app/shared/ui/toast/toast.service';
     ButtonComponent,
     MatIconModule,
     MatProgressSpinnerModule,
+    TranslatePipe,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],

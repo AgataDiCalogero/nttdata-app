@@ -7,11 +7,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { LucideAngularModule, Sun, Moon, BookOpenCheck } from 'lucide-angular';
+import { LucideAngularModule, Sun, Moon, BookOpenCheck, Monitor } from 'lucide-angular';
 import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
 import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ThemeService } from '../../services/theme/theme.service';
+import { ThemeService, type ThemePreference } from '../../services/theme/theme.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 @Component({
@@ -32,10 +32,15 @@ export class AppearanceSwitcherComponent {
   readonly Sun = Sun;
   readonly Moon = Moon;
   readonly BookOpenCheck = BookOpenCheck;
+  readonly Monitor = Monitor;
 
   readonly theme = this.themeService.theme;
+  readonly preference = this.themeService.preference;
   readonly isLight = this.themeService.isLightTheme;
   readonly isReadingMode = this.themeService.isReadingMode;
+  readonly isSystemPreference = this.themeService.isSystemPreference;
+  readonly isLightPreference = computed(() => this.preference() === 'light');
+  readonly isDarkPreference = computed(() => this.preference() === 'dark');
 
   readonly currentIcon = computed(() => {
     return this.isLight() ? this.Sun : this.Moon;
@@ -74,8 +79,8 @@ export class AppearanceSwitcherComponent {
     this.overlays.release(this.overlayKey);
   }
 
-  setTheme(theme: 'light' | 'dark'): void {
-    this.themeService.setTheme(theme);
+  setPreference(theme: ThemePreference): void {
+    this.themeService.setPreference(theme);
     this.closeMenu();
   }
 

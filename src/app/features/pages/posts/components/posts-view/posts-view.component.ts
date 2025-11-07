@@ -12,6 +12,7 @@ import { PostsFiltersComponent } from '../posts-filters/posts-filters.component'
 import { PostsListComponent } from '../posts-list/posts-list.component';
 import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 
 @Component({
   selector: 'app-posts-view',
@@ -27,6 +28,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     AlertComponent,
     PostsFiltersComponent,
     PostsListComponent,
+    TranslatePipe,
   ],
   templateUrl: './posts-view.component.html',
   styleUrls: ['./posts-view.component.scss'],

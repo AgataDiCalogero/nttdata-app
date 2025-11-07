@@ -7,8 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { LucideAngularModule } from 'lucide-angular';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { UserListSkeletonComponent } from './user-list/user-list-skeleton.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import type { User } from '@/app/shared/models/user';
 import type { SortField } from './store/users.service';
 import { provideUsersService, injectUsersService } from './store/users.inject';
@@ -27,7 +29,9 @@ import { UsersUiService } from './users-ui.service';
     ButtonComponent,
     UserFiltersComponent,
     UserListComponent,
+    UserListSkeletonComponent,
     PaginationComponent,
+    TranslatePipe,
   ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
