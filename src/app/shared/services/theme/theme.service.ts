@@ -1,5 +1,13 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { DestroyRef, computed, effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import {
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  Injectable,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 
 type ThemeName = 'light' | 'dark';
 export type ThemePreference = ThemeName | 'system';
@@ -17,10 +25,12 @@ export class ThemeService {
   private readonly readingModeSignal = signal<boolean>(this.resolveInitialReadingMode());
 
   private readonly appliedTheme = computed<ThemeName>(() =>
-    this.preferenceSignal() === 'system' ? this.systemThemeSignal() : (this.preferenceSignal() as ThemeName),
+    this.preferenceSignal() === 'system'
+      ? this.systemThemeSignal()
+      : (this.preferenceSignal() as ThemeName),
   );
 
-  readonly theme = this.appliedTheme.asReadonly();
+  readonly theme = this.appliedTheme;
   readonly preference = this.preferenceSignal.asReadonly();
   readonly isLightTheme = computed(() => this.theme() === 'light');
   readonly isSystemPreference = computed(() => this.preferenceSignal() === 'system');
@@ -30,10 +40,14 @@ export class ThemeService {
   private mediaQuery: MediaQueryList | null = null;
 
   constructor() {
-    if (isPlatformBrowser(this.platformId) && typeof window !== 'undefined' && 'matchMedia' in window) {
+    if (
+      isPlatformBrowser(this.platformId) &&
+      typeof window !== 'undefined' &&
+      'matchMedia' in window
+    ) {
       this.mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
       const update = (event?: MediaQueryList | MediaQueryListEvent) => {
-        const matches = event ? event.matches : this.mediaQuery?.matches ?? false;
+        const matches = event ? event.matches : (this.mediaQuery?.matches ?? false);
         this.systemThemeSignal.set(matches ? 'light' : 'dark');
       };
       update(this.mediaQuery);
@@ -97,7 +111,11 @@ export class ThemeService {
   }
 
   private detectSystemTheme(): ThemeName {
-    if (!isPlatformBrowser(this.platformId) || typeof window === 'undefined' || !('matchMedia' in window)) {
+    if (
+      !isPlatformBrowser(this.platformId) ||
+      typeof window === 'undefined' ||
+      !('matchMedia' in window)
+    ) {
       return 'dark';
     }
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
