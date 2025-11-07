@@ -12,7 +12,7 @@
     "menuAria": "Seleziona la lingua"
   },
   "login": {
-    "title": "Bentornato",
+    "title": "Bentornato/a",
     "subtitle": "Inserisci il tuo token di accesso per continuare.",
     "tokenLabel": "Token di accesso",
     "tokenPlaceholder": "Incolla il tuo personal access token",
@@ -33,7 +33,7 @@
       "2b": "nel dashboard per creare un nuovo token personale.",
       "3": "Copia il token generato e incollalo nel campo \"Token di accesso\" di questa pagina."
     },
-    "step2Highlight": "Ottieni il tuo token di accesso",
+    "step2Highlight": "Get your access token",
     "open": "Apri GoRest",
     "close": "Ho capito",
     "closeAria": "Chiudi l'aiuto sul token"
