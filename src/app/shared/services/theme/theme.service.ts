@@ -37,28 +37,53 @@ export class ThemeService {
   readonly readingMode = this.readingModeSignal.asReadonly();
   readonly isReadingMode = computed(() => this.readingModeSignal());
 
-  private mediaQuery: MediaQueryList | null = null;
+  private readonly mediaQuery: MediaQueryList | null = null;
 
   constructor() {
     if (
       isPlatformBrowser(this.platformId) &&
-      typeof window !== 'undefined' &&
-      'matchMedia' in window
+      globalThis.window != null &&
+      globalThis.matchMedia != null
     ) {
-      this.mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+      this.mediaQuery = globalThis.matchMedia('(prefers-color-scheme: light)');
+
       const update = (event?: MediaQueryList | MediaQueryListEvent) => {
         const matches = event ? event.matches : (this.mediaQuery?.matches ?? false);
         this.systemThemeSignal.set(matches ? 'light' : 'dark');
       };
-      update(this.mediaQuery);
+
+      // run initial detection
+      update(this.mediaQuery ?? undefined);
+
       const listener = (event: MediaQueryListEvent) => update(event);
-      if (this.mediaQuery.addEventListener) {
-        this.mediaQuery.addEventListener('change', listener);
-        this.destroyRef.onDestroy(() => this.mediaQuery?.removeEventListener('change', listener));
-      } else if (this.mediaQuery.addListener) {
-        // Safari fallback
-        this.mediaQuery.addListener(listener);
-        this.destroyRef.onDestroy(() => this.mediaQuery?.removeListener(listener));
+
+      type MQLWithLegacy = MediaQueryList & {
+        addListener?: (l: (e: MediaQueryListEvent) => void) => void;
+        removeListener?: (l?: (e: MediaQueryListEvent) => void) => void;
+        addEventListener?: (t: string, l: unknown) => void;
+        removeEventListener?: (t: string, l?: unknown) => void;
+      };
+
+      const mq = this.mediaQuery as MQLWithLegacy | null;
+
+      if (mq?.addEventListener) {
+        mq.addEventListener('change', listener);
+        this.destroyRef.onDestroy(() => mq.removeEventListener?.('change', listener));
+      } else {
+        // Safari fallback (legacy API).
+        // Use a narrow typed function for the legacy handlers to avoid lint/TS false positives
+        // legacy addListener/removeListener have different signatures than addEventListener
+        type LegacyAddFn = (listener: (ev: MediaQueryListEvent) => void) => void;
+        type LegacyRemoveFn = (listener?: (ev: MediaQueryListEvent) => void) => void;
+        const legacy = mq as unknown as Record<string, unknown>;
+        const addLegacy = legacy['addListener'] as LegacyAddFn | undefined;
+        addLegacy?.call(mq as MediaQueryList, listener);
+        this.destroyRef.onDestroy(() =>
+          (legacy['removeListener'] as LegacyRemoveFn | undefined)?.call(
+            mq as MediaQueryList,
+            listener,
+          ),
+        );
       }
     }
 
@@ -113,12 +138,13 @@ export class ThemeService {
   private detectSystemTheme(): ThemeName {
     if (
       !isPlatformBrowser(this.platformId) ||
-      typeof window === 'undefined' ||
-      !('matchMedia' in window)
+      globalThis.window == null ||
+      globalThis.matchMedia == null
     ) {
       return 'dark';
     }
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
+    return globalThis.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   }
 
   private resolveInitialPreference(): ThemePreference {
