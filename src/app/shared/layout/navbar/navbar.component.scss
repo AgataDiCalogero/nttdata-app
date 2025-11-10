@@ -112,6 +112,10 @@
     /* margin-left handled on direct child to avoid nesting issues */
     .toolbar-menu-trigger {
       margin-left: auto; /* push controls to the far right */
+      /* ensure internal items are aligned vertically */
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
 
       app-appearance-switcher {
         display: inline-flex;

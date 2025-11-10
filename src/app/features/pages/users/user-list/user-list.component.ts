@@ -9,7 +9,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 
 import type { User } from '@/app/shared/models/user';
-import { DeviceTypeService } from '@/app/shared/services/device-type.service';
+import { DeviceTypeService } from '@/app/shared/services/device-type/device-type.service';
 
 @Component({
   standalone: true,

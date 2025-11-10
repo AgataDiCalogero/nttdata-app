@@ -101,6 +101,26 @@
   --gradient-error: linear-gradient(135deg, var(--color-danger), var(--color-danger-dark));
   --gradient-info: linear-gradient(135deg, var(--color-info), var(--color-info-dark));
   --gradient-warning: linear-gradient(135deg, var(--color-warning), var(--color-warning-text-dark));
+
+  --mat-field-bg: rgba(17, 24, 39, 0.55);
+  --mat-field-bg-hover: rgba(17, 24, 39, 0.75);
+  --mat-field-border: rgba(148, 163, 184, 0.32);
+  --mat-field-border-hover: rgba(249, 115, 22, 0.45);
+  --mat-field-border-focus: var(--color-accent);
+  --mat-field-label: rgba(255, 255, 255, 0.72);
+  --mat-field-placeholder: rgba(255, 255, 255, 0.5);
+  --mat-field-helper: rgba(255, 255, 255, 0.62);
+  --mat-field-disabled-bg: rgba(17, 24, 39, 0.32);
+  --mat-field-disabled-text: rgba(255, 255, 255, 0.35);
+  --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 26%, transparent);
+  --mat-option-hover-text: var(--color-on-surface);
+  --mat-option-active-text: var(--color-on-surface);
+  --mat-control-focus-outline: 0 0 0 1px color-mix(in srgb, var(--color-accent) 38%, transparent);
+  --mat-card-bg: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
+  --mat-card-border: color-mix(in srgb, var(--color-border) 70%, transparent);
+  --mat-card-hover-bg: color-mix(in srgb, var(--color-surface-solid) 88%, transparent);
+  --mat-card-shadow: var(--shadow-lg);
 }
 
 .light-theme {
@@ -128,31 +148,7 @@
   --shadow-toast: 0 10px 25px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1);
   --shadow-toast-hover: 0 12px 30px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.15);
   --shadow-toast-focus: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 12px 30px rgba(0, 0, 0, 0.2);
-}
 
-:root {
-  --mat-field-bg: rgba(17, 24, 39, 0.55);
-  --mat-field-bg-hover: rgba(17, 24, 39, 0.75);
-  --mat-field-border: rgba(148, 163, 184, 0.32);
-  --mat-field-border-hover: rgba(249, 115, 22, 0.45);
-  --mat-field-border-focus: var(--color-accent);
-  --mat-field-label: rgba(255, 255, 255, 0.72);
-  --mat-field-placeholder: rgba(255, 255, 255, 0.5);
-  --mat-field-helper: rgba(255, 255, 255, 0.62);
-  --mat-field-disabled-bg: rgba(17, 24, 39, 0.32);
-  --mat-field-disabled-text: rgba(255, 255, 255, 0.35);
-  --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
-  --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 26%, transparent);
-  --mat-option-hover-text: var(--color-on-surface);
-  --mat-option-active-text: var(--color-on-surface);
-  --mat-control-focus-outline: 0 0 0 1px color-mix(in srgb, var(--color-accent) 38%, transparent);
-  --mat-card-bg: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
-  --mat-card-border: color-mix(in srgb, var(--color-border) 70%, transparent);
-  --mat-card-hover-bg: color-mix(in srgb, var(--color-surface-solid) 88%, transparent);
-  --mat-card-shadow: var(--shadow-lg);
-}
-
-.light-theme {
   --mat-field-bg: rgba(255, 255, 255, 0.95);
   --mat-field-bg-hover: #ffffff;
   --mat-field-border: rgba(15, 23, 42, 0.14);
@@ -201,10 +197,12 @@
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:hover,
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:focus-within {
   background: transparent !important;
+  box-shadow: none !important; /* No box-shadow on outlined to prevent double border */
 }
 
-.mat-mdc-text-field-wrapper.mdc-text-field:hover,
-.mat-mdc-text-field-wrapper.mdc-text-field:focus-within {
+/* For filled/standard fields (NOT outlined), keep the box-shadow */
+.mat-mdc-text-field-wrapper.mdc-text-field:not(.mdc-text-field--outlined):hover,
+.mat-mdc-text-field-wrapper.mdc-text-field:not(.mdc-text-field--outlined):focus-within {
   background: var(--mat-field-bg-hover) !important;
   box-shadow: var(--mat-control-focus-outline) !important;
 }
@@ -292,6 +290,7 @@
   border-radius: var(--radius-lg) !important;
   border: 1px solid var(--mat-field-border) !important;
   box-shadow: var(--shadow-lg) !important;
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   padding-block: 0.25rem;
 }
@@ -457,5 +456,5 @@
 }
 
 .mat-mdc-card .mat-icon {
-  color: color-mix(in srgb, var(--color-on-surface) 84%, transparent) !important;
+  color: rgba(var(--color-on-surface-rgb), 0.84) !important;
 }

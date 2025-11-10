@@ -22,6 +22,7 @@
   --color-surface-solid: #1f2937;
   --color-surface-variant: rgba(55, 65, 81, 0.4);
   --color-on-surface: var(--color-white);
+  --color-on-surface-rgb: 255, 255, 255;
 
   --color-border: rgba(55, 65, 81, 0.5);
   --color-muted: #9ca3af;
@@ -207,6 +208,7 @@
   --color-surface-solid: #ffffff;
   --color-surface-variant: rgba(249, 115, 22, 0.05);
   --color-on-surface: #111827;
+  --color-on-surface-rgb: 17, 24, 39;
 
   --color-border: #fed7aa;
   --color-muted: #6b7280;

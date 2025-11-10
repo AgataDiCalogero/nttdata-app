@@ -1,0 +1,182 @@
+import { DOCUMENT } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
+import { ThemeService } from './theme.service';
+
+class StorageStub {
+  private readonly store = new Map<string, string>();
+
+  getItem(key: string): string | null {
+    return this.store.get(key) ?? null;
+  }
+
+  setItem(key: string, value: string): void {
+    this.store.set(key, value);
+  }
+
+  removeItem(key: string): void {
+    this.store.delete(key);
+  }
+
+  clear(): void {
+    this.store.clear();
+  }
+}
+
+class MockMediaQueryList implements MediaQueryList {
+  matches = true;
+  media = '(prefers-color-scheme: light)';
+  onchange: ((this: MediaQueryList, ev: MediaQueryListEvent) => void) | null = null;
+
+  private listener?: (event: MediaQueryListEvent) => void;
+
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
+    if (type !== 'change') {
+      return;
+    }
+    this.listener =
+      typeof listener === 'function' ? listener : (event) => listener.handleEvent(event);
+  }
+
+  removeEventListener(type: string): void {
+    if (type === 'change') {
+      this.listener = undefined;
+    }
+  }
+
+  addListener(listener: (this: MediaQueryList, ev: MediaQueryListEvent) => void): void {
+    this.listener = (event) => listener.call(this, event);
+  }
+
+  removeListener(): void {
+    this.listener = undefined;
+  }
+
+  dispatchEvent(event: Event): boolean {
+    this.listener?.(event as MediaQueryListEvent);
+    return true;
+  }
+
+  trigger(event: MediaQueryListEvent): void {
+    this.listener?.(event);
+  }
+}
+
+describe('ThemeService', () => {
+  let service: ThemeService;
+  let mockDocument: Document;
+  let body: HTMLBodyElement;
+  let docElement: HTMLElement;
+  let storage: StorageStub;
+  let matchMediaSpy: jasmine.Spy<(query: string) => MediaQueryList>;
+  let mediaQueryList: MockMediaQueryList;
+  const originalMatchMedia = globalThis.matchMedia ?? null;
+
+  beforeEach(() => {
+    storage = new StorageStub();
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => storage.getItem(key));
+    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string) => {
+      storage.setItem(key, value);
+    });
+    spyOn(localStorage, 'removeItem').and.callFake((key: string) => storage.removeItem(key));
+    spyOn(localStorage, 'clear').and.callFake(() => storage.clear());
+
+    mockDocument = document.implementation.createHTMLDocument('theme-spec');
+    body = mockDocument.body as HTMLBodyElement;
+    docElement = mockDocument.documentElement;
+    body.className = '';
+    delete docElement.dataset.theme;
+
+    mediaQueryList = new MockMediaQueryList();
+    matchMediaSpy = jasmine.createSpy('matchMedia').and.returnValue(mediaQueryList);
+    (globalThis as typeof globalThis & { matchMedia: typeof matchMediaSpy }).matchMedia =
+      matchMediaSpy;
+
+    TestBed.configureTestingModule({
+      providers: [
+        ThemeService,
+        { provide: PLATFORM_ID, useValue: 'browser' },
+        { provide: DOCUMENT, useValue: mockDocument },
+      ],
+    });
+
+    service = TestBed.inject(ThemeService);
+  });
+
+  afterEach(() => {
+    (
+      globalThis as typeof globalThis & { matchMedia?: (query: string) => MediaQueryList }
+    ).matchMedia = originalMatchMedia ?? undefined;
+  });
+
+  it('should toggle theme from system preference to dark and persist it', (done) => {
+    // Arrange
+    service.setPreference('system');
+    (localStorage.setItem as jasmine.Spy).calls.reset();
+
+    // Act
+    service.toggleTheme();
+
+    // Assert - use setTimeout to wait for effect
+    setTimeout(() => {
+      expect(service.theme()).toBe('dark');
+      expect(body.classList.contains('dark-theme')).toBeTrue();
+      expect(localStorage.setItem).toHaveBeenCalledWith('preferred-theme', 'dark');
+      done();
+    }, 10);
+  });
+
+  it('should set preference to light and update DOM dataset', (done) => {
+    // Arrange
+    service.setPreference('dark');
+
+    // Act
+    service.setPreference('light');
+
+    // Assert - use setTimeout to wait for effect
+    setTimeout(() => {
+      expect(service.theme()).toBe('light');
+      expect(body.classList.contains('light-theme')).toBeTrue();
+      expect(docElement.dataset.theme).toBe('light');
+      done();
+    }, 10);
+  });
+
+  it('should toggle reading mode and store flag', (done) => {
+    // Arrange
+    service.setReadingMode(false);
+    (localStorage.setItem as jasmine.Spy).calls.reset();
+
+    // Act
+    service.toggleReadingMode();
+
+    // Assert - use setTimeout to wait for effect
+    setTimeout(() => {
+      expect(service.isReadingMode()).toBeTrue();
+      expect(body.classList.contains('reading-mode')).toBeTrue();
+      expect(localStorage.setItem).toHaveBeenCalledWith('reading-mode', 'true');
+
+      // Act & Assert - disable again
+      service.toggleReadingMode();
+      setTimeout(() => {
+        expect(service.isReadingMode()).toBeFalse();
+        expect(body.classList.contains('reading-mode')).toBeFalse();
+        expect(localStorage.setItem).toHaveBeenCalledWith('reading-mode', 'false');
+        done();
+      }, 10);
+    }, 10);
+  });
+
+  it('should respond to system theme changes via matchMedia listener', () => {
+    // Arrange
+    service.setPreference('system');
+
+    // Act
+    mediaQueryList.trigger({ matches: false } as MediaQueryListEvent);
+
+    // Assert
+    expect(service.theme()).toBe('dark');
+    expect(matchMediaSpy).toHaveBeenCalled();
+  });
+});
