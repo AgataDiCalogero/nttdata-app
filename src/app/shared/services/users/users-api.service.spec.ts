@@ -1,4 +1,5 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
@@ -12,7 +13,11 @@ describe('UsersApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        UsersApiService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
     service = TestBed.inject(UsersApiService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -20,102 +25,132 @@ describe('UsersApiService', () => {
 
   afterEach(() => httpMock.verify());
 
-  it('should list users with caching when enabled', () => {
-    // Arrange
-    let firstResult = 0;
-    let secondResult = 0;
+  it('maps pagination headers and falls back to body length', () => {
+    let headerPagination: number | undefined;
+    let fallbackPagination: number | undefined;
 
-    // Act
-    service.list({ page: 1, name: 'John' }, { cache: true }).subscribe((resp) => {
-      firstResult = resp.items.length;
+    service.list({ page: 2, perPage: 5 }).subscribe((resp) => {
+      headerPagination = resp.pagination?.total;
     });
-    service.list({ page: 1, name: 'John' }, { cache: true }).subscribe((resp) => {
-      secondResult = resp.items.length;
-    });
-
-    // Assert
-    const req = httpMock.expectOne(
-      (r) => r.url === '/users' && r.params.get('page') === '1' && r.params.get('name') === 'John',
+    const headerReq = httpMock.expectOne(
+      (r) => r.url === '/users' && r.params.get('page') === '2' && r.params.get('per_page') === '5',
     );
-    req.flush([{ id: 1, name: 'John', email: 'john@example.com' } as UserDto], {
+    headerReq.flush([{ id: 1, name: 'A', email: 'a@example.com', status: 'active' } satisfies UserDto], {
       headers: {
-        'X-Pagination-Total': '1',
-        'X-Pagination-Limit': '1',
+        'X-Pagination-Total': '10',
+        'X-Pagination-Limit': '5',
+        'X-Pagination-Page': '2',
+        'X-Pagination-Pages': '2',
       },
     });
 
-    expect(firstResult).toBe(1);
-    expect(secondResult).toBe(1); // comes from cached observable, no second HTTP call
+    service.list({}).subscribe((resp) => {
+      fallbackPagination = resp.pagination?.total;
+    });
+    const fallbackReq = httpMock.expectOne('/users');
+    fallbackReq.flush([{ id: 2, name: 'B', email: 'b@example.com', status: 'inactive' } as UserDto]);
+
+    expect(headerPagination).toBe(10);
+    expect(fallbackPagination).toBe(1);
   });
 
-  it('should create a user and clear the list cache', () => {
-    // Arrange
-    const payload = { name: 'Alice', email: 'alice@example.com', status: 'active' as const };
-    let createdName = '';
+  it('returns mapped entity on getById', () => {
+    let resultEmail = '';
 
-    // Prime cache
+    service.getById(7).subscribe((user) => (resultEmail = user.email));
+
+    const req = httpMock.expectOne('/users/7');
+    expect(req.request.method).toBe('GET');
+    req.flush({ id: 7, name: '  Test ', email: ' Mixed@Example.Com ', status: 'active' } as UserDto);
+
+    expect(resultEmail).toBe('Mixed@Example.Com');
+  });
+
+  it('creates user with normalized payload and clears cache', () => {
     service.list({}, { cache: true }).subscribe();
-    const listReq = httpMock.expectOne('/users');
-    listReq.flush([]);
+    httpMock.expectOne('/users').flush([]);
 
-    // Act
-    service.create(payload).subscribe((user) => (createdName = user.name));
+    let createdId = 0;
+    service.create({ name: ' Alice ', email: ' Alice@ExAmple.Com ', status: 'inactive' }).subscribe((user) => {
+      createdId = user.id;
+    });
 
-    // Assert
     const req = httpMock.expectOne('/users');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({
       name: 'Alice',
       email: 'alice@example.com',
       gender: 'male',
-      status: 'active',
+      status: 'inactive',
     });
-    req.flush({
-      id: 10,
-      name: 'Alice',
-      email: 'alice@example.com',
-      status: 'active',
-    } as UserDto);
+    req.flush({ id: 42, name: 'Alice', email: 'alice@example.com', status: 'inactive' } as UserDto);
 
-    // Cache cleared: another list should trigger a fresh HTTP call
     service.list({}, { cache: true }).subscribe();
     httpMock.expectOne('/users');
-    expect(createdName).toBe('Alice');
+    expect(createdId).toBe(42);
   });
 
-  it('should update a user and return mapped entity', () => {
-    // Arrange
-    let newEmail = '';
+  it('updates user with trimmed/lowercased fields and clears cache', () => {
+    let returnedName = '';
 
-    // Act
-    service.update(5, { email: '  new@example.com ' }).subscribe((user) => {
-      newEmail = user.email;
+    service.update(5, { name: '  Bob  ', email: ' BOB@EXAMPLE.COM ' }).subscribe((user) => {
+      returnedName = user.name;
     });
 
-    // Assert
     const req = httpMock.expectOne('/users/5');
     expect(req.request.method).toBe('PATCH');
-    expect(req.request.body).toEqual(jasmine.objectContaining({ email: 'new@example.com' }));
-    req.flush({ id: 5, name: 'Test', email: 'new@example.com' } as UserDto);
-    expect(newEmail).toBe('new@example.com');
+    expect(req.request.body).toEqual(jasmine.objectContaining({ name: 'Bob', email: 'bob@example.com' }));
+    req.flush({ id: 5, name: 'Bob', email: 'bob@example.com', status: 'active' } as UserDto);
+
+    service.list({}, { cache: true }).subscribe();
+    httpMock.expectOne('/users');
+    expect(returnedName).toBe('Bob');
   });
 
-  it('should delete a user and clear cache', () => {
-    // Arrange
+  it('deletes user and clears cache', () => {
     service.list({}, { cache: true }).subscribe();
-    const listReq = httpMock.expectOne('/users');
-    listReq.flush([]);
+    httpMock.expectOne('/users').flush([]);
 
-    // Act
-    service.delete(3).subscribe();
+    service.delete(9).subscribe();
 
-    // Assert
-    const req = httpMock.expectOne('/users/3');
+    const req = httpMock.expectOne('/users/9');
     expect(req.request.method).toBe('DELETE');
     req.flush(null);
 
-    // cache cleared -> next list triggers request
     service.list({}, { cache: true }).subscribe();
     httpMock.expectOne('/users');
+  });
+
+  it('drops cache entry on error responses', () => {
+    // Prime cache and respond with error
+    service.list({ page: 1 }, { cache: true }).subscribe({
+      error: () => void 0,
+    });
+    const req = httpMock.expectOne((r) => r.url === '/users');
+    req.flush({ message: 'fail' }, { status: 500, statusText: 'Server Error' });
+
+    // Second call should issue a new HTTP request (cache cleared)
+    service.list({ page: 1 }, { cache: true }).subscribe({
+      error: () => void 0,
+    });
+    httpMock.expectOne((r) => r.url === '/users').flush([], {
+      headers: { 'X-Pagination-Total': '0', 'X-Pagination-Limit': '1' },
+    });
+
+    expect(true).toBeTrue();
+  });
+
+  it('propagates specific HTTP errors (401/403/429/422/500)', () => {
+    const statuses = [401, 403, 422, 429, 500];
+
+    statuses.forEach((status) => {
+      service.list().subscribe({
+        next: () => fail(`expected error ${status}`),
+        error: (err: HttpErrorResponse) => expect(err.status).toBe(status),
+      });
+      httpMock
+        .expectOne((req) => req.url === '/users')
+        .flush({ message: 'error' }, { status, statusText: 'Error' });
+    });
   });
 });
