@@ -14,14 +14,15 @@
       // Apply persisted theme before first paint to prevent flash of wrong theme
       (function () {
         try {
-          var theme = localStorage.getItem('preferred-theme');
+          let theme = localStorage.getItem('preferred-theme');
           if (!theme) {
-            var prefersLight =
-              window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+            const prefersLight =
+              globalThis.matchMedia &&
+              globalThis.matchMedia('(prefers-color-scheme: light)').matches;
             theme = prefersLight ? 'light' : 'dark';
           }
-          var reading = localStorage.getItem('reading-mode') === 'true';
-          var body = document.body;
+          const reading = localStorage.getItem('reading-mode') === 'true';
+          const body = document.body;
           body.classList.toggle('light-theme', theme === 'light');
           body.classList.toggle('dark-theme', theme === 'dark');
           body.classList.toggle('reading-mode', !!reading);
