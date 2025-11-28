@@ -47,7 +47,7 @@ npm start
 
 ## CI & Git hygiene
 
-GitHub Actions (`.github/workflows/ci.yml`) runs lint → unit tests → build on every push/PR. Conventional Commit linting is enforced via Husky + Commitlint.
+GitHub Actions (`.github/workflows/ci.yml`) runs lint → unit tests → build on every push/PR. Local git hooks have been removed to keep commits lightweight—run `npm run lint && npm run test:ci` before pushing if you want the same fast feedback locally.
 
 ## Project structure highlights
 
