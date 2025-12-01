@@ -195,4 +195,39 @@ describe('UserDetailComponent', () => {
     expect(component.user()?.status).toBe('active');
     expect(notificationsSpy.showHttpError).toHaveBeenCalled();
   });
+
+  it('should handle comment fetch errors without crashing UI', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+    const error = new Error('comments failed');
+    commentsCacheSpy.fetchComments.and.returnValue(throwError(() => error));
+    notificationsSpy.showHttpError.and.returnValue('unable to load comments');
+
+    component.onToggleComments(101);
+    expect(component.commentsAreLoading(101)).toBeTrue();
+
+    tick();
+
+    expect(component.commentsAreLoading(101)).toBeFalse();
+    expect(component.commentsLoaded(101)).toBeFalse();
+    expect(notificationsSpy.showHttpError).toHaveBeenCalledWith(
+      error,
+      'userDetail.unableToLoadComments',
+    );
+  }));
+
+  it('should clear postsLoading and keep UI stable when posts fail to load', fakeAsync(() => {
+    postsApiSpy.list.and.returnValue(throwError(() => new Error('posts failed')));
+    notificationsSpy.showHttpError.and.returnValue('posts error');
+
+    fixture.detectChanges();
+    tick();
+
+    expect(component.postsLoading()).toBeFalse();
+    expect(component.posts()).toEqual([]);
+    expect(notificationsSpy.showHttpError).toHaveBeenCalledWith(
+      jasmine.any(Error),
+      'userDetail.unableToLoadPosts',
+    );
+  }));
 });

@@ -104,6 +104,27 @@ describe('Login component', () => {
     expect(toast.show).toHaveBeenCalledWith('error', 'slow down', 5000);
   });
 
+  it('azzera messaggi e errori api dopo submit riuscito', () => {
+    component.submissionMessage.set('previous');
+    component.form.controls.token.setValue('valid-token');
+    validator.validate.and.returnValue(of({ success: true }));
+
+    component.onSubmit();
+
+    expect(component.submissionMessage()).toBeNull();
+    expect(component.form.controls.token.hasError('api')).toBeFalse();
+  });
+
+  it('gestisce errori generici mostrando il fallback', () => {
+    validator.validate.and.returnValue(of({ success: false, code: 'server_error' }));
+    component.form.controls.token.setValue('token-x');
+
+    component.onSubmit();
+
+    expect(component.submissionMessage()).toBe('login.errors.unableToVerify');
+    expect(toast.show).toHaveBeenCalledWith('error', 'login.errors.unableToVerify', 5000);
+  });
+
   it('disabilita input quando loading è true', fakeAsync(() => {
     component.loading.set(true);
     fixture.detectChanges();

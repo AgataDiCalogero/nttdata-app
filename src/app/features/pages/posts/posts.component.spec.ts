@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -9,38 +10,57 @@ import { NotificationsService } from '@/app/shared/services/notifications/notifi
 import { PostsUiService } from './posts-ui.service';
 import { Posts } from './posts.component';
 import { PostsFiltersService } from './store/posts-filters.service';
-import { injectPostsService } from './store/posts.inject';
+import { postsServiceInjectionToken } from './store/posts.inject';
 
 describe('PostsComponent', () => {
   let component: Posts;
   let fixture: ComponentFixture<Posts>;
+  let mockStore: ReturnType<typeof createMockStore>;
 
   let routerSpy: jasmine.SpyObj<Router>;
   let uiServiceSpy: jasmine.SpyObj<PostsUiService>;
   let filtersServiceSpy: jasmine.SpyObj<PostsFiltersService>;
   let notificationsSpy: jasmine.SpyObj<NotificationsService>;
 
-  // Mock Store
-  const mockStore = {
-    initializePaging: jasmine.createSpy('initializePaging'),
-    currentPage: signal(1),
-    currentPerPage: signal(10),
-    resetFilters: jasmine.createSpy('resetFilters'),
-    toggleComments: jasmine.createSpy('toggleComments'),
-    onCommentCreated: jasmine.createSpy('onCommentCreated'),
-    onCommentUpdated: jasmine.createSpy('onCommentUpdated'),
-    onCommentDeleted: jasmine.createSpy('onCommentDeleted'),
-    setPage: jasmine.createSpy('setPage'),
-    changePerPage: jasmine.createSpy('changePerPage'),
-    userLookup: signal<Record<number, any>>({ 1: { id: 1, name: 'Author' } }),
-    posts: signal<Post[]>([{ id: 101, user_id: 1, title: 'Test Post', body: 'Body' }]),
-    loading: signal(false),
-    error: signal(null),
-    total: signal(1),
-  };
+  function createMockStore() {
+    const fb = new FormBuilder();
+    const filtersForm = fb.group({
+      title: fb.nonNullable.control(''),
+      userId: fb.control<number | null>(0),
+    });
+
+    return {
+      initializePaging: jasmine.createSpy('initializePaging'),
+      currentPage: signal(1),
+      currentPerPage: signal(10),
+      resetFilters: jasmine.createSpy('resetFilters'),
+      toggleComments: jasmine.createSpy('toggleComments'),
+      onCommentCreated: jasmine.createSpy('onCommentCreated'),
+      onCommentUpdated: jasmine.createSpy('onCommentUpdated'),
+      onCommentDeleted: jasmine.createSpy('onCommentDeleted'),
+      setPage: jasmine.createSpy('setPage'),
+      changePerPage: jasmine.createSpy('changePerPage'),
+      userLookup: signal<Record<number, string>>({ 1: 'Author' }),
+      userOptions: signal([{ id: 1, name: 'Author' }]),
+      posts: signal<Post[]>([{ id: 101, user_id: 1, title: 'Test Post', body: 'Body' }]),
+      commentsMap: signal<Record<number, any[]>>({}),
+      commentsLoading: signal<Record<number, boolean>>({}),
+      commentsCountMap: signal<Record<number, number>>({}),
+      perPageOptions: signal([10, 20]),
+      totalPages: signal(1),
+      hasPagination: signal(false),
+      deletingId: signal<number | null>(null),
+      totalPosts: signal(1),
+      loading: signal(false),
+      error: signal<string | null>(null),
+      searchForm: signal(filtersForm),
+    };
+  }
 
   beforeEach(async () => {
+    mockStore = createMockStore();
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     uiServiceSpy = jasmine.createSpyObj('PostsUiService', [
       'openCreateDialog',
       'openEditDialog',
@@ -64,7 +84,7 @@ describe('PostsComponent', () => {
         { provide: NotificationsService, useValue: notificationsSpy },
       ],
     })
-      .overrideProvider(injectPostsService, { useValue: () => mockStore })
+      .overrideProvider(postsServiceInjectionToken, { useValue: mockStore })
       .compileComponents();
 
     fixture = TestBed.createComponent(Posts);
@@ -89,6 +109,21 @@ describe('PostsComponent', () => {
       [],
       jasmine.objectContaining({
         queryParams: { page: 2, per_page: 10 },
+      }),
+    );
+  }));
+
+  it('should sync query params when per page changes', fakeAsync(() => {
+    routerSpy.navigate.calls.reset();
+
+    mockStore.currentPerPage.set(25);
+    fixture.detectChanges();
+    tick();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(
+      [],
+      jasmine.objectContaining({
+        queryParams: { page: 1, per_page: 25 },
       }),
     );
   }));
@@ -129,5 +164,21 @@ describe('PostsComponent', () => {
     component.handleViewAuthor(999);
     expect(notificationsSpy.showInfo).toHaveBeenCalled();
     expect(routerSpy.navigate).not.toHaveBeenCalledWith(['/users', 999]);
+  });
+
+  it('should display loading state and hide posts list', () => {
+    mockStore.loading.set(true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.posts-page__loader')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('app-posts-list')).toBeNull();
+  });
+
+  it('should not show empty state while an error is present', () => {
+    mockStore.posts.set([]);
+    mockStore.error.set('boom');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.posts-page__alert')).toBeNull();
   });
 });

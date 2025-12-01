@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { firstValueFrom, of } from 'rxjs';
+import { Subject, firstValueFrom, of } from 'rxjs';
 
 import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
 
@@ -74,5 +74,47 @@ describe('CommentsCacheService', () => {
 
     // Assert
     expect(service.getCachedCount(postId)).toBe(0);
+  });
+
+  it('should return empty object for prefetchCounts with no ids', async () => {
+    // Act
+    const result = await firstValueFrom(service.prefetchCounts([]));
+
+    // Assert
+    expect(result).toEqual({});
+    expect(postsApi.countComments).not.toHaveBeenCalled();
+  });
+
+  it('should aggregate comment counts for multiple posts', async () => {
+    // Arrange
+    postsApi.countComments.and.callFake((id: number) => of(id * 2));
+
+    // Act
+    const result = await firstValueFrom(service.prefetchCounts([1, 2, 3]));
+
+    // Assert
+    expect(result).toEqual({ 1: 2, 2: 4, 3: 6 });
+    expect(service.getCachedCount(2)).toBe(4);
+    expect(postsApi.countComments).toHaveBeenCalledTimes(3);
+  });
+
+  it('should dedupe concurrent count requests', async () => {
+    // Arrange
+    const subject = new Subject<number>();
+    postsApi.countComments.and.returnValue(subject.asObservable());
+
+    // Act
+    const first = firstValueFrom(service.fetchCommentCount(99));
+    const second = firstValueFrom(service.fetchCommentCount(99));
+
+    // Assert
+    expect(postsApi.countComments).toHaveBeenCalledTimes(1);
+
+    subject.next(7);
+    subject.complete();
+
+    expect(await first).toBe(7);
+    expect(await second).toBe(7);
+    expect(service.getCachedCount(99)).toBe(7);
   });
 });
