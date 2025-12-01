@@ -4,7 +4,10 @@ import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { DEFAULT_PAGINATION_CONFIG, PAGINATION_CONFIG } from '@/app/shared/config/pagination.config';
+import {
+  DEFAULT_PAGINATION_CONFIG,
+  PAGINATION_CONFIG,
+} from '@/app/shared/config/pagination.config';
 import type { User } from '@/app/shared/models/user';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
@@ -62,7 +65,12 @@ describe('UsersStoreAdapter', () => {
     store.onSearch('bob@example.com');
 
     expect(usersApi.list).toHaveBeenCalledWith(
-      jasmine.objectContaining({ page: 1, perPage: 10, name: 'bob@example.com', email: 'bob@example.com' }),
+      jasmine.objectContaining({
+        page: 1,
+        perPage: 10,
+        name: 'bob@example.com',
+        email: 'bob@example.com',
+      }),
     );
   });
 

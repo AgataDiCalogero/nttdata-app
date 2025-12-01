@@ -1,5 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HttpErrorResponse } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
@@ -35,20 +34,25 @@ describe('UsersApiService', () => {
     const headerReq = httpMock.expectOne(
       (r) => r.url === '/users' && r.params.get('page') === '2' && r.params.get('per_page') === '5',
     );
-    headerReq.flush([{ id: 1, name: 'A', email: 'a@example.com', status: 'active' } satisfies UserDto], {
-      headers: {
-        'X-Pagination-Total': '10',
-        'X-Pagination-Limit': '5',
-        'X-Pagination-Page': '2',
-        'X-Pagination-Pages': '2',
+    headerReq.flush(
+      [{ id: 1, name: 'A', email: 'a@example.com', status: 'active' } satisfies UserDto],
+      {
+        headers: {
+          'X-Pagination-Total': '10',
+          'X-Pagination-Limit': '5',
+          'X-Pagination-Page': '2',
+          'X-Pagination-Pages': '2',
+        },
       },
-    });
+    );
 
     service.list({}).subscribe((resp) => {
       fallbackPagination = resp.pagination?.total;
     });
     const fallbackReq = httpMock.expectOne('/users');
-    fallbackReq.flush([{ id: 2, name: 'B', email: 'b@example.com', status: 'inactive' } as UserDto]);
+    fallbackReq.flush([
+      { id: 2, name: 'B', email: 'b@example.com', status: 'inactive' } as UserDto,
+    ]);
 
     expect(headerPagination).toBe(10);
     expect(fallbackPagination).toBe(1);
@@ -61,7 +65,12 @@ describe('UsersApiService', () => {
 
     const req = httpMock.expectOne('/users/7');
     expect(req.request.method).toBe('GET');
-    req.flush({ id: 7, name: '  Test ', email: ' Mixed@Example.Com ', status: 'active' } as UserDto);
+    req.flush({
+      id: 7,
+      name: '  Test ',
+      email: ' Mixed@Example.Com ',
+      status: 'active',
+    } as UserDto);
 
     expect(resultEmail).toBe('Mixed@Example.Com');
   });
@@ -71,9 +80,11 @@ describe('UsersApiService', () => {
     httpMock.expectOne('/users').flush([]);
 
     let createdId = 0;
-    service.create({ name: ' Alice ', email: ' Alice@ExAmple.Com ', status: 'inactive' }).subscribe((user) => {
-      createdId = user.id;
-    });
+    service
+      .create({ name: ' Alice ', email: ' Alice@ExAmple.Com ', status: 'inactive' })
+      .subscribe((user) => {
+        createdId = user.id;
+      });
 
     const req = httpMock.expectOne('/users');
     expect(req.request.method).toBe('POST');
@@ -99,7 +110,9 @@ describe('UsersApiService', () => {
 
     const req = httpMock.expectOne('/users/5');
     expect(req.request.method).toBe('PATCH');
-    expect(req.request.body).toEqual(jasmine.objectContaining({ name: 'Bob', email: 'bob@example.com' }));
+    expect(req.request.body).toEqual(
+      jasmine.objectContaining({ name: 'Bob', email: 'bob@example.com' }),
+    );
     req.flush({ id: 5, name: 'Bob', email: 'bob@example.com', status: 'active' } as UserDto);
 
     service.list({}, { cache: true }).subscribe();
@@ -133,9 +146,11 @@ describe('UsersApiService', () => {
     service.list({ page: 1 }, { cache: true }).subscribe({
       error: () => void 0,
     });
-    httpMock.expectOne((r) => r.url === '/users').flush([], {
-      headers: { 'X-Pagination-Total': '0', 'X-Pagination-Limit': '1' },
-    });
+    httpMock
+      .expectOne((r) => r.url === '/users')
+      .flush([], {
+        headers: { 'X-Pagination-Total': '0', 'X-Pagination-Limit': '1' },
+      });
 
     expect(true).toBeTrue();
   });

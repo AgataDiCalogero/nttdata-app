@@ -1,5 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HttpErrorResponse } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
@@ -151,7 +150,9 @@ describe('PostsApiService', () => {
   it('updates a comment via /comments/:id endpoint with trimmed body', () => {
     let body = '';
 
-    service.updateComment(55, { body: '  Updated  ' }).subscribe((comment) => (body = comment.body));
+    service
+      .updateComment(55, { body: '  Updated  ' })
+      .subscribe((comment) => (body = comment.body));
 
     const req = httpMock.expectOne('/comments/55');
     expect(req.request.method).toBe('PATCH');
@@ -169,9 +170,7 @@ describe('PostsApiService', () => {
         next: () => fail(`expected error ${status}`),
         error: (err: HttpErrorResponse) => expect(err.status).toBe(status),
       });
-      httpMock
-        .expectOne('/posts')
-        .flush({ message: 'error' }, { status, statusText: 'Error' });
+      httpMock.expectOne('/posts').flush({ message: 'error' }, { status, statusText: 'Error' });
     });
   });
 });

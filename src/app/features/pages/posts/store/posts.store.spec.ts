@@ -4,7 +4,10 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { DEFAULT_PAGINATION_CONFIG, PAGINATION_CONFIG } from '@/app/shared/config/pagination.config';
+import {
+  DEFAULT_PAGINATION_CONFIG,
+  PAGINATION_CONFIG,
+} from '@/app/shared/config/pagination.config';
 import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
@@ -42,7 +45,9 @@ describe('PostsStoreAdapter', () => {
     usersApi = jasmine.createSpyObj('UsersApiService', ['list']);
     usersApi.list.and.returnValue(
       of({
-        items: [{ id: 2, name: 'User', email: 'u@example.com', status: 'active' } as unknown as User],
+        items: [
+          { id: 2, name: 'User', email: 'u@example.com', status: 'active' } as unknown as User,
+        ],
         pagination: { total: 1, pages: 1, page: 1, limit: 50 },
       }),
     );
@@ -125,7 +130,9 @@ describe('PostsStoreAdapter', () => {
     const store = TestBed.inject(PostsStoreAdapter);
     const error = new Error('fail');
     postsApi.delete.and.returnValue(throwError(() => error));
-    notifications.showHttpError.and.returnValue('Unable to delete this post right now. Please try again.');
+    notifications.showHttpError.and.returnValue(
+      'Unable to delete this post right now. Please try again.',
+    );
 
     store.deletePostRequest({ id: 1, user_id: 2, title: 'T', body: 'B' } as Post).subscribe({
       error: () => void 0,

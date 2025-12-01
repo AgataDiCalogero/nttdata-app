@@ -304,21 +304,12 @@ export class UserDetail {
   }
 
   private async prefetchCommentCounts(posts: Post[]): Promise<void> {
-    const known = this.commentsCount();
-    const pending = posts.filter((post) => known[post.id] === undefined);
-    if (!pending.length) {
-      return;
+    const ids = posts.map((p) => p.id);
+    try {
+      const counts = await firstValueFrom(this.commentsCache.prefetchCounts(ids));
+      this.commentsCount.update((state) => ({ ...state, ...counts }));
+    } catch (err) {
+      console.error('Failed to prefetch comment counts:', err);
     }
-
-    await Promise.all(
-      pending.map(async (post) => {
-        try {
-          const count = await firstValueFrom(this.commentsCache.fetchCommentCount(post.id));
-          this.commentsCount.update((state) => ({ ...state, [post.id]: count }));
-        } catch (err) {
-          console.error('Failed to load comment count:', err);
-        }
-      }),
-    );
   }
 }

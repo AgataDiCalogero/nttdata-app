@@ -1,7 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { MatIconRegistry } from '@angular/material/icon';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { LUCIDE_ICONS } from 'lucide-angular';
-import { MatIconRegistry } from '@angular/material/icon';
 import { of } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
@@ -28,7 +29,7 @@ describe('Login component', () => {
     toast = jasmine.createSpyObj('ToastService', ['show']);
 
     TestBed.configureTestingModule({
-      imports: [Login],
+      imports: [Login, NoopAnimationsModule],
       providers: [
         { provide: TokenValidationService, useValue: validator },
         { provide: AuthService, useValue: auth },
@@ -41,7 +42,10 @@ describe('Login component', () => {
             translate: (_k: string, params?: Record<string, unknown>) => params?.count ?? _k,
           },
         },
-        { provide: MatIconRegistry, useValue: { addSvgIconLiteral: () => {}, getNamedSvgIcon: () => of(null) } },
+        {
+          provide: MatIconRegistry,
+          useValue: { addSvgIconLiteral: () => {}, getNamedSvgIcon: () => of(null) },
+        },
         { provide: LUCIDE_ICONS, useValue: [] },
       ],
     });
@@ -99,4 +103,18 @@ describe('Login component', () => {
     expect(component.submissionMessage()).toBe('slow down');
     expect(toast.show).toHaveBeenCalledWith('error', 'slow down', 5000);
   });
+
+  it('disabilita input quando loading è true', fakeAsync(() => {
+    component.loading.set(true);
+    fixture.detectChanges();
+    tick(); // allow effect to run
+
+    expect(component.tokenControl.disabled).toBeTrue();
+
+    component.loading.set(false);
+    fixture.detectChanges();
+    tick();
+
+    expect(component.tokenControl.enabled).toBeTrue();
+  }));
 });

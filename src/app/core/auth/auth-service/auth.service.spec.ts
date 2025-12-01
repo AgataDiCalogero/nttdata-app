@@ -34,8 +34,10 @@ describe('AuthService', () => {
   beforeEach(() => {
     session = new MemoryStorage();
     local = new MemoryStorage();
-    originalSessionDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'sessionStorage') ?? undefined;
-    originalLocalDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage') ?? undefined;
+    originalSessionDescriptor =
+      Object.getOwnPropertyDescriptor(globalThis, 'sessionStorage') ?? undefined;
+    originalLocalDescriptor =
+      Object.getOwnPropertyDescriptor(globalThis, 'localStorage') ?? undefined;
     Object.defineProperty(globalThis, 'sessionStorage', {
       configurable: true,
       get: () => session,

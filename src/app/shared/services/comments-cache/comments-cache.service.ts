@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
+import { Observable, of, forkJoin } from 'rxjs';
+import { catchError, finalize, map, shareReplay, tap, take } from 'rxjs/operators';
 
 import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
 
@@ -76,6 +76,28 @@ export class CommentsCacheService {
 
     this.countInFlight.set(postId, obs);
     return obs;
+  }
+
+  prefetchCounts(postIds: number[]): Observable<Record<number, number>> {
+    if (postIds.length === 0) {
+      return of({});
+    }
+
+    const tasks = postIds.map((id) =>
+      this.fetchCommentCount(id).pipe(
+        take(1),
+        map((count) => ({ id, count })),
+      ),
+    );
+
+    return forkJoin(tasks).pipe(
+      map((results) =>
+        results.reduce(
+          (acc, curr) => ({ ...acc, [curr.id]: curr.count }),
+          {} as Record<number, number>,
+        ),
+      ),
+    );
   }
 
   setComments(postId: number, comments: Comment[]): void {

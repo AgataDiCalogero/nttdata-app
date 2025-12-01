@@ -1,5 +1,6 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LUCIDE_ICONS } from 'lucide-angular';
 import { of, Subject, throwError } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
@@ -9,7 +10,6 @@ import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 
 import { PostCommentsComponent } from './post-comments.component';
-import { LUCIDE_ICONS } from 'lucide-angular';
 
 describe('PostCommentsComponent', () => {
   let fixture: ComponentFixture<PostCommentsComponent>;
@@ -25,7 +25,9 @@ describe('PostCommentsComponent', () => {
     overlays = jasmine.createSpyObj('UiOverlayService', ['activate', 'release']);
     const closed$ = new Subject<void>();
     dialog = {
-      open: jasmine.createSpy('open').and.returnValue({ closed: closed$.asObservable(), close: () => closed$.next() }),
+      open: jasmine
+        .createSpy('open')
+        .and.returnValue({ closed: closed$.asObservable(), close: () => closed$.next() }),
     };
 
     TestBed.configureTestingModule({
@@ -87,9 +89,7 @@ describe('PostCommentsComponent', () => {
     component.startEdit(comment as any);
     component.editForm.controls.body.setValue(' new body ');
 
-    postsApi.updateComment.and.returnValue(
-      of({ id: 12, post_id: 1, body: 'new body' } as any),
-    );
+    postsApi.updateComment.and.returnValue(of({ id: 12, post_id: 1, body: 'new body' } as any));
     const updatedSpy = jasmine.createSpy('updated');
     component.commentUpdated.subscribe(updatedSpy);
 
@@ -100,15 +100,11 @@ describe('PostCommentsComponent', () => {
 
     component.startEdit(comment as any);
     component.editForm.controls.body.setValue('invalid');
-    postsApi.updateComment.and.returnValue(
-      throwError(() => ({ status: 422, message: 'invalid' })),
-    );
+    postsApi.updateComment.and.returnValue(throwError(() => ({ status: 422, message: 'invalid' })));
     component.saveEdit(comment as any);
     expect(component.editError()).toBe('postComments.errors.editInvalid');
 
-    postsApi.updateComment.and.returnValue(
-      throwError(() => ({ status: 429, message: 'limit' })),
-    );
+    postsApi.updateComment.and.returnValue(throwError(() => ({ status: 429, message: 'limit' })));
     component.saveEdit(comment as any);
     expect(toast.show).toHaveBeenCalledWith('error', 'postComments.errors.rateLimit');
   });

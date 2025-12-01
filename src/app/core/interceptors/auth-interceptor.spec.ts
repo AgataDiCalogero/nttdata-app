@@ -11,9 +11,11 @@ describe('authInterceptor', () => {
 
   beforeEach(() => {
     auth = { token: () => '  abc ' };
-    next = jasmine.createSpy<HttpHandlerFn>('next').and.callFake((req: HttpRequest<unknown>) =>
-      of(new HttpResponse({ status: 200, url: req.url, headers: req.headers })),
-    );
+    next = jasmine
+      .createSpy<HttpHandlerFn>('next')
+      .and.callFake((req: HttpRequest<unknown>) =>
+        of(new HttpResponse({ status: 200, url: req.url, headers: req.headers })),
+      );
 
     TestBed.configureTestingModule({
       providers: [{ provide: AuthService, useValue: auth }],

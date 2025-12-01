@@ -11,8 +11,13 @@
         @let tokenError = tokenErrorMessage();
 
         <div class="login-field">
-          <label class="login-field__label" for="access-token">{{ 'login.tokenLabel' | appTranslate }}</label>
-          <div class="login-field__control" [class.login-field__control--invalid]="showTokenInvalidState()">
+          <label class="login-field__label" for="access-token">{{
+            'login.tokenLabel' | appTranslate
+          }}</label>
+          <div
+            class="login-field__control"
+            [class.login-field__control--invalid]="showTokenInvalidState()"
+          >
             <input
               id="access-token"
               class="login-field__input"

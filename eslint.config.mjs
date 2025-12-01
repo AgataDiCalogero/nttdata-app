@@ -60,7 +60,8 @@ export default [
         'error',
         {
           selector: "CallExpression[callee.object.name='console'][callee.property.name='log']",
-          message: 'Avoid console.log to prevent leaking sensitive data (tokens, PII). Use structured logging instead.',
+          message:
+            'Avoid console.log to prevent leaking sensitive data (tokens, PII). Use structured logging instead.',
         },
       ],
       'import/no-duplicates': 'error',

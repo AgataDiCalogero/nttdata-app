@@ -21,13 +21,13 @@ npm start
 
 ### Key npm scripts
 
-| Command | Purpose |
-| --- | --- |
-| `npm run start` | Serve the app locally with live reload |
-| `npm run build` / `npm run build:ci` | Production build (differing configs) |
-| `npm run test` / `npm run test:ci` | Karma + Jasmine unit tests (watch/headless) |
-| `npm run lint` / `npm run lint:fix` | ESLint with strict rules (import order, template a11y, no stray `console.log`) |
-| `npm run format` / `npm run format:check` | Prettier formatting (write/check) |
+| Command                                   | Purpose                                                                        |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
+| `npm run start`                           | Serve the app locally with live reload                                         |
+| `npm run build` / `npm run build:ci`      | Production build (differing configs)                                           |
+| `npm run test` / `npm run test:ci`        | Karma + Jasmine unit tests (watch/headless)                                    |
+| `npm run lint` / `npm run lint:fix`       | ESLint with strict rules (import order, template a11y, no stray `console.log`) |
+| `npm run format` / `npm run format:check` | Prettier formatting (write/check)                                              |
 
 ### Testing strategy
 
