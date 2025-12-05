@@ -7,6 +7,8 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+import type { DeleteConfirmData } from '@/app/shared/models/dialog';
+import type { Comment } from '@/app/shared/models/post';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 
 import { PostCommentsComponent } from './post-comments.component';
@@ -51,11 +53,11 @@ describe('PostCommentsComponent', () => {
   it('apre dialog di delete e conferma eliminazione con toast successo', (done) => {
     const deletedSpy = jasmine.createSpy('deleted');
     component.commentDeleted.subscribe(deletedSpy);
-    const comment = { id: 10, post_id: 1, body: 'b' };
+    const comment: Comment = { id: 10, post_id: 1, body: 'b', email: 'a@b.com', name: 'Test' };
     postsApi.deleteComment.and.returnValue(of(void 0));
 
-    component.deleteComment(comment as any);
-    const data = dialog.open.calls.mostRecent().args[1].data as any;
+    component.deleteComment(comment);
+    const data = dialog.open.calls.mostRecent().args[1].data as DeleteConfirmData;
 
     data.confirmAction().subscribe(() => {
       expect(postsApi.deleteComment).toHaveBeenCalledWith(10);
@@ -67,13 +69,13 @@ describe('PostCommentsComponent', () => {
   });
 
   it('gestisce errore 429 su delete mostrando toast errore', (done) => {
-    const comment = { id: 11, post_id: 1, body: 'b' };
+    const comment: Comment = { id: 11, post_id: 1, body: 'b', email: 'a@b.com', name: 'Test' };
     postsApi.deleteComment.and.returnValue(
       throwError(() => ({ status: 429, message: 'rate limit' })),
     );
 
-    component.deleteComment(comment as any);
-    const data = dialog.open.calls.mostRecent().args[1].data as any;
+    component.deleteComment(comment);
+    const data = dialog.open.calls.mostRecent().args[1].data as DeleteConfirmData;
 
     data.confirmAction().subscribe({
       error: () => {
@@ -85,27 +87,29 @@ describe('PostCommentsComponent', () => {
   });
 
   it('salva edit e gestisce 422/429', () => {
-    const comment = { id: 12, post_id: 1, body: 'old' };
-    component.startEdit(comment as any);
+    const comment: Comment = { id: 12, post_id: 1, body: 'old', email: 'e@x.com', name: 'N' };
+    component.startEdit(comment);
     component.editForm.controls.body.setValue(' new body ');
 
-    postsApi.updateComment.and.returnValue(of({ id: 12, post_id: 1, body: 'new body' } as any));
+    postsApi.updateComment.and.returnValue(
+      of({ id: 12, post_id: 1, body: 'new body', email: 'e@x.com', name: 'N' } as Comment),
+    );
     const updatedSpy = jasmine.createSpy('updated');
     component.commentUpdated.subscribe(updatedSpy);
 
-    component.saveEdit(comment as any);
+    component.saveEdit(comment);
     expect(postsApi.updateComment).toHaveBeenCalledWith(12, { body: 'new body' });
     expect(updatedSpy).toHaveBeenCalled();
     expect(component.editingId()).toBeNull();
 
-    component.startEdit(comment as any);
+    component.startEdit(comment);
     component.editForm.controls.body.setValue('invalid');
     postsApi.updateComment.and.returnValue(throwError(() => ({ status: 422, message: 'invalid' })));
-    component.saveEdit(comment as any);
+    component.saveEdit(comment);
     expect(component.editError()).toBe('postComments.errors.editInvalid');
 
     postsApi.updateComment.and.returnValue(throwError(() => ({ status: 429, message: 'limit' })));
-    component.saveEdit(comment as any);
+    component.saveEdit(comment);
     expect(toast.show).toHaveBeenCalledWith('error', 'postComments.errors.rateLimit');
   });
 });

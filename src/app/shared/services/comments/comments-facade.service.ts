@@ -2,13 +2,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
 import { firstValueFrom, take } from 'rxjs';
 
-import type {
-  Comment,
-  CreateComment,
-  UpdateComment,
-} from '@/app/shared/models/post';
+import type { Comment, CreateComment, UpdateComment } from '@/app/shared/models/post';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+
 import { CommentsCacheService } from '../comments-cache/comments-cache.service';
 
 @Injectable({ providedIn: 'root' })
@@ -189,10 +186,7 @@ export class CommentsFacadeService {
     });
     this.countsSignal.update((state) => ({
       ...state,
-      [postId]: Math.max(
-        0,
-        (state[postId] ?? (this.commentsSignal()[postId]?.length ?? 0)) - 1,
-      ),
+      [postId]: Math.max(0, (state[postId] ?? this.commentsSignal()[postId]?.length ?? 0) - 1),
     }));
     this.cache.setComments(postId, this.commentsSignal()[postId] ?? []);
   }

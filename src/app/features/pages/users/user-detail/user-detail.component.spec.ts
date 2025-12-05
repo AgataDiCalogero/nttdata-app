@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,15 +16,15 @@ import {
 } from 'lucide-angular';
 import { of, throwError } from 'rxjs';
 
+import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
-import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 
 import { UserDetail } from './user-detail.component';
 
@@ -183,7 +183,6 @@ describe('UserDetailComponent', () => {
 
   it('should update user status optimistically', () => {
     fixture.detectChanges();
-    const originalUser = component.user();
 
     usersApiSpy.update.and.returnValue(of({ ...mockUser, status: 'inactive' }));
 

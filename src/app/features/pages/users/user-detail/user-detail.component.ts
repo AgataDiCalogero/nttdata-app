@@ -29,6 +29,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
+import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
@@ -39,7 +40,6 @@ import type { Post, Comment } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
 @Component({

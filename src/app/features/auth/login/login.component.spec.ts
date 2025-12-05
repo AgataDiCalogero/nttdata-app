@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { Login } from './login.component';
 
 describe('Login component', () => {
   let component: Login;
-  let fixture: any;
+  let fixture: ComponentFixture<Login>;
   let validator: jasmine.SpyObj<TokenValidationService>;
   let auth: jasmine.SpyObj<AuthService>;
   let router: jasmine.SpyObj<Router>;
@@ -64,7 +64,7 @@ describe('Login component', () => {
 
     component.form.controls.token.setValue('short');
     component.form.markAllAsTouched();
-    (component as any).attemptedSubmit.set(true);
+    component['attemptedSubmit'].set(true);
     fixture.detectChanges();
     expect(component.form.controls.token.hasError('minlength')).toBeTrue();
   });

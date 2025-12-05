@@ -46,7 +46,10 @@
     <div class="controls">
       <div class="toolbar-menu-trigger">
         <app-language-switcher aria-label="Cambia lingua"></app-language-switcher>
-        <app-appearance-switcher aria-haspopup="true" aria-label="Cambia tema"></app-appearance-switcher>
+        <app-appearance-switcher
+          aria-haspopup="true"
+          aria-label="Cambia tema"
+        ></app-appearance-switcher>
 
         @if (!isLoginRoute() && isLogged()) {
           <button

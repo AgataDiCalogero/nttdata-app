@@ -3,6 +3,7 @@
 Single-page Angular application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases token-based authentication, protected routes, CRUD workflows, accessibility-first templates, theming, and i18n-ready UI built with Angular standalone components and signals.
 
 ## Stack & Architettura
+
 - Angular 20 standalone con SSR tramite `@angular/ssr`.
 - Store basati su `@ngrx/signals` per utenti e post (paginazione, filtri, cache locali).
 - Interceptor HTTP: prefisso base URL, header Bearer automatico, gestione errori con toast e logout su 401.
@@ -27,12 +28,14 @@ npm start
 3. Use the top-right language/theme controls to switch locales (EN/IT) or light/dark/system modes.
 
 ### Autenticazione
+
 - Come ottenere il token: autenticati su <https://gorest.co.in/consumer/login> e copia il personal access token.
 - Dove inserirlo: campo token nella pagina di login (dialog di help disponibile).
 - Dove viene salvato: `sessionStorage` (con migrazione da `localStorage` legacy). Nessuna opzione “remember me” per scelta progettuale; chiudendo il browser la sessione si perde.
 - Come viene usato: `auth-interceptor` aggiunge `Authorization: Bearer ...`, `authGuard` protegge le rotte, `error.interceptor` intercetta 401 → `AuthService.logout()` + redirect a `/login`.
 
 ## Funzionalità principali
+
 - Lista utenti: ricerca per nome/email, sort, paginazione, creazione/modifica/eliminazione, dettaglio utente.
 - Dettaglio utente: stato attivo/inattivo, post dell’utente, commenti con cache e gestione CRUD.
 - Lista post: filtri per titolo/autore, paginazione, commenti espandibili, crea/modifica/elimina post.
@@ -73,6 +76,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs lint → unit tests → build o
 API base URLs live in `src/environments/*.ts`. Interceptors automatically prefix relative paths with the configured base URL and attach the Bearer token when available.
 
 ## Scelte progettuali
+
 - `@ngrx/signals` al posto di NgRx classico per ridurre boilerplate e mantenere segnali reattivi vicini ai componenti standalone.
 - Sessione in `sessionStorage`: persistenza limitata alla scheda/browser per evitare token dimenticati; invalidata centralmente su 401 via interceptor.
 - Design system SCSS modulare: variables/tokens, mixin condivisi, temi light/dark e partial specifici per pattern UI (bottoni, form, pagination, skeleton).

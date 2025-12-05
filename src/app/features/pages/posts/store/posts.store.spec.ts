@@ -24,7 +24,6 @@ describe('PostsStoreAdapter', () => {
   let usersApi: jasmine.SpyObj<UsersApiService>;
   let commentsCache: jasmine.SpyObj<CommentsCacheService>;
   let notifications: jasmine.SpyObj<NotificationsService>;
-  let commentsFacade: CommentsFacadeService;
   let auth: { token: () => string | null };
 
   beforeEach(() => {

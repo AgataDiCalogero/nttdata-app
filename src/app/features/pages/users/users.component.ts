@@ -8,9 +8,9 @@ import { LucideAngularModule } from 'lucide-angular';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 
 import type { User } from '@/app/shared/models/user';
 

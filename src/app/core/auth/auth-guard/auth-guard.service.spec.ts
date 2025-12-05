@@ -1,6 +1,6 @@
 import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 
 import { authGuard } from './auth-guard.service';
 import { AuthService } from '../auth-service/auth.service';
@@ -26,14 +26,18 @@ describe('authGuard', () => {
   it('redirect a /login quando il token è assente', async () => {
     auth.isLoggedIn = false;
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
 
     expect(result).toBe(router.createUrlTree.calls.mostRecent().returnValue);
     expect(router.createUrlTree).toHaveBeenCalledWith(['/login']);
   });
 
   it('permette accesso quando il token è presente', () => {
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
 
     expect(result).toBeTrue();
     expect(router.createUrlTree).not.toHaveBeenCalled();
@@ -49,7 +53,9 @@ describe('authGuard', () => {
       ],
     });
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
 
     expect(result).toBeTrue();
     expect(router.createUrlTree).not.toHaveBeenCalled();

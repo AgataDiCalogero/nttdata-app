@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Post } from '@/app/shared/models/post';
+import { Comment, Post } from '@/app/shared/models/post';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import { PostsUiService } from './posts-ui.service';
@@ -43,7 +43,7 @@ describe('PostsComponent', () => {
       userLookup: signal<Record<number, string>>({ 1: 'Author' }),
       userOptions: signal([{ id: 1, name: 'Author' }]),
       posts: signal<Post[]>([{ id: 101, user_id: 1, title: 'Test Post', body: 'Body' }]),
-      commentsMap: signal<Record<number, any[]>>({}),
+      commentsMap: signal<Record<number, Comment[]>>({}),
       commentsLoading: signal<Record<number, boolean>>({}),
       commentsCountMap: signal<Record<number, number>>({}),
       perPageOptions: signal([10, 20]),
