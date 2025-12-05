@@ -35,6 +35,7 @@ import {
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
@@ -69,6 +70,7 @@ export class UserDetail {
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly usersApi = inject(UsersApiService);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly pagination =
     inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??

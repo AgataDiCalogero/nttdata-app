@@ -8,13 +8,13 @@ import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
 } from '@/app/shared/config/pagination.config';
+import { CommentsCacheService } from '@/app/shared/data-access/comments/comments-cache.service';
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 import { PostsFiltersService } from './posts-filters.service';
 import { PostsStoreAdapter } from './posts.store';

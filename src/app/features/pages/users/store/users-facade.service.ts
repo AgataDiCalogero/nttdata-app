@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, of, type Observable } from 'rxjs';
 
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersFacadeService {

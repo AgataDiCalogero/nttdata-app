@@ -18,16 +18,16 @@ import { tap, take } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
-import { AlertComponent } from '@app/shared/ui/alert/alert.component';
-import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
 
-import { CommentFormComponent } from '@/app/shared/comments/comment-form/comment-form.component';
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { Comment as ModelComment } from '@/app/shared/models/post';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
+import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
+import { ButtonComponent } from '@/app/shared/ui/button/button.component';
+import { CommentFormComponent } from '@/app/shared/ui/comment-form/comment-form.component';
+import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
+import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
 @Component({
   standalone: true,
@@ -59,7 +59,7 @@ export class PostCommentsComponent {
   readonly composerCancelled = output<void>();
 
   private readonly fb = inject(FormBuilder);
-  private readonly postsApi = inject(PostsApiService);
+  private readonly commentsFacade = inject(CommentsFacadeService);
   private readonly toast = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
@@ -80,13 +80,12 @@ export class PostCommentsComponent {
       errorMessage: this.i18n.translate('postComments.deleteConfirm.errorMessage'),
       confirmAction: () => {
         this.deletingId.set(comment.id);
-        return this.postsApi.deleteComment(comment.id).pipe(
-          takeUntilDestroyed(this.destroyRef),
+        return this.commentsFacade.deleteComment(comment.id).pipe(
           tap({
             next: () => {
-              this.toast.show('success', this.i18n.translate('postComments.toast.deleted'));
-              this.commentDeleted.emit(comment.id);
               this.deletingId.set(null);
+              this.commentDeleted.emit(comment.id);
+              this.toast.show('success', this.i18n.translate('postComments.toast.deleted'));
             },
             error: (err) => {
               this.deletingId.set(null);
@@ -96,7 +95,7 @@ export class PostCommentsComponent {
                   ? this.i18n.translate('postComments.errors.rateLimit')
                   : this.i18n.translate('postComments.deleteConfirm.errorMessage');
               this.toast.show('error', message);
-              throw new Error(message);
+              throw err;
             },
           }),
         );
@@ -169,13 +168,15 @@ export class PostCommentsComponent {
     this.submittingEdit.set(true);
     this.editError.set(null);
 
-    this.postsApi
+    this.commentsFacade
       .updateComment(comment.id, { body: trimmed })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (updated: ModelComment) => {
+        next: (updated) => {
+          if (updated) {
+            this.commentUpdated.emit(updated);
+          }
           this.toast.show('success', this.i18n.translate('postComments.toast.updated'));
-          this.commentUpdated.emit(updated);
           this.submittingEdit.set(false);
           this.cancelEdit();
         },
@@ -183,10 +184,8 @@ export class PostCommentsComponent {
           console.error('Failed to update comment', err);
           this.submittingEdit.set(false);
           if (err?.status === 422) {
-            // Keep inline validation errors for the edit form
             this.editError.set(this.i18n.translate('postComments.errors.editInvalid'));
           } else if (err?.status === 429) {
-            // Rate limit / server-level error -> show centralized toast
             this.toast.show('error', this.i18n.translate('postComments.errors.rateLimit'));
           } else {
             this.toast.show('error', this.i18n.translate('postComments.toast.updateFailed'));

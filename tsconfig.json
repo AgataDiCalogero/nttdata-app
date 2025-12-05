@@ -14,7 +14,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@features/*": ["src/app/features/*"]
     },
 
     "types": ["node"],

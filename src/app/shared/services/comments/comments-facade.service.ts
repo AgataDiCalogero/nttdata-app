@@ -1,12 +1,11 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
-import { firstValueFrom, take } from 'rxjs';
+import { firstValueFrom, of, take } from 'rxjs';
 
+import { CommentsCacheService } from '@/app/shared/data-access/comments/comments-cache.service';
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import type { Comment, CreateComment, UpdateComment } from '@/app/shared/models/post';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-
-import { CommentsCacheService } from '../comments-cache/comments-cache.service';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsFacadeService {
@@ -101,58 +100,19 @@ export class CommentsFacadeService {
     }
   }
 
-  createComment(postId: number, payload: CreateComment): void {
-    if (!this.isBrowser) return;
-    this.postsApi
-      .createComment(postId, payload)
-      .pipe(take(1))
-      .subscribe({
-        next: (created) => this.applyCreated(postId, created),
-        error: (err) => {
-          console.error('Failed to create comment', err);
-          this.notifications.showHttpError(err, 'Unable to create comment');
-        },
-      });
+  createComment(postId: number, payload: CreateComment) {
+    if (!this.isBrowser) return of(null as unknown as Comment);
+    return this.postsApi.createComment(postId, payload).pipe(take(1));
   }
 
-  updateComment(commentId: number, payload: UpdateComment): void {
-    if (!this.isBrowser) return;
-    const postId = this.findPostIdByComment(commentId);
-    this.postsApi
-      .updateComment(commentId, payload)
-      .pipe(take(1))
-      .subscribe({
-        next: (updated) => {
-          if (postId === null) {
-            return;
-          }
-          this.applyUpdated(postId, updated);
-        },
-        error: (err) => {
-          console.error('Failed to update comment', err);
-          this.notifications.showHttpError(err, 'Unable to update comment');
-        },
-      });
+  updateComment(commentId: number, payload: UpdateComment) {
+    if (!this.isBrowser) return of(null as unknown as Comment);
+    return this.postsApi.updateComment(commentId, payload).pipe(take(1));
   }
 
-  deleteComment(commentId: number): void {
-    if (!this.isBrowser) return;
-    const postId = this.findPostIdByComment(commentId);
-    this.postsApi
-      .deleteComment(commentId)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          if (postId === null) {
-            return;
-          }
-          this.applyDeleted(postId, commentId);
-        },
-        error: (err) => {
-          console.error('Failed to delete comment', err);
-          this.notifications.showHttpError(err, 'Unable to delete comment');
-        },
-      });
+  deleteComment(commentId: number) {
+    if (!this.isBrowser) return of(void 0);
+    return this.postsApi.deleteComment(commentId).pipe(take(1));
   }
 
   applyCreated(postId: number, comment: Comment): void {

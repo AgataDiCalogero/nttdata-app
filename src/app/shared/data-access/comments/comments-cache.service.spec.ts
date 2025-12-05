@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Subject, firstValueFrom, of } from 'rxjs';
 
-import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
+import { PostsApiService } from '@app/shared/data-access/posts/posts-api.service';
 
 import type { Comment } from '@/app/shared/models/post';
 

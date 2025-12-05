@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, finalize, map, shareReplay, tap, take } from 'rxjs/operators';
 
-import { PostsApiService } from '@app/shared/services/posts/posts-api.service';
+import { PostsApiService } from '@app/shared/data-access/posts/posts-api.service';
 
 import type { Comment } from '@/app/shared/models/post';
 

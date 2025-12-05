@@ -5,8 +5,8 @@ import { of, throwError } from 'rxjs';
 
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import { User } from '@/app/shared/models/user';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 import { UserForm } from './user-form.component';
 

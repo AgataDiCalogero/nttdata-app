@@ -33,9 +33,12 @@
         [attr.aria-invalid]="
           form.controls.name.invalid && form.controls.name.touched ? 'true' : null
         "
+        [attr.aria-describedby]="
+          form.controls.name.invalid && form.controls.name.touched ? 'name-error' : null
+        "
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <app-alert variant="error" padding="compact">{{
+        <app-alert variant="error" padding="compact" id="name-error">{{
           'userForm.errors.name' | appTranslate
         }}</app-alert>
       }
@@ -52,14 +55,22 @@
         [attr.aria-invalid]="
           form.controls.email.invalid && form.controls.email.touched ? 'true' : null
         "
+        [attr.aria-describedby]="[
+          form.controls.email.invalid && form.controls.email.touched ? 'email-error' : null,
+          emailError() ? 'email-server-error' : null
+        ]
+          .filter(Boolean)
+          .join(' ') || null"
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
-        <app-alert variant="error" padding="compact">{{
+        <app-alert variant="error" padding="compact" id="email-error">{{
           'userForm.errors.email' | appTranslate
         }}</app-alert>
       }
       @if (emailError()) {
-        <app-alert variant="error" padding="compact">{{ emailError() }}</app-alert>
+        <app-alert variant="error" padding="compact" id="email-server-error">{{
+          emailError()
+        }}</app-alert>
       }
     </div>
 

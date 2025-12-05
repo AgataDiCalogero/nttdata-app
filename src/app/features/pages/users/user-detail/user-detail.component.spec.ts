@@ -17,14 +17,14 @@ import {
 import { of, throwError } from 'rxjs';
 
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
+import { CommentsCacheService } from '@/app/shared/data-access/comments/comments-cache.service';
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 import { UserDetail } from './user-detail.component';
 

@@ -18,10 +18,15 @@
         [attr.aria-invalid]="
           form.controls.name.invalid && form.controls.name.touched ? 'true' : null
         "
+        [attr.aria-describedby]="
+          form.controls.name.invalid && form.controls.name.touched ? 'comment-name-error' : null
+        "
         required
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <p class="field-error">{{ 'commentForm.errors.name' | appTranslate }}</p>
+        <p class="field-error" id="comment-name-error">
+          {{ 'commentForm.errors.name' | appTranslate }}
+        </p>
       }
     </div>
 
@@ -38,10 +43,15 @@
         [attr.aria-invalid]="
           form.controls.email.invalid && form.controls.email.touched ? 'true' : null
         "
+        [attr.aria-describedby]="
+          form.controls.email.invalid && form.controls.email.touched ? 'comment-email-error' : null
+        "
         required
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
-        <p class="field-error">{{ 'commentForm.errors.email' | appTranslate }}</p>
+        <p class="field-error" id="comment-email-error">
+          {{ 'commentForm.errors.email' | appTranslate }}
+        </p>
       }
     </div>
   </div>
@@ -57,13 +67,21 @@
       rows="4"
       [placeholder]="placeholderText()"
       [attr.aria-invalid]="form.controls.body.invalid && form.controls.body.touched ? 'true' : null"
+      [attr.aria-describedby]="[
+        'comment-body-hint',
+        form.controls.body.invalid && form.controls.body.touched ? 'comment-body-error' : null
+      ]
+        .filter(Boolean)
+        .join(' ')"
       maxlength="500"
       required
     ></textarea>
     <div class="field-hint">
-      <span>{{ bodyLength }}/500</span>
+      <span id="comment-body-hint">{{ bodyLength }}/500</span>
       @if (form.controls.body.touched && form.controls.body.invalid) {
-        <p class="field-error">{{ 'commentForm.errors.body' | appTranslate }}</p>
+        <p class="field-error" id="comment-body-error">
+          {{ 'commentForm.errors.body' | appTranslate }}
+        </p>
       }
     </div>
   </div>

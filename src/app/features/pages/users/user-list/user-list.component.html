@@ -24,20 +24,24 @@
               ></app-status-badge>
               @if (isMobile()) {
                 <button
-                  appButton
-                  variant="danger"
-                  [iconOnly]="true"
-                  class="user-card__delete-mobile"
-                  (click)="onDelete(user, $event)"
-                  [attr.aria-label]="'userList.deleteAria' | appTranslate"
-                  title="{{ 'userList.deleteAria' | appTranslate }}"
-                >
-                  <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
-                  <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
-                </button>
-              }
-            </div>
-          </mat-card-header>
+                appButton
+                variant="danger"
+                [iconOnly]="true"
+                class="user-card__delete-mobile"
+                (click)="onDelete(user, $event)"
+                [attr.aria-label]="'userList.deleteAria' | appTranslate"
+                title="{{ 'userList.deleteAria' | appTranslate }}"
+              >
+                <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
+                <mat-icon
+                  svgIcon="lucide:trash-2"
+                  class="user-card__delete-icon"
+                  aria-hidden="true"
+                ></mat-icon>
+              </button>
+            }
+          </div>
+        </mat-card-header>
 
           <mat-card-content>
             <div class="user-card__meta">
@@ -78,7 +82,11 @@
                 title="{{ 'userList.deleteAria' | appTranslate }}"
               >
                 <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
-                <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+                <mat-icon
+                  svgIcon="lucide:trash-2"
+                  class="user-card__delete-icon"
+                  aria-hidden="true"
+                ></mat-icon>
               </button>
             }
           </mat-card-actions>

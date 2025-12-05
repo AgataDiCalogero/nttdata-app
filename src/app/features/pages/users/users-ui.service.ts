@@ -3,18 +3,17 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, take, tap } from 'rxjs';
 
-import {
-  UiOverlayService,
-  type OverlayKey,
-} from '@app/shared/services/ui-overlay/ui-overlay.service';
-
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { User } from '@/app/shared/models/user';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import {
+  UiOverlayService,
+  type OverlayKey,
+} from '@/app/shared/services/ui-overlay/ui-overlay.service';
+import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 
 import { injectUsersService } from './store/users.inject';
 import { UserForm } from './user-form/user-form.component';

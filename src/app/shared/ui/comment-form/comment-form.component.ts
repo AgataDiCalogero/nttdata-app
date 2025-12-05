@@ -19,7 +19,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import type { Comment, CreateComment } from '@/app/shared/models/post';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 
 @Component({
   selector: 'app-comment-form',
@@ -31,7 +31,7 @@ import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 })
 export class CommentFormComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly postsApi = inject(PostsApiService);
+  private readonly commentsFacade = inject(CommentsFacadeService);
   private readonly toast = inject(ToastService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
@@ -80,14 +80,16 @@ export class CommentFormComponent {
 
     this.submitting.set(true);
 
-    this.postsApi
+    this.commentsFacade
       .createComment(this.postId(), payload)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (comment) => {
           this.submitting.set(false);
+          if (comment) {
+            this.created.emit(comment);
+          }
           this.toast.show('success', this.i18n.translate('commentForm.toastSuccess'));
-          this.created.emit(comment);
           this.submitError.set(null);
           this.form.reset();
         },

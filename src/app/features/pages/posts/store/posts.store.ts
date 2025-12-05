@@ -4,19 +4,17 @@ import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { catchError, map, of, switchMap, tap, throwError } from 'rxjs';
 
-import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
-import type { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { UsersLookupService } from '@/app/shared/services/users/users-lookup.service';
 
 import { PostsFiltersService } from './posts-filters.service';
 import type { PostsService } from './posts.service';
@@ -25,8 +23,6 @@ interface PostsState {
   posts: Post[];
   postEntities: Record<number, Post>;
   pagination: PaginationMeta | null;
-  userOptions: User[];
-  userLookup: Record<number, string>;
   deletingId: number | null;
   loading: boolean;
   error: string | null;
@@ -39,8 +35,6 @@ const defaultState: PostsState = {
   posts: [],
   postEntities: {},
   pagination: null,
-  userOptions: [],
-  userLookup: {},
   deletingId: null,
   loading: false,
   error: null,
@@ -55,6 +49,7 @@ export const PostsStoreAdapter = signalStore(
   withComputed((store) => {
     const filtersService = inject(PostsFiltersService);
     const commentsFacade = inject(CommentsFacadeService);
+    const usersLookup = inject(UsersLookupService);
 
     return {
       filters: computed(() => filtersService.filters()),
@@ -79,17 +74,23 @@ export const PostsStoreAdapter = signalStore(
       commentsMap: computed(() => commentsFacade.comments()),
       commentsLoading: computed(() => commentsFacade.loading()),
       commentsCountMap: computed(() => commentsFacade.counts()),
+      userOptions: computed(() => usersLookup.users()),
+      userLookup: computed(() =>
+        usersLookup.users().reduce<Record<number, string>>((acc, user) => {
+          acc[user.id] = user.name ?? `User #${user.id}`;
+          return acc;
+        }, {}),
+      ),
     };
   }),
 
   withMethods((store) => {
     const postsApi = inject(PostsApiService);
-    const usersApi = inject(UsersApiService);
     const commentsFacade = inject(CommentsFacadeService);
+    const usersLookup = inject(UsersLookupService);
     const notifications = inject(NotificationsService);
     const destroyRef = inject(DestroyRef);
     const platformId = inject(PLATFORM_ID);
-    const auth = inject(AuthService);
     const filtersService = inject(PostsFiltersService);
     const pagination =
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
@@ -105,7 +106,7 @@ export const PostsStoreAdapter = signalStore(
     const perPageOptions = signal([...pagination.perPageOptions]);
 
     initializePostsStream();
-    setupUserOptionsBootstrap();
+    bootstrapUserOptions();
     syncPaginationOnFilterChange();
 
     const performDeletePost = (post: Post) => {
@@ -288,56 +289,19 @@ export const PostsStoreAdapter = signalStore(
       void commentsFacade.prefetchCounts(items);
     }
 
-    function loadUsersForFilter(): void {
-      usersApi
-        .list({ perPage: 50 }, { cache: true })
+    function bootstrapUserOptions(): void {
+      if (!isBrowser) {
+        return;
+      }
+      usersLookup
+        .ensureUsersLoaded()
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe({
-          next: ({ items }) => {
-            const list = items ?? [];
-            const lookup = list.reduce<Record<number, string>>((acc, user) => {
-              acc[user.id] = user.name ?? `User #${user.id}`;
-              return acc;
-            }, {});
-            patchState(store, { userOptions: list, userLookup: lookup });
-          },
           error: (err) => {
             console.error('Failed to load users for filters:', err);
             notifications.showHttpError(err, 'Unable to load users list');
           },
         });
-    }
-
-    function setupUserOptionsBootstrap(): void {
-      if (!isBrowser) {
-        return;
-      }
-
-      let userOptionsRequested = false;
-
-      const tryLoad = () => {
-        if (userOptionsRequested) {
-          return;
-        }
-        const token = auth.token();
-        if (!token || !token.trim()) {
-          return;
-        }
-        userOptionsRequested = true;
-        loadUsersForFilter();
-      };
-
-      tryLoad();
-
-      effect(() => {
-        const token = auth.token();
-        if (token && token.trim()) {
-          tryLoad();
-        } else {
-          userOptionsRequested = false;
-          patchState(store, { userOptions: [], userLookup: {} });
-        }
-      });
     }
 
     function syncPaginationOnFilterChange(): void {

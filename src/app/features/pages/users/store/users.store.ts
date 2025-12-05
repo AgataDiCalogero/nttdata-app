@@ -10,9 +10,9 @@ import {
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { User } from '@/app/shared/models/user';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
 
 import type { SortField, UsersService } from './users.service';

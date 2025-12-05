@@ -8,8 +8,8 @@ import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
 } from '@/app/shared/config/pagination.config';
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { User } from '@/app/shared/models/user';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 import { usersServiceInjectionToken } from './users.inject';
 import { UsersStoreAdapter } from './users.store';

@@ -18,8 +18,8 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/models/user';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
 
 @Component({
   selector: 'app-user-form',

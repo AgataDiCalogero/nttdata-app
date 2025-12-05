@@ -5,13 +5,13 @@ import { take } from 'rxjs';
 
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
-import { DeleteConfirmComponent } from '@/app/shared/dialog/delete-confirm/delete-confirm.component';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 
 import { PostForm } from './components/post-form/post-form.component';
 import { injectPostsService } from './store/posts.inject';

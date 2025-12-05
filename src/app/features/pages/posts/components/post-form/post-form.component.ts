@@ -23,10 +23,10 @@ import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import type { CreatePost, Post, UpdatePost } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { UsersLookupService } from '@/app/shared/services/users/users-lookup.service';
 
 interface PostFormDialogData {
   users?: User[];
@@ -60,15 +60,15 @@ interface PostFormResult {
 export class PostForm {
   private readonly fb = inject(FormBuilder);
   private readonly postsApi = inject(PostsApiService);
-  private readonly usersApi = inject(UsersApiService);
+  private readonly usersLookup = inject(UsersLookupService);
   private readonly dialogRef = inject(DialogRef<PostFormResult | 'cancel'>);
   private readonly destroyRef = inject(DestroyRef);
   private readonly dialogData = inject<PostFormDialogData | null>(DIALOG_DATA, { optional: true });
   private readonly i18n = inject(I18nService);
 
-  readonly users = signal<User[]>(this.dialogData?.users ?? []);
+  readonly users = computed(() => this.usersLookup.users());
   private readonly editablePost = signal<Post | null>(this.dialogData?.post ?? null);
-  readonly loadingUsers = signal(false);
+  readonly loadingUsers = computed(() => this.usersLookup.isLoading());
   readonly loadError = signal<string | null>(null);
   readonly submitting = signal(false);
   private readonly toast = inject(ToastService);
@@ -119,6 +119,13 @@ export class PostForm {
   );
 
   constructor() {
+    const prefetchedUsers = this.dialogData?.users ?? [];
+    if (prefetchedUsers.length) {
+      this.usersLookup.seed(prefetchedUsers);
+    }
+
+    this.loadUsers();
+
     const post = this.editablePost();
     if (post) {
       this.form.patchValue({
@@ -128,20 +135,13 @@ export class PostForm {
       });
 
       if (!this.users().some((user) => user.id === post.user_id)) {
-        this.usersApi
-          .getById(post.user_id)
+        this.usersLookup
+          .ensureUserInCache(post.user_id)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
-            next: (user) => {
-              this.users.update((list) => [...list, user]);
-            },
             error: () => {},
           });
       }
-    }
-
-    if (!this.users().length) {
-      this.fetchUsers();
     }
 
     effect(() => {
@@ -166,21 +166,15 @@ export class PostForm {
     });
   }
 
-  private fetchUsers(): void {
-    this.loadingUsers.set(true);
+  private loadUsers(force = false): void {
     this.loadError.set(null);
-    this.usersApi
-      .list({ perPage: 50 }, { cache: true })
+    this.usersLookup
+      .ensureUsersLoaded({ force })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: ({ items }) => {
-          this.users.set(items ?? []);
-          this.loadingUsers.set(false);
-        },
         error: (err) => {
           console.error('Failed to load users for post form:', err);
           this.loadError.set(this.i18n.translate('postForm.errors.unableToLoadUsers'));
-          this.loadingUsers.set(false);
         },
       });
   }
@@ -248,7 +242,7 @@ export class PostForm {
   }
 
   retryLoadUsers(): void {
-    this.fetchUsers();
+    this.loadUsers(true);
   }
 
   cancel(): void {

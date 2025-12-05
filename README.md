@@ -79,5 +79,5 @@ API base URLs live in `src/environments/*.ts`. Interceptors automatically prefix
 
 - `@ngrx/signals` al posto di NgRx classico per ridurre boilerplate e mantenere segnali reattivi vicini ai componenti standalone.
 - Sessione in `sessionStorage`: persistenza limitata alla scheda/browser per evitare token dimenticati; invalidata centralmente su 401 via interceptor.
-- Design system SCSS modulare: variables/tokens, mixin condivisi, temi light/dark e partial specifici per pattern UI (bottoni, form, pagination, skeleton).
+- Design system SCSS modulare: variables/tokens, mixin condivisi, temi light/dark e partial specifici per pattern UI (bottoni, form, pagination, skeleton). Card/avatar condivisi tramite mixin `app-surface-card` e `app-avatar-gradient` riusati da UserCard/PostCard.
 - SSR presente ma non focus primario: rotte protette renderizzate lato server senza chiamate API, con fetch delegato al browser dopo l’hydration.

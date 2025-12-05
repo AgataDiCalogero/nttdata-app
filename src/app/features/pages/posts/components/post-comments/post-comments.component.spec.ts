@@ -7,9 +7,9 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { Comment } from '@/app/shared/models/post';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 
 import { PostCommentsComponent } from './post-comments.component';
 
