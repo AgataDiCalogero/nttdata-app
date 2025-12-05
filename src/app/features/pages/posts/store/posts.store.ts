@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { catchError, map, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, debounceTime, map, of, switchMap, tap, throwError } from 'rxjs';
 
 import {
   DEFAULT_PAGINATION_CONFIG,
@@ -169,6 +169,11 @@ export const PostsStoreAdapter = signalStore(
       searchForm,
       perPageOptions,
 
+      /**
+       * Initializes pagination settings
+       * @param page - The page number to start with
+       * @param perPage - Number of items per page
+       */
       initializePaging(page: number, perPage: number): void {
         const sanitizedPerPage = Math.max(1, perPage);
         const sanitizedPage = Math.max(1, page);
@@ -181,6 +186,9 @@ export const PostsStoreAdapter = signalStore(
         patchState(store, { page: next });
       },
 
+      /**
+       * Triggers a refresh of the posts list by incrementing the reload token
+       */
       refresh(): void {
         patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
       },
@@ -193,6 +201,10 @@ export const PostsStoreAdapter = signalStore(
         });
       },
 
+      /**
+       * Deletes a post and handles UI state updates
+       * @param post - The post to delete
+       */
       deletePost(post: Post): void {
         performDeletePost(post)
           .pipe(takeUntilDestroyed(destroyRef))
@@ -206,6 +218,10 @@ export const PostsStoreAdapter = signalStore(
         return performDeletePost(post);
       },
 
+      /**
+       * Toggles the comments section for a specific post
+       * @param postId - ID of the post
+       */
       toggleComments(postId: number): void {
         commentsFacade.toggleComments(postId);
       },
@@ -243,6 +259,10 @@ export const PostsStoreAdapter = signalStore(
       },
     };
 
+    /**
+     * Initializes the reactive posts stream that fetches data whenever query criteria change.
+     * Includes debounce to prevent excessive API calls during rapid filter changes.
+     */
     function initializePostsStream(): void {
       if (!isBrowser) {
         patchState(store, { loading: false });
@@ -251,6 +271,7 @@ export const PostsStoreAdapter = signalStore(
 
       toObservable(store.queryCriteria)
         .pipe(
+          debounceTime(300), // Debounce to prevent excessive API calls
           map((criteria) => ({
             page: criteria.page,
             perPage: criteria.perPage,

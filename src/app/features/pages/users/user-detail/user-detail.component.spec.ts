@@ -25,7 +25,6 @@ import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { iconProviders } from '@/testing/icon-mocks';
 
 import { UserDetail } from './user-detail.component';
 
@@ -90,7 +89,6 @@ describe('UserDetailComponent', () => {
         { provide: CommentsCacheService, useValue: commentsCacheSpy },
         { provide: NotificationsService, useValue: notificationsSpy },
         { provide: I18nService, useValue: i18nSpy },
-        ...iconProviders,
         CommentsFacadeService,
         UsersFacadeService,
         { provide: PLATFORM_ID, useValue: 'browser' },

@@ -9,12 +9,15 @@ import type { Comment } from '@/app/shared/models/post';
 @Injectable({ providedIn: 'root' })
 export class CommentsCacheService {
   private static readonly DEFAULT_TTL_MS = 2 * 60 * 1000; // 2 minutes cache window
+  private static readonly MAX_CACHED_POSTS = 50; // LRU limit
+
   readonly commentsMap = new Map<number, Comment[]>();
   readonly inFlight = new Map<number, Observable<Comment[] | null>>();
   readonly countMap = new Map<number, number>();
   readonly countInFlight = new Map<number, Observable<number>>();
   private readonly commentsExpiry = new Map<number, number>();
   private readonly countExpiry = new Map<number, number>();
+  private readonly accessOrder: number[] = []; // LRU tracking
 
   constructor(private readonly postsApi: PostsApiService) {}
 
@@ -25,6 +28,7 @@ export class CommentsCacheService {
   fetchComments(postId: number): Observable<Comment[] | null> {
     const cached = this.commentsMap.get(postId);
     if (cached && !this.isExpired(this.commentsExpiry, postId)) {
+      this.updateAccessOrder(postId);
       return of(cached);
     }
 
@@ -42,6 +46,8 @@ export class CommentsCacheService {
         this.countMap.set(postId, comments.length);
         this.setExpiry(this.commentsExpiry, postId);
         this.setExpiry(this.countExpiry, postId);
+        this.updateAccessOrder(postId);
+        this.evictLRU();
       }),
       catchError(() => of<Comment[] | null>(null)),
       finalize(() => this.inFlight.delete(postId)),
@@ -105,6 +111,8 @@ export class CommentsCacheService {
     this.countMap.set(postId, comments.length);
     this.setExpiry(this.commentsExpiry, postId);
     this.setExpiry(this.countExpiry, postId);
+    this.updateAccessOrder(postId);
+    this.evictLRU();
   }
 
   adjustCount(postId: number, delta: number): void {
@@ -138,6 +146,7 @@ export class CommentsCacheService {
       this.countInFlight.clear();
       this.commentsExpiry.clear();
       this.countExpiry.clear();
+      this.accessOrder.length = 0;
       return;
     }
     this.commentsMap.delete(postId);
@@ -146,6 +155,10 @@ export class CommentsCacheService {
     this.countInFlight.delete(postId);
     this.commentsExpiry.delete(postId);
     this.countExpiry.delete(postId);
+    const index = this.accessOrder.indexOf(postId);
+    if (index > -1) {
+      this.accessOrder.splice(index, 1);
+    }
   }
 
   private setExpiry(
@@ -172,5 +185,36 @@ export class CommentsCacheService {
     this.commentsMap.delete(postId);
     this.inFlight.delete(postId);
     this.commentsExpiry.delete(postId);
+    const index = this.accessOrder.indexOf(postId);
+    if (index > -1) {
+      this.accessOrder.splice(index, 1);
+    }
+  }
+
+  /**
+   * Updates the access order for LRU tracking.
+   * Moves the postId to the end of the access order array (most recently used).
+   */
+  private updateAccessOrder(postId: number): void {
+    const index = this.accessOrder.indexOf(postId);
+    if (index > -1) {
+      this.accessOrder.splice(index, 1);
+    }
+    this.accessOrder.push(postId);
+  }
+
+  /**
+   * Evicts the least recently used entries if cache size exceeds MAX_CACHED_POSTS.
+   */
+  private evictLRU(): void {
+    while (this.commentsMap.size > CommentsCacheService.MAX_CACHED_POSTS) {
+      const oldest = this.accessOrder.shift();
+      if (oldest !== undefined) {
+        this.commentsMap.delete(oldest);
+        this.commentsExpiry.delete(oldest);
+        this.countMap.delete(oldest);
+        this.countExpiry.delete(oldest);
+      }
+    }
   }
 }

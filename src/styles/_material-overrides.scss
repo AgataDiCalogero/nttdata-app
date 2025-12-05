@@ -1,0 +1,149 @@
+// Material Design Component Overrides
+// Extracted from _tokens.scss for better organization
+
+.mat-mdc-form-field {
+  --mdc-theme-error: var(--color-danger) !important;
+  --mdc-filled-text-field-label-text-color: var(--mat-field-label) !important;
+  --mdc-filled-text-field-container-color: transparent !important;
+  --mdc-filled-text-field-active-indicator-color: var(--mat-field-border-focus) !important;
+  --mdc-filled-text-field-hover-active-indicator-color: var(--mat-field-border-hover) !important;
+  --mdc-filled-text-field-disabled-container-color: var(--mat-field-disabled-bg) !important;
+  --mdc-filled-text-field-disabled-input-text-color: var(--mat-field-disabled-text) !important;
+  --mdc-filled-text-field-disabled-label-text-color: var(--mat-field-disabled-text) !important;
+  --mdc-filled-text-field-disabled-active-indicator-color: var(--mat-field-disabled-bg) !important;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field {
+  background: var(--mat-field-bg) !important;
+  border-radius: var(--radius-input) !important;
+  transition:
+    background var(--duration-normal) var(--ease-in-out),
+    box-shadow var(--duration-normal) var(--ease-in-out);
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+  background: transparent !important;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined:hover,
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined:focus-within {
+  background: transparent !important;
+  box-shadow: none !important; /* No box-shadow on outlined to prevent double border */
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field--filled:hover,
+.mat-mdc-text-field-wrapper.mdc-text-field--filled:focus-within {
+  background: var(--mat-field-bg-focus) !important;
+  box-shadow: var(--shadow-input-focus) !important;
+}
+
+.mat-mdc-select-panel {
+  background: var(--mat-menu-bg) !important;
+  border: 1px solid var(--mat-menu-border) !important;
+  border-radius: var(--radius-menu) !important;
+  box-shadow: var(--shadow-menu) !important;
+  padding: var(--space-xs) !important;
+}
+
+.mat-mdc-option {
+  border-radius: var(--radius-sm) !important;
+  color: var(--color-on-surface) !important;
+  transition:
+    background var(--duration-fast) var(--ease-in-out),
+    color var(--duration-fast) var(--ease-in-out);
+}
+
+.mat-mdc-option:hover,
+.mat-mdc-option.mat-mdc-option-active {
+  background: var(--mat-option-hover-bg) !important;
+}
+
+.mat-mdc-option.mat-mdc-option-selected {
+  background: var(--mat-option-selected-bg) !important;
+  color: var(--color-on-surface) !important;
+}
+
+.mat-mdc-checkbox {
+  --mdc-checkbox-selected-checkmark-color: var(--color-on-accent) !important;
+  --mdc-checkbox-selected-focus-icon-color: var(--color-accent) !important;
+  --mdc-checkbox-selected-hover-icon-color: var(--color-accent) !important;
+  --mdc-checkbox-selected-icon-color: var(--color-accent) !important;
+  --mdc-checkbox-selected-pressed-icon-color: var(--color-accent) !important;
+  --mdc-checkbox-unselected-focus-icon-color: var(--color-on-surface) !important;
+  --mdc-checkbox-unselected-hover-icon-color: var(--color-on-surface) !important;
+  --mdc-checkbox-unselected-icon-color: var(--color-on-surface) !important;
+  --mdc-checkbox-unselected-pressed-icon-color: var(--color-on-surface) !important;
+}
+
+.mat-mdc-radio-button {
+  --mdc-radio-selected-focus-icon-color: var(--color-accent) !important;
+  --mdc-radio-selected-hover-icon-color: var(--color-accent) !important;
+  --mdc-radio-selected-icon-color: var(--color-accent) !important;
+  --mdc-radio-selected-pressed-icon-color: var(--color-accent) !important;
+  --mdc-radio-unselected-focus-icon-color: var(--color-on-surface) !important;
+  --mdc-radio-unselected-hover-icon-color: var(--color-on-surface) !important;
+  --mdc-radio-unselected-icon-color: var(--color-on-surface) !important;
+  --mdc-radio-unselected-pressed-icon-color: var(--color-on-surface) !important;
+}
+
+.mat-mdc-slide-toggle {
+  --mdc-switch-selected-focus-state-layer-color: var(--color-accent) !important;
+  --mdc-switch-selected-handle-color: var(--color-accent) !important;
+  --mdc-switch-selected-hover-state-layer-color: var(--color-accent) !important;
+  --mdc-switch-selected-pressed-state-layer-color: var(--color-accent) !important;
+  --mdc-switch-selected-focus-handle-color: var(--color-accent) !important;
+  --mdc-switch-selected-hover-handle-color: var(--color-accent) !important;
+  --mdc-switch-selected-pressed-handle-color: var(--color-accent) !important;
+  --mdc-switch-selected-focus-track-color: var(--color-accent-light) !important;
+  --mdc-switch-selected-hover-track-color: var(--color-accent-light) !important;
+  --mdc-switch-selected-pressed-track-color: var(--color-accent-light) !important;
+  --mdc-switch-selected-track-color: var(--color-accent-light) !important;
+  --mdc-switch-unselected-focus-handle-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-focus-state-layer-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-focus-track-color: var(--color-surface) !important;
+  --mdc-switch-unselected-handle-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-hover-handle-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-hover-state-layer-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-hover-track-color: var(--color-surface) !important;
+  --mdc-switch-unselected-pressed-handle-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-pressed-state-layer-color: var(--color-on-surface) !important;
+  --mdc-switch-unselected-pressed-track-color: var(--color-surface) !important;
+  --mdc-switch-unselected-track-color: var(--color-surface) !important;
+}
+
+.mat-mdc-card {
+  background: var(--mat-card-bg) !important;
+  border: 1px solid var(--mat-card-border) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-lg) !important;
+  color: var(--color-on-surface) !important;
+  transition:
+    transform var(--duration-normal) var(--ease-in-out),
+    box-shadow var(--duration-normal) var(--ease-in-out),
+    background var(--duration-normal) var(--ease-in-out);
+}
+
+.mat-mdc-card:hover,
+.mat-mdc-card:focus-within {
+  background: var(--mat-card-hover-bg) !important;
+  box-shadow: var(--shadow-accent-soft) !important;
+}
+
+.mat-mdc-card-header,
+.mat-mdc-card-content,
+.mat-mdc-card-actions {
+  color: inherit !important;
+}
+
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle {
+  color: var(--color-on-surface) !important;
+}
+
+.mat-mdc-card-subtitle {
+  opacity: 0.76;
+}
+
+.mat-mdc-card .mat-icon {
+  color: rgba(var(--color-on-surface-rgb), 0.84);
+}

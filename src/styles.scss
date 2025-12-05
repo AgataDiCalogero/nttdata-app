@@ -1,5 +1,6 @@
 @use './styles/variables' as *;
 @use './styles/tokens' as *;
+@use './styles/material-overrides';
 @use './styles/mixins' as *;
 @use './styles/buttons';
 @use './styles/forms';

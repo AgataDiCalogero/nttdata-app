@@ -1,4 +1,3 @@
-import { Dialog } from '@angular/cdk/dialog';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,19 +14,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
-import { take } from 'rxjs';
 
-import { TokenValidationService } from '@app/core/auth/token-validation.service';
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { ToastService } from '@app/shared/ui/toast/toast.service';
 
-import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-
-import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.component';
+import { LoginFacadeService } from './services/login-facade.service';
+import { LoginUiService } from './services/login-ui.service';
 
 @Component({
   selector: 'app-login',
@@ -48,13 +41,9 @@ import { TokenHelpDialogComponent } from './token-help-dialog/token-help-dialog.
 })
 export class Login {
   private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
-  private readonly auth = inject(AuthService);
-  private readonly dialog = inject(Dialog);
-  private readonly validator = inject(TokenValidationService);
+  private readonly loginFacade = inject(LoginFacadeService);
+  private readonly loginUi = inject(LoginUiService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly overlays = inject(UiOverlayService);
-  private readonly toast = inject(ToastService);
   private readonly i18n = inject(I18nService);
 
   readonly loading = signal(false);
@@ -100,6 +89,7 @@ export class Login {
   );
 
   constructor() {
+    // Disable form control when loading
     effect(() => {
       const isLoading = this.loading();
       if (isLoading && this.tokenControl.enabled) {
@@ -109,6 +99,7 @@ export class Login {
       }
     });
 
+    // Clear API errors when user types
     this.tokenControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.tokenControl.hasError('api')) {
         const existing: ValidationErrors = (this.tokenControl.errors ?? {}) as ValidationErrors;
@@ -142,54 +133,38 @@ export class Login {
 
     this.loading.set(true);
 
-    this.validator
-      .validate(this.tokenControl.value)
-      .pipe(take(1))
+    this.loginFacade
+      .login(this.tokenControl.value)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((result) => {
         this.loading.set(false);
 
         if (!result.success) {
-          const message = result.message ?? this.i18n.translate('login.errors.unableToVerify');
+          const message =
+            result.message ?? this.loginUi.getErrorMessage('login.errors.unableToVerify');
+
           if (result.code === 'unauthorized' || result.code === 'empty') {
             const existingErrors = this.tokenControl.errors ?? {};
             this.tokenControl.setErrors({ ...existingErrors, api: true });
             this.tokenControl.markAsTouched();
             this.tokenControl.markAsDirty();
             this.apiErrorMessage.set(message);
-            this.toast.show('error', message, 5000);
+            this.loginUi.showError(message);
             return;
           }
 
           this.submissionMessage.set(message);
-          this.toast.show('error', message, 5000);
+          this.loginUi.showError(message);
           return;
         }
 
-        const normalized = this.tokenControl.value.trim();
-        this.apiErrorMessage.set(null);
-        this.submissionMessage.set(null);
-        this.auth.setToken(normalized);
+        // Success - facade already handled navigation
         this.form.reset({ token: '' });
         this.attemptedSubmit.set(false);
-        this.router.navigate(['/users']);
       });
   }
 
   openTokenHelp(): void {
-    const dialogRef = this.dialog.open(TokenHelpDialogComponent, {
-      autoFocus: false,
-      panelClass: ['token-help-dialog', 'app-dialog-panel'],
-      backdropClass: 'app-dialog-overlay',
-    });
-
-    this.overlays.activate({
-      key: 'token-help-dialog',
-      close: () => dialogRef.close(),
-      blockGlobalControls: true,
-    });
-
-    dialogRef.closed.pipe(take(1)).subscribe(() => {
-      this.overlays.release('token-help-dialog');
-    });
+    this.loginUi.openTokenHelp();
   }
 }

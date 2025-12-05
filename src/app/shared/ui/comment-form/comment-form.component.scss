@@ -13,22 +13,12 @@
 }
 
 .comment-form__grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: var(--space-md);
 
-  > * {
-    flex: 1 1 clamp(12rem, 45%, 18rem);
-    min-width: clamp(12rem, 45%, 18rem);
-  }
-
   @media (max-width: 48rem) {
-    flex-direction: column;
-
-    > * {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
+    grid-template-columns: 1fr;
   }
 }
 
@@ -74,10 +64,11 @@
 .comment-form__scrollable {
   max-height: 25rem;
   overflow-y: auto;
-  padding-right: var(--space-sm);
+  padding-right: calc(var(--space-md) + 0.5rem);
+  margin-right: calc(-1 * var(--space-md));
 
   &::-webkit-scrollbar {
-    width: 0.25rem;
+    width: 0.5rem;
   }
 
   &::-webkit-scrollbar-track {
