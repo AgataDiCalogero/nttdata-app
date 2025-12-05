@@ -109,6 +109,32 @@ export const PostsStoreAdapter = signalStore(
     bootstrapUserOptions();
     syncPaginationOnFilterChange();
 
+    const removePostFromState = (state: PostsState, id: number) => {
+      const nextEntities = { ...state.postEntities };
+      delete nextEntities[id];
+
+      const nextPagination = state.pagination
+        ? {
+            ...state.pagination,
+            total: Math.max(state.pagination.total - 1, 0),
+            pages: Math.max(
+              1,
+              Math.ceil(
+                Math.max(state.pagination.total - 1, 0) /
+                  (state.pagination.limit || store.perPage()),
+              ),
+            ),
+          }
+        : null;
+
+      return {
+        deletingId: null,
+        posts: state.posts.filter((item) => item.id !== id),
+        postEntities: nextEntities,
+        pagination: nextPagination,
+      };
+    };
+
     const performDeletePost = (post: Post) => {
       const shouldGoPrev =
         store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
@@ -118,28 +144,7 @@ export const PostsStoreAdapter = signalStore(
       return postsApi.delete(post.id).pipe(
         tap({
           next: () => {
-            patchState(store, (state) => ({
-              deletingId: null,
-              posts: state.posts.filter((item) => item.id !== post.id),
-              postEntities: (() => {
-                const next = { ...state.postEntities };
-                delete next[post.id];
-                return next;
-              })(),
-              pagination: state.pagination
-                ? {
-                    ...state.pagination,
-                    total: Math.max(state.pagination.total - 1, 0),
-                    pages: Math.max(
-                      1,
-                      Math.ceil(
-                        Math.max(state.pagination.total - 1, 0) /
-                          (state.pagination.limit || store.perPage()),
-                      ),
-                    ),
-                  }
-                : null,
-            }));
+            patchState(store, (state) => removePostFromState(state, post.id));
             notifications.showSuccess('Post deleted');
             if (shouldGoPrev) {
               patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));

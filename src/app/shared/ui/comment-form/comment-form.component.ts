@@ -43,11 +43,10 @@ export class CommentFormComponent {
 
   readonly submitting = signal(false);
   readonly submitError = signal<string | null>(null);
-  protected readonly placeholderText = computed(() =>
-    this.placeholder() && this.placeholder()?.trim().length
-      ? this.placeholder()
-      : this.i18n.translate('commentForm.placeholders.body'),
-  );
+  protected readonly placeholderText = computed(() => {
+    const placeholder = this.placeholder()?.trim();
+    return placeholder?.length ? placeholder : this.i18n.translate('commentForm.placeholders.body');
+  });
 
   protected readonly form = this.fb.nonNullable.group({
     name: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(2)]),
@@ -64,6 +63,14 @@ export class CommentFormComponent {
 
   get bodyLength(): number {
     return this.form.controls.body.value.length;
+  }
+
+  get bodyDescribedBy(): string | null {
+    const ids = ['comment-body-hint'];
+    if (this.form.controls.body.invalid && this.form.controls.body.touched) {
+      ids.push('comment-body-error');
+    }
+    return ids.filter(Boolean).join(' ') || null;
   }
 
   submit(): void {

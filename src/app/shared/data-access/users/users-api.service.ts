@@ -92,7 +92,7 @@ export class UsersApiService {
   private getCacheKey(params: HttpParams): string {
     const entries = params
       .keys()
-      .sort()
+      .sort((a, b) => a.localeCompare(b))
       .map((key) => `${key}=${params.getAll(key)?.join(',') ?? ''}`);
     return entries.join('&');
   }

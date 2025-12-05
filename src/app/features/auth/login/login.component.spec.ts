@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { LUCIDE_ICONS } from 'lucide-angular';
 import { of } from 'rxjs';
@@ -29,8 +29,9 @@ describe('Login component', () => {
     toast = jasmine.createSpyObj('ToastService', ['show']);
 
     TestBed.configureTestingModule({
-      imports: [Login, NoopAnimationsModule],
+      imports: [Login],
       providers: [
+        provideNoopAnimations(),
         { provide: TokenValidationService, useValue: validator },
         { provide: AuthService, useValue: auth },
         { provide: Router, useValue: router },

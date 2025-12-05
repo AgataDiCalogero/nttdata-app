@@ -165,12 +165,12 @@ describe('PostsApiService', () => {
   it('propagates errors for CRUD/list operations (401/429/500)', () => {
     const statuses = [401, 429, 500];
 
-    statuses.forEach((status) => {
+    for (const status of statuses) {
       service.list().subscribe({
         next: () => fail(`expected error ${status}`),
         error: (err: HttpErrorResponse) => expect(err.status).toBe(status),
       });
       httpMock.expectOne('/posts').flush({ message: 'error' }, { status, statusText: 'Error' });
-    });
+    }
   });
 });

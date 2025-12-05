@@ -4,7 +4,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import {
   LucideAngularModule,
@@ -73,10 +73,10 @@ describe('UserDetailComponent', () => {
         UserDetail,
         MatCardModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         LucideAngularModule.pick({ Mail, UserIcon, MessageSquare, ArrowLeft, FileText }),
       ],
       providers: [
+        provideNoopAnimations(),
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -117,8 +117,9 @@ describe('UserDetailComponent', () => {
   it('should handle invalid user id', () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      imports: [UserDetail, NoopAnimationsModule],
+      imports: [UserDetail],
       providers: [
+        provideNoopAnimations(),
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => 'invalid' } } } },

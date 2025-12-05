@@ -43,7 +43,7 @@ export class CommentsCacheService {
         this.setExpiry(this.commentsExpiry, postId);
         this.setExpiry(this.countExpiry, postId);
       }),
-      catchError(() => of(null as Comment[] | null)),
+      catchError(() => of<Comment[] | null>(null)),
       finalize(() => this.inFlight.delete(postId)),
       shareReplay({ bufferSize: 1, refCount: true }),
     );

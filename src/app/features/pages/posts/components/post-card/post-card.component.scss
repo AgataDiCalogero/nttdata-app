@@ -1,10 +1,12 @@
-@use 'styles/mixins' as mixins;
-
 .post-card {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  @include mixins.app-surface-card(var(--space-md));
+  padding: var(--space-md);
+  background: var(--mat-card-bg, color-mix(in srgb, var(--color-surface-solid) 82%, transparent));
+  border: 1px solid var(--mat-card-border, rgba(148, 163, 184, 0.25));
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
 }
 
 .post-card__header {
@@ -27,7 +29,19 @@
 }
 
 .post-card__avatar {
-  @include mixins.app-avatar-gradient();
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-weight: 600;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 66%, transparent),
+    color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
+  );
+  color: var(--color-on-accent);
 }
 
 .post-card__heading {

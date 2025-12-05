@@ -72,8 +72,10 @@
   $radius: var(--radius-card),
   $shadow: var(--shadow-lg)
 ) {
+  background: var(--color-surface-solid);
+  border: 1px solid var(--color-border);
   background: $background;
-  border: 1px solid $border;
+  border-color: $border;
   border-radius: $radius;
   box-shadow: $shadow;
   padding: $padding;
@@ -96,6 +98,7 @@
   border-radius: 50%;
   font-weight: 600;
   text-transform: uppercase;
+  background: var(--color-accent);
   background: linear-gradient(135deg, $start, $end);
   color: var(--color-on-accent);
   box-shadow: 0 8px 18px rgba(249, 115, 22, 0.28);

@@ -158,7 +158,7 @@ describe('UsersApiService', () => {
   it('propagates specific HTTP errors (401/403/429/422/500)', () => {
     const statuses = [401, 403, 422, 429, 500];
 
-    statuses.forEach((status) => {
+    for (const status of statuses) {
       service.list().subscribe({
         next: () => fail(`expected error ${status}`),
         error: (err: HttpErrorResponse) => expect(err.status).toBe(status),
@@ -166,6 +166,6 @@ describe('UsersApiService', () => {
       httpMock
         .expectOne((req) => req.url === '/users')
         .flush({ message: 'error' }, { status, statusText: 'Error' });
-    });
+    }
   });
 });

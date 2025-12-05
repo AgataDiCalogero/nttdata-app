@@ -1,6 +1,6 @@
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 
 import { ToastService } from '@app/shared/ui/toast/toast.service';
@@ -35,8 +35,9 @@ describe('UserFormComponent', () => {
     usersApiSpy.update.and.returnValue(of(mockUser));
 
     await TestBed.configureTestingModule({
-      imports: [UserForm, NoopAnimationsModule],
+      imports: [UserForm],
       providers: [
+        provideNoopAnimations(),
         { provide: UsersApiService, useValue: usersApiSpy },
         { provide: DialogRef, useValue: dialogRefSpy },
         { provide: ToastService, useValue: toastSpy },

@@ -60,6 +60,17 @@ export class UserForm {
     status: this.fb.nonNullable.control<UserStatus>('active', [Validators.required]),
   });
 
+  get emailDescribedBy(): string | null {
+    const ids: string[] = [];
+    if (this.form.controls.email.invalid && this.form.controls.email.touched) {
+      ids.push('email-error');
+    }
+    if (this.emailError()) {
+      ids.push('email-server-error');
+    }
+    return ids.length ? ids.join(' ') : null;
+  }
+
   constructor() {
     let inputUser = this.user();
 

@@ -7,11 +7,11 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     canMatch: [authRedirectGuard],
-    loadChildren: () => import('./features/auth/login/login.routes').then((m) => m.LOGIN_ROUTES),
+    loadComponent: () => import('./features/auth/login/login.component').then((m) => m.Login),
   },
   {
     path: 'login',
-    loadChildren: () => import('./features/auth/login/login.routes').then((m) => m.LOGIN_ROUTES),
+    loadComponent: () => import('./features/auth/login/login.component').then((m) => m.Login),
   },
   {
     path: 'users',

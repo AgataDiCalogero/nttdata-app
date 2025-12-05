@@ -53,7 +53,7 @@ npm start
 
 ### Testing strategy
 
-- **Unit/component**: `npm run test:ci` runs Karma/Jasmine in headless Chrome with coverage (target ≥60%). Copre auth/interceptor, servizi API, store signal e componenti principali.
+- **Unit/component**: `npm run test:ci` esegue Karma/Jasmine in headless Chrome con coverage (target ≥60%). Copre auth/interceptor, servizi API, store signal, UI service e componenti principali (card/list/form).
 
 ## Architecture & Documentation
 

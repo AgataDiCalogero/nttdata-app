@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Comment, Post } from '@/app/shared/models/post';
@@ -72,8 +72,9 @@ describe('PostsComponent', () => {
     notificationsSpy = jasmine.createSpyObj('NotificationsService', ['showInfo']);
 
     await TestBed.configureTestingModule({
-      imports: [Posts, NoopAnimationsModule],
+      imports: [Posts],
       providers: [
+        provideNoopAnimations(),
         { provide: Router, useValue: routerSpy },
         {
           provide: ActivatedRoute,

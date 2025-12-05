@@ -55,12 +55,7 @@
         [attr.aria-invalid]="
           form.controls.email.invalid && form.controls.email.touched ? 'true' : null
         "
-        [attr.aria-describedby]="[
-          form.controls.email.invalid && form.controls.email.touched ? 'email-error' : null,
-          emailError() ? 'email-server-error' : null
-        ]
-          .filter(Boolean)
-          .join(' ') || null"
+        [attr.aria-describedby]="emailDescribedBy"
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
         <app-alert variant="error" padding="compact" id="email-error">{{

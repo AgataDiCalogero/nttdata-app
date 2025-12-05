@@ -67,12 +67,7 @@
       rows="4"
       [placeholder]="placeholderText()"
       [attr.aria-invalid]="form.controls.body.invalid && form.controls.body.touched ? 'true' : null"
-      [attr.aria-describedby]="[
-        'comment-body-hint',
-        form.controls.body.invalid && form.controls.body.touched ? 'comment-body-error' : null
-      ]
-        .filter(Boolean)
-        .join(' ')"
+      [attr.aria-describedby]="bodyDescribedBy"
       maxlength="500"
       required
     ></textarea>
