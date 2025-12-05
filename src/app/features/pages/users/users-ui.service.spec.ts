@@ -1,9 +1,10 @@
-import { Dialog } from '@angular/cdk/dialog';
+import { Dialog, type DialogRef } from '@angular/cdk/dialog';
 import { TestBed } from '@angular/core/testing';
 import { Observable, of, Subject, throwError } from 'rxjs';
 
 import { UsersApiService } from '@app/shared/data-access/users/users-api.service';
 import { I18nService } from '@app/shared/i18n/i18n.service';
+import type { DeleteConfirmData } from '@app/shared/models/dialog';
 import type { User } from '@app/shared/models/user';
 import { ResponsiveDialogService } from '@app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@app/shared/services/notifications/notifications.service';
@@ -36,10 +37,13 @@ describe('UsersUiService', () => {
     dialogLayouts.form.and.callFake((cfg) => cfg);
     usersApi = jasmine.createSpyObj('UsersApiService', ['getById', 'delete']);
 
-    dialog.open.and.callFake(() => ({
-      closed: closed$.asObservable(),
-      close: () => closed$.next(null),
-    }));
+    dialog.open.and.callFake(
+      () =>
+        ({
+          closed: closed$.asObservable() as Observable<DeleteConfirmData | undefined>,
+          close: (_result?: unknown) => closed$.next(null),
+        }) as DialogRef<DeleteConfirmData>,
+    );
 
     usersApi.getById.and.returnValue(of({ id: 1, name: 'Alice', email: 'a@test.com' } as User));
     usersApi.delete.and.returnValue(of(void 0));
@@ -78,7 +82,7 @@ describe('UsersUiService', () => {
   it('openEditUserModal carica utente, apre dialog e gestisce successo', () => {
     service.openEditUserModal(1);
 
-    const config = dialog.open.calls.mostRecent().args[1];
+    const config = dialog.open.calls.mostRecent().args[1] as { data?: { user?: User } };
     expect(usersApi.getById).toHaveBeenCalledWith(1);
     expect(config?.data?.user?.id).toBe(1);
 
@@ -92,7 +96,8 @@ describe('UsersUiService', () => {
   it('confirmDelete chiama delete e refresha lo store', () => {
     service.confirmDelete({ id: 7, name: 'Bob' } as User);
 
-    const data = dialog.open.calls.mostRecent().args[1].data;
+    const latest = dialog.open.calls.mostRecent();
+    const data = (latest.args[1] as { data?: DeleteConfirmData }).data!;
     expect(data.title).toBe('users.delete.title');
     const obs$ = (data.confirmAction as () => Observable<void>)();
     obs$.subscribe();

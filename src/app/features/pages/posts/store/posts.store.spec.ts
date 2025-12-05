@@ -23,8 +23,10 @@ describe('PostsStoreAdapter', () => {
   let postsApi: jasmine.SpyObj<PostsApiService>;
   let usersApi: jasmine.SpyObj<UsersApiService>;
   let commentsCache: jasmine.SpyObj<CommentsCacheService>;
+  let commentsFacade: CommentsFacadeService;
   let notifications: jasmine.SpyObj<NotificationsService>;
   let auth: { token: () => string | null };
+  let consoleErrorSpy: jasmine.Spy;
 
   beforeEach(() => {
     postsApi = jasmine.createSpyObj('PostsApiService', [
@@ -56,12 +58,14 @@ describe('PostsStoreAdapter', () => {
     commentsCache = jasmine.createSpyObj('CommentsCacheService', [
       'fetchComments',
       'fetchCommentCount',
+      'prefetchCounts',
       'setComments',
       'adjustCount',
       'getCachedComments',
     ]);
     commentsCache.fetchComments.and.returnValue(of([{ id: 10 } as Comment]));
     commentsCache.fetchCommentCount.and.returnValue(of(4));
+    commentsCache.prefetchCounts.and.returnValue(of({ 1: 4 }));
 
     notifications = jasmine.createSpyObj('NotificationsService', [
       'showSuccess',
@@ -72,6 +76,7 @@ describe('PostsStoreAdapter', () => {
     notifications.showHttpError.and.callFake((_e, msg) => msg);
 
     auth = { token: () => 'token-abc' };
+    consoleErrorSpy = spyOn(console, 'error').and.stub();
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],

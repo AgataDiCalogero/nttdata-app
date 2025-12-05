@@ -10,7 +10,10 @@ import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.ser
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { TokenValidationService } from '@/app/core/auth/token-validation.service';
+import {
+  TokenValidationService,
+  type TokenValidationResult,
+} from '@/app/core/auth/token-validation.service';
 
 import { Login } from './login.component';
 
@@ -117,8 +120,10 @@ describe('Login component', () => {
   });
 
   it('gestisce errori generici mostrando il fallback', () => {
-    validator.validate.and.returnValue(of({ success: false, code: 'server_error' }));
-    component.form.controls.token.setValue('token-x');
+    validator.validate.and.returnValue(
+      of({ success: false, code: 'unknown', message: undefined } as TokenValidationResult),
+    );
+    component.form.controls.token.setValue('token-xyz');
 
     component.onSubmit();
 

@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { defer, of, throwError } from 'rxjs';
 
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
@@ -60,30 +60,38 @@ describe('errorInterceptor', () => {
   it('su 429 ritenta la richiesta e mostra toast informativo', fakeAsync(() => {
     let attempts = 0;
     const req = new HttpRequest('GET', '/rate-limited');
-    const next: HttpHandlerFn = () => {
-      attempts += 1;
-      if (attempts === 1) {
-        return throwError(
-          () =>
-            new HttpErrorResponse({
-              status: 429,
-              headers: new HttpHeaders({ 'Retry-After': '0' }),
-            }),
-        );
-      }
-      return of(new HttpResponse({ status: 200, body: 'ok' }));
-    };
+    const next: HttpHandlerFn = () =>
+      defer(() => {
+        attempts += 1;
+        if (attempts === 1) {
+          return throwError(
+            () =>
+              new HttpErrorResponse({
+                status: 429,
+                headers: new HttpHeaders({ 'Retry-After': '1' }),
+              }),
+          );
+        }
+        return of(new HttpResponse({ status: 200, body: 'ok' }));
+      });
 
     let result: HttpResponse<unknown> | undefined;
+    let capturedError: unknown;
     TestBed.runInInjectionContext(() => {
-      errorInterceptor(req, next).subscribe((res) => {
-        result = res as HttpResponse<unknown>;
+      errorInterceptor(req, next).subscribe({
+        next: (res) => {
+          result = res as HttpResponse<unknown>;
+        },
+        error: (err) => {
+          capturedError = err;
+        },
       });
     });
 
-    tick(1);
+    tick(1500);
 
     expect(result?.body).toBe('ok');
+    expect(capturedError).toBeUndefined();
     expect(attempts).toBe(2);
     expect(toast.show).toHaveBeenCalledWith(
       'info',

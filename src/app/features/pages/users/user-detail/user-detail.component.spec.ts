@@ -25,6 +25,7 @@ import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { iconProviders } from '@/testing/icon-mocks';
 
 import { UserDetail } from './user-detail.component';
 
@@ -37,6 +38,9 @@ describe('UserDetailComponent', () => {
   let commentsCacheSpy: jasmine.SpyObj<CommentsCacheService>;
   let notificationsSpy: jasmine.SpyObj<NotificationsService>;
   let i18nSpy: jasmine.SpyObj<I18nService>;
+  const routeStub = { snapshot: { paramMap: { get: () => '1' } } };
+  let createComponent: () => void;
+  let consoleErrorSpy: jasmine.Spy;
 
   const mockUser: User = {
     id: 1,
@@ -67,6 +71,7 @@ describe('UserDetailComponent', () => {
     commentsCacheSpy.fetchCommentCount.and.returnValue(of(5));
     commentsCacheSpy.prefetchCounts.and.returnValue(of({ 101: 5 }));
     i18nSpy.translate.and.callFake((key) => key);
+    consoleErrorSpy = spyOn(console, 'error').and.stub();
 
     await TestBed.configureTestingModule({
       imports: [
@@ -79,31 +84,37 @@ describe('UserDetailComponent', () => {
         provideNoopAnimations(),
         provideHttpClient(),
         provideHttpClientTesting(),
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: { get: () => '1' } } },
-        },
+        { provide: ActivatedRoute, useValue: routeStub },
         { provide: UsersApiService, useValue: usersApiSpy },
         { provide: PostsApiService, useValue: postsApiSpy },
         { provide: CommentsCacheService, useValue: commentsCacheSpy },
         { provide: NotificationsService, useValue: notificationsSpy },
         { provide: I18nService, useValue: i18nSpy },
+        ...iconProviders,
         CommentsFacadeService,
         UsersFacadeService,
         { provide: PLATFORM_ID, useValue: 'browser' },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserDetail);
-    component = fixture.componentInstance;
+    createComponent = () => {
+      fixture = TestBed.createComponent(UserDetail);
+      component = fixture.componentInstance;
+    };
+  });
+
+  afterEach(() => {
+    routeStub.snapshot.paramMap.get = () => '1';
   });
 
   it('should create', () => {
+    createComponent();
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should load user and posts on init', fakeAsync(() => {
+    createComponent();
     fixture.detectChanges();
     tick(); // allow signals to settle
 
@@ -115,30 +126,12 @@ describe('UserDetailComponent', () => {
   }));
 
   it('should handle invalid user id', () => {
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      imports: [UserDetail],
-      providers: [
-        provideNoopAnimations(),
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => 'invalid' } } } },
-        { provide: UsersApiService, useValue: usersApiSpy },
-        { provide: PostsApiService, useValue: postsApiSpy },
-        { provide: CommentsCacheService, useValue: commentsCacheSpy },
-        { provide: NotificationsService, useValue: notificationsSpy },
-        { provide: I18nService, useValue: i18nSpy },
-        CommentsFacadeService,
-        UsersFacadeService,
-        { provide: PLATFORM_ID, useValue: 'browser' },
-      ],
-    });
-    const localFixture = TestBed.createComponent(UserDetail);
-    const localComponent = localFixture.componentInstance;
+    routeStub.snapshot.paramMap.get = () => 'invalid';
+    createComponent();
 
-    localFixture.detectChanges();
+    fixture.detectChanges();
 
-    expect(localComponent.error()).toBe('userDetail.invalidUserId');
+    expect(component.error()).toBe('userDetail.invalidUserId');
     expect(usersApiSpy.getById).not.toHaveBeenCalled();
   });
 
@@ -146,6 +139,7 @@ describe('UserDetailComponent', () => {
     usersApiSpy.getById.and.returnValue(throwError(() => new Error('API Error')));
     notificationsSpy.showHttpError.and.returnValue('Error Message');
 
+    createComponent();
     fixture.detectChanges();
     tick();
 
@@ -156,6 +150,7 @@ describe('UserDetailComponent', () => {
   }));
 
   it('should prefetch comment counts for posts', fakeAsync(() => {
+    createComponent();
     fixture.detectChanges();
     tick(); // wait for effects
 
@@ -164,6 +159,7 @@ describe('UserDetailComponent', () => {
   }));
 
   it('should toggle comments visibility', fakeAsync(() => {
+    createComponent();
     fixture.detectChanges();
     tick();
 
@@ -183,6 +179,7 @@ describe('UserDetailComponent', () => {
   }));
 
   it('should update user status optimistically', () => {
+    createComponent();
     fixture.detectChanges();
 
     usersApiSpy.update.and.returnValue(of({ ...mockUser, status: 'inactive' }));
@@ -194,6 +191,7 @@ describe('UserDetailComponent', () => {
   });
 
   it('should revert user status on error', () => {
+    createComponent();
     fixture.detectChanges();
     usersApiSpy.update.and.returnValue(throwError(() => new Error('Update failed')));
 
@@ -205,6 +203,7 @@ describe('UserDetailComponent', () => {
   });
 
   it('should handle comment fetch errors without crashing UI', fakeAsync(() => {
+    createComponent();
     fixture.detectChanges();
     tick();
     const error = new Error('comments failed');
@@ -225,6 +224,7 @@ describe('UserDetailComponent', () => {
     postsApiSpy.list.and.returnValue(throwError(() => new Error('posts failed')));
     notificationsSpy.showHttpError.and.returnValue('posts error');
 
+    createComponent();
     fixture.detectChanges();
     tick();
 

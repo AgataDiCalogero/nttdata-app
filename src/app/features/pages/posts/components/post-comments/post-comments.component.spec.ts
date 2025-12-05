@@ -1,7 +1,7 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LUCIDE_ICONS } from 'lucide-angular';
-import { of, Subject, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
@@ -59,7 +59,8 @@ describe('PostCommentsComponent', () => {
     component.deleteComment(comment);
     const data = dialog.open.calls.mostRecent().args[1].data as DeleteConfirmData;
 
-    data.confirmAction().subscribe(() => {
+    const obs$ = (data.confirmAction as (() => Observable<void>) | undefined)?.();
+    obs$?.subscribe(() => {
       expect(postsApi.deleteComment).toHaveBeenCalledWith(10);
       expect(deletedSpy).toHaveBeenCalledWith(10);
       expect(toast.show).toHaveBeenCalledWith('success', 'postComments.toast.deleted');
@@ -77,7 +78,8 @@ describe('PostCommentsComponent', () => {
     component.deleteComment(comment);
     const data = dialog.open.calls.mostRecent().args[1].data as DeleteConfirmData;
 
-    data.confirmAction().subscribe({
+    const obs$ = (data.confirmAction as (() => Observable<void>) | undefined)?.();
+    obs$?.subscribe({
       error: () => {
         expect(toast.show).toHaveBeenCalledWith('error', 'postComments.errors.rateLimit');
         expect(component.deletingId()).toBeNull();

@@ -14,21 +14,32 @@ export function mapPaginatedResponse<TDto, T>(
 ): ListResponse<T> {
   const items = (response.body ?? []).map((dto) => mapper(dto));
 
-  const totalHeader = Number(response.headers.get(PAGINATION_TOTAL_HEADER));
-  const limitHeader = Number(response.headers.get(PAGINATION_LIMIT_HEADER));
-  const pagesHeader = Number(response.headers.get(PAGINATION_PAGES_HEADER));
-  const pageHeader = Number(response.headers.get(PAGINATION_PAGE_HEADER));
+  const parseHeader = (name: string): number | undefined => {
+    const raw = response.headers.get(name);
+    if (raw === null) return undefined;
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  };
 
-  const total = Number.isFinite(totalHeader) && totalHeader >= 0 ? totalHeader : items.length;
+  const totalHeader = parseHeader(PAGINATION_TOTAL_HEADER);
+  const limitHeader = parseHeader(PAGINATION_LIMIT_HEADER);
+  const pagesHeader = parseHeader(PAGINATION_PAGES_HEADER);
+  const pageHeader = parseHeader(PAGINATION_PAGE_HEADER);
+
+  const total =
+    Number.isFinite(totalHeader) && (totalHeader as number) >= 0
+      ? (totalHeader as number)
+      : items.length;
   const limit =
-    Number.isFinite(limitHeader) && limitHeader > 0 ? limitHeader : Math.max(items.length, 1);
+    Number.isFinite(limitHeader) && (limitHeader as number) > 0
+      ? (limitHeader as number)
+      : Math.max(items.length, 1);
   const pages =
-    Number.isFinite(pagesHeader) && pagesHeader > 0
-      ? pagesHeader
-      : total && limit
-        ? Math.ceil(Math.max(total, 1) / limit)
-        : 1;
-  const page = Number.isFinite(pageHeader) && pageHeader > 0 ? pageHeader : 1;
+    Number.isFinite(pagesHeader) && (pagesHeader as number) > 0
+      ? (pagesHeader as number)
+      : Math.ceil(Math.max(total, 1) / limit);
+  const page =
+    Number.isFinite(pageHeader) && (pageHeader as number) > 0 ? (pageHeader as number) : 1;
 
   const pagination: PaginationMeta = {
     total,

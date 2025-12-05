@@ -1,9 +1,10 @@
-import { Dialog } from '@angular/cdk/dialog';
+import { Dialog, type DialogRef } from '@angular/cdk/dialog';
 import { TestBed } from '@angular/core/testing';
 import { Observable, of, Subject } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import type { Post } from '@app/shared/models/post';
+import type { DeleteConfirmData } from '@app/shared/models/dialog';
 import { ResponsiveDialogService } from '@app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@app/shared/services/notifications/notifications.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
@@ -37,10 +38,13 @@ describe('PostsUiService', () => {
       form: jasmine.createSpy('form').and.callFake((cfg) => cfg),
     };
 
-    dialog.open.and.callFake(() => ({
-      closed: closed$.asObservable(),
-      close: () => closed$.next(null),
-    }));
+    dialog.open.and.callFake(
+      () =>
+        ({
+          closed: closed$.asObservable() as Observable<DeleteConfirmData | undefined>,
+          close: (_result?: unknown) => closed$.next(null),
+        }) as DialogRef<DeleteConfirmData>,
+    );
 
     TestBed.configureTestingModule({
       providers: [
@@ -64,7 +68,7 @@ describe('PostsUiService', () => {
     service.openCreateDialog();
 
     expect(dialog.open).toHaveBeenCalled();
-    const config = dialog.open.calls.mostRecent().args[1];
+    const config = dialog.open.calls.mostRecent().args[1] as { data?: { users?: unknown } };
     expect(config?.data?.users).toEqual([{ id: 1, name: 'User 1' }]);
     expect(overlays.activate).toHaveBeenCalledWith(jasmine.objectContaining({ key: 'post-form' }));
 
@@ -79,7 +83,7 @@ describe('PostsUiService', () => {
   it('apre il dialog di edit con dati post e gestisce update', () => {
     service.openEditDialog({ id: 5, user_id: 1, title: 'T', body: 'B' } as Post);
 
-    const config = dialog.open.calls.mostRecent().args[1];
+    const config = dialog.open.calls.mostRecent().args[1] as { data?: { post?: Post } };
     expect(config?.data?.post?.id).toBe(5);
 
     closed$.next({
@@ -96,7 +100,8 @@ describe('PostsUiService', () => {
     const post = { id: 9, user_id: 1, title: 'X', body: 'Y' } as Post;
     service.confirmDelete(post);
 
-    const data = dialog.open.calls.mostRecent().args[1].data;
+    const latest = dialog.open.calls.mostRecent();
+    const data = (latest.args[1] as { data?: DeleteConfirmData }).data!;
     expect(data.title).toBe('posts.delete.title');
     const result$ = (data.confirmAction as () => Observable<void>)();
     result$.subscribe();

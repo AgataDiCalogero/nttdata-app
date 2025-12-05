@@ -1,4 +1,5 @@
 import { signal } from '@angular/core';
+import { HttpClientTestingModule, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -72,20 +73,27 @@ describe('PostsComponent', () => {
     notificationsSpy = jasmine.createSpyObj('NotificationsService', ['showInfo']);
 
     await TestBed.configureTestingModule({
-      imports: [Posts],
+      imports: [Posts, HttpClientTestingModule],
       providers: [
         provideNoopAnimations(),
+        provideHttpClientTesting(),
         { provide: Router, useValue: routerSpy },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { queryParamMap: { get: () => null } } },
         },
-        { provide: PostsUiService, useValue: uiServiceSpy },
-        { provide: PostsFiltersService, useValue: filtersServiceSpy },
         { provide: NotificationsService, useValue: notificationsSpy },
       ],
     })
-      .overrideProvider(postsServiceInjectionToken, { useValue: mockStore })
+      .overrideComponent(Posts, {
+        set: {
+          providers: [
+            { provide: postsServiceInjectionToken, useValue: mockStore },
+            { provide: PostsUiService, useValue: uiServiceSpy },
+            { provide: PostsFiltersService, useValue: filtersServiceSpy },
+          ],
+        },
+      })
       .compileComponents();
 
     fixture = TestBed.createComponent(Posts);
