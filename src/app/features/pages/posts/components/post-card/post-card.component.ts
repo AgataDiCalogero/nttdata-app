@@ -9,7 +9,7 @@ import {
   output,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { LucideAngularModule, MessageSquare, Pencil, Trash2 } from 'lucide-angular';
+import { MatIconModule } from '@angular/material/icon';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -23,7 +23,7 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
   standalone: true,
   imports: [
     CommonModule,
-    LucideAngularModule,
+    MatIconModule,
     MatCardModule,
     ButtonComponent,
     PostCommentsComponent,
@@ -45,9 +45,6 @@ export class PostCardComponent implements AfterViewChecked {
   // Optional pre-fetched count to show in preview (before comments are loaded)
   readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
-  readonly Trash2 = Trash2;
-  readonly MessageSquare = MessageSquare;
-  readonly Pencil = Pencil;
 
   readonly delete = output<void>();
   readonly toggleComments = output<void>();

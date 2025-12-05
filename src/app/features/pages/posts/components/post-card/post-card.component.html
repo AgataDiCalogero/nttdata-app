@@ -52,16 +52,16 @@
           <span class="sr-only">{{
             'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }
           }}</span>
-          <lucide-icon [img]="Pencil"></lucide-icon>
+          <mat-icon svgIcon="lucide:pencil"></mat-icon>
         </button>
         <button
           appButton
-          variant="ghost"
+          variant="danger"
           size="sm"
           type="button"
           [iconOnly]="true"
           (click)="delete.emit()"
-          class="post-card__icon-button post-card__icon-button--danger"
+          class="post-card__icon-button"
           [disabled]="deleting"
           [attr.aria-label]="
             'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' }
@@ -71,7 +71,7 @@
           <span class="sr-only">{{
             'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' }
           }}</span>
-          <lucide-icon [img]="Trash2"></lucide-icon>
+          <mat-icon svgIcon="lucide:trash-2"></mat-icon>
         </button>
       </div>
     }
@@ -120,7 +120,7 @@
       [attr.aria-controls]="postModel ? 'comments-for-' + postModel.id : null"
       class="post-card__comments-toggle"
     >
-      <lucide-icon [img]="MessageSquare"></lucide-icon>
+      <mat-icon svgIcon="lucide:file-text"></mat-icon>
       {{
         openSection === 'comments'
           ? ('common.actions.hideComments' | appTranslate)

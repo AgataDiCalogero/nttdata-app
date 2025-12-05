@@ -46,8 +46,14 @@
   color: inherit !important;
 }
 
-.status-badge__icon ::ng-deep svg {
-  stroke: currentColor !important;
+// Material icons need both stroke and fill to inherit color
+:host ::ng-deep .status-badge__icon {
+  color: inherit !important;
+
+  svg {
+    stroke: currentColor !important;
+    fill: currentColor !important;
+  }
 }
 
 .status-badge__label {

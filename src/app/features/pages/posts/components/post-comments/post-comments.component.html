@@ -60,11 +60,11 @@
                     <span class="sr-only">{{
                       'postComments.editAria' | appTranslate: { name: comment.name }
                     }}</span>
-                    <lucide-icon [img]="Pencil"></lucide-icon>
+                    <mat-icon svgIcon="lucide:pencil"></mat-icon>
                   </button>
                   <button
                     appButton
-                    variant="ghost"
+                    variant="danger"
                     size="sm"
                     type="button"
                     [iconOnly]="true"
@@ -78,7 +78,7 @@
                     <span class="sr-only">{{
                       'postComments.deleteAria' | appTranslate: { name: comment.name }
                     }}</span>
-                    <lucide-icon [img]="Trash2"></lucide-icon>
+                    <mat-icon svgIcon="lucide:trash-2"></mat-icon>
                   </button>
                 } @else {
                   <button
@@ -98,7 +98,7 @@
                     <span class="sr-only">{{
                       'postComments.cancelEditAria' | appTranslate: { name: comment.name }
                     }}</span>
-                    <lucide-icon [img]="X"></lucide-icon>
+                    <mat-icon svgIcon="lucide:x"></mat-icon>
                   </button>
                 }
               </div>

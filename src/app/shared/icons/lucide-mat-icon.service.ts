@@ -25,6 +25,7 @@ import {
   User,
   Check,
   X,
+  Circle,
 } from 'lucide-angular';
 
 type RegisteredIcon = {
@@ -55,6 +56,7 @@ const LUCIDE_ICONS: RegisteredIcon[] = [
   { name: 'user', data: User },
   { name: 'check', data: Check },
   { name: 'x', data: X },
+  { name: 'circle', data: Circle },
 ];
 
 @Injectable({

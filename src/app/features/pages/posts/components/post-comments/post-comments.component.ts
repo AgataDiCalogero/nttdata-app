@@ -13,7 +13,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { LucideAngularModule, Pencil, X, Trash2 } from 'lucide-angular';
+import { MatIconModule } from '@angular/material/icon';
 import { tap, take } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
@@ -38,7 +38,7 @@ import { ToastService } from '@/app/shared/ui/toast/toast.service';
     ReactiveFormsModule,
     ButtonComponent,
     AlertComponent,
-    LucideAngularModule,
+    MatIconModule,
     MatProgressBarModule,
     TranslatePipe,
   ],
@@ -65,9 +65,6 @@ export class PostCommentsComponent {
   private readonly i18n = inject(I18nService);
   private readonly overlays = inject(UiOverlayService);
 
-  readonly Pencil = Pencil;
-  readonly X = X;
-  readonly Trash2 = Trash2;
   private readonly dialog = inject(Dialog);
   readonly deletingId = signal<number | null>(null);
   deleteComment(comment: ModelComment): void {

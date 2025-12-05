@@ -98,18 +98,18 @@
 .appearance-switcher__options,
 .appearance-switcher__options fieldset,
 .appearance-switcher__options legend {
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background: transparent !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
 }
 
 .appearance-switcher__panel *,
 .appearance-switcher__panel *::before,
 .appearance-switcher__panel *::after {
-  outline: none !important;
-  border: none !important;
-  box-shadow: none !important;
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .appearance-option {
@@ -210,54 +210,54 @@
 }
 
 .appearance-toggle .mat-slide-toggle-bar {
-  width: var(--toggle-width) !important;
-  height: var(--toggle-height) !important;
-  border-radius: var(--radius-full) !important;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  border-radius: var(--radius-full);
 
-  background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06)) !important;
-  border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18)) !important;
+  background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06));
+  border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
   transition:
     background 0.18s ease,
-    border-color 0.18s ease !important;
+    border-color 0.18s ease;
   @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
-    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface)) !important;
-    border: 0.125rem solid color-mix(in srgb, var(--color-accent) 20%, var(--color-surface)) !important;
+    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+    border: 0.125rem solid color-mix(in srgb, var(--color-accent) 20%, var(--color-surface));
   }
 }
 .appearance-toggle .mat-slide-toggle-thumb {
-  width: calc(var(--toggle-height) - 0.25rem) !important;
-  height: calc(var(--toggle-height) - 0.25rem) !important;
+  width: calc(var(--toggle-height) - 0.25rem);
+  height: calc(var(--toggle-height) - 0.25rem);
 
-  background: var(--color-accent) !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+  background: var(--color-accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   transition:
     transform 0.18s ease,
-    box-shadow 0.18s ease !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
+    box-shadow 0.18s ease;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .appearance-toggle .mat-slide-toggle-thumb::before,
 .appearance-toggle .mat-slide-toggle-thumb::after {
-  display: none !important;
-  content: none !important;
+  display: none;
+  content: none;
 }
 
 .appearance-toggle.mat-checked .mat-slide-toggle-bar {
-  background: var(--color-accent) !important;
-  border-color: var(--color-accent) !important;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
 }
 .appearance-toggle.mat-checked .mat-slide-toggle-thumb {
-  transform: translateX(calc(var(--toggle-width) - var(--toggle-height))) translateY(-50%) !important;
+  transform: translateX(calc(var(--toggle-width) - var(--toggle-height))) translateY(-50%);
 
-  background: var(--color-accent) !important;
+  background: var(--color-accent);
 }
 
 .appearance-toggle:hover .mat-slide-toggle-bar,
 .appearance-toggle:focus-within .mat-slide-toggle-bar {
-  border-color: var(--alpha-accent-18, rgba(249, 165, 76, 0.18)) !important;
+  border-color: var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
   @supports (color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface))) {
-    border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface)) !important;
+    border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface));
   }
 }
 
@@ -346,6 +346,6 @@ body.reading-mode .appearance-switcher__panel {
 .appearance-switcher__panel::after,
 .appearance-switcher__panel *::before,
 .appearance-switcher__panel *::after {
-  display: none !important;
-  content: none !important;
+  display: none;
+  content: none;
 }

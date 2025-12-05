@@ -52,8 +52,8 @@
     &:active,
     &:focus,
     &:focus-visible {
-      text-decoration: none !important;
-      color: inherit !important;
+      text-decoration: none;
+      color: inherit;
     }
 
     mat-icon {
@@ -73,7 +73,7 @@
       align-items: center; /* vertical center relative al logo */
       line-height: 1.05;
       text-decoration: none; /* ensure no underline */
-      color: var(--color-accent) !important; /* fallback forte in arancione */
+      color: var(--color-accent); /* fallback forte in arancione */
       font-weight: var(--font-weight-extrabold);
       font-size: clamp(1.2rem, 2.4vw, 1.7rem);
       letter-spacing: var(--letter-spacing-tight);
@@ -96,13 +96,13 @@
 
   /* push controls to the far right even inside Material wrappers */
   > .controls {
-    margin-left: auto !important;
+    margin-left: auto;
   }
   .mat-toolbar-row > .controls {
-    margin-left: auto !important;
+    margin-left: auto;
   }
   .mat-toolbar-layout > .controls {
-    margin-left: auto !important;
+    margin-left: auto;
   }
 
   .controls {
@@ -320,7 +320,7 @@
     padding-inline: var(--app-page-gutter-tight);
 
     .nav-links {
-      display: none !important; /* ensure top links are hidden on mobile */
+      display: none; /* ensure top links are hidden on mobile */
     }
 
     /* target the actual button element with the appButton directive for specificity */
