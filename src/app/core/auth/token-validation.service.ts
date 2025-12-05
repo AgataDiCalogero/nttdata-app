@@ -1,10 +1,4 @@
-import {
-  HttpClient,
-  HttpContext,
-  HttpHeaders,
-  HttpErrorResponse,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -42,32 +36,15 @@ export class TokenValidationService {
 
     const headers = new HttpHeaders({ Authorization: `Bearer ${normalized}` });
     const context = new HttpContext().set(SKIP_GLOBAL_ERROR, true);
+    const params = new HttpParams().set('page', '1').set('per_page', '1');
 
-    return this.http.post<unknown>('/users', {}, { headers, context, observe: 'response' }).pipe(
-      map((res: HttpResponse<unknown>) => {
-        // Considera qualsiasi 2xx come “token valido”
-        if (res.status >= 200 && res.status < 300) {
-          return { success: true } satisfies TokenValidationResult;
-        }
-        // Per sicurezza, gestisci altri 2xx allo stesso modo
-        return { success: true } satisfies TokenValidationResult;
-      }),
+    return this.http.get<unknown>('/users', { headers, context, params }).pipe(
+      map(() => ({ success: true } satisfies TokenValidationResult)),
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
-          if (error.status === 422) {
-            // Token valido ma corpo richiesto mancante
-            return of({ success: true } satisfies TokenValidationResult);
-          }
-          if (error.status === 401) {
-            return of({
-              success: false,
-              code: 'unauthorized',
-              message:
-                'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
-            } satisfies TokenValidationResult);
-          }
+          return of(this.mapHttpErrorToResult(error));
         }
-        // Altri errori (rete, rate-limit, ecc.)
+
         const mapped = this.mapUiErrorToResult(mapHttpError(error));
         return of(mapped);
       }),
@@ -94,5 +71,34 @@ export class TokenValidationService {
       default:
         return { success: false, code: 'unknown', message };
     }
+  }
+
+  private mapHttpErrorToResult(error: HttpErrorResponse): TokenValidationResult {
+    if (error.status === 401) {
+      return {
+        success: false,
+        code: 'unauthorized',
+        message:
+          'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
+      };
+    }
+
+    if (error.status === 422 || error.status === 400) {
+      return {
+        success: false,
+        code: 'unauthorized',
+        message: 'The provided token could not be validated. Please paste a valid token.',
+      };
+    }
+
+    if (error.status === 429) {
+      return { success: false, code: 'rate_limited', message: 'Too many requests. Try again soon.' };
+    }
+
+    if (error.status === 0) {
+      return { success: false, code: 'network', message: 'Network error. Check your connection.' };
+    }
+
+    return this.mapUiErrorToResult(mapHttpError(error));
   }
 }

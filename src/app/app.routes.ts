@@ -13,6 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    canMatch: [authRedirectGuard],
     component: Login,
   },
   {

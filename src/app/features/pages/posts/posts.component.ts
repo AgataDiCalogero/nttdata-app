@@ -58,6 +58,10 @@ export class Posts {
     this.ui.confirmDelete(post);
   }
 
+  handleRetry(): void {
+    this.store.refresh();
+  }
+
   handleCommentCreated(event: { postId: number; comment: Comment }): void {
     this.store.onCommentCreated(event.postId, event.comment);
   }

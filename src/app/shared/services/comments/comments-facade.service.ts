@@ -150,15 +150,4 @@ export class CommentsFacadeService {
     }));
     this.cache.setComments(postId, this.commentsSignal()[postId] ?? []);
   }
-
-  private findPostIdByComment(commentId: number): number | null {
-    const map = this.commentsSignal();
-    for (const [key, list] of Object.entries(map)) {
-      const postId = Number(key);
-      if (list?.some((c) => c.id === commentId)) {
-        return postId;
-      }
-    }
-    return null;
-  }
 }

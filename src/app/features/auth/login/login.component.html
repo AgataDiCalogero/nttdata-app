@@ -7,6 +7,12 @@
       <h1 class="login-card__title">{{ 'login.title' | appTranslate }}</h1>
       <p class="login-card__subtitle">{{ 'login.subtitle' | appTranslate }}</p>
 
+      @if (submissionMessage()) {
+        <app-alert variant="error" class="login-page__alert" aria-live="polite">
+          {{ submissionMessage() }}
+        </app-alert>
+      }
+
       <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="login-form">
         @let tokenError = tokenErrorMessage();
 

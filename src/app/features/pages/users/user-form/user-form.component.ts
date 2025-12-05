@@ -89,6 +89,10 @@ export class UserForm {
         status: this.normalizeStatus(inputUser.status) ?? this.form.controls.status.value,
       });
     }
+
+    this.form.controls.email.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.emailError.set(null));
   }
 
   private normalizeForSubmit(): CreateUser | UpdateUser {

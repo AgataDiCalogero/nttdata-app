@@ -12,34 +12,36 @@
       <span class="brand__label">{{ 'app.name' | appTranslate }}</span>
     </a>
 
-    <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
-      @if (!isLoginRoute() && !isMobile() && isLogged()) {
-        <a
-          appButton
-          variant="ghost"
-          routerLink="/users"
-          routerLinkActive="active"
-          [class.active]="isRouteActive('/users')"
-          [attr.aria-current]="ariaCurrent('/users')"
-          (click)="closeMenu()"
-        >
-          <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-          <span>{{ 'nav.users' | appTranslate }}</span>
-        </a>
-        <a
-          appButton
-          variant="ghost"
-          routerLink="/posts"
-          routerLinkActive="active"
-          [class.active]="isRouteActive('/posts')"
-          [attr.aria-current]="ariaCurrent('/posts')"
-          (click)="closeMenu()"
-        >
-          <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-          <span>{{ 'nav.posts' | appTranslate }}</span>
-        </a>
-      }
-    </nav>
+    @if (!isLoginRoute()) {
+      <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
+        @if (!isMobile() && isLogged()) {
+          <a
+            appButton
+            variant="ghost"
+            routerLink="/users"
+            routerLinkActive="active"
+            [class.active]="isRouteActive('/users')"
+            [attr.aria-current]="ariaCurrent('/users')"
+            (click)="closeMenu()"
+          >
+            <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+            <span>{{ 'nav.users' | appTranslate }}</span>
+          </a>
+          <a
+            appButton
+            variant="ghost"
+            routerLink="/posts"
+            routerLinkActive="active"
+            [class.active]="isRouteActive('/posts')"
+            [attr.aria-current]="ariaCurrent('/posts')"
+            (click)="closeMenu()"
+          >
+            <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+            <span>{{ 'nav.posts' | appTranslate }}</span>
+          </a>
+        }
+      </nav>
+    }
 
     <span class="spacer" aria-hidden="true"></span>
 

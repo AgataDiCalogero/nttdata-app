@@ -13,6 +13,9 @@ export const authRedirectGuard: CanMatchFn = () => {
     return true;
   }
 
-  const target = auth.isLoggedIn ? '/users' : '/login';
-  return router.createUrlTree([target]);
+  if (auth.isLoggedIn) {
+    return router.createUrlTree(['/users']);
+  }
+
+  return true;
 };

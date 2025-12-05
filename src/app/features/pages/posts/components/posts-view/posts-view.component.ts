@@ -11,6 +11,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
@@ -37,6 +38,7 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
     PaginationComponent,
     MatIconModule,
     MatProgressBarModule,
+    MatCardModule,
     AlertComponent,
     PostsFiltersComponent,
     PostsListComponent,
@@ -96,6 +98,7 @@ export class PostsViewComponent {
   readonly changePerPage = output<number>();
   readonly editPost = output<Post>();
   readonly viewAuthor = output<number>();
+  readonly retry = output<void>();
 
   readonly Plus = Plus;
 

@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { LoginFacadeService } from './services/login-facade.service';
@@ -33,6 +34,7 @@ import { LoginUiService } from './services/login-ui.service';
     ButtonComponent,
     MatIconModule,
     MatProgressSpinnerModule,
+    AlertComponent,
     TranslatePipe,
   ],
   templateUrl: './login.component.html',

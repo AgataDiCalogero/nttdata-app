@@ -32,7 +32,14 @@
       {{ resultsSummary() }}
     </div>
 
-    <!-- server errors are surfaced via global ToastService -->
+    @if (error()) {
+      <app-alert variant="error" class="posts-page__alert" aria-live="assertive">
+        {{ error() || ('posts.error' | appTranslate) }}
+        <button appButton variant="ghost" type="button" (click)="retry.emit()">
+          {{ 'common.actions.retry' | appTranslate }}
+        </button>
+      </app-alert>
+    }
 
     @if (loading()) {
       <output class="app-progress posts-page__loader" aria-live="polite">
@@ -46,9 +53,13 @@
     }
 
     @if (!loading() && !error() && posts().length === 0) {
-      <app-alert variant="info" class="posts-page__alert">
-        {{ 'posts.emptyState' | appTranslate }}
-      </app-alert>
+      <mat-card class="posts-empty" appearance="outlined">
+        <mat-icon svgIcon="lucide:file-text" class="posts-empty__icon" aria-hidden="true"></mat-icon>
+        <p class="posts-empty__text">{{ 'posts.emptyState' | appTranslate }}</p>
+        <button appButton variant="primary" type="button" (click)="createPost.emit()">
+          {{ 'common.actions.newPost' | appTranslate }}
+        </button>
+      </mat-card>
     }
 
     @if (!loading() && posts().length > 0) {

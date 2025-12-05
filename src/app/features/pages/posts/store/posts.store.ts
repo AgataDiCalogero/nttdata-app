@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { catchError, debounceTime, map, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap, throwError } from 'rxjs';
 
 import {
   DEFAULT_PAGINATION_CONFIG,
@@ -272,6 +272,13 @@ export const PostsStoreAdapter = signalStore(
       toObservable(store.queryCriteria)
         .pipe(
           debounceTime(300), // Debounce to prevent excessive API calls
+          distinctUntilChanged((a, b) =>
+            a.page === b.page &&
+            a.perPage === b.perPage &&
+            a.title === b.title &&
+            a.userId === b.userId &&
+            a.reload === b.reload,
+          ),
           map((criteria) => ({
             page: criteria.page,
             perPage: criteria.perPage,

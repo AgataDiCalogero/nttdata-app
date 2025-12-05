@@ -14,6 +14,7 @@ import { UsersApiService } from '@/app/shared/data-access/users/users-api.servic
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { User } from '@/app/shared/models/user';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
+import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import type { SortField, UsersService } from './users.service';
 
@@ -115,6 +116,7 @@ export const UsersStoreAdapter = signalStore(
     const route = inject(ActivatedRoute);
     const platformId = inject(PLATFORM_ID);
     const auth = inject(AuthService);
+    const notifications = inject(NotificationsService);
     const pagination =
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
       DEFAULT_PAGINATION_CONFIG;
@@ -310,7 +312,10 @@ export const UsersStoreAdapter = signalStore(
     };
 
     const onSearch = (value: string) => {
-      const sanitizedTerm = typeof value === 'string' ? value : '';
+      const sanitizedTerm = typeof value === 'string' ? value.trim() : '';
+      if (sanitizedTerm === store.searchTerm().trim()) {
+        return;
+      }
       loadUsers({
         page: pagination.defaultPage,
         perPage: store.perPage(),
@@ -379,6 +384,7 @@ export const UsersStoreAdapter = signalStore(
                 [userId]: original,
               },
             });
+            notifications.showError('Unable to update user status. Please try again.');
           },
         });
     };

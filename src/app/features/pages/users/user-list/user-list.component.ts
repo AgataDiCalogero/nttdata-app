@@ -42,14 +42,6 @@ export class UserListComponent {
     return item.id;
   }
 
-  constructor() {
-    // const bo = inject(BreakpointObserver);
-    // const destroyRef = inject(DestroyRef);
-    // bo.observe('(max-width: 40rem)')
-    //   .pipe(takeUntilDestroyed(destroyRef))
-    //   .subscribe((s) => this.isMobile.set(Boolean(s.matches)));
-  }
-
   onEdit(user: User, event?: Event): void {
     event?.stopPropagation();
     this.edit.emit(user.id);

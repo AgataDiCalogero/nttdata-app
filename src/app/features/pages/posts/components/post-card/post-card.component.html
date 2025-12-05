@@ -78,7 +78,7 @@
   </div>
 
   <mat-card-content class="post-card__content">
-    <p class="post-card__body" [attr.aria-expanded]="isExpanded">
+    <p class="post-card__body" [id]="bodyId()">
       @if (!isExpanded && shouldTruncate()) {
         {{ previewText() }}
       } @else {
@@ -94,6 +94,8 @@
         type="button"
         class="post-card__toggle"
         (click)="toggleExpansion()"
+        [attr.aria-expanded]="isExpanded"
+        [attr.aria-controls]="bodyId()"
       >
         {{
           isExpanded ? ('postCard.showLess' | appTranslate) : ('postCard.showMore' | appTranslate)

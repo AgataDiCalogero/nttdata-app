@@ -88,6 +88,11 @@ export class PostCardComponent implements AfterViewChecked {
     this.isExpanded = !this.isExpanded;
   }
 
+  bodyId(): string {
+    const current = this.post();
+    return `post-body-${current?.id ?? 'unknown'}`;
+  }
+
   openCommentsList(): void {
     if (this.openSection === 'composer') {
       this.openSection = 'none';
