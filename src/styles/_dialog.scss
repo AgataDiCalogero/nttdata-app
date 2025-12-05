@@ -16,6 +16,14 @@
   max-height: calc(100vh - var(--space-xl));
 }
 
+.cdk-overlay-pane.app-dialog--scrollable {
+  overflow: visible;
+}
+
+.cdk-overlay-pane.app-dialog--scrollable .form-dialog__body {
+  overflow: hidden;
+}
+
 @media (max-width: 40rem) {
   .cdk-overlay-pane .app-dialog-panel {
     max-height: calc(100vh - var(--space-lg) - env(safe-area-inset-bottom, 0px));

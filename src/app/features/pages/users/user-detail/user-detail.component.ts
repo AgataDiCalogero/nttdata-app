@@ -1,10 +1,12 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  computed,
   effect,
   inject,
+  PLATFORM_ID,
   signal,
   type Signal,
 } from '@angular/core';
@@ -20,7 +22,7 @@ import {
   ArrowLeft,
   FileText,
 } from 'lucide-angular';
-import { catchError, firstValueFrom, map, of, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -35,10 +37,9 @@ import {
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
-import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
-import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
 @Component({
@@ -62,12 +63,13 @@ import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 })
 export class UserDetail {
   private readonly route = inject(ActivatedRoute);
-  private readonly usersApi = inject(UsersApiService);
-  private readonly postsApi = inject(PostsApiService);
-  private readonly commentsCache = inject(CommentsCacheService);
+  private readonly usersFacade = inject(UsersFacadeService);
+  private readonly commentsFacade = inject(CommentsFacadeService);
   private readonly notifications = inject(NotificationsService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly pagination =
     inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
     DEFAULT_PAGINATION_CONFIG;
@@ -82,21 +84,20 @@ export class UserDetail {
   readonly error = signal<string | null>(null);
   readonly postsLoading = signal(true);
 
-  private readonly commentsMapSignal = signal<Record<number, Comment[]>>({});
-  private readonly commentsLoadingSignal = signal<Record<number, boolean>>({});
-  readonly commentsCount = signal<Record<number, number>>({});
+  readonly commentsMap = computed(() => this.commentsFacade.comments());
+  readonly commentsLoading = computed(() => this.commentsFacade.loading());
+  readonly commentsCount = computed(() => this.commentsFacade.counts());
 
   private readonly userId = this.resolveUserId();
   private readonly postsFetchLimit = Math.max(
     ...this.pagination.perPageOptions,
     this.pagination.defaultPerPage,
   );
-  private readonly userSource: Signal<User | null>;
+  private userSource: Signal<User | null> = signal<User | null>(null);
+  private postsSource: Signal<Post[]> = signal<Post[]>([]);
 
   readonly user = signal<User | null>(null);
-
-  readonly posts: Signal<Post[]> =
-    this.userId === null ? signal<Post[]>([]) : this.createPostsSignal();
+  readonly posts = computed(() => this.postsSource());
 
   constructor() {
     if (this.userId === null) {
@@ -108,7 +109,14 @@ export class UserDetail {
       return;
     }
 
+    if (!this.isBrowser) {
+      this.loading.set(false);
+      this.postsLoading.set(false);
+      return;
+    }
+
     this.userSource = this.createUserSignal();
+    this.postsSource = this.createPostsSignal();
 
     effect(() => {
       const value = this.userSource();
@@ -125,97 +133,33 @@ export class UserDetail {
   }
 
   commentsFor(postId: number): Comment[] {
-    return this.commentsMapSignal()[postId] ?? [];
+    return this.commentsMap()[postId] ?? [];
   }
 
   commentsLoaded(postId: number): boolean {
-    return Object.hasOwn(this.commentsMapSignal(), postId);
+    return Object.hasOwn(this.commentsMap(), postId);
   }
 
   commentsAreLoading(postId: number): boolean {
-    return Boolean(this.commentsLoadingSignal()[postId]);
+    return Boolean(this.commentsLoading()[postId]);
   }
 
   async onToggleComments(postId: number): Promise<void> {
-    const current = this.commentsMapSignal()[postId];
-    if (current) {
-      const next = { ...this.commentsMapSignal() };
-      delete next[postId];
-      this.commentsMapSignal.set(next);
-      return;
-    }
-
-    this.commentsLoadingSignal.update((state) => ({ ...state, [postId]: true }));
-    try {
-      const comments = await firstValueFrom(this.commentsCache.fetchComments(postId));
-      const list = comments ?? [];
-      this.commentsMapSignal.update((state) => ({ ...state, [postId]: list }));
-      this.commentsCount.update((state) => ({
-        ...state,
-        [postId]: list.length,
-      }));
-      this.commentsCache.setComments(postId, list);
-    } catch (err) {
-      console.error('Failed to load comments:', err);
-      this.notifications.showHttpError(err, this.i18n.translate('userDetail.unableToLoadComments'));
-    } finally {
-      this.commentsLoadingSignal.update((state) => ({ ...state, [postId]: false }));
-    }
+    this.commentsFacade.toggleComments(postId, {
+      errorMessage: this.i18n.translate('userDetail.unableToLoadComments'),
+    });
   }
 
   onCommentCreated(postId: number, comment: Comment): void {
-    let nextLength = 1;
-    let nextComments: Comment[] = [];
-    this.commentsMapSignal.update((state) => {
-      const current = state[postId] ?? [];
-      const next = [comment, ...current];
-      nextLength = next.length;
-      nextComments = next;
-      return { ...state, [postId]: next };
-    });
-    this.commentsCount.update((state) => ({
-      ...state,
-      [postId]: nextLength,
-    }));
-    this.commentsCache.setComments(postId, nextComments);
+    this.commentsFacade.applyCreated(postId, comment);
   }
 
   onCommentUpdated(postId: number, comment: Comment): void {
-    this.commentsMapSignal.update((state) => {
-      const current = state[postId];
-      if (!current) {
-        return state;
-      }
-      const updated = current.map((existing) => (existing.id === comment.id ? comment : existing));
-      this.commentsCache.setComments(postId, updated);
-      return {
-        ...state,
-        [postId]: updated,
-      };
-    });
+    this.commentsFacade.applyUpdated(postId, comment);
   }
 
   onCommentDeleted(postId: number, commentId: number): void {
-    let nextLength = 0;
-    let nextComments: Comment[] | undefined;
-    this.commentsMapSignal.update((state) => {
-      const current = state[postId];
-      if (!current) {
-        return state;
-      }
-      const filtered = current.filter((existing) => existing.id !== commentId);
-      nextLength = filtered.length;
-      nextComments = filtered;
-      return {
-        ...state,
-        [postId]: filtered,
-      };
-    });
-    this.commentsCount.update((state) => ({
-      ...state,
-      [postId]: nextLength,
-    }));
-    this.commentsCache.setComments(postId, nextComments ?? []);
+    this.commentsFacade.applyDeleted(postId, commentId);
   }
 
   trackPostId(_idx: number, post: Post): number {
@@ -261,21 +205,12 @@ export class UserDetail {
   }
 
   private createUserSignal(): Signal<User | null> {
+    const errorMessage = this.i18n.translate('userDetail.unableToLoadUser');
     return toSignal(
-      this.usersApi.getById(this.userId!).pipe(
-        tap(() => {
-          this.error.set(null);
+      this.usersFacade.loadUserById(this.userId!, errorMessage).pipe(
+        tap((user) => {
+          this.error.set(user ? null : errorMessage);
           this.loading.set(false);
-        }),
-        catchError((err) => {
-          console.error('Failed to load user:', err);
-          const message = this.notifications.showHttpError(
-            err,
-            this.i18n.translate('userDetail.unableToLoadUser'),
-          );
-          this.error.set(message);
-          this.loading.set(false);
-          return of(null);
         }),
       ),
       { initialValue: null },
@@ -284,32 +219,22 @@ export class UserDetail {
 
   private createPostsSignal(): Signal<Post[]> {
     return toSignal(
-      this.postsApi.list({ userId: this.userId!, perPage: this.postsFetchLimit }).pipe(
-        map((result) => result?.items ?? []),
-        tap(() => {
-          this.postsLoading.set(false);
-        }),
-        catchError((err) => {
-          console.error('Failed to load posts for user:', err);
-          this.notifications.showHttpError(
-            err,
-            this.i18n.translate('userDetail.unableToLoadPosts'),
-          );
-          this.postsLoading.set(false);
-          return of<Post[]>([]);
-        }),
-      ),
+      this.usersFacade
+        .loadPostsForUser(
+          this.userId!,
+          this.postsFetchLimit,
+          this.i18n.translate('userDetail.unableToLoadPosts'),
+        )
+        .pipe(
+          tap(() => {
+            this.postsLoading.set(false);
+          }),
+        ),
       { initialValue: [] },
     );
   }
 
   private async prefetchCommentCounts(posts: Post[]): Promise<void> {
-    const ids = posts.map((p) => p.id);
-    try {
-      const counts = await firstValueFrom(this.commentsCache.prefetchCounts(ids));
-      this.commentsCount.update((state) => ({ ...state, ...counts }));
-    } catch (err) {
-      console.error('Failed to prefetch comment counts:', err);
-    }
+    await this.commentsFacade.prefetchCounts(posts);
   }
 }

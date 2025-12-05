@@ -97,7 +97,7 @@ export class Navbar implements OnInit {
   }
 
   logout(): void {
-    this.auth.clearToken();
+    this.auth.logout();
     this.router.navigate(['/login']).catch(() => {});
   }
 

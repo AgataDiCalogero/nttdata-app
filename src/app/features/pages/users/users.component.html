@@ -39,12 +39,12 @@
         </div>
       } @else {
         @if (error(); as err) {
-          <mat-card class="users-error" appearance="outlined">
-            <mat-card-content>
-              <div class="users-error__content">
-                <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
-                <p>{{ err }}</p>
-              </div>
+          <app-alert variant="error" [dismissible]="true" (dismissed)="clearError()">
+            <div class="users-error__content">
+              <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
+              <p>{{ err }}</p>
+            </div>
+            <div class="users-error__actions">
               <button
                 appButton
                 variant="ghost"
@@ -54,8 +54,8 @@
               >
                 {{ 'common.actions.retry' | appTranslate }}
               </button>
-            </mat-card-content>
-          </mat-card>
+            </div>
+          </app-alert>
         } @else {
           @if (users().length > 0) {
             <div class="users-list-wrapper">

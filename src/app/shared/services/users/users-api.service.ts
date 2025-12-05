@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, shareReplay, tap, type Observable } from 'rxjs';
 
@@ -9,10 +9,9 @@ import {
   mapCreateUserToDto,
   mapUpdateUserToDto,
   mapUserDto,
-  mapUsersDto,
 } from '@/app/shared/models/dto/user.dto';
 import type { ListResponse } from '@/app/shared/models/list-response';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
+import { mapPaginatedResponse } from '@/app/shared/models/list-response.util';
 import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
 
 @Injectable({ providedIn: 'root' })
@@ -48,7 +47,7 @@ export class UsersApiService {
     const request$ = this.http
       .get<UserDto[]>(this.base, { params: httpParams, observe: 'response' })
       .pipe(
-        map((resp) => this.mapResponse(resp)),
+        map((resp) => mapPaginatedResponse(resp, mapUserDto)),
         tap({
           error: () => {
             if (cacheKey) {
@@ -88,31 +87,6 @@ export class UsersApiService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/${id}`).pipe(tap(() => this.listCache.clear()));
-  }
-
-  private mapResponse(resp: HttpResponse<UserDto[]>): ListResponse<User> {
-    const data = mapUsersDto(resp.body);
-    const totalHeader = Number(resp.headers.get('X-Pagination-Total')) || 0;
-    const limitHeader = Number(resp.headers.get('X-Pagination-Limit')) || 0;
-    const pagesHeader = Number(resp.headers.get('X-Pagination-Pages')) || 0;
-    const pageHeader = Number(resp.headers.get('X-Pagination-Page')) || 1;
-
-    const total = totalHeader || data.length;
-    const limit = Math.max(1, limitHeader || data.length || 1);
-    const computedPages =
-      pagesHeader || (total && limit ? Math.ceil(Math.max(total, 1) / limit) : 1);
-
-    const pagination: PaginationMeta = {
-      total,
-      pages: Math.max(1, computedPages),
-      page: Math.max(1, pageHeader),
-      limit,
-    };
-
-    return {
-      items: data,
-      pagination,
-    };
   }
 
   private getCacheKey(params: HttpParams): string {

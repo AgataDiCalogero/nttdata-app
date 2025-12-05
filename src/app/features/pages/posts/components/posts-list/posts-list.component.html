@@ -1,22 +1,25 @@
-<div class="posts-list">
-  @for (post of posts(); track trackPostById($index, post)) {
-    <div class="post-wrapper">
-      <app-post-card
-        [post]="post"
-        [isDeleting]="isDeleting(post.id)"
-        [comments]="commentsFor(post.id)"
-        [commentsLoading]="commentsAreLoading(post.id)"
-        [commentsPreviewCount]="commentsCountMap()[post.id]"
-        [commentsLoaded]="commentsLoaded(post.id)"
-        (delete)="deletePost.emit(post)"
-        (toggleComments)="toggleComments.emit(post.id)"
-        (commentCreated)="onCommentCreated(post.id, $event)"
-        (commentUpdated)="onCommentUpdated(post.id, $event)"
-        (commentDeleted)="onCommentDeleted(post.id, $event)"
-        (edit)="onEditPost(post)"
-        (viewAuthor)="onViewAuthor(post)"
-        [authorName]="authorName(post)"
-      ></app-post-card>
-    </div>
-  }
-</div>
+<section class="posts-list-section" aria-labelledby="posts-list-heading" role="region">
+  <h2 id="posts-list-heading" class="sr-only">Elenco post</h2>
+  <ul class="posts-list" role="list">
+    @for (post of posts(); track trackPostById($index, post)) {
+      <li class="post-wrapper" role="listitem">
+        <app-post-card
+          [post]="post"
+          [isDeleting]="isDeleting(post.id)"
+          [comments]="commentsFor(post.id)"
+          [commentsLoading]="commentsAreLoading(post.id)"
+          [commentsPreviewCount]="commentsCountMap()[post.id]"
+          [commentsLoaded]="commentsLoaded(post.id)"
+          (delete)="deletePost.emit(post)"
+          (toggleComments)="toggleComments.emit(post.id)"
+          (commentCreated)="onCommentCreated(post.id, $event)"
+          (commentUpdated)="onCommentUpdated(post.id, $event)"
+          (commentDeleted)="onCommentDeleted(post.id, $event)"
+          (edit)="onEditPost(post)"
+          (viewAuthor)="onViewAuthor(post)"
+          [authorName]="authorName(post)"
+        ></app-post-card>
+      </li>
+    }
+  </ul>
+</section>

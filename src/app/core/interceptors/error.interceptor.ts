@@ -53,7 +53,7 @@ export const errorInterceptor: HttpInterceptorFn = (
 
       switch (mapped.kind) {
         case 'unauthorized':
-          auth.clearToken();
+          auth.logout();
           toast.show('warning', mapped.message, 4000);
           router.navigate(['/login']).catch(() => {});
           break;

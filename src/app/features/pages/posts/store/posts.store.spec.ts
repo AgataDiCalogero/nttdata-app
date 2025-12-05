@@ -1,4 +1,4 @@
-import { DestroyRef } from '@angular/core';
+import { DestroyRef, PLATFORM_ID } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
@@ -10,6 +10,7 @@ import {
 } from '@/app/shared/config/pagination.config';
 import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
@@ -23,6 +24,7 @@ describe('PostsStoreAdapter', () => {
   let usersApi: jasmine.SpyObj<UsersApiService>;
   let commentsCache: jasmine.SpyObj<CommentsCacheService>;
   let notifications: jasmine.SpyObj<NotificationsService>;
+  let commentsFacade: CommentsFacadeService;
   let auth: { token: () => string | null };
 
   beforeEach(() => {
@@ -84,9 +86,13 @@ describe('PostsStoreAdapter', () => {
         { provide: NotificationsService, useValue: notifications },
         { provide: AuthService, useValue: auth },
         { provide: PAGINATION_CONFIG, useValue: DEFAULT_PAGINATION_CONFIG },
+        { provide: PLATFORM_ID, useValue: 'browser' },
         PostsStoreAdapter,
+        CommentsFacadeService,
       ],
     });
+
+    commentsFacade = TestBed.inject(CommentsFacadeService);
   });
 
   it('carica i post iniziali e applica paginazione di default', fakeAsync(() => {
@@ -124,6 +130,10 @@ describe('PostsStoreAdapter', () => {
 
     expect(commentsCache.fetchComments).toHaveBeenCalledWith(1);
     expect(store.commentsMap()[1]?.length).toBe(1);
+
+    store.toggleComments(1);
+    tick();
+    expect(store.commentsMap()[1]).toBeUndefined();
   }));
 
   it('deletePostRequest mostra errore HTTP e resetta deletingId su failure', fakeAsync(() => {

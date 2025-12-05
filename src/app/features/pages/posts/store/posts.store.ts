@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { catchError, from, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, map, of, switchMap, tap, throwError } from 'rxjs';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import {
@@ -13,7 +13,7 @@ import {
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
@@ -25,9 +25,6 @@ interface PostsState {
   posts: Post[];
   postEntities: Record<number, Post>;
   pagination: PaginationMeta | null;
-  commentsMap: Partial<Record<number, Comment[]>>;
-  commentsLoading: Partial<Record<number, boolean>>;
-  commentsCountMap: Partial<Record<number, number>>;
   userOptions: User[];
   userLookup: Record<number, string>;
   deletingId: number | null;
@@ -42,9 +39,6 @@ const defaultState: PostsState = {
   posts: [],
   postEntities: {},
   pagination: null,
-  commentsMap: {},
-  commentsLoading: {},
-  commentsCountMap: {},
   userOptions: [],
   userLookup: {},
   deletingId: null,
@@ -60,6 +54,7 @@ export const PostsStoreAdapter = signalStore(
 
   withComputed((store) => {
     const filtersService = inject(PostsFiltersService);
+    const commentsFacade = inject(CommentsFacadeService);
 
     return {
       filters: computed(() => filtersService.filters()),
@@ -81,13 +76,16 @@ export const PostsStoreAdapter = signalStore(
       totalPages: computed(() => store.pagination()?.pages ?? 1),
       currentPerPage: computed(() => store.pagination()?.limit ?? store.perPage()),
       totalPosts: computed(() => store.pagination()?.total ?? store.posts().length),
+      commentsMap: computed(() => commentsFacade.comments()),
+      commentsLoading: computed(() => commentsFacade.loading()),
+      commentsCountMap: computed(() => commentsFacade.counts()),
     };
   }),
 
   withMethods((store) => {
     const postsApi = inject(PostsApiService);
     const usersApi = inject(UsersApiService);
-    const commentsCache = inject(CommentsCacheService);
+    const commentsFacade = inject(CommentsFacadeService);
     const notifications = inject(NotificationsService);
     const destroyRef = inject(DestroyRef);
     const platformId = inject(PLATFORM_ID);
@@ -203,111 +201,19 @@ export const PostsStoreAdapter = signalStore(
       },
 
       toggleComments(postId: number): void {
-        const loaded = store.commentsMap()[postId];
-        if (loaded) {
-          patchState(store, (state) => {
-            const copy = { ...state.commentsMap };
-            delete copy[postId];
-            return { commentsMap: copy };
-          });
-          return;
-        }
-
-        patchState(store, (state) => ({
-          commentsLoading: { ...state.commentsLoading, [postId]: true },
-        }));
-
-        commentsCache
-          .fetchComments(postId)
-          .pipe(takeUntilDestroyed(destroyRef))
-          .subscribe({
-            next: (comments) => {
-              const list = comments ?? [];
-              patchState(store, (state) => ({
-                commentsMap: { ...state.commentsMap, [postId]: list },
-                commentsCountMap: {
-                  ...state.commentsCountMap,
-                  [postId]: list.length,
-                },
-              }));
-              commentsCache.setComments(postId, list);
-            },
-            error: (err) => {
-              console.error('Failed to load comments:', err);
-              notifications.showHttpError(err, 'Unable to load comments');
-              patchState(store, (state) => ({
-                commentsLoading: { ...state.commentsLoading, [postId]: false },
-              }));
-            },
-            complete: () => {
-              patchState(store, (state) => ({
-                commentsLoading: { ...state.commentsLoading, [postId]: false },
-              }));
-            },
-          });
+        commentsFacade.toggleComments(postId);
       },
 
       onCommentCreated(postId: number, comment: Comment): void {
-        let updated: Comment[] = [];
-        patchState(store, (state) => {
-          const current = state.commentsMap[postId] ?? [];
-          updated = [comment, ...current];
-          return {
-            commentsMap: {
-              ...state.commentsMap,
-              [postId]: updated,
-            },
-            commentsCountMap: {
-              ...state.commentsCountMap,
-              [postId]: updated.length,
-            },
-          };
-        });
-        commentsCache.setComments(postId, updated);
+        commentsFacade.applyCreated(postId, comment);
       },
 
       onCommentUpdated(postId: number, comment: Comment): void {
-        let updated: Comment[] | null = null;
-        patchState(store, (state) => {
-          const current = state.commentsMap[postId];
-          if (!current) return state;
-          updated = current.map((existing) => (existing.id === comment.id ? comment : existing));
-          return {
-            commentsMap: {
-              ...state.commentsMap,
-              [postId]: updated,
-            },
-            commentsCountMap: {
-              ...state.commentsCountMap,
-              [postId]: updated.length,
-            },
-          };
-        });
-        if (updated) {
-          commentsCache.setComments(postId, updated);
-        }
+        commentsFacade.applyUpdated(postId, comment);
       },
 
       onCommentDeleted(postId: number, commentId: number): void {
-        let updated: Comment[] | null = null;
-        patchState(store, (state) => {
-          const current = state.commentsMap[postId];
-          if (!current) return state;
-          updated = current.filter((existing) => existing.id !== commentId);
-          return {
-            commentsMap: {
-              ...state.commentsMap,
-              [postId]: updated,
-            },
-            commentsCountMap: {
-              ...state.commentsCountMap,
-              [postId]: updated.length,
-            },
-          };
-        });
-        if (updated) {
-          commentsCache.setComments(postId, updated);
-        }
+        commentsFacade.applyDeleted(postId, commentId);
       },
 
       onPostUpdated(updated: Post): void {
@@ -332,6 +238,11 @@ export const PostsStoreAdapter = signalStore(
     };
 
     function initializePostsStream(): void {
+      if (!isBrowser) {
+        patchState(store, { loading: false });
+        return;
+      }
+
       toObservable(store.queryCriteria)
         .pipe(
           map((criteria) => ({
@@ -374,33 +285,7 @@ export const PostsStoreAdapter = signalStore(
       if (!isBrowser) {
         return;
       }
-      const known = store.commentsCountMap() ?? {};
-      const toFetch = items.filter((p) => known[p.id] === undefined);
-      if (!toFetch.length) return;
-
-      from(toFetch)
-        .pipe(
-          mergeMap(
-            (post) =>
-              commentsCache.fetchCommentCount(post.id).pipe(
-                map((count) => ({ post, count })),
-                catchError((err) => {
-                  console.error('Failed to load comment count:', err);
-                  notifications.showHttpError(err, 'Unable to load comment count');
-                  return of<{ post: Post; count: number } | null>(null);
-                }),
-              ),
-            3,
-          ),
-          takeUntilDestroyed(destroyRef),
-        )
-        .subscribe((payload) => {
-          if (!payload) return;
-          const { post, count } = payload;
-          patchState(store, (state) => ({
-            commentsCountMap: { ...state.commentsCountMap, [post.id]: count },
-          }));
-        });
+      void commentsFacade.prefetchCounts(items);
     }
 
     function loadUsersForFilter(): void {

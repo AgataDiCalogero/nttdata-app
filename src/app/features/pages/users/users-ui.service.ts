@@ -34,6 +34,7 @@ export class UsersUiService {
     const config = this.dialogLayouts.form<void, 'success' | 'cancel', UserForm>({
       ariaLabel: this.i18n.translate('users.create.ariaLabel'),
       desktop: { width: '37.5rem' },
+      shared: { panelClass: 'app-dialog--scrollable' },
     });
     const ref = this.dialog.open<'success' | 'cancel', void, UserForm>(UserForm, config);
     this.activateOverlay('user-form', ref);
@@ -55,6 +56,7 @@ export class UsersUiService {
           const config = this.dialogLayouts.form<{ user: User }, 'success' | 'cancel', UserForm>({
             ariaLabel: this.i18n.translate('users.update.ariaLabel'),
             desktop: { width: '37.5rem' },
+            shared: { panelClass: 'app-dialog--scrollable' },
             data: { user },
           });
           const ref = this.dialog.open<'success' | 'cancel', { user: User }, UserForm>(

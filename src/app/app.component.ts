@@ -8,8 +8,8 @@ import { ToastComponent } from './shared/ui/toast/toast.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Navbar, ToastComponent, FooterComponent],
-  templateUrl: './app.html',
-  styleUrls: ['./app.scss'],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {}

@@ -36,25 +36,22 @@
   font-size: 0.9rem;
 }
 
-.users-error mat-card-content {
+.users-error__content {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: flex-start;
+  align-items: center;
+  gap: 0.75rem;
 
-  .users-error__content {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-
-    mat-icon {
-      color: var(--mat-sys-error, #b3261e);
-    }
-
-    p {
-      margin: 0;
-    }
+  mat-icon {
+    color: var(--mat-sys-error, #b3261e);
   }
+
+  p {
+    margin: 0;
+  }
+}
+
+.users-error__actions {
+  margin-top: 0.5rem;
 }
 
 .users-list-wrapper {

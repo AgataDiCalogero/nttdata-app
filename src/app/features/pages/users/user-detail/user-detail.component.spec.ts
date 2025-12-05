@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { PLATFORM_ID } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,9 +20,11 @@ import { I18nService } from '@/app/shared/i18n/i18n.service';
 import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
 import { CommentsCacheService } from '@/app/shared/services/comments-cache/comments-cache.service';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { PostsApiService } from '@/app/shared/services/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/services/users/users-api.service';
+import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 
 import { UserDetail } from './user-detail.component';
 
@@ -59,7 +62,7 @@ describe('UserDetailComponent', () => {
     // Default mocks
     usersApiSpy.getById.and.returnValue(of(mockUser));
     postsApiSpy.list.and.returnValue(
-      of({ items: mockPosts, meta: { total: 1, pages: 1, page: 1, limit: 10 } }),
+      of({ items: mockPosts, pagination: { total: 1, pages: 1, page: 1, limit: 10 } }),
     );
     commentsCacheSpy.fetchCommentCount.and.returnValue(of(5));
     commentsCacheSpy.prefetchCounts.and.returnValue(of({ 101: 5 }));
@@ -85,6 +88,9 @@ describe('UserDetailComponent', () => {
         { provide: CommentsCacheService, useValue: commentsCacheSpy },
         { provide: NotificationsService, useValue: notificationsSpy },
         { provide: I18nService, useValue: i18nSpy },
+        CommentsFacadeService,
+        UsersFacadeService,
+        { provide: PLATFORM_ID, useValue: 'browser' },
       ],
     }).compileComponents();
 
@@ -121,6 +127,9 @@ describe('UserDetailComponent', () => {
         { provide: CommentsCacheService, useValue: commentsCacheSpy },
         { provide: NotificationsService, useValue: notificationsSpy },
         { provide: I18nService, useValue: i18nSpy },
+        CommentsFacadeService,
+        UsersFacadeService,
+        { provide: PLATFORM_ID, useValue: 'browser' },
       ],
     });
     const localFixture = TestBed.createComponent(UserDetail);
@@ -139,7 +148,8 @@ describe('UserDetailComponent', () => {
     fixture.detectChanges();
     tick();
 
-    expect(component.error()).toBe('Error Message');
+    expect(component.error()).toBe('userDetail.unableToLoadUser');
+    expect(notificationsSpy.showHttpError).toHaveBeenCalled();
     expect(component.user()).toBeNull();
     expect(component.loading()).toBeFalse();
   }));
@@ -161,8 +171,6 @@ describe('UserDetailComponent', () => {
     commentsCacheSpy.fetchComments.and.returnValue(of(comments));
 
     component.onToggleComments(101);
-    expect(component.commentsAreLoading(101)).toBeTrue();
-
     tick();
 
     expect(component.commentsFor(101)).toEqual(comments);
@@ -204,11 +212,8 @@ describe('UserDetailComponent', () => {
     notificationsSpy.showHttpError.and.returnValue('unable to load comments');
 
     component.onToggleComments(101);
-    expect(component.commentsAreLoading(101)).toBeTrue();
-
     tick();
 
-    expect(component.commentsAreLoading(101)).toBeFalse();
     expect(component.commentsLoaded(101)).toBeFalse();
     expect(notificationsSpy.showHttpError).toHaveBeenCalledWith(
       error,

@@ -9,10 +9,9 @@ import { ToastService } from './toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'toast-container',
-    'aria-live': 'polite',
+    '[attr.aria-live]': 'ariaLive',
     'aria-atomic': 'true',
     role: 'status',
-
     ngSkipHydration: '',
 
     '(document:keydown.escape)': 'handleEscape($event)',
@@ -21,6 +20,10 @@ import { ToastService } from './toast.service';
 export class ToastComponent implements AfterViewChecked {
   private readonly toastService = inject(ToastService);
   readonly toasts = this.toastService.messages;
+
+  get ariaLive(): 'polite' | 'assertive' {
+    return this.toasts().some((toast) => toast.type === 'error') ? 'assertive' : 'polite';
+  }
 
   dismiss(id: string): void {
     this.toastService.dismiss(id);

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, type Observable } from 'rxjs';
 
@@ -14,12 +14,11 @@ import {
   mapCreateCommentToDto,
   mapCreatePostToDto,
   mapPostDto,
-  mapPostsDto,
   mapUpdateCommentToDto,
   mapUpdatePostToDto,
 } from '@/app/shared/models/dto/post.dto';
 import type { ListResponse } from '@/app/shared/models/list-response';
-import type { PaginationMeta } from '@/app/shared/models/pagination';
+import { mapPaginatedResponse } from '@/app/shared/models/list-response.util';
 import type {
   Post,
   Comment,
@@ -50,7 +49,7 @@ export class PostsApiService {
     if (title) httpParams = httpParams.set('title', title);
     return this.http
       .get<PostDto[]>(this.base, { params: httpParams, observe: 'response' })
-      .pipe(map((resp) => this.mapResponse(resp)));
+      .pipe(map((resp) => mapPaginatedResponse(resp, mapPostDto)));
   }
 
   getById(id: number): Observable<Post> {
@@ -106,29 +105,5 @@ export class PostsApiService {
 
   deleteComment(commentId: number): Observable<void> {
     return this.http.delete<void>(`/comments/${commentId}`);
-  }
-
-  private mapResponse(resp: HttpResponse<PostDto[]>): ListResponse<Post> {
-    const data = mapPostsDto(resp.body);
-    const totalHeader = Number(resp.headers.get('X-Pagination-Total')) || 0;
-    const limitHeader = Number(resp.headers.get('X-Pagination-Limit')) || 0;
-    const pagesHeader = Number(resp.headers.get('X-Pagination-Pages')) || 0;
-    const pageHeader = Number(resp.headers.get('X-Pagination-Page')) || 1;
-
-    const total = totalHeader || data.length;
-    const limit = limitHeader || data.length || 1;
-    const computedPages = pagesHeader || (total && limit ? Math.ceil(total / limit) : 1);
-
-    const pagination: PaginationMeta = {
-      total,
-      pages: computedPages || 1,
-      page: Math.max(1, pageHeader),
-      limit,
-    };
-
-    return {
-      items: data,
-      pagination,
-    };
   }
 }

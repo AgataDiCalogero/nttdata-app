@@ -13,8 +13,8 @@ export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
   host: {
     '[class]': '"alert alert--" + variant()',
     '[class.alert--dismissible]': 'dismissible()',
-    role: 'status',
-    'aria-live': 'polite',
+    '[attr.role]': 'role',
+    '[attr.aria-live]': 'ariaLive',
     'aria-atomic': 'true',
   },
 })
@@ -22,6 +22,14 @@ export class AlertComponent {
   readonly variant = input<AlertVariant>('info');
   readonly dismissible = input(false);
   readonly dismissed = output<void>();
+
+  get role(): string {
+    return this.variant() === 'error' ? 'alert' : 'status';
+  }
+
+  get ariaLive(): 'polite' | 'assertive' {
+    return this.variant() === 'error' ? 'assertive' : 'polite';
+  }
 
   onDismiss(): void {
     this.dismissed.emit();

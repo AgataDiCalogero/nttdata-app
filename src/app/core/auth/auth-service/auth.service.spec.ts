@@ -83,6 +83,20 @@ describe('AuthService', () => {
     expect(service.token()).toBeNull();
   });
 
+  it('logout pulisce il token e lo stato loggato', () => {
+    const service = TestBed.inject(AuthService);
+    session.setItem('auth-token', 'foo');
+    local.setItem('auth-token', 'foo');
+    service.setToken('foo');
+
+    service.logout();
+
+    expect(session.getItem('auth-token')).toBeNull();
+    expect(local.getItem('auth-token')).toBeNull();
+    expect(service.token()).toBeNull();
+    expect(service.isLoggedIn).toBeFalse();
+  });
+
   it('non interagisce con lo storage quando non è ambiente browser', () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({

@@ -1,61 +1,70 @@
-<mat-toolbar class="app-navbar" color="primary">
-  <a class="brand" routerLink="/" (click)="closeMenu()">
-    <img
-      ngSrc="assets/logo.svg"
-      alt="NTT Data"
-      class="brand__logo"
-      width="40"
-      height="40"
-      priority
-    />
-    <span class="brand__label">{{ 'app.name' | appTranslate }}</span>
-  </a>
+<header>
+  <mat-toolbar class="app-navbar" color="primary">
+    <a class="brand" routerLink="/" (click)="closeMenu()">
+      <img
+        ngSrc="assets/logo.svg"
+        alt="NTT Data"
+        class="brand__logo"
+        width="40"
+        height="40"
+        priority
+      />
+      <span class="brand__label">{{ 'app.name' | appTranslate }}</span>
+    </a>
 
-  <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
-    @if (!isLoginRoute() && !isMobile() && isLogged()) {
-      <a
-        appButton
-        variant="ghost"
-        routerLink="/users"
-        routerLinkActive="active"
-        [class.active]="isRouteActive('/users')"
-        [attr.aria-current]="ariaCurrent('/users')"
-        (click)="closeMenu()"
-      >
-        <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
-        <span>{{ 'nav.users' | appTranslate }}</span>
-      </a>
-      <a
-        appButton
-        variant="ghost"
-        routerLink="/posts"
-        routerLinkActive="active"
-        [class.active]="isRouteActive('/posts')"
-        [attr.aria-current]="ariaCurrent('/posts')"
-        (click)="closeMenu()"
-      >
-        <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
-        <span>{{ 'nav.posts' | appTranslate }}</span>
-      </a>
-    }
-  </nav>
-
-  <span class="spacer" aria-hidden="true"></span>
-
-  <div class="controls">
-    <div class="toolbar-menu-trigger">
-      <app-language-switcher></app-language-switcher>
-      <app-appearance-switcher aria-haspopup="true"></app-appearance-switcher>
-
-      @if (!isLoginRoute() && isLogged()) {
-        <button appButton variant="secondary" type="button" class="logout-btn" (click)="logout()">
-          <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
-          <span class="logout-text sr-only">{{ 'nav.logout' | appTranslate }}</span>
-        </button>
+    <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
+      @if (!isLoginRoute() && !isMobile() && isLogged()) {
+        <a
+          appButton
+          variant="ghost"
+          routerLink="/users"
+          routerLinkActive="active"
+          [class.active]="isRouteActive('/users')"
+          [attr.aria-current]="ariaCurrent('/users')"
+          (click)="closeMenu()"
+        >
+          <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+          <span>{{ 'nav.users' | appTranslate }}</span>
+        </a>
+        <a
+          appButton
+          variant="ghost"
+          routerLink="/posts"
+          routerLinkActive="active"
+          [class.active]="isRouteActive('/posts')"
+          [attr.aria-current]="ariaCurrent('/posts')"
+          (click)="closeMenu()"
+        >
+          <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+          <span>{{ 'nav.posts' | appTranslate }}</span>
+        </a>
       }
+    </nav>
+
+    <span class="spacer" aria-hidden="true"></span>
+
+    <div class="controls">
+      <div class="toolbar-menu-trigger">
+        <app-language-switcher aria-label="Cambia lingua"></app-language-switcher>
+        <app-appearance-switcher aria-haspopup="true" aria-label="Cambia tema"></app-appearance-switcher>
+
+        @if (!isLoginRoute() && isLogged()) {
+          <button
+            appButton
+            variant="secondary"
+            type="button"
+            class="logout-btn"
+            [attr.aria-label]="'nav.logout' | appTranslate"
+            (click)="logout()"
+          >
+            <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
+            <span class="logout-text sr-only">{{ 'nav.logout' | appTranslate }}</span>
+          </button>
+        }
+      </div>
     </div>
-  </div>
-</mat-toolbar>
+  </mat-toolbar>
+</header>
 
 <!-- Floating hamburger menu - only on mobile, only when logged, never on login -->
 @if (!isLoginRoute() && isLogged() && isMobile()) {

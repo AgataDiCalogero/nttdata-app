@@ -45,6 +45,10 @@ export class AuthService {
     this.tokenSignal.set(normalized);
   }
 
+  logout(): void {
+    this.clearToken();
+  }
+
   clearToken() {
     this.getSessionStorage()?.removeItem(STORAGE_KEY);
     this.getLocalStorage()?.removeItem(STORAGE_KEY);

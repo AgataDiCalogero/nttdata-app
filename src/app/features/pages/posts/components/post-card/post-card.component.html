@@ -26,6 +26,7 @@
         type="button"
         class="post-card__author"
         (click)="onAuthorClick()"
+        [attr.aria-label]="'postCard.viewAuthorAria' | appTranslate: { name: author }"
         title="{{ postModel?.title }}"
       >
         <h3 class="post-card__title">{{ postModel?.title }}</h3>
@@ -115,6 +116,8 @@
       type="button"
       (click)="openCommentsList()"
       [attr.aria-pressed]="openSection === 'comments' ? 'true' : 'false'"
+      [attr.aria-expanded]="openSection === 'comments' ? 'true' : 'false'"
+      [attr.aria-controls]="postModel ? 'comments-for-' + postModel.id : null"
       class="post-card__comments-toggle"
     >
       <lucide-icon [img]="MessageSquare"></lucide-icon>
@@ -123,12 +126,13 @@
           ? ('common.actions.hideComments' | appTranslate)
           : ('common.actions.showComments' | appTranslate)
       }}
-      <span class="post-card__comment-count">({{ commentCount }})</span>
+      <span class="post-card__comment-count" aria-hidden="true">({{ commentCount }})</span>
+      <span class="sr-only">{{ commentCount }} commenti</span>
     </button>
   </mat-card-actions>
 
   @if (openSection !== 'none' && postModel) {
-    <section class="post-card__expanded">
+    <section class="post-card__expanded" [id]="'comments-for-' + postModel.id">
       <app-post-comments
         #commentsSection
         class="post-card__comments"

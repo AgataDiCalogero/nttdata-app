@@ -1,7 +1,18 @@
+.user-list-section {
+  width: 100%;
+}
+
 .user-list {
   display: grid;
   gap: 1.25rem;
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-list__item {
+  list-style: none;
 }
 
 .user-card {
