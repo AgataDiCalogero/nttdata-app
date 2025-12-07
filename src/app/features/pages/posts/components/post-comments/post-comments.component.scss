@@ -58,17 +58,13 @@
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 50%;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--color-accent) 65%, transparent),
-      color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
-    );
+    background: var(--gradient-avatar-accent);
     color: var(--color-on-accent);
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25);
+    box-shadow: var(--shadow-avatar-accent);
   }
 
   &__meta {

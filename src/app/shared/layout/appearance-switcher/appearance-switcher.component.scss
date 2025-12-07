@@ -7,66 +7,37 @@
   @include mixins.flex-row;
   justify-content: flex-end;
   width: max-content;
+  // Match locale-switcher height if needed, usually managed by button size
+  height: var(--btn-height-sm, 2.5rem);
+  align-items: center;
 }
 
 .appearance-switcher__trigger {
-  @include mixins.flex-row(var(--space-sm));
-  padding: calc(var(--space-xs) + 0.125rem) var(--space-md);
-  border-radius: var(--radius-2xl);
-  position: relative;
-  z-index: 220;
-  color: inherit;
-  cursor: pointer;
-  background: transparent;
+  // Styles handled by appButton (ghost variant)
+  // enforcing specific layout to match language switcher
+  min-width: 3.5rem;
+  padding-inline: var(--space-md);
+  justify-content: center;
+  align-items: center;
+  border: none !important; // Force removal of legacy borders
+  box-shadow: none !important;
 
-  border: 0.0625rem solid var(--color-accent);
-  @include mixins.transition-group((transform, box-shadow));
-
-  &:hover {
-    transform: translateY(-0.125rem);
-
-    background: var(--alpha-accent-08, rgba(249, 165, 76, 0.08));
-    border-color: var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
-
-    @supports (color: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface))) {
-      background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
-    }
-    @supports (color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface))) {
-      border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface));
-    }
+  // Custom tweaks if needed, but ghost variant should handle most
+  lucide-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    // ensure icon color is inherited or set correctly
+    color: currentColor;
   }
 
-  &:focus-visible {
-    @include mixins.focus-ring;
-  }
+  // Active state styling when menu is open is often handled by [aria-expanded]
+  // or we can add specific override if the ghost active state isn't enough.
+  // Language switcher uses .locale-switcher__option--active logic but for trigger it relies on appButton?
+  // Let's check language switcher trigger again.
+  // It has no specific active styles in SCSS, relies on button variant.
 }
 
-.appearance-switcher__icon lucide-icon {
-  width: 1.2rem;
-  height: 1.2rem;
-}
-
-.appearance-switcher__trigger .appearance-switcher__icon lucide-icon {
-  color: var(--color-accent);
-}
-
-.appearance-switcher__current {
-  font-size: 0.85rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.appearance-switcher__chevron {
-  display: inline-flex;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-right: 0.125rem solid currentColor;
-  border-bottom: 0.125rem solid currentColor;
-  transform: rotate(45deg);
-  margin-left: calc(var(--space-sm) + 0.125rem);
-  @include mixins.transition-group(transform);
-}
-
+// DROPDOWN PANEL STYLES (Keep existing)
 .appearance-switcher__panel {
   position: absolute;
   right: 0;
@@ -272,47 +243,20 @@
   margin: var(--space-xs) 0;
 }
 
+// Active state for trigger when menu is open
 [data-open='true'] {
-  .appearance-switcher__chevron {
-    transform: rotate(-135deg) translateY(0.125rem);
-  }
-  .appearance-switcher__current {
-    color: var(--color-accent);
-    font-weight: 700;
-  }
-
   .appearance-switcher__trigger {
-    transform: translateY(-0.0625rem);
-    border-color: var(--color-accent);
-    box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.08));
-
-    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
-
-    @supports (color: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface))) {
-      background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
-    }
-  }
-
-  .appearance-switcher__icon lucide-icon {
-    color: var(--color-accent);
+    // match what appButton active might do or custom simple active state
+    // If variant="ghost", active usually means simple background.
+    background: var(--alpha-accent-08, rgba(249, 165, 76, 0.08));
   }
 }
 
 @include mixins.mobile {
   .appearance-switcher__trigger {
-    padding: var(--space-xs);
-    border-radius: var(--radius-full);
-    border-width: 0.0625rem;
-    gap: 0;
-
-    .appearance-switcher__current,
-    .appearance-switcher__chevron {
-      display: none;
-    }
-  }
-
-  [data-open='true'] .appearance-switcher__icon lucide-icon {
-    color: var(--color-accent);
+    // on mobile, padding might be smaller?
+    // language switcher doesn't have mobile override for trigger.
+    // keep it simple for now.
   }
 
   .appearance-switcher__panel {

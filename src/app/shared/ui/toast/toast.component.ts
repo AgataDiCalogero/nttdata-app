@@ -1,4 +1,5 @@
-import { AfterViewChecked, ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, effect, inject } from '@angular/core';
 
 import { ToastService } from './toast.service';
 
@@ -17,8 +18,11 @@ import { ToastService } from './toast.service';
     '(document:keydown.escape)': 'handleEscape($event)',
   },
 })
-export class ToastComponent implements AfterViewChecked {
+export class ToastComponent {
   private readonly toastService = inject(ToastService);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private lastFocusedId: string | null = null;
   readonly toasts = this.toastService.messages;
 
   get ariaLive(): 'polite' | 'assertive' {
@@ -29,22 +33,38 @@ export class ToastComponent implements AfterViewChecked {
     this.toastService.dismiss(id);
   }
 
-  ngAfterViewChecked(): void {
-    // Guard against server-side execution where `document` is not available.
-    if (typeof document === 'undefined') return;
-
-    try {
-      const container = document.querySelector('.toast-list');
-      if (!container) return;
-      const latest = container.querySelector<HTMLElement>('[data-toast-id]:last-child');
-      if (latest) {
-        latest.focus();
+  constructor() {
+    effect(() => {
+      if (!this.isBrowser) {
+        this.lastFocusedId = null;
+        return;
       }
-    } catch (err) {
-      // ignore DOM access errors during hydration / unexpected DOM changes
-      // keep the debug log at debug level to avoid noisy logs in production
-      console.debug('toast focus error', err);
-    }
+
+      const messages = this.toasts();
+      if (!messages.length) {
+        this.lastFocusedId = null;
+        return;
+      }
+
+      const latest = messages[messages.length - 1];
+      if (!latest || latest.id === this.lastFocusedId) return;
+
+      queueMicrotask(() => {
+        try {
+          const container = document.querySelector('.toast-list');
+          const target =
+            container?.querySelector<HTMLElement>(`[data-toast-id="${latest.id}"]`) ??
+            container?.querySelector<HTMLElement>('[data-toast-id]:last-child');
+          if (target) {
+            this.lastFocusedId = latest.id;
+            target.focus();
+          }
+        } catch (err) {
+          // avoid noisy logs in production while keeping debug visibility during dev
+          console.debug('toast focus error', err);
+        }
+      });
+    });
   }
 
   handleEscape(event: Event): void {

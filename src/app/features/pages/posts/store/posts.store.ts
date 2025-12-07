@@ -96,6 +96,82 @@ export const PostsStoreAdapter = signalStore(
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
       DEFAULT_PAGINATION_CONFIG;
     const isBrowser = isPlatformBrowser(platformId);
+    const postsCache = new Map<string, { items: Post[]; pagination: PaginationMeta | null }>();
+
+    const computePaginationAfterRemoval = (state: PostsState): PaginationMeta | null => {
+      if (!state.pagination) return null;
+      const nextTotal = Math.max(state.pagination.total - 1, 0);
+      const limit = state.pagination.limit || store.perPage();
+      return {
+        ...state.pagination,
+        total: nextTotal,
+        pages: Math.max(1, Math.ceil(nextTotal / limit)),
+      };
+    };
+
+    const removePostFromState = (state: PostsState, id: number) => {
+      const nextEntities = { ...state.postEntities };
+      delete nextEntities[id];
+
+      return {
+        deletingId: null,
+        posts: state.posts.filter((item) => item.id !== id),
+        postEntities: nextEntities,
+        pagination: computePaginationAfterRemoval(state),
+      };
+    };
+
+    const applyPostsResult = (
+      result: { items?: Post[]; pagination?: PaginationMeta | null } | null,
+    ) => {
+      const list = result?.items ?? [];
+      const entities = list.reduce<Record<number, Post>>((acc, post) => {
+        acc[post.id] = post;
+        return acc;
+      }, {});
+      patchState(store, {
+        loading: false,
+        posts: list,
+        postEntities: entities,
+        pagination: result?.pagination ?? null,
+      });
+    };
+
+    const handleListError = (err: unknown) => {
+      console.error('Failed to load posts:', err);
+      const message = notifications.showHttpError(err, 'Unable to load posts');
+      patchState(store, { error: message, loading: false });
+      return of(null);
+    };
+
+    const fetchPosts = (params: QueryCriteria) => {
+      const { page, perPage, title, userId, reload } = params;
+      const cacheKey = `${page}|${perPage}|${title ?? ''}|${userId ?? ''}|${reload ?? 0}`;
+      const cached = postsCache.get(cacheKey);
+
+      if (cached) {
+        applyPostsResult(cached);
+        return of(cached);
+      }
+
+      return postsApi
+        .list({ page, perPage, title, userId })
+        .pipe(
+          tap((result) => {
+            const cachedResult = {
+              items: result?.items ?? [],
+              pagination: result?.pagination ?? null,
+            };
+            postsCache.set(cacheKey, cachedResult);
+            applyPostsResult(result);
+            prefetchCommentCounts(result?.items ?? []);
+          }),
+          catchError((err) => handleListError(err)),
+        );
+    };
+
+    const shouldGoToPreviousPage = () =>
+      store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
 
     patchState(store, {
       page: pagination.defaultPage,
@@ -109,35 +185,8 @@ export const PostsStoreAdapter = signalStore(
     bootstrapUserOptions();
     syncPaginationOnFilterChange();
 
-    const removePostFromState = (state: PostsState, id: number) => {
-      const nextEntities = { ...state.postEntities };
-      delete nextEntities[id];
-
-      const nextPagination = state.pagination
-        ? {
-            ...state.pagination,
-            total: Math.max(state.pagination.total - 1, 0),
-            pages: Math.max(
-              1,
-              Math.ceil(
-                Math.max(state.pagination.total - 1, 0) /
-                  (state.pagination.limit || store.perPage()),
-              ),
-            ),
-          }
-        : null;
-
-      return {
-        deletingId: null,
-        posts: state.posts.filter((item) => item.id !== id),
-        postEntities: nextEntities,
-        pagination: nextPagination,
-      };
-    };
-
     const performDeletePost = (post: Post) => {
-      const shouldGoPrev =
-        store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
+      const shouldGoPrev = shouldGoToPreviousPage();
 
       patchState(store, { deletingId: post.id });
 
@@ -279,36 +328,9 @@ export const PostsStoreAdapter = signalStore(
             a.userId === b.userId &&
             a.reload === b.reload,
           ),
-          map((criteria) => ({
-            page: criteria.page,
-            perPage: criteria.perPage,
-            title: criteria.title,
-            userId: criteria.userId,
-          })),
-          switchMap((params) => {
+          switchMap((criteria) => {
             patchState(store, { loading: true, error: null });
-            return postsApi.list(params).pipe(
-              tap((result) => {
-                const list = result?.items ?? [];
-                const entities = list.reduce<Record<number, Post>>((acc, post) => {
-                  acc[post.id] = post;
-                  return acc;
-                }, {});
-                patchState(store, {
-                  loading: false,
-                  posts: list,
-                  postEntities: entities,
-                  pagination: result?.pagination ?? null,
-                });
-                prefetchCommentCounts(list);
-              }),
-              catchError((err) => {
-                console.error('Failed to load posts:', err);
-                const message = notifications.showHttpError(err, 'Unable to load posts');
-                patchState(store, { error: message, loading: false });
-                return of(null);
-              }),
-            );
+            return fetchPosts(criteria);
           }),
           takeUntilDestroyed(destroyRef),
         )

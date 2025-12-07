@@ -51,6 +51,13 @@
   width: 100%;
 }
 
+.posts-skeletons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
 /* Rely on shared .app-pagination margin */
 
 .app-results-summary {

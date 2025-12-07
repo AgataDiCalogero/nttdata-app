@@ -1,3 +1,6 @@
+@use '../../../styles/menu' as *;
+@use '../../../styles/mixins' as *;
+
 .locale-switcher {
   position: relative;
   display: inline-flex;
@@ -18,38 +21,42 @@
   top: calc(100% + 0.4rem);
   left: 50%;
   transform: translate(-50%, 0);
-  min-width: 6rem;
-  padding: var(--space-xs);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-mix, rgba(255, 255, 255, 0.08));
+  min-width: 8rem; // Airy width
+
+  // Use shared panel mixin
+  @include app-menu-panel;
+
   z-index: 150;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+
+  // Mixin sets flex-column, but we ensure it matches our need
   gap: var(--space-2xs);
+
+  // Remove manual borders/shadows/backgrounds as mixin handles them
 }
 
 .locale-switcher__option {
   width: 100%;
   text-transform: uppercase;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--color-on-surface);
-  font-weight: var(--font-weight-semibold);
-  transition: background 0.15s ease;
-  display: flex;
-  align-items: center;
+
+  // Use shared item mixin
+  @include app-menu-item;
+
+  // Override or add specific behavior if needed
   justify-content: space-between;
+  font-weight: var(--font-weight-semibold);
 
-  &:hover {
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-  }
-
+  // Active state matching appearance switcher
   &--active {
-    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
-    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    border-color: var(--color-accent);
+    transform: none;
+    box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+
+    @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
+      background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    }
+
+    color: var(--color-on-surface); // Ensure text contrast
   }
 }

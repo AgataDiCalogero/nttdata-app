@@ -17,6 +17,11 @@
     rgba(249, 115, 22, 0.12),
     rgba(234, 88, 12, 0.08)
   );
+  --gradient-accent-strong: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 85%, transparent),
+    color-mix(in srgb, var(--color-accent-dark) 90%, transparent)
+  );
 
   --color-surface: rgba(31, 41, 55, 0.5);
   --color-surface-solid: #1f2937;
@@ -176,6 +181,20 @@
   --reading-dark-shadow: 0 12px 38px rgba(2, 6, 23, 0.5);
   --reading-dark-border: rgba(255, 255, 255, 0.04);
   --reading-dark-surface-backdrop: rgba(255, 255, 255, 0.02);
+
+  /* Toasts / avatars */
+  --gradient-success-soft: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  --gradient-error-soft: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  --gradient-info-soft: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+  --gradient-warning-soft: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+  --gradient-avatar-accent: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 65%, transparent),
+    color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
+  );
+  --shadow-toast: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-toast-hover: 0 6px 16px rgba(0, 0, 0, 0.2);
+  --shadow-avatar-accent: 0 6px 18px rgba(249, 115, 22, 0.25);
 }
 .light-theme {
   --reading-gradient-top: radial-gradient(

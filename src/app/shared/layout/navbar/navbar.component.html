@@ -56,7 +56,8 @@
         @if (!isLoginRoute() && isLogged()) {
           <button
             appButton
-            variant="secondary"
+            variant="ghost"
+            size="sm"
             type="button"
             class="logout-btn"
             [attr.aria-label]="'nav.logout' | appTranslate"
@@ -97,6 +98,8 @@
   class="nav-menu"
   [yPosition]="isMobile() ? 'above' : 'below'"
   [overlapTrigger]="false"
+  aria-label="Navigazione rapida"
+  [attr.role]="'menu'"
 >
   @if (!isLoginRoute() && isLogged()) {
     <button

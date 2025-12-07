@@ -7,6 +7,9 @@
   (appEscapeKey)="onEscape()"
 >
   <button
+    appButton
+    variant="ghost"
+    size="sm"
     type="button"
     class="appearance-switcher__trigger"
     id="appearance-switcher-trigger"
@@ -16,9 +19,7 @@
     [attr.aria-controls]="menuOpen() ? 'appearance-switcher-menu' : null"
     aria-label="Open appearance settings"
   >
-    <span class="appearance-switcher__icon">
-      <lucide-icon [img]="currentIcon()" aria-hidden="true"></lucide-icon>
-    </span>
+    <lucide-icon [img]="currentIcon()" aria-hidden="true"></lucide-icon>
   </button>
 
   @if (menuOpen()) {

@@ -19,6 +19,7 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
+import { PostCardSkeletonComponent } from '@app/shared/ui/skeletons/post-card-skeleton.component';
 
 import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
@@ -42,6 +43,7 @@ import { PostsListComponent } from '../posts-list/posts-list.component';
     AlertComponent,
     PostsFiltersComponent,
     PostsListComponent,
+    PostCardSkeletonComponent,
     TranslatePipe,
   ],
   templateUrl: './posts-view.component.html',

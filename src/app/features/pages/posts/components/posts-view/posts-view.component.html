@@ -28,7 +28,7 @@
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
 
-    <div class="app-results-summary" aria-live="polite">
+    <div class="app-results-summary" aria-live="polite" role="status">
       {{ resultsSummary() }}
     </div>
 
@@ -50,6 +50,11 @@
         ></mat-progress-bar>
         <span class="app-progress__text">{{ 'posts.loading' | appTranslate }}</span>
       </output>
+      <div class="posts-skeletons" aria-hidden="true">
+        <app-post-card-skeleton></app-post-card-skeleton>
+        <app-post-card-skeleton></app-post-card-skeleton>
+        <app-post-card-skeleton></app-post-card-skeleton>
+      </div>
     }
 
     @if (!loading() && !error() && posts().length === 0) {

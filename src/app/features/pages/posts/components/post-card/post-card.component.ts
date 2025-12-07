@@ -1,10 +1,13 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   AfterViewChecked,
   ViewChild,
+  PLATFORM_ID,
+  computed,
+  inject,
   input,
   output,
 } from '@angular/core';
@@ -12,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
@@ -34,6 +38,10 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCardComponent implements AfterViewChecked {
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly i18n = inject(I18nService);
+
   @ViewChild('commentsSection') commentsSection?: ElementRef<HTMLElement>;
 
   readonly post = input.required<Post>();
@@ -45,6 +53,18 @@ export class PostCardComponent implements AfterViewChecked {
   // Optional pre-fetched count to show in preview (before comments are loaded)
   readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
+  readonly author = computed(() => {
+    const provided = this.authorName();
+    if (provided) return provided;
+
+    const current = this.post();
+    if (!current) {
+      return this.i18n.translate('postCard.unknownAuthor');
+    }
+
+    const fallback = this.i18n.translate('userDetail.avatarFallback');
+    return `${fallback} #${current.user_id}`;
+  });
 
   readonly delete = output<void>();
   readonly toggleComments = output<void>();
@@ -152,6 +172,10 @@ export class PostCardComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
+    if (!this.isBrowser) {
+      this.pendingCommentsReveal = false;
+      return;
+    }
     if (this.pendingCommentsReveal && this.commentsSection) {
       this.pendingCommentsReveal = false;
       this.focusComments();
@@ -166,6 +190,7 @@ export class PostCardComponent implements AfterViewChecked {
   }
 
   private focusComments(): void {
+    if (!this.isBrowser) return;
     const element = this.commentsSection?.nativeElement;
     if (!element) return;
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });

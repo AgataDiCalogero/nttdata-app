@@ -22,3 +22,13 @@ export const globalIconRegistryStub = {
 } as unknown as MatIconRegistry;
 
 export const lucideIconsStub = [];
+
+// Patch the MatIconRegistry prototype so tests do not fail for missing icon registrations.
+// This avoids errors such as "Unable to find icon with the name lucide:trash-2" in isolated specs.
+const registryProto = MatIconRegistry.prototype as unknown as Record<string, unknown>;
+registryProto.addSvgIcon = () => globalIconRegistryStub;
+registryProto.addSvgIconLiteral = () => globalIconRegistryStub;
+registryProto.addSvgIconInNamespace = () => globalIconRegistryStub;
+registryProto.addSvgIconLiteralInNamespace = () => globalIconRegistryStub;
+registryProto.getNamedSvgIcon = () => of(svgElement);
+registryProto.getSvgIconFromUrl = () => of(svgElement);

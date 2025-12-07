@@ -101,7 +101,7 @@ describe('PostsStoreAdapter', () => {
 
   it('carica i post iniziali e applica paginazione di default', fakeAsync(() => {
     const store = TestBed.inject(PostsStoreAdapter);
-    tick();
+    tick(400);
 
     expect(postsApi.list).toHaveBeenCalledWith(
       jasmine.objectContaining({ page: 1, perPage: 10, title: undefined, userId: undefined }),
@@ -115,13 +115,11 @@ describe('PostsStoreAdapter', () => {
     postsApi.list.calls.reset();
 
     store.changePerPage(25);
-    tick();
-    // currentPerPage legge pagination limit se presente; simuliamo la risposta con limit 25
-    postsApi.list.calls.mostRecent().returnValue?.subscribe?.();
+    tick(400);
     expect(store.perPage()).toBe(25);
 
     store.setPage(3);
-    tick();
+    tick(400);
     expect(postsApi.list.calls.count()).toBeGreaterThan(0);
   }));
 
@@ -154,6 +152,29 @@ describe('PostsStoreAdapter', () => {
     tick();
 
     expect(notifications.showHttpError).toHaveBeenCalled();
+    expect(store.deletingId()).toBeNull();
+  }));
+
+  it('imposta errore e loading false quando list fallisce', fakeAsync(() => {
+    postsApi.list.and.returnValue(throwError(() => new Error('list failed')));
+    notifications.showHttpError.and.returnValue('Unable to load posts');
+
+    const store = TestBed.inject(PostsStoreAdapter);
+    tick(400);
+
+    expect(store.error()).toBe('Unable to load posts');
+    expect(store.loading()).toBeFalse();
+  }));
+
+  it('deletePostRequest rimuove il post e resetta deletingId su successo', fakeAsync(() => {
+    const store = TestBed.inject(PostsStoreAdapter);
+    tick(400);
+    const post = store.posts()[0];
+
+    store.deletePostRequest(post).subscribe();
+    tick();
+
+    expect(store.posts().length).toBe(0);
     expect(store.deletingId()).toBeNull();
   }));
 });

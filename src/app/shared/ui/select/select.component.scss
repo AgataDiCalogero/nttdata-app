@@ -67,3 +67,12 @@
     /* This class can be used for future custom dropdown implementation */
   }
 }
+
+.select-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  color: var(--color-on-surface);
+  line-height: 1.25;
+}

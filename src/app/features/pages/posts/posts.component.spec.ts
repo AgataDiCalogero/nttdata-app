@@ -188,6 +188,7 @@ describe('PostsComponent', () => {
     mockStore.error.set('boom');
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('.posts-page__alert')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.posts-page__alert')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.posts-empty')).toBeNull();
   });
 });

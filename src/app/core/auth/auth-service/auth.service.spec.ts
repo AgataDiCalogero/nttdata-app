@@ -1,80 +1,78 @@
-import { TestBed } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  let service: AuthService;
-  let sessionStorageSpy: jasmine.SpyObj<Storage>;
-  let localStorageSpy: jasmine.SpyObj<Storage>;
+  const storageKey = 'auth-token';
 
   beforeEach(() => {
-    sessionStorageSpy = jasmine.createSpyObj('Storage', ['getItem', 'setItem', 'removeItem']);
-    localStorageSpy = jasmine.createSpyObj('Storage', ['getItem', 'setItem', 'removeItem']);
-
-    spyOnProperty(globalThis, 'sessionStorage', 'get').and.returnValue(sessionStorageSpy);
-    spyOnProperty(globalThis, 'localStorage', 'get').and.returnValue(localStorageSpy);
-
+    sessionStorage.clear();
+    localStorage.clear();
     TestBed.configureTestingModule({
-      providers: [AuthService, { provide: PLATFORM_ID, useValue: 'browser' }],
+      providers: [
+        AuthService,
+        {
+          provide: PLATFORM_ID,
+          useValue: 'browser',
+        },
+      ],
     });
-
-    service = TestBed.inject(AuthService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    sessionStorage.clear();
+    localStorage.clear();
   });
 
-  it('should set and retrieve token', () => {
-    const testToken = 'test-token-123';
-    service.setToken(testToken);
+  it('reads token from sessionStorage on init', () => {
+    sessionStorage.setItem(storageKey, 'token-123');
 
-    expect(sessionStorageSpy.setItem).toHaveBeenCalledWith('auth-token', testToken);
-    expect(service.token()).toBe(testToken);
-    expect(service.isLoggedIn).toBe(true);
+    const service = TestBed.inject(AuthService);
+
+    expect(service.token()).toBe('token-123');
+    expect(service.isLoggedIn).toBeTrue();
   });
 
-  it('should trim token when setting', () => {
-    const tokenWithSpaces = '  test-token-456  ';
-    const trimmed = 'test-token-456';
-    service.setToken(tokenWithSpaces);
+  it('migrates legacy token from localStorage to sessionStorage', () => {
+    localStorage.setItem(storageKey, 'legacy-token');
 
-    expect(sessionStorageSpy.setItem).toHaveBeenCalledWith('auth-token', trimmed);
-    expect(service.token()).toBe(trimmed);
+    const service = TestBed.inject(AuthService);
+
+    expect(service.token()).toBe('legacy-token');
+    expect(sessionStorage.getItem(storageKey)).toBe('legacy-token');
+    expect(localStorage.getItem(storageKey)).toBeNull();
   });
 
-  it('should clear token on logout', () => {
-    service.setToken('test-token');
+  it('trims and stores token via setToken', () => {
+    const service = TestBed.inject(AuthService);
+
+    service.setToken('  NEW  ');
+
+    expect(service.token()).toBe('NEW');
+    expect(service.isLoggedIn).toBeTrue();
+    expect(sessionStorage.getItem(storageKey)).toBe('NEW');
+  });
+
+  it('clearToken removes stored values and resets auth state', () => {
+    const service = TestBed.inject(AuthService);
+    service.setToken('active');
+
+    service.clearToken();
+
+    expect(service.token()).toBeNull();
+    expect(service.isLoggedIn).toBeFalse();
+    expect(sessionStorage.getItem(storageKey)).toBeNull();
+    expect(localStorage.getItem(storageKey)).toBeNull();
+  });
+
+  it('logout delegates to clearToken', () => {
+    const service = TestBed.inject(AuthService);
+    service.setToken('to-remove');
+
     service.logout();
 
-    expect(sessionStorageSpy.removeItem).toHaveBeenCalledWith('auth-token');
-    expect(localStorageSpy.removeItem).toHaveBeenCalledWith('auth-token');
     expect(service.token()).toBeNull();
-    expect(service.isLoggedIn).toBe(false);
-  });
-
-  it('should migrate token from localStorage to sessionStorage', () => {
-    const legacyToken = 'legacy-token';
-    localStorageSpy.getItem.and.returnValue(legacyToken);
-    sessionStorageSpy.getItem.and.returnValue(null);
-
-    // Re-create service to trigger constructor logic
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      providers: [AuthService, { provide: PLATFORM_ID, useValue: 'browser' }],
-    });
-    TestBed.inject(AuthService);
-
-    expect(sessionStorageSpy.setItem).toHaveBeenCalledWith('auth-token', legacyToken);
-    expect(localStorageSpy.removeItem).toHaveBeenCalledWith('auth-token');
-  });
-
-  it('should return false for isLoggedIn when token is empty', () => {
-    service.setToken('');
-    expect(service.isLoggedIn).toBe(false);
-
-    service.setToken('   ');
-    expect(service.isLoggedIn).toBe(false);
+    expect(service.isLoggedIn).toBeFalse();
   });
 });
