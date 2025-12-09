@@ -13,28 +13,24 @@
 }
 
 .appearance-switcher__trigger {
-  // Styles handled by appButton (ghost variant)
-  // enforcing specific layout to match language switcher
-  min-width: 3.5rem;
-  padding-inline: var(--space-md);
+  @include mixins.toolbar-control;
+  height: 100%;
   justify-content: center;
-  align-items: center;
-  border: none !important; // Force removal of legacy borders
-  box-shadow: none !important;
+  padding-inline: var(--space-md);
 
-  // Custom tweaks if needed, but ghost variant should handle most
   lucide-icon {
     width: 1.2rem;
     height: 1.2rem;
-    // ensure icon color is inherited or set correctly
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     color: currentColor;
-  }
 
-  // Active state styling when menu is open is often handled by [aria-expanded]
-  // or we can add specific override if the ghost active state isn't enough.
-  // Language switcher uses .locale-switcher__option--active logic but for trigger it relies on appButton?
-  // Let's check language switcher trigger again.
-  // It has no specific active styles in SCSS, relies on button variant.
+    svg {
+      display: block;
+    }
+  }
 }
 
 // DROPDOWN PANEL STYLES (Keep existing)
@@ -244,21 +240,11 @@
 }
 
 // Active state for trigger when menu is open
-[data-open='true'] {
-  .appearance-switcher__trigger {
-    // match what appButton active might do or custom simple active state
-    // If variant="ghost", active usually means simple background.
-    background: var(--alpha-accent-08, rgba(249, 165, 76, 0.08));
-  }
+.appearance-switcher[data-open='true'] .appearance-switcher__trigger {
+  @include mixins.toolbar-control-open;
 }
 
 @include mixins.mobile {
-  .appearance-switcher__trigger {
-    // on mobile, padding might be smaller?
-    // language switcher doesn't have mobile override for trigger.
-    // keep it simple for now.
-  }
-
   .appearance-switcher__panel {
     position: absolute;
     right: 0;
