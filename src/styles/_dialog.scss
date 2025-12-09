@@ -1,19 +1,34 @@
 ﻿/* Shared dialog overlay and panel styles */
 
+/* Ensure dialogs sit above fixed navbar (which uses high z-index) */
+.cdk-overlay-container {
+  z-index: var(--z-toast, 10000);
+}
+
 .cdk-overlay-backdrop.app-dialog-overlay {
   background: var(--overlay-backdrop-strong) !important;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+  z-index: var(--z-toast, 10000);
+}
+
+.cdk-overlay-pane {
+  z-index: calc(var(--z-toast, 10000) + 1);
 }
 
 .cdk-overlay-pane .app-dialog-panel {
   border-radius: var(--radius-dialog);
-  background: var(--dialog-surface);
+  background: #ffffff;
   color: var(--color-on-surface);
   border: 1px solid var(--dialog-border);
   box-shadow: var(--shadow-xl);
   overflow: auto;
-  max-height: calc(100vh - var(--space-xl));
+  max-height: calc(
+    100vh - var(--space-lg) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+  );
+  padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  z-index: calc(var(--z-toast, 10000) + 2);
 }
 
 .cdk-overlay-pane.app-dialog--scrollable {
@@ -26,7 +41,9 @@
 
 @media (max-width: 40rem) {
   .cdk-overlay-pane .app-dialog-panel {
-    max-height: calc(100vh - var(--space-lg) - env(safe-area-inset-bottom, 0px));
-    padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+    max-height: calc(
+      100vh - var(--space-md) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+    );
+    padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
   }
 }

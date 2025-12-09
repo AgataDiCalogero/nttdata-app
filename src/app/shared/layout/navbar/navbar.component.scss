@@ -92,6 +92,12 @@
       color: var(--color-on-accent);
     }
   }
+  /* Minimum breathing room before the controls on tight viewports */
+  @media (max-width: 62rem) {
+    .brand {
+      margin-right: var(--space-sm);
+    }
+  }
 
   /* Removed light-theme only override for active nav links to keep consistent, accessible colors across themes */
 
@@ -324,6 +330,13 @@
 
   @media (max-width: 62rem) {
     padding-inline: var(--app-page-gutter-tight);
+    padding-block: var(--space-xs);
+
+    .mat-toolbar-layout,
+    .mat-toolbar-row {
+      row-gap: var(--space-2xs);
+      align-items: center;
+    }
 
     .nav-links {
       display: none; /* ensure top links are hidden on mobile */

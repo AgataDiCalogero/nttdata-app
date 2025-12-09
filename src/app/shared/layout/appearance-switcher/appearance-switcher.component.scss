@@ -7,7 +7,6 @@
   @include mixins.flex-row;
   justify-content: flex-end;
   width: max-content;
-  // Match locale-switcher height if needed, usually managed by button size
   height: var(--btn-height-sm, 2.5rem);
   align-items: center;
 }
@@ -31,251 +30,189 @@
       display: block;
     }
   }
-}
 
-// DROPDOWN PANEL STYLES (Keep existing)
-.appearance-switcher__panel {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 0.6rem);
-  min-width: 11.25rem;
-  @include app-menu-panel;
-  z-index: 110;
-  max-height: calc(100vh - 6rem);
-  max-height: calc(100dvh - 6rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;
-  @supports (scrollbar-gutter: stable) {
-    scrollbar-gutter: stable;
+  // Active state when menu is open
+  &[aria-expanded='true'] {
+    @include mixins.toolbar-control-open;
   }
 }
 
-.appearance-switcher__options {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  align-items: stretch;
+// FORCE OVERRIDE OF MATERIAL MENU PANEL TO MATCH ORIGINAL DESIGN
+// We use ::ng-deep to break encapsulation for the overlay panel
+::ng-deep .appearance-switcher-menu.mat-mdc-menu-panel {
+  min-width: 11.25rem !important;
+  max-width: none !important;
 
-  > * {
+  // Re-apply the specific glassmorphism mixin from your design system
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.08)) !important;
+  box-shadow: var(--shadow-xl) !important;
+  border-radius: var(--radius-xl) !important;
+
+  // Remove default material overflow constraints that might clip shadows
+  overflow: visible !important;
+
+  // The inner content wrapper
+  .mat-mdc-menu-content {
+    padding: var(--space-md) !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  // Hide the default ripple if better for your aesthetic
+  .mat-ripple {
+    display: none;
+  }
+
+  // SEPARATORS
+  .appearance-switcher__divider {
+    height: 1px;
     width: 100%;
-  }
-}
-
-.appearance-switcher__options,
-.appearance-switcher__options fieldset,
-.appearance-switcher__options legend {
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: transparent;
-}
-
-.appearance-switcher__panel *,
-.appearance-switcher__panel *::before,
-.appearance-switcher__panel *::after {
-  outline: none;
-  border: none;
-  box-shadow: none;
-}
-
-.appearance-option {
-  border-radius: calc(var(--radius-lg) + 0.125rem);
-  font-size: 0.8rem;
-  @include app-menu-item;
-
-  &:hover {
-    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
-    transform: translateY(-0.0625rem);
+    background: color-mix(in srgb, var(--color-border) 40%, transparent);
+    margin: var(--space-2xs) 0;
   }
 
-  &:focus-visible {
-    @include mixins.focus-ring;
-  }
+  // ========================================================================
+  // RE-IMPLEMENTATION OF "APPEARANCE-OPTION" (The Pill Buttons)
+  // Targeting [mat-menu-item] but forcing it to look like your custom div
+  // ========================================================================
+  .appearance-option {
+    // Override material button reset
+    width: 100%;
+    box-sizing: border-box;
+    min-height: unset !important;
+    height: auto !important;
+    line-height: normal !important;
 
-  &--active {
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-    border-color: var(--color-accent);
-    transform: none;
-    box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+    // Ensure the host button is a flex container for its internals
+    display: flex !important;
+    align-items: center;
 
-    @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
-      background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
-      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    // Original Spacing & Shape
+    padding: var(--space-sm) !important;
+    border-radius: calc(var(--radius-lg) + 0.125rem) !important;
+    margin: 0 !important;
+
+    // Typography
+    font-size: 0.8rem !important;
+    color: var(--color-on-surface);
+    transition: all 0.2s ease-in-out;
+
+    // CRITICAL: Fix for MDC Material Menu content wrapping
+    // The content is wrapped in .mat-mdc-menu-item-text, we must flex THAT.
+    ::ng-deep .mat-mdc-menu-item-text {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      width: 100%;
+      gap: var(--space-sm);
     }
 
-    .appearance-option__icon {
-      background: transparent;
-      border: none;
-      lucide-icon {
+    // HOVER STATE
+    &:hover,
+    &:focus-visible {
+      background: color-mix(in srgb, var(--color-accent) 6%, transparent) !important;
+      transform: translateY(-1px);
+    }
+
+    // ACTIVE STATE (Selected Theme)
+    &--active {
+      background: color-mix(in srgb, var(--color-accent) 12%, transparent) !important;
+      border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent); // Simulated border inside
+      box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+      transform: none !important; // No lift on active
+
+      @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
+        background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface)) !important;
+      }
+
+      .appearance-option__icon {
         color: var(--color-accent);
       }
     }
-  }
 
-  &--toggle {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    padding: var(--space-sm) var(--space-sm);
-    text-align: left;
-  }
-}
+    // ICON WRAPPER
+    .appearance-option__icon {
+      @include mixins.flex-center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: var(--radius-full);
+      // margin-right handled by gap in parent now for better spacing
+      color: var(--color-muted);
+      transition: color 0.2s ease;
+      flex-shrink: 0; // Prevent icon compression
 
-.appearance-option__icon {
-  @include mixins.flex-center;
+      lucide-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        stroke-width: 2px;
+      }
+    }
 
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--radius-full);
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  @include mixins.transition-group(all);
-
-  lucide-icon {
-    width: 1.2rem;
-    height: 1.2rem;
-    display: block;
-    line-height: 1;
-  }
-
-  .appearance-option--toggle & {
-    width: 2rem;
-    height: 2rem;
-    margin-right: var(--space-xs);
-
-    lucide-icon {
-      width: 1.2rem;
-      height: 1.2rem;
+    // LABEL
+    .appearance-option__label {
+      font-weight: 600;
+      flex: 1;
+      text-align: left;
     }
   }
-}
 
-.appearance-option__label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1.2;
-
-  .appearance-option--toggle & {
-    font-size: 0.85rem;
+  // ========================================================================
+  // TOGGLE ROW (Reading Mode)
+  // This is a DIV, not a mat-menu-item, but resides inside the menu
+  // ========================================================================
+  .appearance-option--toggle {
+    // Inherits base .appearance-option styles via class, but needs specific tweaks
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex: 1;
-  }
+    width: 100%;
+    padding: var(--space-sm) !important;
+    cursor: default; // It's a container for the switch, not a button itself
 
-  margin-left: var(--space-sm);
-}
-
-.appearance-toggle {
-  --toggle-height: 1.9rem;
-  --toggle-width: 3.25rem;
-  display: inline-flex;
-  align-items: center;
-}
-
-.appearance-toggle .mat-slide-toggle-bar {
-  width: var(--toggle-width);
-  height: var(--toggle-height);
-  border-radius: var(--radius-full);
-
-  background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06));
-  border: 0.125rem solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease;
-  @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
-    background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
-    border: 0.125rem solid color-mix(in srgb, var(--color-accent) 20%, var(--color-surface));
-  }
-}
-.appearance-toggle .mat-slide-toggle-thumb {
-  width: calc(var(--toggle-height) - 0.25rem);
-  height: calc(var(--toggle-height) - 0.25rem);
-
-  background: var(--color-accent);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.appearance-toggle .mat-slide-toggle-thumb::before,
-.appearance-toggle .mat-slide-toggle-thumb::after {
-  display: none;
-  content: none;
-}
-
-.appearance-toggle.mat-checked .mat-slide-toggle-bar {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-}
-.appearance-toggle.mat-checked .mat-slide-toggle-thumb {
-  transform: translateX(calc(var(--toggle-width) - var(--toggle-height))) translateY(-50%);
-
-  background: var(--color-accent);
-}
-
-.appearance-toggle:hover .mat-slide-toggle-bar,
-.appearance-toggle:focus-within .mat-slide-toggle-bar {
-  border-color: var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
-  @supports (color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface))) {
-    border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface));
-  }
-}
-
-.appearance-switcher__section {
-  display: flex;
-  flex-direction: column;
-}
-
-.appearance-switcher__divider {
-  height: 0.0625rem;
-  background: color-mix(in srgb, var(--border-mix-60) 60%, transparent);
-  margin: var(--space-xs) 0;
-}
-
-// Active state for trigger when menu is open
-.appearance-switcher[data-open='true'] .appearance-switcher__trigger {
-  @include mixins.toolbar-control-open;
-}
-
-@include mixins.mobile {
-  .appearance-switcher__panel {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 0.6rem);
-    transform: translateX(0);
-    width: min(20rem, calc(100vw - 2 * var(--layout-gutter-tight)));
-    max-height: calc(100vh - 5.5rem);
-    max-height: calc(100dvh - 5.5rem - env(safe-area-inset-bottom, 0px));
-    border-radius: var(--radius-2xl);
-    padding: var(--space-md);
-    @include mixins.shadow('xl');
-  }
-
-  .appearance-option {
-    flex: 1;
-
-    &--toggle {
-      width: 100%;
+    &:hover {
+      background: transparent !important;
+      transform: none !important;
     }
   }
-}
 
-body.reading-mode .appearance-switcher__panel {
-  background: var(--color-surface);
-  color: var(--color-on-surface);
-}
+  // TOGGLE SWITCH COMPONENT (MatSlideToggle Customization)
+  // TOGGLE SWITCH COMPONENT (MatSlideToggle Customization)
+  .appearance-toggle {
+    margin-left: auto;
+    // Scale down to match previous design preference
+    transform: scale(0.8);
+    transform-origin: right center;
 
-.appearance-switcher__panel::before,
-.appearance-switcher__panel::after,
-.appearance-switcher__panel *::before,
-.appearance-switcher__panel *::after {
-  display: none;
-  content: none;
+    ::ng-deep .mat-slide-toggle-bar {
+      // Material default is often fine if scaled, but we enforce specific sizing to match pill
+      width: 36px;
+      height: 20px;
+      border-radius: 999px;
+      background: var(--alpha-accent-06, rgba(249, 165, 76, 0.06));
+      border: 1px solid var(--alpha-accent-18, rgba(249, 165, 76, 0.18));
+    }
+
+    ::ng-deep .mat-slide-toggle-thumb {
+      width: 16px;
+      height: 16px;
+      top: 2px;
+      left: 2px;
+      background: var(--color-accent);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    &.mat-checked {
+      ::ng-deep .mat-slide-toggle-bar {
+        background: var(--color-accent);
+        border-color: var(--color-accent);
+      }
+      ::ng-deep .mat-slide-toggle-thumb {
+        background: #fff;
+        transform: translate3d(16px, 0, 0);
+      }
+    }
+  }
 }

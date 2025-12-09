@@ -1,5 +1,16 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
 .select {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
   font: inherit;
   color: var(--color-on-surface);
   background: var(--mat-field-bg);
@@ -66,6 +77,12 @@
     /* Since native select dropdowns can't be contained, we'll use a different approach */
     /* This class can be used for future custom dropdown implementation */
   }
+
+  /* Allow long options to wrap to avoid forcing dropdown width */
+  option {
+    white-space: normal;
+    word-break: break-word;
+  }
 }
 
 .select-label {
@@ -75,4 +92,18 @@
   margin-bottom: 0.35rem;
   color: var(--color-on-surface);
   line-height: 1.25;
+}
+
+/* Mobile tuning: avoid dropdown overflow by capping intrinsic width and reducing font size */
+@media (max-width: 48rem) {
+  .select {
+    width: min(100%, calc(100vw - 2 * var(--app-page-gutter-tight)));
+    max-width: min(100%, calc(100vw - 2 * var(--app-page-gutter-tight)));
+    font-size: 0.9rem;
+  }
+
+  .select option {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
 }
