@@ -176,8 +176,9 @@ select:focus-visible {
   background: rgba(2, 6, 23, 0.75) !important;
 }
 
+/* Dialogs share the global z-index scale; avoid lowering a single dialog below the backdrop */
 .cdk-overlay-pane.token-help-dialog {
-  z-index: 1200 !important;
+  z-index: calc(var(--z-modal, 1300) + 1) !important;
 }
 
 body.ui-overlay-blocked .app-navbar .controls {
