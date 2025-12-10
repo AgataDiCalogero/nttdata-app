@@ -16,7 +16,7 @@
     (click)="toggleMenu()"
     [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
     aria-haspopup="true"
-    [attr.aria-controls]="menuOpen() ? 'appearance-switcher-menu' : null"
+    aria-controls="appearance-switcher-menu"
     aria-label="Open appearance settings"
   >
     <lucide-icon [img]="currentIcon()" aria-hidden="true"></lucide-icon>
@@ -26,52 +26,53 @@
     <div
       class="appearance-switcher__panel"
       id="appearance-switcher-menu"
+      role="menu"
       aria-labelledby="appearance-switcher-trigger"
     >
       <div class="appearance-switcher__section">
-        <fieldset class="appearance-switcher__options" aria-label="Theme options">
-          <legend class="visually-hidden">Theme options</legend>
+        <button
+          type="button"
+          class="appearance-option"
+          role="menuitemradio"
+          [attr.aria-checked]="isLightPreference() ? 'true' : 'false'"
+          [class.appearance-option--active]="isLightPreference()"
+          (click)="setPreference('light')"
+        >
+          <span class="appearance-option__icon" aria-hidden="true">
+            <lucide-icon [img]="Sun"></lucide-icon>
+          </span>
+          <span class="appearance-option__label">Light</span>
+        </button>
 
-          <button
-            type="button"
-            class="appearance-option"
-            [class.appearance-option--active]="isLightPreference()"
-            (click)="setPreference('light')"
-            [attr.aria-pressed]="isLightPreference() ? 'true' : 'false'"
-          >
-            <span class="appearance-option__icon">
-              <lucide-icon [img]="Sun" aria-hidden="true"></lucide-icon>
-            </span>
-            <span class="appearance-option__label">Light</span>
-          </button>
-
-          <button
-            type="button"
-            class="appearance-option"
-            [class.appearance-option--active]="isDarkPreference()"
-            (click)="setPreference('dark')"
-            [attr.aria-pressed]="isDarkPreference() ? 'true' : 'false'"
-          >
-            <span class="appearance-option__icon">
-              <lucide-icon [img]="Moon" aria-hidden="true"></lucide-icon>
-            </span>
-            <span class="appearance-option__label">Dark</span>
-          </button>
-        </fieldset>
+        <button
+          type="button"
+          class="appearance-option"
+          role="menuitemradio"
+          [attr.aria-checked]="isDarkPreference() ? 'true' : 'false'"
+          [class.appearance-option--active]="isDarkPreference()"
+          (click)="setPreference('dark')"
+        >
+          <span class="appearance-option__icon" aria-hidden="true">
+            <lucide-icon [img]="Moon"></lucide-icon>
+          </span>
+          <span class="appearance-option__label">Dark</span>
+        </button>
       </div>
 
       <div class="appearance-switcher__divider"></div>
 
       <div class="appearance-switcher__section">
-        <div class="appearance-option appearance-option--toggle">
-          <span class="appearance-option__icon">
-            <lucide-icon [img]="BookOpenCheck" aria-hidden="true"></lucide-icon>
+        <div class="appearance-option appearance-option--toggle" role="group" aria-label="Reading mode">
+          <span class="appearance-option__icon" aria-hidden="true">
+            <lucide-icon [img]="BookOpenCheck"></lucide-icon>
           </span>
           <span class="appearance-option__label">Reading mode</span>
           <mat-slide-toggle
             class="appearance-toggle"
             aria-label="Reading mode"
             [checked]="isReadingMode()"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
             (change)="toggleReadingMode()"
           ></mat-slide-toggle>
         </div>

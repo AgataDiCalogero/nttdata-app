@@ -234,6 +234,27 @@
   }
 }
 
+/* Light theme variant for secondary (used by Edit/View comments) */
+body.light-theme .btn--secondary,
+.light-theme .btn--secondary {
+  background: color-mix(in srgb, #0f172a 8%, #ffffff);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+
+  &:hover {
+    background: color-mix(in srgb, #0f172a 14%, #ffffff);
+    border-color: rgba(15, 23, 42, 0.16);
+  }
+
+  &:active {
+    background: color-mix(in srgb, #0f172a 18%, #ffffff);
+  }
+
+  mat-icon {
+    color: inherit !important;
+  }
+}
+
 .btn--danger {
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
   background: rgba(239, 68, 68, 0.12);
@@ -252,7 +273,7 @@
     transform: translateY(-1px);
 
     mat-icon {
-      color: var(--color-on-primary) !important;
+      color: var(--color-danger) !important;
     }
   }
 

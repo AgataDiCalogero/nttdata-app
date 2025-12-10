@@ -236,15 +236,15 @@
   background: var(--color-bg-input-dark);
   border-radius: var(--radius-input);
   border: 1px solid var(--border-mix-60);
-  box-shadow: none;
+  box-shadow: none !important;
 
   @supports (background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg))) {
     background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg));
   }
 }
 
-/* Remove secondary inner border effect on form-dialog inputs/selects */
-.form-dialog .form-field.is-invalid
+.form-dialog
+  .form-field.is-invalid
   :is(
     .form-input,
     .form-select,
@@ -254,6 +254,7 @@
     textarea
   ) {
   box-shadow: none !important;
+  border-color: var(--color-danger);
 }
 
 .form-dialog__actions {
