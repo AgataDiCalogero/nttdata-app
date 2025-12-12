@@ -105,12 +105,6 @@ describe('UserDetailComponent', () => {
     routeStub.snapshot.paramMap.get = () => '1';
   });
 
-  it('should create', () => {
-    createComponent();
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
   it('should load user and posts on init', fakeAsync(() => {
     createComponent();
     fixture.detectChanges();

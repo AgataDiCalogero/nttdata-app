@@ -228,9 +228,12 @@
     .form-select,
     .form-textarea,
     .select,
-    .form-field input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element),
+    .form-field
+      input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element):not(
+        .mdc-text-field__input
+      ),
     .form-field select,
-    .form-field textarea:not(.mat-mdc-input-element)
+    .form-field textarea:not(.mat-mdc-input-element):not(.mdc-text-field__input)
   ) {
   padding: calc(var(--space-sm) + 4px) var(--space-lg);
   background: var(--color-bg-input-dark);
@@ -256,7 +259,9 @@
     input:not([type='checkbox']):not([type='radio']),
     select,
     textarea
-  ) {
+  ),
+.form-dialog
+  :is(.form-input, .form-select, .form-textarea, input, select, textarea)[aria-invalid='true'] {
   box-shadow: none !important;
   border-color: var(--color-danger);
 }

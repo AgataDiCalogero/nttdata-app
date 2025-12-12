@@ -12,6 +12,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import { errorInterceptor } from './error.interceptor';
@@ -22,21 +23,25 @@ describe('errorInterceptor', () => {
   let mockRouter: jasmine.SpyObj<Router>;
   let mockAuth: jasmine.SpyObj<AuthService>;
   let mockToast: jasmine.SpyObj<ToastService>;
+  let mockI18n: jasmine.SpyObj<I18nService>;
   let mockNext: jasmine.Spy<HttpHandlerFn>;
 
   beforeEach(() => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockAuth = jasmine.createSpyObj('AuthService', ['logout']);
     mockToast = jasmine.createSpyObj('ToastService', ['show']);
+    mockI18n = jasmine.createSpyObj('I18nService', ['translate']);
     mockNext = jasmine.createSpy('HttpHandlerFn');
 
     mockRouter.navigate.and.returnValue(Promise.resolve(true));
+    mockI18n.translate.and.callFake((key: string) => key);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: mockRouter },
         { provide: AuthService, useValue: mockAuth },
         { provide: ToastService, useValue: mockToast },
+        { provide: I18nService, useValue: mockI18n },
         { provide: PLATFORM_ID, useValue: 'browser' },
       ],
     });
@@ -153,6 +158,7 @@ describe('errorInterceptor', () => {
         { provide: Router, useValue: mockRouter },
         { provide: AuthService, useValue: mockAuth },
         { provide: ToastService, useValue: mockToast },
+        { provide: I18nService, useValue: mockI18n },
         { provide: PLATFORM_ID, useValue: 'server' },
       ],
     });

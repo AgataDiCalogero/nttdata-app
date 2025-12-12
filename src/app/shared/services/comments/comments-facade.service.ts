@@ -4,6 +4,7 @@ import { firstValueFrom, of, take } from 'rxjs';
 
 import { CommentsCacheService } from '@/app/shared/data-access/comments/comments-cache.service';
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Comment, CreateComment, UpdateComment } from '@/app/shared/models/post';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
@@ -14,6 +15,7 @@ export class CommentsFacadeService {
   private readonly postsApi = inject(PostsApiService);
   private readonly cache = inject(CommentsCacheService);
   private readonly notifications = inject(NotificationsService);
+  private readonly i18n = inject(I18nService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
@@ -52,7 +54,8 @@ export class CommentsFacadeService {
       return;
     }
 
-    const errorMessage = options?.errorMessage ?? 'Unable to load comments';
+    const errorMessage =
+      options?.errorMessage ?? this.i18n.translate('userDetail.unableToLoadComments');
 
     const current = this.commentsSignal()[postId];
     if (current) {

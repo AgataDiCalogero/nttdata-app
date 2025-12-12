@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { PLATFORM_ID } from '@angular/core';
+import { Component, PLATFORM_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AutoFocusDirective } from './auto-focus.directive';

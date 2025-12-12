@@ -3,6 +3,7 @@ import { catchError, map, of, type Observable } from 'rxjs';
 
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
@@ -12,25 +13,25 @@ export class UsersFacadeService {
   private readonly usersApi = inject(UsersApiService);
   private readonly postsApi = inject(PostsApiService);
   private readonly notifications = inject(NotificationsService);
+  private readonly i18n = inject(I18nService);
 
-  loadUserById(id: number, errorMessage = 'Unable to load user'): Observable<User | null> {
+  loadUserById(id: number, errorMessage?: string): Observable<User | null> {
+    const resolvedErrorMessage = errorMessage ?? this.i18n.translate('userDetail.unableToLoadUser');
     return this.usersApi.getById(id).pipe(
       catchError((err) => {
-        this.notifications.showHttpError(err, errorMessage);
+        this.notifications.showHttpError(err, resolvedErrorMessage);
         return of(null as User | null);
       }),
     );
   }
 
-  loadPostsForUser(
-    userId: number,
-    perPage: number,
-    errorMessage = 'Unable to load posts',
-  ): Observable<Post[]> {
+  loadPostsForUser(userId: number, perPage: number, errorMessage?: string): Observable<Post[]> {
+    const resolvedErrorMessage =
+      errorMessage ?? this.i18n.translate('userDetail.unableToLoadPosts');
     return this.postsApi.list({ userId, perPage }).pipe(
       map((result) => result?.items ?? []),
       catchError((err) => {
-        this.notifications.showHttpError(err, errorMessage);
+        this.notifications.showHttpError(err, resolvedErrorMessage);
         return of<Post[]>([]);
       }),
     );

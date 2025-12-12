@@ -2,7 +2,6 @@ import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/h
 import { inject } from '@angular/core';
 
 import { environment } from '../../../environments/environment';
-
 import { AuthService } from '../auth/auth-service/auth.service';
 
 const ABSOLUTE_URL_RE = /^(https?:)?\/\//i;

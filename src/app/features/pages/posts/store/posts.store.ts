@@ -224,10 +224,7 @@ export const PostsStoreAdapter = signalStore(
           },
         }),
         catchError((err) => {
-          const message = notifications.showHttpError(
-            err,
-            'Unable to delete this post right now. Please try again.',
-          );
+          const message = notifications.showHttpError(err, i18n.translate('posts.delete.error'));
           return throwError(() => new Error(message));
         }),
       );

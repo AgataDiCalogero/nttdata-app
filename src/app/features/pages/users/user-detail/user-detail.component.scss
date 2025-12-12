@@ -116,14 +116,13 @@
 
   &__meta {
     display: grid;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     margin-top: 0;
   }
 
   &__meta-item {
     display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-md);
     font-size: var(--font-size-sm);
     color: color-mix(in srgb, var(--color-on-surface) 64%, transparent);
     min-width: 0;
@@ -151,7 +150,7 @@
     }
 
     &__meta {
-      justify-items: center;
+      justify-items: start;
     }
   }
 }

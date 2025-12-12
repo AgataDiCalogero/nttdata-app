@@ -24,24 +24,24 @@
               ></app-status-badge>
               @if (isMobile()) {
                 <button
-                appButton
-                variant="danger"
-                [iconOnly]="true"
-                class="user-card__delete-mobile"
-                (click)="onDelete(user, $event)"
-                [attr.aria-label]="'userList.deleteAria' | appTranslate"
-                title="{{ 'userList.deleteAria' | appTranslate }}"
-              >
-                <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
-                <mat-icon
-                  svgIcon="lucide:trash-2"
-                  class="user-card__delete-icon"
-                  aria-hidden="true"
-                ></mat-icon>
-              </button>
-            }
-          </div>
-        </mat-card-header>
+                  appButton
+                  variant="danger"
+                  [iconOnly]="true"
+                  class="user-card__delete-mobile"
+                  (click)="onDelete(user, $event)"
+                  [attr.aria-label]="'userList.deleteAria' | appTranslate"
+                  title="{{ 'userList.deleteAria' | appTranslate }}"
+                >
+                  <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
+                  <mat-icon
+                    svgIcon="lucide:trash-2"
+                    class="user-card__delete-icon"
+                    aria-hidden="true"
+                  ></mat-icon>
+                </button>
+              }
+            </div>
+          </mat-card-header>
 
           <mat-card-content>
             <div class="user-card__meta">
@@ -51,7 +51,7 @@
               </div>
               <div class="user-card__meta-item">
                 <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>
-                <span>{{ user.gender || '-' }}</span>
+                <span>{{ getGenderLabel(user.gender) }}</span>
               </div>
             </div>
           </mat-card-content>

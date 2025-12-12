@@ -113,7 +113,7 @@ export class UsersUiService {
       maxWidth: '90vw',
       backdropClass: 'app-dialog-overlay',
       panelClass: 'app-dialog-panel',
-      ariaLabel: 'Delete user confirmation',
+      ariaLabel: this.i18n.translate('users.delete.title'),
       autoFocus: true,
       restoreFocus: true,
       data,

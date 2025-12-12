@@ -24,11 +24,10 @@ describe('ToastComponent', () => {
     fixture.detectChanges();
     tick(0);
 
-    const closeButton = fixture.nativeElement.querySelector('.toast__close') as
-      | HTMLButtonElement
-      | null;
+    const closeButton = fixture.nativeElement.querySelector(
+      '.toast__close',
+    ) as HTMLButtonElement | null;
     expect(closeButton?.getAttribute('aria-label')).toBe('t:toast.dismissAria');
     expect(focusSpy).not.toHaveBeenCalled();
   }));
 });
-

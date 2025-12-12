@@ -11,24 +11,24 @@
   @if (control(); as ctrl) {
     <input
       type="search"
-      class="app-search__input"
-      placeholder="{{ placeholder() }}"
-      title="{{ labelText() }}"
-      aria-label="{{ labelText() }}"
-      id="{{ inputId() }}"
-      [formControl]="ctrl"
-      [appDebounceInput]="debounceTime()"
-      (debounced)="onDebounced($event)"
+	      class="app-search__input"
+	      placeholder="{{ placeholder() }}"
+	      title="{{ labelText() }}"
+	      [attr.aria-label]="labelText()"
+	      id="{{ inputId() }}"
+	      [formControl]="ctrl"
+	      [appDebounceInput]="debounceTime()"
+	      (debounced)="onDebounced($event)"
     />
   } @else {
     <input
-      type="search"
-      class="app-search__input"
-      placeholder="{{ placeholder() }}"
-      title="{{ labelText() }}"
-      aria-label="{{ labelText() }}"
-      [appDebounceInput]="debounceTime()"
-      (debounced)="onDebounced($event)"
-    />
+	      type="search"
+	      class="app-search__input"
+	      placeholder="{{ placeholder() }}"
+	      title="{{ labelText() }}"
+	      [attr.aria-label]="labelText()"
+	      [appDebounceInput]="debounceTime()"
+	      (debounced)="onDebounced($event)"
+	    />
   }
 </div>

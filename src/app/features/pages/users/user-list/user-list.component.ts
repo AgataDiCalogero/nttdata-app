@@ -8,6 +8,7 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { User } from '@/app/shared/models/user';
 import { DeviceTypeService } from '@/app/shared/services/device-type/device-type.service';
 
@@ -30,6 +31,7 @@ import { DeviceTypeService } from '@/app/shared/services/device-type/device-type
 export class UserListComponent {
   readonly items = input([] as User[]);
   private readonly _deviceType = inject(DeviceTypeService);
+  private readonly i18n = inject(I18nService);
 
   protected readonly isMobile = this._deviceType.isMobile;
 
@@ -61,5 +63,16 @@ export class UserListComponent {
     const parts = name.split(/\s+/).filter(Boolean);
     if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
     return ((parts[0][0] || '') + (parts[1][0] || '')).toUpperCase();
+  }
+
+  getGenderLabel(gender?: string): string {
+    if (!gender) {
+      return this.i18n.translate('common.gender.unspecified');
+    }
+    const genderKey = gender.toLowerCase();
+    if (genderKey === 'male' || genderKey === 'female') {
+      return this.i18n.translate(`common.gender.${genderKey}`);
+    }
+    return this.i18n.translate('common.gender.unspecified');
   }
 }

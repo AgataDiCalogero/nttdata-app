@@ -103,7 +103,7 @@ export class PostCommentsComponent {
       maxWidth: '90vw',
       backdropClass: 'app-dialog-overlay',
       panelClass: 'app-dialog-panel',
-      ariaLabel: 'Delete comment confirmation',
+      ariaLabel: this.i18n.translate('postComments.deleteConfirm.title'),
       autoFocus: true,
       restoreFocus: true,
       data,

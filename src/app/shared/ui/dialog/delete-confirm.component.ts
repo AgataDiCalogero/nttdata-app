@@ -59,8 +59,7 @@ export class DeleteConfirmComponent {
       this.dialogRef.close(true);
     } catch (err) {
       console.error('Delete action failed', err);
-      const fallback =
-        this.data.errorMessage ?? 'Unable to complete this action right now. Please retry.';
+      const fallback = this.data.errorMessage ?? this.i18n.translate('common.errors.actionFailed');
       const derived =
         typeof err === 'object' &&
         err !== null &&

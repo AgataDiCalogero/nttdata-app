@@ -4,6 +4,7 @@ import { firstValueFrom, of } from 'rxjs';
 
 import { CommentsCacheService } from '@/app/shared/data-access/comments/comments-cache.service';
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Comment } from '@/app/shared/models/post';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
@@ -36,12 +37,15 @@ describe('CommentsFacadeService', () => {
       'showHttpError',
     ]);
     notifications.showHttpError.and.callFake((_e: unknown, msg: string) => msg);
+    const i18n = jasmine.createSpyObj<I18nService>('I18nService', ['translate']);
+    i18n.translate.and.callFake((key: string) => key);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: PLATFORM_ID, useValue: 'browser' },
         { provide: PostsApiService, useValue: postsApi },
         { provide: NotificationsService, useValue: notifications },
+        { provide: I18nService, useValue: i18n },
         CommentsCacheService,
         CommentsFacadeService,
       ],

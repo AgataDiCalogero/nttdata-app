@@ -97,7 +97,7 @@ describe('TokenValidationService', () => {
     service.validate('token-123').subscribe((result) => {
       expect(result.success).toBeFalse();
       expect(result.code).toBe('unknown');
-      expect(result.message).toContain('Unexpected error');
+      expect(result.message).toContain('Unable to verify');
     });
     const req = httpMock.expectOne((r) => r.url === '/users');
     req.flush({ message: 'boom' }, { status: 500, statusText: 'Server Error' });
