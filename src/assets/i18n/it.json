@@ -2,14 +2,25 @@
   "app": {
     "name": "NTT Data App"
   },
+  "a11y": {
+    "skipToMain": "Vai al contenuto principale"
+  },
   "nav": {
     "users": "Utenti",
     "posts": "Post",
-    "logout": "Esci"
+    "logout": "Esci",
+    "ariaMain": "Navigazione principale",
+    "ariaQuick": "Navigazione rapida"
   },
   "language": {
     "label": "Lingua",
     "menuAria": "Seleziona la lingua"
+  },
+  "appearance": {
+    "openMenuAria": "Apri impostazioni aspetto",
+    "light": "Tema chiaro",
+    "dark": "Tema scuro",
+    "readingMode": "Modalità lettura"
   },
   "login": {
     "title": "Bentornato/a",
@@ -21,6 +32,11 @@
     "errors": {
       "required": "Il token di accesso è obbligatorio.",
       "minLength": "Il token di accesso deve contenere almeno {{count}} caratteri.",
+      "invalidOrExpired": "Il token fornito non è valido o è scaduto. Generane uno nuovo dal dashboard di GoRest.",
+      "invalid": "Non è stato possibile validare il token. Incolla un token valido.",
+      "rateLimited": "Troppe richieste. Attendi un momento e riprova.",
+      "rateLimitedRetryIn": "Troppe richieste. Riprova tra {{seconds}}s.",
+      "network": "Errore di rete. Controlla la connessione.",
       "unableToVerify": "Impossibile verificare il token in questo momento. Riprova."
     }
   },
@@ -33,7 +49,7 @@
       "2b": "nel dashboard per creare un nuovo token personale.",
       "3": "Copia il token generato e incollalo nel campo \"Token di accesso\" di questa pagina."
     },
-    "step2Highlight": "Get your access token",
+    "step2Highlight": "Ottieni il tuo token di accesso",
     "open": "Apri GoRest",
     "close": "Ho capito",
     "closeAria": "Chiudi l'aiuto sul token"
@@ -86,6 +102,17 @@
       "commentEmail": "nome@email.com",
       "fullName": "Inserisci il nome completo",
       "email": "utente@example.com"
+    },
+    "errors": {
+      "unknown": "Qualcosa è andato storto. Riprova.",
+      "networkUnavailable": "Rete non disponibile. Controlla la connessione e riprova.",
+      "sessionExpired": "Sessione scaduta. Effettua di nuovo l'accesso.",
+      "forbidden": "Non hai i permessi per eseguire questa azione.",
+      "validation": "Alcuni campi non sono validi. Controlla il form e riprova.",
+      "rateLimit": "Troppe richieste. Attendi un momento e riprova.",
+      "unexpected": "Errore inatteso. Riprova più tardi.",
+      "rateLimitRetrying": "Troppe richieste. Nuovo tentativo tra {{seconds}}s.",
+      "actionFailed": "Impossibile completare l'azione in questo momento. Riprova."
     }
   },
   "users": {
@@ -131,6 +158,7 @@
     }
   },
   "userList": {
+    "heading": "Elenco utenti",
     "viewAria": "Visualizza i dettagli utente",
     "deleteAria": "Elimina utente"
   },
@@ -150,7 +178,12 @@
     "errors": {
       "name": "Inserisci almeno 2 caratteri.",
       "email": "Indirizzo email non valido.",
+      "emailInUse": "Email già in uso o non valida.",
       "gender": "Seleziona un genere."
+    },
+    "submitErrors": {
+      "rateLimit": "Troppe richieste. Riprova tra poco.",
+      "saveFailed": "Si è verificato un errore durante il salvataggio. Riprova."
     },
     "buttons": {
       "cancel": "Annulla",
@@ -160,6 +193,7 @@
     }
   },
   "userDetail": {
+    "title": "Dettagli utente",
     "back": "Torna agli utenti",
     "loading": "Caricamento dettagli utente...",
     "backToList": "Torna all'elenco",
@@ -231,7 +265,8 @@
     "postComment": "Pubblica commento",
     "showMore": "Mostra altro",
     "showLess": "Mostra meno",
-    "unknownAuthor": "Autore sconosciuto"
+    "unknownAuthor": "Autore sconosciuto",
+    "commentsCountSrOnly": "{{count}} commenti"
   },
   "postForm": {
     "titleNew": "Crea un nuovo post",
@@ -248,7 +283,9 @@
     "errors": {
       "author": "Seleziona un autore valido.",
       "title": "Il titolo deve contenere almeno 5 caratteri.",
-      "body": "Descrivi il post con almeno 20 caratteri."
+      "body": "Descrivi il post con almeno 20 caratteri.",
+      "rateLimit": "Troppe richieste. Riprova tra poco.",
+      "saveFailed": "Impossibile salvare il post. Riprova."
     },
     "buttons": {
       "cancel": "Annulla",
@@ -273,7 +310,18 @@
       "title": "Elimina commento",
       "message": "Sei sicuro di voler eliminare questo commento? Questa azione non può essere annullata.",
       "cancel": "Annulla",
-      "confirm": "Elimina"
+      "confirm": "Elimina",
+      "inProgress": "Eliminazione...",
+      "errorMessage": "Impossibile eliminare il commento in questo momento."
+    },
+    "toast": {
+      "updated": "Commento aggiornato",
+      "updateFailed": "Impossibile aggiornare il commento",
+      "deleted": "Commento eliminato"
+    },
+    "errors": {
+      "rateLimit": "Troppe richieste. Riprova più tardi.",
+      "editInvalid": "Il commento deve chiarire la modifica."
     }
   },
   "commentForm": {
@@ -298,14 +346,23 @@
       "submit": "Pubblica commento",
       "submitting": "Pubblicazione in corso..."
     },
+    "submitErrors": {
+      "validation": "I dati del commento non sono validi. Controlla i campi.",
+      "rateLimit": "Troppe richieste. Riprova tra poco.",
+      "publishFailed": "Impossibile pubblicare il commento. Riprova."
+    },
     "toastSuccess": "Commento pubblicato con successo"
+  },
+  "toast": {
+    "dismissAria": "Chiudi notifica"
   },
   "pagination": {
     "previous": "Precedente",
     "next": "Successiva",
     "pageInfo": "Pagina {{page}} di {{total}}",
     "ariaPrev": "Vai alla pagina precedente",
-    "ariaNext": "Vai alla pagina successiva"
+    "ariaNext": "Vai alla pagina successiva",
+    "ariaLabel": "Paginazione"
   },
   "footer": {
     "builtBy": "Creato da"

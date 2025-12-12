@@ -10,7 +10,7 @@ import {
   signal,
   type Signal,
 } from '@angular/core';
-import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -26,7 +26,6 @@ import { tap } from 'rxjs';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.component';
 
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
@@ -35,12 +34,10 @@ import {
   PAGINATION_CONFIG,
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
-import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
-import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
 @Component({
@@ -54,7 +51,6 @@ import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
     PostCardComponent,
     LucideAngularModule,
     MatCardModule,
-    StatusBadgeComponent,
     MatProgressBarModule,
     TranslatePipe,
   ],
@@ -66,11 +62,9 @@ export class UserDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly usersFacade = inject(UsersFacadeService);
   private readonly commentsFacade = inject(CommentsFacadeService);
-  private readonly notifications = inject(NotificationsService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly usersApi = inject(UsersApiService);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly pagination =
     inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
@@ -100,6 +94,18 @@ export class UserDetail {
 
   readonly user = signal<User | null>(null);
   readonly posts = computed(() => this.postsSource());
+
+  readonly genderLabel = computed(() => {
+    const detail = this.user();
+    if (!detail?.gender) {
+      return this.i18n.translate('common.gender.unspecified');
+    }
+    const genderKey = detail.gender.toLowerCase();
+    if (genderKey === 'male' || genderKey === 'female') {
+      return this.i18n.translate(`common.gender.${genderKey}`);
+    }
+    return this.i18n.translate('common.gender.unspecified');
+  });
 
   constructor() {
     if (this.userId === null) {
@@ -166,34 +172,6 @@ export class UserDetail {
 
   trackPostId(_idx: number, post: Post): number {
     return post.id;
-  }
-
-  onStatusChange(status: 'active' | 'inactive'): void {
-    const currentUser = this.user();
-    if (!currentUser || !this.userId) {
-      return;
-    }
-
-    this.user.update((current) => (current ? { ...current, status } : current));
-
-    this.usersApi
-      .update(this.userId, { status })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (updatedUser: User) => {
-          this.user.set(updatedUser);
-        },
-        error: (err) => {
-          console.error('Failed to update user status:', err);
-          this.notifications.showHttpError(
-            err,
-            this.i18n.translate('userDetail.unableToUpdateStatus'),
-          );
-          this.user.update((current) =>
-            current ? { ...current, status: currentUser.status } : current,
-          );
-        },
-      });
   }
 
   private resolveUserId(): number | null {

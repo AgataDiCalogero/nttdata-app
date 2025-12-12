@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { CommonModule, ViewportScroller } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -49,6 +49,7 @@ export class Users {
   private readonly usersUi = inject(UsersUiService);
   private readonly router = inject(Router);
   private readonly i18n = inject(I18nService);
+  private readonly viewport = inject(ViewportScroller);
   private readonly numberFormatter = new Intl.NumberFormat('en-US');
 
   readonly loading = this.usersService.loading;
@@ -59,6 +60,14 @@ export class Users {
   readonly page = this.usersService.page;
   readonly perPage = this.usersService.perPage;
   readonly perPageOptions = this.usersService.perPageOptions;
+
+  constructor() {
+    effect(() => {
+      this.page();
+      this.viewport.scrollToPosition([0, 0]);
+    });
+  }
+
   readonly visibleUsersCount = computed(() => this.users().length);
   readonly totalUsersCount = computed(() => this.pagination()?.total ?? this.visibleUsersCount());
   readonly usersSummary = computed(() => {

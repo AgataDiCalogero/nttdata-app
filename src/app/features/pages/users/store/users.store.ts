@@ -260,7 +260,7 @@ export const UsersStoreAdapter = signalStore(
               }
             }
 
-            return usersApi.list(params).pipe(
+            return usersApi.list(params, { cache: true }).pipe(
               tap(({ items, pagination }) => {
                 const list = items ?? [];
                 const resolvedLimit = Math.max(1, pagination?.limit ?? criteria.perPage);
@@ -278,6 +278,7 @@ export const UsersStoreAdapter = signalStore(
                     ...criteria,
                     page: pages,
                     perPage: normalizedLimit,
+                    pushUrl: true,
                     reload: ++reloadToken,
                   });
                   return;
@@ -316,7 +317,7 @@ export const UsersStoreAdapter = signalStore(
                 console.error('Failed to load users:', err);
                 patchState(store, {
                   loading: false,
-                  error: mapHttpError(err).message,
+                  error: i18n.translate(mapHttpError(err).messageKey),
                 });
                 return EMPTY;
               }),

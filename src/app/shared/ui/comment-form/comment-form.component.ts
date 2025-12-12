@@ -104,14 +104,17 @@ export class CommentFormComponent {
           console.error('Failed to create comment:', err);
           const status = err?.status;
           if (status === 422) {
-            this.toast.show('error', 'Comment data not valid. Please review the fields.');
-            this.submitError.set('Comment data not valid. Please review the fields.');
+            const message = this.i18n.translate('commentForm.submitErrors.validation');
+            this.toast.show('error', message);
+            this.submitError.set(message);
           } else if (status === 429) {
-            this.toast.show('error', 'Too many requests. Please try again shortly.');
-            this.submitError.set('Too many requests. Please try again shortly.');
+            const message = this.i18n.translate('commentForm.submitErrors.rateLimit');
+            this.toast.show('error', message);
+            this.submitError.set(message);
           } else {
-            this.toast.show('error', 'Unable to publish the comment. Please retry.');
-            this.submitError.set('Unable to publish the comment. Please retry.');
+            const message = this.i18n.translate('commentForm.submitErrors.publishFailed');
+            this.toast.show('error', message);
+            this.submitError.set(message);
           }
         },
       });

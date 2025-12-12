@@ -51,4 +51,22 @@ describe('authInterceptor', () => {
     const forwarded = next.calls.mostRecent().args[0];
     expect(forwarded.headers.has('Authorization')).toBeFalse();
   });
+
+  it('non allega Authorization a URL assolute esterne', () => {
+    const req = new HttpRequest('GET', 'https://example.com/api');
+
+    TestBed.runInInjectionContext(() => authInterceptor(req, next));
+
+    const forwarded = next.calls.mostRecent().args[0];
+    expect(forwarded.headers.has('Authorization')).toBeFalse();
+  });
+
+  it('allega Authorization a URL assolute verso la stessa origin della API', () => {
+    const req = new HttpRequest('GET', 'https://gorest.co.in/public/v2/users');
+
+    TestBed.runInInjectionContext(() => authInterceptor(req, next));
+
+    const forwarded = next.calls.mostRecent().args[0];
+    expect(forwarded.headers.get('Authorization')).toBe('Bearer abc');
+  });
 });

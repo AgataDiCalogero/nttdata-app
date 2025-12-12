@@ -180,10 +180,6 @@ select:focus-visible {
   border-color: var(--focus-ring);
 }
 
-.cdk-overlay-pane.token-help-dialog {
-  z-index: calc(var(--z-modal, 1300) + 1) !important;
-}
-
 body.ui-overlay-blocked .app-navbar .controls {
   pointer-events: none;
   opacity: 0.55;

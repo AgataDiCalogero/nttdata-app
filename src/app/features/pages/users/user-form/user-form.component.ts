@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
@@ -43,6 +44,7 @@ export class UserForm {
   private readonly dialogRef = inject(DialogRef<'success' | 'cancel'>);
   private readonly dialogData = inject<{ user?: User }>(DIALOG_DATA, { optional: true });
   private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   user = input<User | undefined>(undefined);
   closed = output<'success' | 'cancel'>();
@@ -157,11 +159,11 @@ export class UserForm {
 
         const status = err?.status;
         if (status === 422) {
-          this.emailError.set('Email already in use or invalid');
+          this.emailError.set(this.i18n.translate('userForm.errors.emailInUse'));
         } else if (status === 429) {
-          this.toast.show('error', 'Too many requests. Please try again shortly.');
+          this.toast.show('error', this.i18n.translate('userForm.submitErrors.rateLimit'));
         } else {
-          this.toast.show('error', 'An error occurred while saving. Please try again.');
+          this.toast.show('error', this.i18n.translate('userForm.submitErrors.saveFailed'));
         }
       },
     });

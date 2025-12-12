@@ -1,4 +1,4 @@
-<nav class="app-pagination" [attr.aria-label]="ariaLabel()">
+<nav class="app-pagination" [attr.aria-label]="ariaLabel() || ('pagination.ariaLabel' | appTranslate)">
   <button
     appButton
     variant="ghost"

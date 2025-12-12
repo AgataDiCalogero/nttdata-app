@@ -15,6 +15,10 @@
   @supports (color: color-mix(in srgb, var(--status-color) 14%, transparent)) {
     background-color: color-mix(in srgb, var(--status-color) 14%, transparent);
   }
+
+  .status-badge__icon {
+    color: inherit;
+  }
 }
 
 .status-badge--clickable {
@@ -43,16 +47,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: inherit !important;
-}
-
-:host ::ng-deep .status-badge__icon {
-  color: inherit !important;
-
-  svg {
-    stroke: currentColor !important;
-    fill: currentColor !important;
-  }
 }
 
 .status-badge__label {

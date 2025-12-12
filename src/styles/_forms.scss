@@ -228,9 +228,9 @@
     .form-select,
     .form-textarea,
     .select,
-    .form-field input:not([type='checkbox']):not([type='radio']),
+    .form-field input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element),
     .form-field select,
-    .form-field textarea
+    .form-field textarea:not(.mat-mdc-input-element)
   ) {
   padding: calc(var(--space-sm) + 4px) var(--space-lg);
   background: var(--color-bg-input-dark);

@@ -100,8 +100,6 @@ describe('ThemeService', () => {
         { provide: DOCUMENT, useValue: mockDocument },
       ],
     });
-
-    service = TestBed.inject(ThemeService);
   });
 
   afterEach(() => {
@@ -111,6 +109,7 @@ describe('ThemeService', () => {
   });
 
   it('should toggle theme from system preference to dark and persist it', (done) => {
+    service = TestBed.inject(ThemeService);
     service.setPreference('system');
     (localStorage.setItem as jasmine.Spy).calls.reset();
 
@@ -125,6 +124,7 @@ describe('ThemeService', () => {
   });
 
   it('should set preference to light and update DOM dataset', (done) => {
+    service = TestBed.inject(ThemeService);
     service.setPreference('dark');
     service.setPreference('light');
 
@@ -137,6 +137,7 @@ describe('ThemeService', () => {
   });
 
   it('should toggle reading mode and store flag', (done) => {
+    service = TestBed.inject(ThemeService);
     service.setReadingMode(false);
     (localStorage.setItem as jasmine.Spy).calls.reset();
 
@@ -157,11 +158,28 @@ describe('ThemeService', () => {
   });
 
   it('should respond to system theme changes via matchMedia listener', () => {
+    service = TestBed.inject(ThemeService);
     service.setPreference('system');
 
     mediaQueryList.trigger({ matches: false } as MediaQueryListEvent);
 
     expect(service.theme()).toBe('dark');
     expect(matchMediaSpy).toHaveBeenCalled();
+  });
+
+  it('does not crash when localStorage.setItem throws (Safari private mode)', () => {
+    (localStorage.setItem as jasmine.Spy).and.callFake(() => {
+      throw new Error('blocked');
+    });
+
+    expect(() => {
+      service = TestBed.inject(ThemeService);
+    }).not.toThrow();
+
+    expect(() => {
+      service.setPreference('light');
+    }).not.toThrow();
+
+    expect(body.classList.contains('light-theme')).toBeTrue();
   });
 });

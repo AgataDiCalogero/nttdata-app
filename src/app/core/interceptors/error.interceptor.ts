@@ -9,6 +9,7 @@ import { PLATFORM_ID, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError, timer, retry } from 'rxjs';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
 
@@ -46,6 +47,7 @@ export const errorInterceptor: HttpInterceptorFn = (
   const router = inject(Router);
   const auth = inject(AuthService);
   const toast = inject(ToastService);
+  const i18n = inject(I18nService);
   const skipGlobal = shouldSkipGlobalError(req);
   const shouldRetry = isBrowser && !skipGlobal && isIdempotentMethod(req.method);
 
@@ -58,7 +60,11 @@ export const errorInterceptor: HttpInterceptorFn = (
             if (mapped.kind === 'rate-limit') {
               const delayMs = mapped.retryAfterMs ?? Math.min(2000 * retryCount, 5000);
               const seconds = Math.max(1, Math.ceil(delayMs / 1000));
-              toast.show('info', `Too many requests. Retrying in ${seconds}s.`, delayMs + 500);
+              toast.show(
+                'info',
+                i18n.translate('common.errors.rateLimitRetrying', { seconds }),
+                delayMs + 500,
+              );
               return timer(delayMs);
             }
 
@@ -83,22 +89,22 @@ export const errorInterceptor: HttpInterceptorFn = (
       switch (mapped.kind) {
         case 'unauthorized':
           auth.logout();
-          toast.show('warning', mapped.message, 4000);
+          toast.show('warning', i18n.translate(mapped.messageKey), 4000);
           router.navigate(['/login']).catch(() => {});
           break;
         case 'forbidden':
-          toast.show('error', mapped.message, 4000);
+          toast.show('error', i18n.translate(mapped.messageKey), 4000);
           break;
         case 'validation':
           break;
         case 'rate-limit':
-          toast.show('info', mapped.message, 4000);
+          toast.show('info', i18n.translate(mapped.messageKey), 4000);
           break;
         case 'network':
-          toast.show('error', mapped.message, 4000);
+          toast.show('error', i18n.translate(mapped.messageKey), 4000);
           break;
         default:
-          toast.show('error', mapped.message, 4000);
+          toast.show('error', i18n.translate(mapped.messageKey), 4000);
       }
 
       return throwError(() => httpError);

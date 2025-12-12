@@ -13,7 +13,11 @@
     </a>
 
     @if (!isLoginRoute()) {
-      <nav class="nav-links" role="navigation" aria-label="Navigazione principale">
+      <nav
+        class="nav-links"
+        role="navigation"
+        [attr.aria-label]="'nav.ariaMain' | appTranslate"
+      >
         @if (!isMobile() && isLogged()) {
           <a
             appButton
@@ -45,12 +49,14 @@
 
     <span class="spacer" aria-hidden="true"></span>
 
-    <div class="controls">
-      <div class="toolbar-menu-trigger">
-        <app-language-switcher aria-label="Cambia lingua"></app-language-switcher>
+      <div class="controls">
+        <div class="toolbar-menu-trigger">
+        <app-language-switcher
+          [attr.aria-label]="'language.menuAria' | appTranslate"
+        ></app-language-switcher>
         <app-appearance-switcher
           aria-haspopup="true"
-          aria-label="Cambia tema"
+          [attr.aria-label]="'appearance.openMenuAria' | appTranslate"
         ></app-appearance-switcher>
 
         @if (!isLoginRoute() && isLogged()) {
@@ -98,7 +104,7 @@
   class="nav-menu"
   [yPosition]="isMobile() ? 'above' : 'below'"
   [overlapTrigger]="false"
-  aria-label="Navigazione rapida"
+  [attr.aria-label]="'nav.ariaQuick' | appTranslate"
   [attr.role]="'menu'"
 >
   @if (!isLoginRoute() && isLogged()) {

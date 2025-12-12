@@ -11,6 +11,7 @@ import { LucideAngularModule, Sun, Moon, BookOpenCheck } from 'lucide-angular';
 
 import { ClickOutsideDirective } from '@app/shared/directives/click-outside.directive';
 import { EscapeKeyDirective } from '@app/shared/directives/escape-key.directive';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
@@ -25,6 +26,7 @@ import { ThemeService } from '../../services/theme/theme.service';
     ButtonComponent,
     ClickOutsideDirective,
     EscapeKeyDirective,
+    TranslatePipe,
   ],
   templateUrl: './appearance-switcher.component.html',
   styleUrls: ['./appearance-switcher.component.scss'],

@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError } from '@app/shared/utils/error-mapper';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationsService {
   private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   showError(message: string): void {
     this.toast.show('error', message);
@@ -21,7 +23,11 @@ export class NotificationsService {
 
   showHttpError(error: unknown, fallback: string): string {
     const mapped = mapHttpError(error);
-    const message = mapped.message || fallback;
+    const fallbackMessage = this.i18n.translate(fallback);
+    const message =
+      mapped.kind === 'unknown'
+        ? fallbackMessage
+        : this.i18n.translate(mapped.messageKey) || fallbackMessage;
     this.toast.show('error', message);
     return message;
   }

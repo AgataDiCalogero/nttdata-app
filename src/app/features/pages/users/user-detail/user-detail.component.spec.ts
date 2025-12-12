@@ -174,29 +174,6 @@ describe('UserDetailComponent', () => {
     expect(component.commentsLoaded(101)).toBeFalse();
   }));
 
-  it('should update user status optimistically', () => {
-    createComponent();
-    fixture.detectChanges();
-
-    usersApiSpy.update.and.returnValue(of({ ...mockUser, status: 'inactive' }));
-
-    component.onStatusChange('inactive');
-
-    expect(component.user()?.status).toBe('inactive');
-    expect(usersApiSpy.update).toHaveBeenCalledWith(1, { status: 'inactive' });
-  });
-
-  it('should revert user status on error', () => {
-    createComponent();
-    fixture.detectChanges();
-    usersApiSpy.update.and.returnValue(throwError(() => new Error('Update failed')));
-
-    component.onStatusChange('inactive');
-
-    expect(component.user()?.status).toBe('active');
-    expect(notificationsSpy.showHttpError).toHaveBeenCalled();
-  });
-
   it('should handle comment fetch errors without crashing UI', fakeAsync(() => {
     createComponent();
     fixture.detectChanges();

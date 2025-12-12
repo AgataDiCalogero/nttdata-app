@@ -1,118 +1,157 @@
+@use '../../../../../styles/mixins' as *;
+
+.user-detail-page {
+  display: block;
+  padding-block: var(--space-md) var(--space-2xl);
+  padding-inline: var(--app-page-gutter);
+}
+
 .user-detail {
+  max-width: 72rem;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding-bottom: 3rem;
+  gap: var(--space-md);
 
-  &__top {
+  &__nav {
     display: flex;
-    justify-content: flex-start;
-    margin-top: var(--space-lg);
+    align-items: center;
   }
 
-  &__back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  &__header {
+    margin-top: var(--space-xs);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-on-surface);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
   }
 }
 
 .user-detail-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  background: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
-  border: 1px solid color-mix(in srgb, var(--mat-field-border) 140%, transparent);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-lg);
+  // Override Material card defaults
+  &.mat-mdc-card {
+    --mdc-elevated-card-container-color: transparent;
+    --mdc-outlined-card-container-color: transparent;
+    --mdc-elevated-card-container-elevation: none;
+    --mdc-outlined-card-outline-color: transparent;
+    padding: 0;
+  }
 
-  mat-card-header {
+  width: 100%;
+  background: color-mix(in srgb, var(--color-surface-solid) 92%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--mat-field-border) 120%, transparent) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: var(--space-xl) !important;
+
+  &__layout {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem;
+    align-items: flex-start;
+    gap: var(--space-lg);
   }
 
   &__avatar {
-    width: 3.75rem;
-    height: 3.75rem;
+    flex-shrink: 0;
+    width: 4rem;
+    height: 4rem;
+    min-width: 4rem;
     border-radius: 50%;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--color-accent) 66%, transparent),
-      color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
-    );
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark)) !important;
     color: var(--color-on-accent);
-    font-weight: 700;
-    font-size: 1.4rem;
+    font-weight: var(--font-weight-bold);
+    font-size: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 28px rgba(249, 115, 22, 0.35);
+    box-shadow: var(--shadow-accent-soft);
   }
 
-  &__title {
+  &__info {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-
-    mat-card-title {
-      margin: 0;
-      line-height: 1.3;
-      word-break: break-word;
-    }
+    gap: var(--space-sm);
   }
 
-  &__subtitle {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  &__name {
     margin: 0;
-    color: color-mix(in srgb, var(--color-on-surface) 88%, transparent);
-
-    a {
-      color: inherit;
-      text-decoration: none;
-      max-width: 100%;
-      overflow-wrap: anywhere;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-on-surface);
+    word-break: break-word;
   }
 
-  &__status {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  &__email-link {
+    color: inherit;
+    text-decoration: none;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      color: var(--color-accent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
   }
 
   &__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.5rem;
+    display: grid;
+    gap: var(--space-xs);
+    margin-top: 0;
   }
 
   &__meta-item {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: color-mix(in srgb, var(--color-on-surface) 92%, transparent);
+    gap: var(--space-xs);
+    font-size: var(--font-size-sm);
+    color: color-mix(in srgb, var(--color-on-surface) 64%, transparent);
+    min-width: 0;
+
+    lucide-icon {
+      flex-shrink: 0;
+      width: 0.875rem;
+      height: 0.875rem;
+      opacity: 0.64;
+    }
   }
 
-  @media (max-width: 48rem) {
-    mat-card-header {
+  @media (max-width: 30rem) {
+    padding: var(--space-lg);
+
+    &__layout {
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      text-align: center;
     }
 
-    &__status {
-      justify-content: center;
+    &__info {
+      align-items: center;
+      width: 100%;
+    }
+
+    &__meta {
+      justify-items: center;
     }
   }
 }
@@ -120,17 +159,33 @@
 .user-posts {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-md);
 
   &__header {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-2xs);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-on-surface);
+    line-height: var(--line-height-tight);
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: color-mix(in srgb, var(--color-on-surface) 56%, transparent);
   }
 
   &__grid {
     display: grid;
-    gap: 1.25rem;
+    gap: var(--space-md);
     grid-template-columns: 1fr;
   }
 
@@ -139,21 +194,35 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    padding: 3rem 1rem;
+    gap: var(--space-sm);
+    padding: var(--space-2xl) var(--space-md);
     text-align: center;
-    color: color-mix(in srgb, var(--color-on-surface) 92%, transparent);
+    color: color-mix(in srgb, var(--color-on-surface) 64%, transparent);
 
     &__icon {
-      opacity: 0.8;
-      color: color-mix(in srgb, var(--color-on-surface) 72%, transparent);
+      opacity: 0.5;
+      color: color-mix(in srgb, var(--color-on-surface) 40%, transparent);
     }
 
     &__text {
       margin: 0;
-      font-size: 1.05rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
     }
   }
+}
+
+.user-detail-alert-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  p {
+    margin: 0;
+  }
+}
+
+.user-detail-alert-actions {
+  display: flex;
+  gap: var(--space-sm);
 }

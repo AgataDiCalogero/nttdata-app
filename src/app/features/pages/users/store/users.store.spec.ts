@@ -173,4 +173,23 @@ describe('UsersStoreAdapter', () => {
       }),
     );
   }));
+
+  it('deep-link con page fuori range: corregge stato e query params', fakeAsync(() => {
+    (route.snapshot as { queryParamMap: unknown }).queryParamMap = convertToParamMap({
+      page: '999',
+      per_page: '10',
+    });
+
+    const store = TestBed.inject(usersServiceInjectionToken);
+    tick();
+
+    expect(store.page()).toBe(1);
+    expect(usersApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ page: 1, perPage: 10 }));
+    expect(router.navigate).toHaveBeenCalledWith(
+      [],
+      jasmine.objectContaining({
+        queryParams: jasmine.objectContaining({ page: 1, per_page: 10 }),
+      }),
+    );
+  }));
 });

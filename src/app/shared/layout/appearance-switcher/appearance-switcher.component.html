@@ -17,7 +17,7 @@
     [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
     aria-haspopup="true"
     aria-controls="appearance-switcher-menu"
-    aria-label="Open appearance settings"
+    [attr.aria-label]="'appearance.openMenuAria' | appTranslate"
   >
     <lucide-icon [img]="currentIcon()" aria-hidden="true"></lucide-icon>
   </button>
@@ -41,7 +41,7 @@
           <span class="appearance-option__icon" aria-hidden="true">
             <lucide-icon [img]="Sun"></lucide-icon>
           </span>
-          <span class="appearance-option__label">Light</span>
+          <span class="appearance-option__label">{{ 'appearance.light' | appTranslate }}</span>
         </button>
 
         <button
@@ -55,21 +55,25 @@
           <span class="appearance-option__icon" aria-hidden="true">
             <lucide-icon [img]="Moon"></lucide-icon>
           </span>
-          <span class="appearance-option__label">Dark</span>
+          <span class="appearance-option__label">{{ 'appearance.dark' | appTranslate }}</span>
         </button>
       </div>
 
       <div class="appearance-switcher__divider"></div>
 
       <div class="appearance-switcher__section">
-        <div class="appearance-option appearance-option--toggle" role="group" aria-label="Reading mode">
+        <div
+          class="appearance-option appearance-option--toggle"
+          role="group"
+          [attr.aria-label]="'appearance.readingMode' | appTranslate"
+        >
           <span class="appearance-option__icon" aria-hidden="true">
             <lucide-icon [img]="BookOpenCheck"></lucide-icon>
           </span>
-          <span class="appearance-option__label">Reading mode</span>
+          <span class="appearance-option__label">{{ 'appearance.readingMode' | appTranslate }}</span>
           <mat-slide-toggle
             class="appearance-toggle"
-            aria-label="Reading mode"
+            [attr.aria-label]="'appearance.readingMode' | appTranslate"
             [checked]="isReadingMode()"
             (click)="$event.stopPropagation()"
             (keydown)="$event.stopPropagation()"

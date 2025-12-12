@@ -1,5 +1,5 @@
 <section class="user-list-section" aria-labelledby="users-list-heading" role="region">
-  <h2 id="users-list-heading" class="sr-only">Lista utenti</h2>
+  <h2 id="users-list-heading" class="sr-only">{{ 'userList.heading' | appTranslate }}</h2>
   <ul class="user-list" role="list">
     @for (user of items(); track trackById($index, user)) {
       <li role="listitem" class="user-list__item">

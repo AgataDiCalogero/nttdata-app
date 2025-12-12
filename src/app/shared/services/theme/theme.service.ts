@@ -100,8 +100,16 @@ export class ThemeService {
       body.classList.toggle('reading-mode', readingMode);
       docEl.dataset.theme = currentTheme;
 
-      localStorage.setItem(STORAGE_KEY, preference);
-      localStorage.setItem(READING_STORAGE_KEY, readingMode ? 'true' : 'false');
+      try {
+        localStorage.setItem(STORAGE_KEY, preference);
+      } catch {
+        // ignore storage failures (e.g. Safari private mode)
+      }
+      try {
+        localStorage.setItem(READING_STORAGE_KEY, readingMode ? 'true' : 'false');
+      } catch {
+        // ignore storage failures (e.g. Safari private mode)
+      }
     });
   }
 
@@ -148,11 +156,15 @@ export class ThemeService {
       return 'system';
     }
 
-    const stored = localStorage.getItem(STORAGE_KEY) as ThemePreference | null;
-    if (stored === 'light' || stored === 'dark' || stored === 'system') {
-      return stored;
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY) as ThemePreference | null;
+      if (stored === 'light' || stored === 'dark' || stored === 'system') {
+        return stored;
+      }
+      return 'system';
+    } catch {
+      return 'system';
     }
-    return 'system';
   }
 
   private resolveInitialReadingMode(): boolean {
@@ -160,7 +172,11 @@ export class ThemeService {
       return false;
     }
 
-    const stored = localStorage.getItem(READING_STORAGE_KEY);
-    return stored === 'true';
+    try {
+      const stored = localStorage.getItem(READING_STORAGE_KEY);
+      return stored === 'true';
+    } catch {
+      return false;
+    }
   }
 }

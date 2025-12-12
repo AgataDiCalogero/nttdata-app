@@ -15,7 +15,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 export class PaginationComponent {
   readonly page = input.required<number>();
   readonly pageCount = input.required<number>();
-  readonly ariaLabel = input<string>('Pagination');
+  readonly ariaLabel = input<string>('');
 
   readonly pageChange = output<number>();
 

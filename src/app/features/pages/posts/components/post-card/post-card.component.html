@@ -143,7 +143,9 @@
           : ('common.actions.showComments' | appTranslate)
       }}
       <span class="post-card__comment-count" aria-hidden="true">({{ commentCount }})</span>
-      <span class="sr-only">{{ commentCount }} commenti</span>
+      <span class="sr-only">{{
+        'postCard.commentsCountSrOnly' | appTranslate: { count: commentCount }
+      }}</span>
     </button>
   </mat-card-actions>
 
