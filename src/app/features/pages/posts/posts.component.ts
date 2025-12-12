@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
@@ -22,6 +23,7 @@ export class Posts {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly notifications = inject(NotificationsService);
+  private readonly i18n = inject(I18nService);
   private readonly ui = inject(PostsUiService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
@@ -77,7 +79,7 @@ export class Posts {
   handleViewAuthor(userId: number): void {
     const exists = Boolean(this.store.userLookup()[userId]);
     if (!exists) {
-      this.notifications.showInfo('Author not available for this post');
+      this.notifications.showInfo(this.i18n.translate('posts.authorUnavailable'));
       return;
     }
     this.router.navigate(['/users', userId]).catch(() => {});

@@ -73,7 +73,7 @@ export class UsersUiService {
         },
         error: (err) => {
           console.error('Failed to load user for edit:', err);
-          this.notifications.showHttpError(err, 'Unable to load user details');
+          this.notifications.showHttpError(err, this.i18n.translate('userDetail.unableToLoadUser'));
         },
       });
   }

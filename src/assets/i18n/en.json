@@ -174,6 +174,7 @@
     "invalidUserId": "Invalid user ID",
     "unableToLoadComments": "Unable to load comments",
     "unableToUpdateStatus": "Unable to update user status",
+    "unableToUpdateStatusRetry": "Unable to update user status. Please try again.",
     "unableToLoadUser": "Unable to load user details",
     "unableToLoadPosts": "Unable to load user posts"
   },
@@ -184,6 +185,9 @@
     "emptyState": "No posts match your filters yet. Try adjusting the search or refresh the list.",
     "loading": "Loading posts...",
     "error": "Unable to load posts right now. Please try again.",
+    "loadError": "Unable to load posts",
+    "loadUsersError": "Unable to load users list",
+    "authorUnavailable": "Author not available for this post",
     "staleData": "Showing previously loaded posts (may be outdated).",
     "summary": {
       "all": "{{total}} posts",

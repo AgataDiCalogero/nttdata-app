@@ -12,6 +12,7 @@ import {
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { User } from '@/app/shared/models/user';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
@@ -125,6 +126,7 @@ export const UsersStoreAdapter = signalStore(
     const platformId = inject(PLATFORM_ID);
     const auth = inject(AuthService);
     const notifications = inject(NotificationsService);
+    const i18n = inject(I18nService);
     const pagination =
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
       DEFAULT_PAGINATION_CONFIG;
@@ -465,7 +467,7 @@ export const UsersStoreAdapter = signalStore(
                 [userId]: original,
               },
             });
-            notifications.showError('Unable to update user status. Please try again.');
+            notifications.showError(i18n.translate('userDetail.unableToUpdateStatusRetry'));
           },
         });
     };

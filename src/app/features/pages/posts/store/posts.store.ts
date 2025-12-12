@@ -18,6 +18,7 @@ import {
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
@@ -97,6 +98,7 @@ export const PostsStoreAdapter = signalStore(
     const commentsFacade = inject(CommentsFacadeService);
     const usersLookup = inject(UsersLookupService);
     const notifications = inject(NotificationsService);
+    const i18n = inject(I18nService);
     const destroyRef = inject(DestroyRef);
     const platformId = inject(PLATFORM_ID);
     const filtersService = inject(PostsFiltersService);
@@ -153,7 +155,7 @@ export const PostsStoreAdapter = signalStore(
 
     const handleListError = (err: unknown) => {
       console.error('Failed to load posts:', err);
-      const message = notifications.showHttpError(err, 'Unable to load posts');
+      const message = notifications.showHttpError(err, i18n.translate('posts.loadError'));
       patchState(store, { error: message, loading: false });
       return of(null);
     };
@@ -211,7 +213,7 @@ export const PostsStoreAdapter = signalStore(
           next: () => {
             patchState(store, (state) => removePostFromState(state, post.id));
             invalidatePostsCache();
-            notifications.showSuccess('Post deleted');
+            notifications.showSuccess(i18n.translate('posts.delete.success'));
             if (shouldGoPrev) {
               patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));
             }
@@ -374,7 +376,7 @@ export const PostsStoreAdapter = signalStore(
         .subscribe({
           error: (err) => {
             console.error('Failed to load users for filters:', err);
-            notifications.showHttpError(err, 'Unable to load users list');
+            notifications.showHttpError(err, i18n.translate('users.loadListError'));
           },
         });
     }
