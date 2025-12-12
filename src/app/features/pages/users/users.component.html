@@ -77,6 +77,16 @@
               <mat-card-content>
                 <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
                 <p>{{ 'users.emptyState' | appTranslate }}</p>
+                <button
+                  appButton
+                  variant="primary"
+                  type="button"
+                  (click)="openNewUserModal()"
+                  [attr.aria-label]="'users.filters.createAria' | appTranslate"
+                >
+                  <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+                  <span>{{ 'users.new' | appTranslate }}</span>
+                </button>
               </mat-card-content>
             </mat-card>
           }

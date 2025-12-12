@@ -104,6 +104,7 @@
   @if (!isLoginRoute() && isLogged()) {
     <button
       mat-menu-item
+      role="menuitem"
       routerLink="/users"
       routerLinkActive="active"
       [class.active]="isRouteActive('/users')"
@@ -114,6 +115,7 @@
     </button>
     <button
       mat-menu-item
+      role="menuitem"
       routerLink="/posts"
       routerLinkActive="active"
       [class.active]="isRouteActive('/posts')"

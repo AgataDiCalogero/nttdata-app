@@ -1,4 +1,3 @@
-// src/app/shared/services/device-type.service.spec.ts
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
@@ -37,48 +36,29 @@ describe('DeviceTypeService', () => {
   }
 
   it('should expose desktop flags by default', () => {
-    // Arrange - service instantiated in beforeEach
-    // Act
     const type = service.deviceType();
-
-    // Assert
     expect(type).toBe('desktop');
     expect(service.isDesktop()).toBeTrue();
   });
 
   it('should switch to mobile when mobile breakpoint matches', () => {
-    // Arrange
     emitBreakpoints({ [MOBILE_BREAKPOINT]: true });
-
-    // Act
     const type = service.deviceType();
-
-    // Assert
     expect(type).toBe('mobile');
     expect(service.isMobile()).toBeTrue();
   });
 
   it('should switch to tablet when tablet breakpoint matches', () => {
-    // Arrange
     emitBreakpoints({ [TABLET_BREAKPOINT]: true });
-
-    // Act
-    const isTablet = service.isTablet();
-
-    // Assert
-    expect(isTablet).toBeTrue();
-    expect(service.deviceType()).toBe('tablet');
+    const type = service.deviceType();
+    expect(type).toBe('tablet');
+    expect(service.isTablet()).toBeTrue();
   });
 
   it('should reset to desktop when only desktop breakpoint matches', () => {
-    // Arrange
     emitBreakpoints({ [DESKTOP_BREAKPOINT]: true });
-
-    // Act
-    const isDesktop = service.isDesktop();
-
-    // Assert
-    expect(isDesktop).toBeTrue();
-    expect(service.deviceType()).toBe('desktop');
+    const type = service.deviceType();
+    expect(type).toBe('desktop');
+    expect(service.isDesktop()).toBeTrue();
   });
 });

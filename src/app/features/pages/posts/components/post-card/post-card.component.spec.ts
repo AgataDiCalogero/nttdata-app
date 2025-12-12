@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PLATFORM_ID, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';

@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { Observable, of, Subject } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
-import type { Post } from '@app/shared/models/post';
 import type { DeleteConfirmData } from '@app/shared/models/dialog';
+import type { Post } from '@app/shared/models/post';
 import { ResponsiveDialogService } from '@app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@app/shared/services/notifications/notifications.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
@@ -42,7 +42,7 @@ describe('PostsUiService', () => {
       () =>
         ({
           closed: closed$.asObservable() as Observable<DeleteConfirmData | undefined>,
-          close: (_result?: unknown) => closed$.next(null),
+          close: () => closed$.next(null),
         }) as DialogRef<DeleteConfirmData>,
     );
 

@@ -33,7 +33,6 @@ export class AuthService {
     return this.tokenSignal.asReadonly();
   }
 
-  // + aggiungi, comodo per template/guard future
   get isLoggedIn(): boolean {
     const t = this.tokenSignal();
     return !!t && t.trim().length > 0;

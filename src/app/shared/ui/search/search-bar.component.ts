@@ -33,21 +33,17 @@ export class SearchBarComponent {
   readonly placeholder = input<string>('Search');
   readonly ariaLabel = input<string>('');
   readonly label = input<string>('');
-  // optional explicit id for accessibility (recommended)
   readonly id = input<string>('');
   readonly debounceTime = input<number | ''>(300);
 
-  // Optional reactive forms control
   readonly control = input<SearchControl | null>(null);
 
-  // Debounced value output for consumers that rely on events
   readonly debounced = output<string>();
 
   protected readonly labelText = computed(
     () => this.label() || this.ariaLabel() || this.placeholder(),
   );
 
-  // If consumer provides an id we use it, otherwise generate one per-instance via IdService
   private readonly _generatedId = this.idService.next('searchbar');
   protected readonly labelId = computed(() =>
     this.id() ? `${this.id()}-label` : `${this._generatedId}-label`,

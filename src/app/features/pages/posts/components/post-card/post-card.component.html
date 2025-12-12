@@ -116,9 +116,24 @@
       size="sm"
       type="button"
       (click)="openCommentsList()"
-      [attr.aria-pressed]="openSection === 'comments' ? 'true' : 'false'"
       [attr.aria-expanded]="openSection === 'comments' ? 'true' : 'false'"
       [attr.aria-controls]="postModel ? 'comments-for-' + postModel.id : null"
+      [attr.aria-label]="
+        (openSection === 'comments'
+          ? ('common.actions.hideComments' | appTranslate)
+          : ('common.actions.showComments' | appTranslate)) +
+        ' (' +
+        commentCount +
+        ')'
+      "
+      [title]="
+        (openSection === 'comments'
+          ? ('common.actions.hideComments' | appTranslate)
+          : ('common.actions.showComments' | appTranslate)) +
+        ' (' +
+        commentCount +
+        ')'
+      "
       class="post-card__comments-toggle"
     >
       <mat-icon svgIcon="lucide:file-text"></mat-icon>

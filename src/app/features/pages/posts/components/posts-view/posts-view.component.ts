@@ -9,9 +9,9 @@ import {
   output,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatCardModule } from '@angular/material/card';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';

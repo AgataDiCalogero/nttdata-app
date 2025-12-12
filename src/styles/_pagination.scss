@@ -9,6 +9,11 @@
   flex-wrap: wrap;
   margin-top: var(--space-lg);
 
+  /* Ensure mobile tap targets stay ~44px even with size="sm" */
+  .btn {
+    min-height: var(--btn-height-md);
+  }
+
   .app-pagination__info {
     font-weight: var(--font-weight-semibold);
     color: var(--color-on-surface);

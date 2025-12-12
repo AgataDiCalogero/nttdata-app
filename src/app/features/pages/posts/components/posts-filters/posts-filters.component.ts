@@ -29,7 +29,6 @@ import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
 export class PostsFiltersComponent {
   readonly searchForm = input.required<PostsFiltersFormGroup>();
   readonly userOptions = input<{ id: number; name?: string }[]>([]);
-  // optional control & output for per-page selection
   readonly perPageControl = input<FormControl<number> | null>(null);
   readonly perPageOptions = input<{ value: number; label: string }[]>([]);
   readonly perPageChange = output<number>();
@@ -46,7 +45,6 @@ export class PostsFiltersComponent {
 
   readonly perPageSelectOptions = computed(() => this.perPageOptions() ?? []);
 
-  // generated ids for a11y (per-instance)
   private readonly idService = inject(IdService);
   protected readonly searchId = this.idService.next('posts-search');
   protected readonly userSelectId = this.idService.next('posts-user-select');

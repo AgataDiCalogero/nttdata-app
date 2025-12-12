@@ -23,10 +23,8 @@ describe('PostsStoreAdapter', () => {
   let postsApi: jasmine.SpyObj<PostsApiService>;
   let usersApi: jasmine.SpyObj<UsersApiService>;
   let commentsCache: jasmine.SpyObj<CommentsCacheService>;
-  let commentsFacade: CommentsFacadeService;
   let notifications: jasmine.SpyObj<NotificationsService>;
   let auth: { token: () => string | null };
-  let consoleErrorSpy: jasmine.Spy;
 
   beforeEach(() => {
     postsApi = jasmine.createSpyObj('PostsApiService', [
@@ -58,6 +56,7 @@ describe('PostsStoreAdapter', () => {
     commentsCache = jasmine.createSpyObj('CommentsCacheService', [
       'fetchComments',
       'fetchCommentCount',
+      'hasFreshCount',
       'prefetchCounts',
       'setComments',
       'adjustCount',
@@ -65,6 +64,7 @@ describe('PostsStoreAdapter', () => {
     ]);
     commentsCache.fetchComments.and.returnValue(of([{ id: 10 } as Comment]));
     commentsCache.fetchCommentCount.and.returnValue(of(4));
+    commentsCache.hasFreshCount.and.returnValue(false);
     commentsCache.prefetchCounts.and.returnValue(of({ 1: 4 }));
 
     notifications = jasmine.createSpyObj('NotificationsService', [
@@ -76,7 +76,7 @@ describe('PostsStoreAdapter', () => {
     notifications.showHttpError.and.callFake((_e, msg) => msg);
 
     auth = { token: () => 'token-abc' };
-    consoleErrorSpy = spyOn(console, 'error').and.stub();
+    spyOn(console, 'error').and.stub();
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
@@ -96,7 +96,7 @@ describe('PostsStoreAdapter', () => {
       ],
     });
 
-    commentsFacade = TestBed.inject(CommentsFacadeService);
+    TestBed.inject(CommentsFacadeService);
   });
 
   it('carica i post iniziali e applica paginazione di default', fakeAsync(() => {
@@ -176,5 +176,42 @@ describe('PostsStoreAdapter', () => {
 
     expect(store.posts().length).toBe(0);
     expect(store.deletingId()).toBeNull();
+  }));
+
+  it('invalida la cache su delete e non riusa dati stale', fakeAsync(() => {
+    postsApi.list.and.callFake((params) => {
+      const page = params?.page ?? 1;
+      return of({
+        items:
+          page === 1
+            ? ([{ id: 1, user_id: 2, title: 'P1', body: 'B1' }] as Post[])
+            : ([{ id: 2, user_id: 2, title: 'P2', body: 'B2' }] as Post[]),
+        pagination: { total: 20, pages: 2, page, limit: 10 },
+      });
+    });
+
+    const store = TestBed.inject(PostsStoreAdapter);
+    tick(400);
+
+    expect(postsApi.list.calls.count()).toBe(1);
+
+    store.setPage(2);
+    tick(400);
+    expect(postsApi.list.calls.count()).toBe(2);
+
+    store.setPage(1);
+    tick(400);
+    expect(postsApi.list.calls.count()).toBe(2); // served from cache
+
+    store.deletePostRequest({ id: 1, user_id: 2, title: 'P1', body: 'B1' } as Post).subscribe();
+    tick();
+
+    store.setPage(2);
+    tick(400);
+    expect(postsApi.list.calls.count()).toBe(3);
+
+    store.setPage(1);
+    tick(400);
+    expect(postsApi.list.calls.count()).toBe(4);
   }));
 });

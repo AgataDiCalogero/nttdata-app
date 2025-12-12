@@ -135,14 +135,12 @@ describe('UsersApiService', () => {
   });
 
   it('drops cache entry on error responses', () => {
-    // Prime cache and respond with error
     service.list({ page: 1 }, { cache: true }).subscribe({
       error: () => void 0,
     });
     const req = httpMock.expectOne((r) => r.url === '/users');
     req.flush({ message: 'fail' }, { status: 500, statusText: 'Server Error' });
 
-    // Second call should issue a new HTTP request (cache cleared)
     service.list({ page: 1 }, { cache: true }).subscribe({
       error: () => void 0,
     });

@@ -34,6 +34,14 @@ app-root {
   padding-top: calc(var(--app-navbar-offset) + env(safe-area-inset-top, 0px));
 }
 
+body.login-route app-root {
+  min-height: auto;
+}
+
+body.login-route .app-content {
+  flex: 0 0 auto;
+}
+
 body {
   font-family:
     Inter,
@@ -172,11 +180,6 @@ select:focus-visible {
   border-color: var(--focus-ring);
 }
 
-.cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
-  background: rgba(2, 6, 23, 0.75) !important;
-}
-
-/* Dialogs share the global z-index scale; avoid lowering a single dialog below the backdrop */
 .cdk-overlay-pane.token-help-dialog {
   z-index: calc(var(--z-modal, 1300) + 1) !important;
 }
@@ -196,6 +199,3 @@ body.ui-overlay-blocked .app-navbar .logout-btn {
 body.ui-overlay-blocked .app-navbar .logout-btn {
   opacity: 0.5;
 }
-
-/* --- Navbar overrides (deep/global) ------------------------------------ */
-/* Legacy dialog classes removed; dialogs now use .app-dialog-overlay and .app-dialog-panel */

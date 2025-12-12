@@ -134,7 +134,7 @@ describe('Login component', () => {
   it('disabilita input quando loading è true', fakeAsync(() => {
     component.loading.set(true);
     fixture.detectChanges();
-    tick(); // allow effect to run
+    tick();
 
     expect(component.tokenControl.disabled).toBeTrue();
 

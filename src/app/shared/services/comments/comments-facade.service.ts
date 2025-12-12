@@ -9,6 +9,8 @@ import { NotificationsService } from '@/app/shared/services/notifications/notifi
 
 @Injectable({ providedIn: 'root' })
 export class CommentsFacadeService {
+  private static readonly PREFETCH_DEBOUNCE_MS = 150;
+
   private readonly postsApi = inject(PostsApiService);
   private readonly cache = inject(CommentsCacheService);
   private readonly notifications = inject(NotificationsService);
@@ -18,6 +20,8 @@ export class CommentsFacadeService {
   private readonly commentsSignal = signal<Partial<Record<number, Comment[]>>>({});
   private readonly loadingSignal = signal<Partial<Record<number, boolean>>>({});
   private readonly countsSignal = signal<Partial<Record<number, number>>>({});
+  private lastPrefetchKey: string | null = null;
+  private lastPrefetchAt = 0;
 
   comments(): Partial<Record<number, Comment[]>> {
     return this.commentsSignal();
@@ -89,9 +93,30 @@ export class CommentsFacadeService {
     if (!this.isBrowser || !posts.length) {
       return;
     }
-    const ids = posts.map((p) => p.id);
+
+    const ids = Array.from(
+      new Set(posts.map((p) => p.id).filter((id) => Number.isFinite(id) && id > 0)),
+    ).sort((a, b) => a - b);
+
+    const idsToFetch = ids.filter((id) => !this.cache.hasFreshCount(id));
+    if (!idsToFetch.length) {
+      return;
+    }
+
+    const now = Date.now();
+    const key = idsToFetch.join(',');
+    if (
+      key &&
+      this.lastPrefetchKey === key &&
+      now - this.lastPrefetchAt < CommentsFacadeService.PREFETCH_DEBOUNCE_MS
+    ) {
+      return;
+    }
+
+    this.lastPrefetchKey = key;
+    this.lastPrefetchAt = now;
     try {
-      const counts = await firstValueFrom(this.cache.prefetchCounts(ids));
+      const counts = await firstValueFrom(this.cache.prefetchCounts(idsToFetch));
       if (counts) {
         this.countsSignal.update((state) => ({ ...state, ...counts }));
       }

@@ -16,10 +16,9 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--letter-spacing-tight);
 
-  // Ensure consistent vertical alignment
   mat-icon,
   lucide-icon {
-    display: block; // Removes baseline gap
+    display: block;
     line-height: 1;
   }
 }
@@ -33,33 +32,26 @@
   top: calc(100% + 0.4rem);
   left: 50%;
   transform: translate(-50%, 0);
-  min-width: 8rem; // Airy width
+  min-width: 8rem;
 
-  // Use shared panel mixin
   @include app-menu-panel;
   background: var(--color-surface-solid);
 
   z-index: 150;
 
-  // Mixin sets flex-column, but we ensure it matches our need
   gap: var(--space-2xs);
-
-  // Remove manual borders/shadows/backgrounds as mixin handles them
 }
 
 .locale-switcher__option {
   width: 100%;
   text-transform: uppercase;
 
-  // Use shared item mixin
   @include app-menu-item;
   font-size: 0.88rem;
 
-  // Override or add specific behavior if needed
   justify-content: space-between;
   font-weight: var(--font-weight-semibold);
 
-  // Active state matching appearance switcher
   &--active {
     background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     border-color: var(--color-accent);
@@ -71,6 +63,6 @@
       border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
     }
 
-    color: var(--color-on-surface); // Ensure text contrast
+    color: var(--color-on-surface);
   }
 }

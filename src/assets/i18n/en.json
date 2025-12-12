@@ -15,7 +15,7 @@
     "title": "Welcome back",
     "subtitle": "Enter your access token to continue.",
     "tokenLabel": "Access token",
-    "tokenPlaceholder": "Paste your personal access token",
+    "tokenPlaceholder": "Paste your access token",
     "submit": "Sign in",
     "help": "Lost your token?",
     "errors": {
@@ -183,6 +183,8 @@
     "summaryHeading": "{{count}} total posts",
     "emptyState": "No posts match your filters yet. Try adjusting the search or refresh the list.",
     "loading": "Loading posts...",
+    "error": "Unable to load posts right now. Please try again.",
+    "staleData": "Showing previously loaded posts (may be outdated).",
     "summary": {
       "all": "{{total}} posts",
       "partial": "Showing {{visible}} of {{total}} posts"

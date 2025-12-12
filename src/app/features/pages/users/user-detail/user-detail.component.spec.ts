@@ -39,7 +39,6 @@ describe('UserDetailComponent', () => {
   let i18nSpy: jasmine.SpyObj<I18nService>;
   const routeStub = { snapshot: { paramMap: { get: () => '1' } } };
   let createComponent: () => void;
-  let consoleErrorSpy: jasmine.Spy;
 
   const mockUser: User = {
     id: 1,
@@ -56,21 +55,22 @@ describe('UserDetailComponent', () => {
     commentsCacheSpy = jasmine.createSpyObj('CommentsCacheService', [
       'fetchCommentCount',
       'fetchComments',
+      'hasFreshCount',
       'setComments',
       'prefetchCounts',
     ]);
     notificationsSpy = jasmine.createSpyObj('NotificationsService', ['showHttpError']);
     i18nSpy = jasmine.createSpyObj('I18nService', ['translate']);
 
-    // Default mocks
     usersApiSpy.getById.and.returnValue(of(mockUser));
     postsApiSpy.list.and.returnValue(
       of({ items: mockPosts, pagination: { total: 1, pages: 1, page: 1, limit: 10 } }),
     );
     commentsCacheSpy.fetchCommentCount.and.returnValue(of(5));
+    commentsCacheSpy.hasFreshCount.and.returnValue(false);
     commentsCacheSpy.prefetchCounts.and.returnValue(of({ 101: 5 }));
     i18nSpy.translate.and.callFake((key) => key);
-    consoleErrorSpy = spyOn(console, 'error').and.stub();
+    spyOn(console, 'error').and.stub();
 
     await TestBed.configureTestingModule({
       imports: [
@@ -114,7 +114,7 @@ describe('UserDetailComponent', () => {
   it('should load user and posts on init', fakeAsync(() => {
     createComponent();
     fixture.detectChanges();
-    tick(); // allow signals to settle
+    tick();
 
     expect(usersApiSpy.getById).toHaveBeenCalledWith(1);
     expect(postsApiSpy.list).toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe('UserDetailComponent', () => {
   it('should prefetch comment counts for posts', fakeAsync(() => {
     createComponent();
     fixture.detectChanges();
-    tick(); // wait for effects
+    tick();
 
     expect(commentsCacheSpy.prefetchCounts).toHaveBeenCalledWith([101]);
     expect(component.commentsCount()[101]).toBe(5);
@@ -161,7 +161,6 @@ describe('UserDetailComponent', () => {
     fixture.detectChanges();
     tick();
 
-    // Open comments
     const comments = [{ id: 1, post_id: 101, name: 'C1', email: 'e@e.com', body: 'Comment 1' }];
     commentsCacheSpy.fetchComments.and.returnValue(of(comments));
 
@@ -171,7 +170,6 @@ describe('UserDetailComponent', () => {
     expect(component.commentsFor(101)).toEqual(comments);
     expect(component.commentsLoaded(101)).toBeTrue();
 
-    // Close comments
     component.onToggleComments(101);
     expect(component.commentsLoaded(101)).toBeFalse();
   }));
@@ -195,7 +193,6 @@ describe('UserDetailComponent', () => {
 
     component.onStatusChange('inactive');
 
-    // Should revert to active (mockUser default)
     expect(component.user()?.status).toBe('active');
     expect(notificationsSpy.showHttpError).toHaveBeenCalled();
   });

@@ -54,7 +54,6 @@ export class CommentFormComponent {
     body: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(10)]),
   });
 
-  // Sync stato disabled del form con `submitting`
   private readonly syncDisabled = effect(() => {
     const isSubmitting = this.submitting();
     if (isSubmitting) this.form.disable({ emitEvent: false });

@@ -15,7 +15,7 @@
     "title": "Bentornato/a",
     "subtitle": "Inserisci il tuo token di accesso per continuare.",
     "tokenLabel": "Token di accesso",
-    "tokenPlaceholder": "Incolla il tuo personal access token",
+    "tokenPlaceholder": "Incolla il tuo access token",
     "submit": "Accedi",
     "help": "Hai perso il token?",
     "errors": {
@@ -183,6 +183,8 @@
     "summaryHeading": "{{count}} post totali",
     "emptyState": "Nessun post corrisponde ai filtri. Prova ad aggiornare la ricerca.",
     "loading": "Caricamento post...",
+    "error": "Impossibile caricare i post in questo momento. Riprova.",
+    "staleData": "Stai vedendo dati non aggiornati.",
     "summary": {
       "all": "{{total}} post",
       "partial": "Mostrati {{visible}} di {{total}} post"

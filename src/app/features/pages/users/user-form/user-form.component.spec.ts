@@ -41,7 +41,7 @@ describe('UserFormComponent', () => {
         { provide: UsersApiService, useValue: usersApiSpy },
         { provide: DialogRef, useValue: dialogRefSpy },
         { provide: ToastService, useValue: toastSpy },
-        { provide: DIALOG_DATA, useValue: {} }, // Default to create mode
+        { provide: DIALOG_DATA, useValue: {} },
       ],
     }).compileComponents();
   });

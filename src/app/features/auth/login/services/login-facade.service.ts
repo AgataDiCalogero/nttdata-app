@@ -39,7 +39,6 @@ export class LoginFacadeService {
           };
         }
 
-        // Validation successful - set token and navigate
         this.auth.setToken(normalized);
         this.router.navigate(['/users']);
 

@@ -52,7 +52,6 @@ export class SelectComponent {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly documentRef = inject(DOCUMENT, { optional: true });
   private readonly isBrowser = isPlatformBrowser(this.platformId);
-  // fallback id generated once per component instance
   protected readonly _fallbackId = this.idService.next('select');
 
   protected readonly resolvedId = computed(() => (this.id() ? this.id() : this._fallbackId));

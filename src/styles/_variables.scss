@@ -101,6 +101,7 @@
 
   /* Overlays and dialogs */
   --overlay-backdrop-soft: rgba(2, 6, 23, 0.6);
+  --overlay-backdrop-default: rgba(2, 6, 23, 0.75);
   --overlay-backdrop-strong: rgba(2, 6, 23, 0.9);
   /* Dialog surface slightly translucent (95% opaque) to improve readability */
   --dialog-surface: color-mix(in srgb, var(--color-surface-solid) 95%, transparent);

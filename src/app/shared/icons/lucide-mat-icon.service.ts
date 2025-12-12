@@ -39,7 +39,7 @@ const LUCIDE_ICONS: RegisteredIcon[] = [
   { name: 'log-out', data: LogOut },
   { name: 'users', data: Users },
   { name: 'posts', data: FileText },
-  { name: 'file-text', data: FileText }, // Alias for posts
+  { name: 'file-text', data: FileText },
   { name: 'moon', data: Moon },
   { name: 'sun', data: Sun },
   { name: 'external-link', data: ExternalLink },

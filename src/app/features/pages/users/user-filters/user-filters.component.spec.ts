@@ -8,6 +8,8 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 
 import { UserFiltersComponent } from './user-filters.component';
 
+type WithPerPageControl = UserFiltersComponent & { perPageControl: FormControl<string> };
+
 describe('UserFiltersComponent', () => {
   let component: UserFiltersComponent;
   let fixture: ComponentFixture<UserFiltersComponent>;
@@ -23,7 +25,10 @@ describe('UserFiltersComponent', () => {
       imports: [UserFiltersComponent],
       providers: [
         { provide: I18nService, useValue: i18nSpy },
-        { provide: MatIconRegistry, useValue: { addSvgIconLiteral: () => {}, getNamedSvgIcon: () => of(null) } },
+        {
+          provide: MatIconRegistry,
+          useValue: { addSvgIconLiteral: () => {}, getNamedSvgIcon: () => of(null) },
+        },
         { provide: LUCIDE_ICONS, useValue: [] },
       ],
     }).compileComponents();
@@ -47,7 +52,7 @@ describe('UserFiltersComponent', () => {
     fixture.componentRef.setInput('perPage', 20);
     fixture.detectChanges();
 
-    expect((component as any).perPageControl.value).toBe('20');
+    expect((component as WithPerPageControl).perPageControl.value).toBe('20');
   });
 
   it('emette perPageChange convertendo la stringa in numero', () => {

@@ -1,5 +1,5 @@
-import { signal } from '@angular/core';
 import { HttpClientTestingModule, provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -101,10 +101,6 @@ describe('PostsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should initialize paging from URL', () => {
     expect(mockStore.initializePaging).toHaveBeenCalled();
   });
@@ -190,5 +186,15 @@ describe('PostsComponent', () => {
 
     expect(fixture.nativeElement.querySelector('.posts-page__alert')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('.posts-empty')).toBeNull();
+  });
+
+  it('should show empty state when there are no posts and no error', () => {
+    mockStore.posts.set([]);
+    mockStore.loading.set(false);
+    mockStore.error.set(null);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.posts-empty')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('app-posts-list')).toBeNull();
   });
 });

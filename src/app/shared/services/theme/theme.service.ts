@@ -52,7 +52,6 @@ export class ThemeService {
         this.systemThemeSignal.set(matches ? 'light' : 'dark');
       };
 
-      // run initial detection
       update(this.mediaQuery ?? undefined);
 
       const listener = (event: MediaQueryListEvent) => update(event);
@@ -70,9 +69,6 @@ export class ThemeService {
         mq.addEventListener('change', listener);
         this.destroyRef.onDestroy(() => mq.removeEventListener?.('change', listener));
       } else {
-        // Safari fallback (legacy API).
-        // Use a narrow typed function for the legacy handlers to avoid lint/TS false positives
-        // legacy addListener/removeListener have different signatures than addEventListener
         type LegacyAddFn = (listener: (ev: MediaQueryListEvent) => void) => void;
         type LegacyRemoveFn = (listener?: (ev: MediaQueryListEvent) => void) => void;
         const legacy = mq as unknown as Record<string, unknown>;

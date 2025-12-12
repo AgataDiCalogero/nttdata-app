@@ -174,16 +174,13 @@ export class UserDetail {
       return;
     }
 
-    // Optimistically update the UI
     this.user.update((current) => (current ? { ...current, status } : current));
 
-    // Make the API call
     this.usersApi
       .update(this.userId, { status })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (updatedUser: User) => {
-          // Update with the server response
           this.user.set(updatedUser);
         },
         error: (err) => {
@@ -192,7 +189,6 @@ export class UserDetail {
             err,
             this.i18n.translate('userDetail.unableToUpdateStatus'),
           );
-          // Revert the optimistic update
           this.user.update((current) =>
             current ? { ...current, status: currentUser.status } : current,
           );

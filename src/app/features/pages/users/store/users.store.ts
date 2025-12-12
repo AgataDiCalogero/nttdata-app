@@ -1,8 +1,9 @@
 import { isPlatformBrowser } from '@angular/common';
-import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { inject, computed, Type, DestroyRef, effect, PLATFORM_ID, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
+import { EMPTY, catchError, combineLatest, distinctUntilChanged, switchMap, tap } from 'rxjs';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import {
@@ -13,8 +14,8 @@ import {
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { User } from '@/app/shared/models/user';
-import { mapHttpError } from '@/app/shared/utils/error-mapper';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { mapHttpError } from '@/app/shared/utils/error-mapper';
 
 import type { SortField, UsersService } from './users.service';
 
@@ -44,6 +45,14 @@ interface LoadUsersOptions {
   pushUrl?: boolean;
 }
 
+interface UsersLoadCriteria {
+  page: number;
+  perPage: number;
+  searchTerm: string;
+  pushUrl: boolean;
+  reload: number;
+}
+
 const normalizePage = (value: number | undefined, fallback: number) =>
   Math.max(1, Number.isFinite(value as number) ? Math.floor(value as number) : fallback);
 
@@ -52,21 +61,20 @@ const findNearestPerPage = (
   options: readonly number[],
   fallback: number,
 ): number => {
-  if (options.includes(value)) {
-    return value;
-  }
-  if (options.includes(fallback)) {
-    return fallback;
-  }
   const sorted = options
     .filter((option) => Number.isFinite(option) && option > 0)
     .map((option) => Math.floor(option))
     .sort((a, b) => a - b);
   if (!sorted.length) {
-    return Math.max(1, value, fallback);
+    return Math.max(1, Number.isFinite(value) ? Math.floor(value) : Math.floor(fallback));
   }
-  const candidate = sorted.find((option) => option >= value) ?? sorted.at(-1);
-  return candidate ?? fallback;
+
+  const target = Math.max(1, Number.isFinite(value) ? Math.floor(value) : Math.floor(fallback));
+  if (sorted.includes(target)) {
+    return target;
+  }
+
+  return sorted.find((option) => option >= target) ?? sorted.at(-1) ?? Math.max(1, fallback);
 };
 
 export const UsersStoreAdapter = signalStore(
@@ -122,6 +130,8 @@ export const UsersStoreAdapter = signalStore(
       DEFAULT_PAGINATION_CONFIG;
     const isBrowser = isPlatformBrowser(platformId);
     let bootstrapped = false;
+    let reloadToken = 0;
+    const criteriaSignal = signal<UsersLoadCriteria | null>(null);
 
     patchState(store, {
       page: pagination.defaultPage,
@@ -145,131 +155,201 @@ export const UsersStoreAdapter = signalStore(
       const targetPage = ensurePage(options.page ?? store.page());
       const term = (options.searchTerm ?? store.searchTerm()).trim();
 
-      const token = auth.token();
-      if (!token?.trim()) {
-        patchState(store, {
-          loading: false,
-          error: null,
-          searchTerm: term,
-          ids: [],
-          entities: {},
-          pagination: null,
-        });
+      const currentCriteria = criteriaSignal();
+      const sameCriteria =
+        currentCriteria !== null &&
+        currentCriteria.page === targetPage &&
+        currentCriteria.perPage === targetPerPage &&
+        currentCriteria.searchTerm === term;
+
+      // Avoid pointless refetches; keep a retry path when we have an error.
+      if (sameCriteria && !store.error()) {
         return;
       }
 
-      patchState(store, {
-        loading: true,
-        error: null,
-        searchTerm: term,
-      });
-
-      const params: {
-        page: number;
-        perPage: number;
-        name?: string;
-        email?: string;
-      } = {
+      criteriaSignal.set({
         page: targetPage,
         perPage: targetPerPage,
-      };
+        searchTerm: term,
+        pushUrl,
+        reload: sameCriteria ? ++reloadToken : reloadToken,
+      });
+    };
 
-      if (term) {
-        params.name = term;
-        if (term.includes('@')) {
-          params.email = term;
-        }
+    const syncUrl = (criteria: UsersLoadCriteria, meta: PaginationMeta) => {
+      if (!criteria.pushUrl) return;
+      router
+        .navigate([], {
+          relativeTo: route,
+          queryParams: {
+            page: meta.page,
+            per_page: meta.limit,
+            search: criteria.searchTerm || null,
+          },
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        })
+        .catch(() => {});
+    };
+
+    const initializeUsersStream = () => {
+      if (!isBrowser) {
+        patchState(store, { loading: false });
+        return;
       }
 
-      usersApi
-        .list(params)
-        .pipe(takeUntilDestroyed(destroyRef))
-        .subscribe({
-          next: ({ items, pagination }) => {
-            const list = items ?? [];
-            const resolvedLimit = Math.max(1, pagination?.limit ?? targetPerPage);
-            const resolvedTotal = pagination?.total ?? list.length;
-            const resolvedPages =
-              pagination?.pages ??
-              (resolvedTotal ? Math.ceil(Math.max(resolvedTotal, 1) / resolvedLimit) : 1);
-            const resolvedPage = Math.min(
-              Math.max(1, pagination?.page ?? targetPage),
-              Math.max(1, resolvedPages),
+      combineLatest([toObservable(criteriaSignal), toObservable(auth.token)])
+        .pipe(
+          distinctUntilChanged(([prevCriteria, prevToken], [nextCriteria, nextToken]) => {
+            const prev = prevCriteria;
+            const next = nextCriteria;
+            const prevAuth = prevToken?.trim() ?? '';
+            const nextAuth = nextToken?.trim() ?? '';
+            if (prevAuth !== nextAuth) return false;
+            if (!prev || !next) return prev === next;
+            return (
+              prev.page === next.page &&
+              prev.perPage === next.perPage &&
+              prev.searchTerm === next.searchTerm &&
+              prev.pushUrl === next.pushUrl &&
+              prev.reload === next.reload
             );
+          }),
+          switchMap(([criteria, token]) => {
+            if (!criteria) {
+              return EMPTY;
+            }
 
-            const meta: PaginationMeta = {
-              total: resolvedTotal,
-              pages: Math.max(1, resolvedPages),
-              page: resolvedPage,
-              limit: resolvedLimit,
+            const normalizedToken = token?.trim() ?? '';
+            if (!normalizedToken) {
+              patchState(store, {
+                loading: false,
+                error: null,
+                searchTerm: criteria.searchTerm,
+                ids: [],
+                entities: {},
+                pagination: null,
+              });
+              return EMPTY;
+            }
+
+            patchState(store, {
+              loading: true,
+              error: null,
+              searchTerm: criteria.searchTerm,
+              page: criteria.page,
+              perPage: criteria.perPage,
+            });
+
+            const params: {
+              page: number;
+              perPage: number;
+              name?: string;
+              email?: string;
+            } = {
+              page: criteria.page,
+              perPage: criteria.perPage,
             };
 
-            const normalizedLimit = ensurePerPage(meta.limit);
-            const adjustedMeta: PaginationMeta = { ...meta, limit: normalizedLimit };
-            const entities = list.reduce<Record<number, User>>((acc, user) => {
-              acc[user.id] = user;
-              return acc;
-            }, {});
-            const ids = list.map((user) => user.id);
-
-            patchState(store, {
-              ids,
-              entities,
-              pagination: adjustedMeta,
-              loading: false,
-              page: adjustedMeta.page,
-              perPage: normalizedLimit,
-            });
-
-            if (pushUrl) {
-              router.navigate([], {
-                relativeTo: route,
-                queryParams: {
-                  page: adjustedMeta.page,
-                  per_page: normalizedLimit,
-                  search: term || null,
-                },
-                queryParamsHandling: 'merge',
-                replaceUrl: true,
-              });
+            if (criteria.searchTerm) {
+              params.name = criteria.searchTerm;
+              if (criteria.searchTerm.includes('@')) {
+                params.email = criteria.searchTerm;
+              }
             }
 
-            if (!list.length && adjustedMeta.total > 0 && adjustedMeta.page > adjustedMeta.pages) {
-              loadUsers({
-                page: adjustedMeta.pages,
-                perPage: normalizedLimit,
-                searchTerm: term,
-                pushUrl,
-              });
-            }
-          },
-          error: (err) => {
-            console.error('Failed to load users:', err);
-            patchState(store, {
-              loading: false,
-              error: mapHttpError(err).message,
-            });
-          },
-        });
+            return usersApi.list(params).pipe(
+              tap(({ items, pagination }) => {
+                const list = items ?? [];
+                const resolvedLimit = Math.max(1, pagination?.limit ?? criteria.perPage);
+                const resolvedTotal = pagination?.total ?? list.length;
+                const resolvedPages =
+                  pagination?.pages ??
+                  (resolvedTotal ? Math.ceil(Math.max(resolvedTotal, 1) / resolvedLimit) : 1);
+
+                const normalizedLimit = ensurePerPage(resolvedLimit);
+                const pages = Math.max(1, resolvedPages);
+
+                // If the user asked an out-of-range page, avoid applying an empty state.
+                if (resolvedTotal > 0 && criteria.page > pages) {
+                  criteriaSignal.set({
+                    ...criteria,
+                    page: pages,
+                    perPage: normalizedLimit,
+                    reload: ++reloadToken,
+                  });
+                  return;
+                }
+
+                const resolvedPage = Math.min(
+                  Math.max(1, pagination?.page ?? criteria.page),
+                  pages,
+                );
+
+                const meta: PaginationMeta = {
+                  total: resolvedTotal,
+                  pages,
+                  page: resolvedPage,
+                  limit: normalizedLimit,
+                };
+
+                const entities = list.reduce<Record<number, User>>((acc, user) => {
+                  acc[user.id] = user;
+                  return acc;
+                }, {});
+                const ids = list.map((user) => user.id);
+
+                patchState(store, {
+                  ids,
+                  entities,
+                  pagination: meta,
+                  loading: false,
+                  page: meta.page,
+                  perPage: meta.limit,
+                });
+
+                syncUrl(criteria, meta);
+              }),
+              catchError((err) => {
+                console.error('Failed to load users:', err);
+                patchState(store, {
+                  loading: false,
+                  error: mapHttpError(err).message,
+                });
+                return EMPTY;
+              }),
+            );
+          }),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe();
     };
 
     const setupInitialState = () => {
       const qp = route.snapshot.queryParamMap;
-      const initialPage = ensurePage(Number(qp.get('page')));
-      const initialPerPage = ensurePerPage(Number(qp.get('per_page')));
-      const initialSearch = (qp.get('search') ?? '').trim();
+      const rawPage = qp.get('page');
+      const rawPerPage = qp.get('per_page');
+      const rawSearch = qp.get('search');
 
-      patchState(store, {
-        page: initialPage,
-        perPage: initialPerPage,
-        searchTerm: initialSearch,
-      });
+      const parsedPage = Number(rawPage);
+      const parsedPerPage = Number(rawPerPage);
+
+      const initialPage = ensurePage(parsedPage);
+      const initialPerPage = ensurePerPage(parsedPerPage);
+      const initialSearch = (rawSearch ?? '').trim();
+
+      const needsUrlFix =
+        (rawPage !== null &&
+          (!Number.isFinite(parsedPage) || initialPage !== Math.floor(parsedPage))) ||
+        (rawPerPage !== null &&
+          (!Number.isFinite(parsedPerPage) || initialPerPage !== Math.floor(parsedPerPage))) ||
+        (rawSearch !== null && rawSearch !== initialSearch);
 
       loadUsers({
         page: initialPage,
         perPage: initialPerPage,
         searchTerm: initialSearch,
-        pushUrl: false,
+        pushUrl: needsUrlFix,
       });
     };
 
@@ -299,6 +379,7 @@ export const UsersStoreAdapter = signalStore(
           attempt();
         } else if (bootstrapped) {
           bootstrapped = false;
+          criteriaSignal.set(null);
           patchState(store, {
             ids: [],
             entities: {},
@@ -393,6 +474,7 @@ export const UsersStoreAdapter = signalStore(
       patchState(store, { deletingId: userId });
     };
 
+    initializeUsersStream();
     initializeBootstrap();
 
     return {

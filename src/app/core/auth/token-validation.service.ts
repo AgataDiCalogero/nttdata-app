@@ -1,4 +1,10 @@
-import { HttpClient, HttpContext, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpContext,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -18,6 +24,7 @@ export interface TokenValidationResult {
   success: boolean;
   code?: TokenValidationErrorCode;
   message?: string;
+  retryAfterMs?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -39,7 +46,7 @@ export class TokenValidationService {
     const params = new HttpParams().set('page', '1').set('per_page', '1');
 
     return this.http.get<unknown>('/users', { headers, context, params }).pipe(
-      map(() => ({ success: true } satisfies TokenValidationResult)),
+      map(() => ({ success: true }) satisfies TokenValidationResult),
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse) {
           return of(this.mapHttpErrorToResult(error));
@@ -65,7 +72,14 @@ export class TokenValidationService {
             'The provided token is invalid or expired. Generate a new token from the GoRest dashboard.',
         };
       case 'rate-limit':
-        return { success: false, code: 'rate_limited', message };
+        return {
+          success: false,
+          code: 'rate_limited',
+          message: uiError.retryAfterMs
+            ? `${message} Try again in ${Math.max(1, Math.ceil(uiError.retryAfterMs / 1000))}s.`
+            : message,
+          retryAfterMs: uiError.retryAfterMs,
+        };
       case 'forbidden':
         return { success: false, code: 'unauthorized', message };
       default:
@@ -92,7 +106,7 @@ export class TokenValidationService {
     }
 
     if (error.status === 429) {
-      return { success: false, code: 'rate_limited', message: 'Too many requests. Try again soon.' };
+      return this.mapUiErrorToResult(mapHttpError(error));
     }
 
     if (error.status === 0) {

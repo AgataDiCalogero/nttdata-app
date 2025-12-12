@@ -34,7 +34,10 @@
 
     @if (error()) {
       <app-alert variant="error" class="posts-page__alert" aria-live="assertive">
-        {{ error() || ('posts.error' | appTranslate) }}
+        <p class="posts-page__alert-text">{{ error() || ('posts.error' | appTranslate) }}</p>
+        @if (posts().length > 0) {
+          <p class="posts-page__alert-note">{{ 'posts.staleData' | appTranslate }}</p>
+        }
         <button appButton variant="ghost" type="button" (click)="retry.emit()">
           {{ 'common.actions.retry' | appTranslate }}
         </button>

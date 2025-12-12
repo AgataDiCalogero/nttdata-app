@@ -1,6 +1,3 @@
-// Karma configuration for Angular CLI
-// Adds a no-sandbox headless launcher to run reliably inside WSL/CI.
-
 module.exports = function (config) {
   config.set({
     basePath: '',

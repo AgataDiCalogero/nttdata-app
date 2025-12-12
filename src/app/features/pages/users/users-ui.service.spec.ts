@@ -41,7 +41,7 @@ describe('UsersUiService', () => {
       () =>
         ({
           closed: closed$.asObservable() as Observable<DeleteConfirmData | undefined>,
-          close: (_result?: unknown) => closed$.next(null),
+          close: () => closed$.next(null),
         }) as DialogRef<DeleteConfirmData>,
     );
 

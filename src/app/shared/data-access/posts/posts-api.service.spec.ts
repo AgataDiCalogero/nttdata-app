@@ -79,7 +79,6 @@ describe('PostsApiService', () => {
   });
 
   it('creates, updates and deletes posts with normalized payloads', () => {
-    // create
     let createdId = 0;
     service.create({ user_id: 1, title: ' Draft ', body: ' Body ' }).subscribe((post) => {
       createdId = post.id;
@@ -89,7 +88,6 @@ describe('PostsApiService', () => {
     expect(createReq.request.body).toEqual({ user_id: 1, title: 'Draft', body: 'Body' });
     createReq.flush({ id: 99, user_id: 1, title: 'Draft', body: 'Body' } as PostDto);
 
-    // update
     let updatedTitle = '';
     service.update(99, { title: '  Updated ', body: '  Body2 ' }).subscribe((post) => {
       updatedTitle = post.title;
@@ -99,7 +97,6 @@ describe('PostsApiService', () => {
     expect(updateReq.request.body).toEqual({ title: 'Updated', body: 'Body2' });
     updateReq.flush({ id: 99, user_id: 1, title: 'Updated', body: 'Body2' } as PostDto);
 
-    // delete
     service.delete(99).subscribe();
     const deleteReq = httpMock.expectOne('/posts/99');
     expect(deleteReq.request.method).toBe('DELETE');

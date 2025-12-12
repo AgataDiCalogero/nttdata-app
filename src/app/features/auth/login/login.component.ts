@@ -1,7 +1,13 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
+  Injector,
+  PLATFORM_ID,
+  ViewChild,
+  afterNextRender,
   computed,
   effect,
   inject,
@@ -47,12 +53,20 @@ export class Login {
   private readonly loginUi = inject(LoginUiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly injector = inject(Injector);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   readonly loading = signal(false);
   private readonly apiErrorMessage = signal<string | null>(null);
   readonly submissionMessage = signal<string | null>(null);
   private readonly attemptedSubmit = signal(false);
   readonly tokenErrorId = 'token-error';
+  readonly formErrorId = 'login-form-error';
+
+  @ViewChild('tokenInput') private readonly tokenInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('formAlert', { read: ElementRef })
+  private readonly formAlert?: ElementRef<HTMLElement>;
 
   readonly form = this.fb.nonNullable.group({
     token: this.fb.nonNullable.control('', {
@@ -84,6 +98,17 @@ export class Login {
     return null;
   });
 
+  readonly tokenDescribedBy = computed(() => {
+    const ids: string[] = [];
+    if (this.tokenErrorMessage()) {
+      ids.push(this.tokenErrorId);
+    }
+    if (this.submissionMessage()) {
+      ids.push(this.formErrorId);
+    }
+    return ids.length ? ids.join(' ') : null;
+  });
+
   readonly showTokenInvalidState = computed(
     () =>
       this.tokenControl.invalid &&
@@ -91,7 +116,6 @@ export class Login {
   );
 
   constructor() {
-    // Disable form control when loading
     effect(() => {
       const isLoading = this.loading();
       if (isLoading && this.tokenControl.enabled) {
@@ -101,7 +125,6 @@ export class Login {
       }
     });
 
-    // Clear API errors when user types
     this.tokenControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.tokenControl.hasError('api')) {
         const existing: ValidationErrors = (this.tokenControl.errors ?? {}) as ValidationErrors;
@@ -130,6 +153,7 @@ export class Login {
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.focusTokenInput();
       return;
     }
 
@@ -152,15 +176,16 @@ export class Login {
             this.tokenControl.markAsDirty();
             this.apiErrorMessage.set(message);
             this.loginUi.showError(message);
+            this.focusTokenInput();
             return;
           }
 
           this.submissionMessage.set(message);
           this.loginUi.showError(message);
+          this.focusFormAlert();
           return;
         }
 
-        // Success - facade already handled navigation
         this.form.reset({ token: '' });
         this.attemptedSubmit.set(false);
       });
@@ -168,5 +193,15 @@ export class Login {
 
   openTokenHelp(): void {
     this.loginUi.openTokenHelp();
+  }
+
+  private focusTokenInput(): void {
+    if (!this.isBrowser) return;
+    afterNextRender(() => this.tokenInput?.nativeElement?.focus(), { injector: this.injector });
+  }
+
+  private focusFormAlert(): void {
+    if (!this.isBrowser) return;
+    afterNextRender(() => this.formAlert?.nativeElement?.focus(), { injector: this.injector });
   }
 }

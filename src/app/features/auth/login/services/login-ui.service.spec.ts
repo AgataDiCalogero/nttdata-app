@@ -60,7 +60,6 @@ describe('LoginUiService', () => {
   it('should release overlay when dialog closes', (done) => {
     service.openTokenHelp();
 
-    // Simulate dialog close
     setTimeout(() => {
       expect(mockOverlays.release).toHaveBeenCalledWith('token-help-dialog');
       done();

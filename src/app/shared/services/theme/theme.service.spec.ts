@@ -111,14 +111,11 @@ describe('ThemeService', () => {
   });
 
   it('should toggle theme from system preference to dark and persist it', (done) => {
-    // Arrange
     service.setPreference('system');
     (localStorage.setItem as jasmine.Spy).calls.reset();
 
-    // Act
     service.toggleTheme();
 
-    // Assert - use setTimeout to wait for effect
     setTimeout(() => {
       expect(service.theme()).toBe('dark');
       expect(body.classList.contains('dark-theme')).toBeTrue();
@@ -128,13 +125,9 @@ describe('ThemeService', () => {
   });
 
   it('should set preference to light and update DOM dataset', (done) => {
-    // Arrange
     service.setPreference('dark');
-
-    // Act
     service.setPreference('light');
 
-    // Assert - use setTimeout to wait for effect
     setTimeout(() => {
       expect(service.theme()).toBe('light');
       expect(body.classList.contains('light-theme')).toBeTrue();
@@ -144,20 +137,15 @@ describe('ThemeService', () => {
   });
 
   it('should toggle reading mode and store flag', (done) => {
-    // Arrange
     service.setReadingMode(false);
     (localStorage.setItem as jasmine.Spy).calls.reset();
 
-    // Act
     service.toggleReadingMode();
 
-    // Assert - use setTimeout to wait for effect
     setTimeout(() => {
       expect(service.isReadingMode()).toBeTrue();
       expect(body.classList.contains('reading-mode')).toBeTrue();
       expect(localStorage.setItem).toHaveBeenCalledWith('reading-mode', 'true');
-
-      // Act & Assert - disable again
       service.toggleReadingMode();
       setTimeout(() => {
         expect(service.isReadingMode()).toBeFalse();
@@ -169,13 +157,10 @@ describe('ThemeService', () => {
   });
 
   it('should respond to system theme changes via matchMedia listener', () => {
-    // Arrange
     service.setPreference('system');
 
-    // Act
     mediaQueryList.trigger({ matches: false } as MediaQueryListEvent);
 
-    // Assert
     expect(service.theme()).toBe('dark');
     expect(matchMediaSpy).toHaveBeenCalled();
   });

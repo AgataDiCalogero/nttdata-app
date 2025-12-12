@@ -8,8 +8,8 @@ import type { Comment } from '@/app/shared/models/post';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsCacheService {
-  private static readonly DEFAULT_TTL_MS = 2 * 60 * 1000; // 2 minutes cache window
-  private static readonly MAX_CACHED_POSTS = 50; // LRU limit
+  private static readonly DEFAULT_TTL_MS = 2 * 60 * 1000;
+  private static readonly MAX_CACHED_POSTS = 50;
 
   readonly commentsMap = new Map<number, Comment[]>();
   readonly inFlight = new Map<number, Observable<Comment[] | null>>();
@@ -17,7 +17,7 @@ export class CommentsCacheService {
   readonly countInFlight = new Map<number, Observable<number>>();
   private readonly commentsExpiry = new Map<number, number>();
   private readonly countExpiry = new Map<number, number>();
-  private readonly accessOrder: number[] = []; // LRU tracking
+  private readonly accessOrder: number[] = [];
 
   constructor(private readonly postsApi: PostsApiService) {}
 
@@ -136,6 +136,26 @@ export class CommentsCacheService {
     }
     const c = this.commentsMap.get(postId);
     return c ? c.length : undefined;
+  }
+
+  hasFreshCount(postId: number): boolean {
+    const cached = this.countMap.get(postId);
+    if (cached === undefined) {
+      return false;
+    }
+
+    const expiresAt = this.countExpiry.get(postId);
+    if (!expiresAt) {
+      return false;
+    }
+
+    if (Date.now() > expiresAt) {
+      this.countExpiry.delete(postId);
+      this.countMap.delete(postId);
+      return false;
+    }
+
+    return true;
   }
 
   clear(postId?: number): void {

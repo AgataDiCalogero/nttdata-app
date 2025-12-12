@@ -1,8 +1,9 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpHeaders, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { TokenValidationService } from './token-validation.service';
+import { SKIP_GLOBAL_ERROR } from '../interceptors/http-context-tokens';
 
 describe('TokenValidationService', () => {
   let service: TokenValidationService;
@@ -39,6 +40,7 @@ describe('TokenValidationService', () => {
     const req = httpMock.expectOne((r) => r.url === '/users');
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Bearer token-123');
+    expect(req.request.context.get(SKIP_GLOBAL_ERROR)).toBeTrue();
     expect(req.request.params.get('page')).toBe('1');
     expect(req.request.params.get('per_page')).toBe('1');
     req.flush({}, { status: 200, statusText: 'OK' });
@@ -70,9 +72,18 @@ describe('TokenValidationService', () => {
       expect(result.success).toBeFalse();
       expect(result.code).toBe('rate_limited');
       expect(result.message).toContain('Too many requests');
+      expect(result.retryAfterMs).toBe(3000);
+      expect(result.message).toContain('3s');
     });
     const rateReq = httpMock.expectOne((r) => r.url === '/users');
-    rateReq.flush({ message: 'too many' }, { status: 429, statusText: 'Too Many Requests' });
+    rateReq.flush(
+      { message: 'too many' },
+      {
+        status: 429,
+        statusText: 'Too Many Requests',
+        headers: new HttpHeaders({ 'Retry-After': '3' }),
+      },
+    );
 
     service.validate('token-123').subscribe((result) => {
       expect(result.success).toBeFalse();

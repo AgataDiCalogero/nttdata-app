@@ -20,7 +20,6 @@ export class AutoFocusDirective {
       try {
         this.el.nativeElement.focus?.();
       } catch (err) {
-        // ignore focus errors on detached elements
         console.debug('auto-focus error', err);
       }
     }, 0);

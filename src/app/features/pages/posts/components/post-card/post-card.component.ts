@@ -14,8 +14,8 @@ import {
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
-import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { I18nService } from '@app/shared/i18n/i18n.service';
+import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
@@ -50,7 +50,6 @@ export class PostCardComponent implements AfterViewChecked {
   readonly commentsLoading = input(false);
   readonly authorName = input<string | null>(null);
   readonly commentsLoaded = input(false);
-  // Optional pre-fetched count to show in preview (before comments are loaded)
   readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
   readonly author = computed(() => {

@@ -31,7 +31,6 @@ export class UserListComponent {
   readonly items = input([] as User[]);
   private readonly _deviceType = inject(DeviceTypeService);
 
-  // signal used by the template to switch which delete button is rendered
   protected readonly isMobile = this._deviceType.isMobile;
 
   readonly edit = output<number>();

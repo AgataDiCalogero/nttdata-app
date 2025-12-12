@@ -5,9 +5,12 @@
   z-index: var(--z-modal, 1300);
 }
 
-.cdk-overlay-backdrop,
-.cdk-overlay-backdrop.app-dialog-overlay {
-  background: var(--overlay-backdrop-strong) !important;
+.cdk-overlay-container .cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
+  background: var(--overlay-backdrop-default);
+}
+
+.cdk-overlay-container .cdk-overlay-backdrop.app-dialog-overlay {
+  background: var(--overlay-backdrop-strong);
 }
 
 .cdk-overlay-pane {

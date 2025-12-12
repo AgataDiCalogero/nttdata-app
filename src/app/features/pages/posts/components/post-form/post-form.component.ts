@@ -229,10 +229,8 @@ export class PostForm {
         this.dialogRef.disableClose = false;
         const status = err?.status;
         if (status === 422) {
-          // Field-level validation: mark the title control so the template shows the specific field error
           this.titleControl.setErrors({ api: true });
         } else if (status === 429) {
-          // Global/server error: show a centralized toast
           this.toast.show('error', this.i18n.translate('postForm.errors.rateLimit'));
         } else {
           this.toast.show('error', this.i18n.translate('postForm.errors.saveFailed'));

@@ -20,9 +20,8 @@
 
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* use spacer to push controls */
+  justify-content: flex-start;
 
-  /* Make sure Material internal wrappers use flex so spacer works */
   .mat-toolbar-row,
   .mat-toolbar-layout {
     display: flex;
@@ -45,7 +44,6 @@
     margin-inline-start: 0;
     color: var(--color-on-surface);
 
-    /* forza rimozione underline e colore ereditato su tutti gli stati del link */
     &,
     &:link,
     &:visited,
@@ -71,20 +69,17 @@
 
     .brand__label {
       display: inline-flex;
-      align-items: center; /* vertical center relative al logo */
+      align-items: center;
       line-height: 1.05;
-      text-decoration: none; /* ensure no underline */
-      color: var(--color-accent); /* fallback forte in arancione */
+      text-decoration: none;
+      color: var(--color-accent);
       font-weight: var(--font-weight-extrabold);
       font-size: clamp(1.2rem, 2.4vw, 1.7rem);
       letter-spacing: var(--letter-spacing-tight);
 
-      /* Effetto luce dorata tipo pulsanti (fallback: text-shadow) */
       text-shadow:
         0 1px 0 rgba(255, 255, 255, 0.25),
         0 8px 22px rgba(249, 115, 22, 0.25);
-
-      /* niente gradient clip: evitiamo interferenze con stati dei link */
     }
 
     &.active {
@@ -92,16 +87,13 @@
       color: var(--color-on-accent);
     }
   }
-  /* Minimum breathing room before the controls on tight viewports */
+
   @media (max-width: 62rem) {
     .brand {
       margin-right: var(--space-sm);
     }
   }
 
-  /* Removed light-theme only override for active nav links to keep consistent, accessible colors across themes */
-
-  /* push controls to the far right even inside Material wrappers */
   > .controls {
     margin-left: auto;
   }
@@ -116,10 +108,8 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    /* margin-left handled on direct child to avoid nesting issues */
     .toolbar-menu-trigger {
-      margin-left: auto; /* push controls to the far right */
-      /* ensure internal items are aligned vertically */
+      margin-left: auto;
       display: inline-flex;
       align-items: center;
       gap: var(--space-xs);
@@ -147,7 +137,6 @@
     }
   }
 
-  /* spacer element pushes controls to the far right */
   .spacer {
     flex: 1 1 auto;
   }
@@ -155,11 +144,11 @@
     flex: 1 1 auto;
   }
 
-  /* Ensure nav links are always legible and have clear states */
   .nav-links {
     display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
+    padding: var(--space-sm);
 
     a[appButton] {
       --_hover-bg: color-mix(in srgb, var(--color-accent) 18%, transparent);
@@ -202,16 +191,13 @@
       }
 
       &:active {
-        /* slightly stronger on press */
         background: color-mix(in srgb, var(--color-accent) 24%, transparent);
         color: var(--color-on-surface);
       }
     }
   }
 
-  /* Styles applied when the app is on the login route. We toggle `body.login-route` from the component. */
   :host-context(body.login-route) {
-    /* Hide navigation elements including hamburger - target the actual button to avoid !important */
     .menu-trigger,
     button[appButton].logout-btn {
       display: none;
@@ -220,14 +206,12 @@
       opacity: 0;
     }
 
-    /* Keep only the appearance switcher visible on the right */
     .controls {
       app-appearance-switcher {
         display: inline-flex;
       }
     }
 
-    /* Brand appears as plain orange label (not a link) */
     .brand {
       pointer-events: none;
       .brand__label {
@@ -240,24 +224,15 @@
     }
   }
 
-  /* Optionally lock body scroll on login so the centered card stays visible; footer should still be reachable if present */
-  /* body.login-route no longer forces overflow hidden; allow page to scroll if needed */
-
-  /* Style the mat-menu panel to match app surface aesthetics and tokens */
-  /* mat-menu panel gets the `nav-menu` class and renders inside cdk overlay pane. We
-   style the overlay panel via a specific selector to ensure the app palette is used
-   (no !important). */
   .cdk-overlay-pane .nav-menu {
     min-width: 14rem;
     @include app-menu-panel;
     border-radius: calc(var(--radius-2xl) * 1.1);
   }
-  /* Material uses CSS variables for menu text color; set them on the panel so
-       internal Material rules pick the right colors without needing !important. */
+
   .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu,
   .cdk-overlay-pane .mat-menu-panel.nav-menu,
   .cdk-overlay-pane .nav-menu {
-    /* ensure Material's internal variables map to our theme tokens */
     --mat-menu-item-label-text-color: var(--color-on-surface, #ffffff);
     --mat-sys-on-surface: var(--color-on-surface, #ffffff);
     --mat-menu-item-icon-color: var(--color-accent, #f97316);
@@ -266,9 +241,6 @@
     display: none;
   }
 
-  /* mat-menu renders in overlay; these class rules are applied to the panel */
-  /* Ensure menu items (Material v2 MDC and legacy) inherit our colors. Include
-     :visited and :link variants to match Material's selectors and avoid using !important. */
   .cdk-overlay-pane .nav-menu button.mat-menu-item,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item,
   .cdk-overlay-pane .nav-menu button.mat-menu-item:visited,
@@ -279,9 +251,6 @@
     @include app-menu-item;
   }
 
-  /* Ensure the inner Material button wrapper / label text uses the on-surface color
-     (Material renders label inside .mat-button-wrapper or a span). We include common
-     panel variants so overlay-scoped styles apply reliably. */
   .cdk-overlay-pane .nav-menu button.mat-menu-item .mat-button-wrapper,
   .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item .mat-button-wrapper,
   .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item .mat-button-wrapper,
@@ -302,12 +271,10 @@
     color: var(--color-on-surface);
   }
 
-  /* Active (current route) state inside the dropdown */
   .cdk-overlay-pane .nav-menu button.mat-menu-item.active,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item.active,
   .cdk-overlay-pane .nav-menu button.mat-menu-item.active:link,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item.active:link {
-    /* active selection: pill with accent backdrop to mimic Theme options */
     background: linear-gradient(
       90deg,
       color-mix(in srgb, var(--color-accent) 32%, transparent),
@@ -320,12 +287,11 @@
     }
   }
 
-  /* Ensure mat icons inside the overlay use the accent color */
   .cdk-overlay-pane .nav-menu mat-icon,
   .cdk-overlay-pane .nav-menu button.mat-mdc-menu-item mat-icon,
   .cdk-overlay-pane .nav-menu button.mat-menu-item mat-icon {
     margin-inline-end: var(--space-sm);
-    color: var(--color-accent); /* icons in orange */
+    color: var(--color-accent);
   }
 
   @media (max-width: 62rem) {
@@ -339,12 +305,10 @@
     }
 
     .nav-links {
-      display: none; /* ensure top links are hidden on mobile */
+      display: none;
     }
 
-    /* target the actual button element with the appButton directive for specificity */
     button[appButton].logout-btn {
-      /* compact circular icon button on mobile */
       padding: 0;
       min-width: auto;
       width: 2.5rem;
@@ -354,8 +318,6 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-
-      /* label made screen-reader-only via sr-only utility */
 
       mat-icon {
         margin: 0;
@@ -369,7 +331,6 @@
         color: var(--color-on-surface);
         line-height: 1;
 
-        /* make sure the inner SVG fits and is centered */
         svg {
           width: 1rem;
           height: 1rem;
@@ -378,7 +339,6 @@
       }
     }
 
-    /* Contextual menu styling on mobile - matches appearance-switcher */
     .cdk-overlay-pane .nav-menu,
     .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu,
     .cdk-overlay-pane .mat-menu-panel.nav-menu {
@@ -392,7 +352,6 @@
       z-index: 9999;
     }
 
-    /* Center menu contents on mobile for the floating trigger experience */
     .cdk-overlay-pane .nav-menu .mat-menu-content,
     .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu .mat-menu-content,
     .cdk-overlay-pane .mat-menu-panel.nav-menu .mat-menu-content {
@@ -404,12 +363,11 @@
       padding-bottom: var(--space-sm);
     }
 
-    /* Make menu items visually centered and use theme foregrounds */
     .cdk-overlay-pane .nav-menu button.mat-menu-item,
     .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item,
     .cdk-overlay-pane .mat-menu-panel.nav-menu button.mat-menu-item {
       width: 100%;
-      justify-content: flex-start; /* keep icon + text in a row like Theme options */
+      justify-content: flex-start;
       text-align: left;
       padding: var(--space-sm) var(--space-md);
       border-radius: var(--radius-lg);
@@ -431,7 +389,6 @@
       justify-content: center;
     }
 
-    /* subtle darker pill for hovered/active items to match Theme options */
     .cdk-overlay-pane .nav-menu button.mat-menu-item:hover,
     .cdk-overlay-pane .nav-menu button.mat-menu-item.cdk-program-focused,
     .cdk-overlay-pane .mat-mdc-menu-panel.nav-menu button.mat-menu-item:hover,
@@ -457,7 +414,6 @@
   }
 }
 
-/* Floating hamburger button - outside toolbar, only mobile */
 .floating-menu-trigger {
   position: fixed;
   bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
@@ -471,7 +427,6 @@
   padding: 0;
   z-index: 9998;
 
-  /* Use appearance-switcher colors */
   background: var(--color-surface-solid);
   border: 1px solid var(--color-accent);
   box-shadow: var(--shadow-xl, 0 0.625rem 1.875rem rgba(2, 6, 23, 0.6));
@@ -497,7 +452,6 @@
   }
 }
 
-/* CRITICAL: Hide hamburger on login route - target the button element (no !important) */
 :host-context(body.login-route) button[appButton].floating-menu-trigger {
   display: none;
   visibility: hidden;

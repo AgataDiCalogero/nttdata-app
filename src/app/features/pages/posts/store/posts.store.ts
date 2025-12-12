@@ -2,7 +2,15 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  of,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 
 import {
   DEFAULT_PAGINATION_CONFIG,
@@ -96,7 +104,13 @@ export const PostsStoreAdapter = signalStore(
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
       DEFAULT_PAGINATION_CONFIG;
     const isBrowser = isPlatformBrowser(platformId);
-    const postsCache = new Map<string, { items: Post[]; pagination: PaginationMeta | null }>();
+    const POSTS_CACHE_TTL_MS = 30_000;
+    type PostsCacheEntry = { items: Post[]; pagination: PaginationMeta | null; cachedAt: number };
+    const postsCache = new Map<string, PostsCacheEntry>();
+
+    const invalidatePostsCache = (): void => {
+      postsCache.clear();
+    };
 
     const computePaginationAfterRemoval = (state: PostsState): PaginationMeta | null => {
       if (!state.pagination) return null;
@@ -150,24 +164,26 @@ export const PostsStoreAdapter = signalStore(
       const cached = postsCache.get(cacheKey);
 
       if (cached) {
-        applyPostsResult(cached);
-        return of(cached);
+        if (Date.now() - cached.cachedAt <= POSTS_CACHE_TTL_MS) {
+          applyPostsResult(cached);
+          return of(cached);
+        }
+        postsCache.delete(cacheKey);
       }
 
-      return postsApi
-        .list({ page, perPage, title, userId })
-        .pipe(
-          tap((result) => {
-            const cachedResult = {
-              items: result?.items ?? [],
-              pagination: result?.pagination ?? null,
-            };
-            postsCache.set(cacheKey, cachedResult);
-            applyPostsResult(result);
-            prefetchCommentCounts(result?.items ?? []);
-          }),
-          catchError((err) => handleListError(err)),
-        );
+      return postsApi.list({ page, perPage, title, userId }).pipe(
+        tap((result) => {
+          const cachedResult = {
+            items: result?.items ?? [],
+            pagination: result?.pagination ?? null,
+            cachedAt: Date.now(),
+          };
+          postsCache.set(cacheKey, cachedResult);
+          applyPostsResult(result);
+          prefetchCommentCounts(result?.items ?? []);
+        }),
+        catchError((err) => handleListError(err)),
+      );
     };
 
     const shouldGoToPreviousPage = () =>
@@ -194,6 +210,7 @@ export const PostsStoreAdapter = signalStore(
         tap({
           next: () => {
             patchState(store, (state) => removePostFromState(state, post.id));
+            invalidatePostsCache();
             notifications.showSuccess('Post deleted');
             if (shouldGoPrev) {
               patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));
@@ -239,6 +256,7 @@ export const PostsStoreAdapter = signalStore(
        * Triggers a refresh of the posts list by incrementing the reload token
        */
       refresh(): void {
+        invalidatePostsCache();
         patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
       },
 
@@ -295,6 +313,7 @@ export const PostsStoreAdapter = signalStore(
             [updated.id]: updated,
           },
         }));
+        invalidatePostsCache();
       },
 
       changePerPage(perPage: number): void {
@@ -321,12 +340,13 @@ export const PostsStoreAdapter = signalStore(
       toObservable(store.queryCriteria)
         .pipe(
           debounceTime(300), // Debounce to prevent excessive API calls
-          distinctUntilChanged((a, b) =>
-            a.page === b.page &&
-            a.perPage === b.perPage &&
-            a.title === b.title &&
-            a.userId === b.userId &&
-            a.reload === b.reload,
+          distinctUntilChanged(
+            (a, b) =>
+              a.page === b.page &&
+              a.perPage === b.perPage &&
+              a.title === b.title &&
+              a.userId === b.userId &&
+              a.reload === b.reload,
           ),
           switchMap((criteria) => {
             patchState(store, { loading: true, error: null });
