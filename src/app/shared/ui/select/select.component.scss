@@ -97,8 +97,8 @@
 /* Mobile tuning: avoid dropdown overflow by capping intrinsic width and reducing font size */
 @media (max-width: 48rem) {
   .select {
-    width: min(100%, calc(100vw - 2 * var(--app-page-gutter-tight)));
-    max-width: min(100%, calc(100vw - 2 * var(--app-page-gutter-tight)));
+    width: 100%;
+    max-width: 100%;
     font-size: 0.9rem;
   }
 
@@ -106,4 +106,13 @@
     font-size: 0.9rem;
     line-height: 1.2;
   }
+}
+
+/* Explicit modal sizing to keep native dropdown aligned with trigger */
+.select.select--in-modal {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: 0.95rem;
 }

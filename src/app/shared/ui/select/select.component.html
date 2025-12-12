@@ -4,6 +4,7 @@
 @if (control(); as ctrl) {
   <select
     class="select"
+    [class.select--in-modal]="isInModal"
     [class.select--compact]="variant() === 'compact'"
     [id]="resolvedId()"
     title="Select option"
@@ -29,6 +30,7 @@
 @if (!control()) {
   <select
     class="select"
+    [class.select--in-modal]="isInModal"
     [class.select--compact]="variant() === 'compact'"
     [id]="resolvedId()"
     title="Select option"

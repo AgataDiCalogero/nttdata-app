@@ -237,6 +237,10 @@
   border-radius: var(--radius-input);
   border: 1px solid var(--border-mix-60);
   box-shadow: none !important;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 
   @supports (background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg))) {
     background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg));
@@ -255,6 +259,13 @@
   ) {
   box-shadow: none !important;
   border-color: var(--color-danger);
+}
+
+.form-dialog select.select--in-modal,
+.form-dialog .select.select--in-modal {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .form-dialog__actions {
