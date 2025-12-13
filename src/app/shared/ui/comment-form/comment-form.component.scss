@@ -4,26 +4,22 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-
-  background: var(--mat-card-bg);
-  border: 1px solid var(--mat-card-border);
-  padding: calc(var(--space-md) + 0.25rem);
-  @include mixins.radius('xl');
-  @include mixins.shadow('lg');
+  width: 100%;
+  // Removed card styling for seamless integration
 }
 
 .comment-form__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
   gap: var(--space-md);
+  width: 100%;
 
   > .form-field {
-    min-width: 0;
-    width: 100%;
+    flex: 1;
+    min-width: 0; // Prevent flex item overflow
   }
 
-  @media (max-width: 40rem) {
-    grid-template-columns: 1fr;
+  @media (max-width: 35rem) {
+    flex-direction: column;
   }
 }
 

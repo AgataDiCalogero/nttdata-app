@@ -138,13 +138,4 @@
       </div>
     }
   </div>
-
-  <hr class="post-comments__divider" />
-
-  <app-comment-form
-    class="post-comments__composer"
-    [postId]="postId()"
-    [placeholder]="'postComments.composerPlaceholder' | appTranslate"
-    (created)="onCommentCreated($event)"
-  ></app-comment-form>
 </section>

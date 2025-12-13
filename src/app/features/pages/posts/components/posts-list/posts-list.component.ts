@@ -5,8 +5,8 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 
 import type { Post, Comment } from '@/app/shared/models/post';
 
-import { PostCardComponent } from '../post-card/post-card.component';
 import { PostCardCoordinatorService } from '../post-card/post-card-coordinator.service';
+import { PostCardComponent } from '../post-card/post-card.component';
 
 @Component({
   standalone: true,

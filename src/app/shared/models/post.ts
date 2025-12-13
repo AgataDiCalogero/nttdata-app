@@ -3,6 +3,7 @@ export interface Post {
   user_id: number;
   title: string;
   body: string;
+  comments_count?: number;
 }
 
 export type CreatePost = Omit<Post, 'id'>;

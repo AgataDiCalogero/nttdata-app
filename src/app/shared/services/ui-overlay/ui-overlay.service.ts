@@ -9,7 +9,8 @@ export type OverlayKey =
   | 'post-form'
   | 'post-delete-confirm'
   | 'comment-delete-confirm'
-  | 'language-menu';
+  | 'language-menu'
+  | 'comments-modal';
 
 interface OverlayHandle {
   key: OverlayKey;

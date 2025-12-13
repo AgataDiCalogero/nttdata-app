@@ -105,11 +105,7 @@
       variant="secondary"
       size="sm"
       type="button"
-      (click)="toggleCommentsPanel()"
-      [attr.aria-expanded]="commentsOpen() ? 'true' : 'false'"
-      [attr.aria-controls]="postModel ? 'comments-for-' + postModel.id : null"
-      [attr.aria-label]="'common.actions.commentsWithCount' | appTranslate: { count: commentCount }"
-      [title]="'common.actions.commentsWithCount' | appTranslate: { count: commentCount }"
+      (click)="openCommentsModal()"
       class="post-card__comments-toggle"
     >
       <mat-icon svgIcon="lucide:message-square" aria-hidden="true"></mat-icon>
@@ -117,24 +113,4 @@
       <span class="post-card__comment-count" aria-hidden="true">({{ commentCount }})</span>
     </button>
   </mat-card-actions>
-
-  @if (commentsOpen() && postModel) {
-    <section
-      #commentsSection
-      class="post-card__expanded"
-      [id]="'comments-for-' + postModel.id"
-      role="region"
-      [attr.aria-label]="'common.actions.commentsWithCount' | appTranslate: { count: commentCount }"
-    >
-      <app-post-comments
-        class="post-card__comments"
-        [postId]="postModel.id"
-        [comments]="commentsList"
-        [loading]="commentsLoading()"
-        (commentCreated)="onInternalCommentCreated($event)"
-        (commentUpdated)="onInternalCommentUpdated($event)"
-        (commentDeleted)="onInternalCommentDeleted($event)"
-      ></app-post-comments>
-    </section>
-  }
 </mat-card>

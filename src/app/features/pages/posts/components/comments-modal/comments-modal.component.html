@@ -1,0 +1,37 @@
+<div class="comments-modal">
+  <header class="comments-modal__header">
+    <h2 class="comments-modal__title">
+      {{ 'common.actions.commentsWithCount' | appTranslate: { count: count() } }}
+    </h2>
+    <div class="comments-modal__header-actions">
+      <button
+        appButton
+        variant="ghost"
+        size="sm"
+        [iconOnly]="true"
+        (click)="close()"
+        [attr.aria-label]="'common.actions.close' | appTranslate"
+      >
+        <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <div class="comments-modal__body">
+    <app-post-comments
+      [postId]="postId"
+      [comments]="comments()"
+      [loading]="loading()"
+      (commentUpdated)="onCommentUpdated($event)"
+      (commentDeleted)="onCommentDeleted($event)"
+    ></app-post-comments>
+  </div>
+
+  <footer class="comments-modal__footer">
+    <app-comment-form
+      [postId]="postId"
+      [placeholder]="'postComments.composerPlaceholder' | appTranslate"
+      (created)="onCommentCreated($event)"
+    ></app-comment-form>
+  </footer>
+</div>

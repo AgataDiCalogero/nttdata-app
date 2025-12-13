@@ -15,4 +15,3 @@ export class PostCardCoordinatorService {
     this._openCommentsPostId.set(null);
   }
 }
-
