@@ -23,7 +23,9 @@ import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { QueryCacheService } from '@/app/shared/services/query-cache/query-cache.service';
 import { UsersLookupService } from '@/app/shared/services/users/users-lookup.service';
+import { normalizePage } from '@/app/shared/utils/pagination-utils';
 
 import { PostsFiltersService } from './posts-filters.service';
 import type { PostsService } from './posts.service';
@@ -102,16 +104,15 @@ export const PostsStoreAdapter = signalStore(
     const destroyRef = inject(DestroyRef);
     const platformId = inject(PLATFORM_ID);
     const filtersService = inject(PostsFiltersService);
+    const queryCache = inject(QueryCacheService);
     const pagination =
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
       DEFAULT_PAGINATION_CONFIG;
     const isBrowser = isPlatformBrowser(platformId);
     const POSTS_CACHE_TTL_MS = 30_000;
-    type PostsCacheEntry = { items: Post[]; pagination: PaginationMeta | null; cachedAt: number };
-    const postsCache = new Map<string, PostsCacheEntry>();
 
     const invalidatePostsCache = (): void => {
-      postsCache.clear();
+      queryCache.invalidate('posts|');
     };
 
     const computePaginationAfterRemoval = (state: PostsState): PaginationMeta | null => {
@@ -162,25 +163,22 @@ export const PostsStoreAdapter = signalStore(
 
     const fetchPosts = (params: QueryCriteria) => {
       const { page, perPage, title, userId, reload } = params;
-      const cacheKey = `${page}|${perPage}|${title ?? ''}|${userId ?? ''}|${reload ?? 0}`;
-      const cached = postsCache.get(cacheKey);
+      const cacheKey = `posts|${page}|${perPage}|${title ?? ''}|${userId ?? ''}|${reload ?? 0}`;
+
+      const cached = queryCache.get<{ items: Post[]; pagination: PaginationMeta | null }>(cacheKey);
 
       if (cached) {
-        if (Date.now() - cached.cachedAt <= POSTS_CACHE_TTL_MS) {
-          applyPostsResult(cached);
-          return of(cached);
-        }
-        postsCache.delete(cacheKey);
+        applyPostsResult(cached);
+        return of(cached);
       }
 
       return postsApi.list({ page, perPage, title, userId }).pipe(
         tap((result) => {
-          const cachedResult = {
+          const toCache = {
             items: result?.items ?? [],
             pagination: result?.pagination ?? null,
-            cachedAt: Date.now(),
           };
-          postsCache.set(cacheKey, cachedResult);
+          queryCache.set(cacheKey, toCache, { ttl: POSTS_CACHE_TTL_MS });
           applyPostsResult(result);
           prefetchCommentCounts(result?.items ?? []);
         }),
@@ -234,11 +232,6 @@ export const PostsStoreAdapter = signalStore(
       searchForm,
       perPageOptions,
 
-      /**
-       * Initializes pagination settings
-       * @param page - The page number to start with
-       * @param perPage - Number of items per page
-       */
       initializePaging(page: number, perPage: number): void {
         const sanitizedPerPage = Math.max(1, perPage);
         const sanitizedPage = Math.max(1, page);
@@ -251,9 +244,6 @@ export const PostsStoreAdapter = signalStore(
         patchState(store, { page: next });
       },
 
-      /**
-       * Triggers a refresh of the posts list by incrementing the reload token
-       */
       refresh(): void {
         invalidatePostsCache();
         patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
@@ -267,10 +257,6 @@ export const PostsStoreAdapter = signalStore(
         });
       },
 
-      /**
-       * Deletes a post and handles UI state updates
-       * @param post - The post to delete
-       */
       deletePost(post: Post): void {
         performDeletePost(post)
           .pipe(takeUntilDestroyed(destroyRef))
@@ -284,10 +270,6 @@ export const PostsStoreAdapter = signalStore(
         return performDeletePost(post);
       },
 
-      /**
-       * Toggles the comments section for a specific post
-       * @param postId - ID of the post
-       */
       toggleComments(postId: number): void {
         commentsFacade.toggleComments(postId);
       },
@@ -318,7 +300,8 @@ export const PostsStoreAdapter = signalStore(
       changePerPage(perPage: number): void {
         const sanitized = Math.max(1, perPage);
         if (sanitized === store.perPage()) return;
-        patchState(store, { perPage: sanitized, page: pagination.defaultPage });
+        const nextPage = normalizePage(1, pagination.defaultPage);
+        patchState(store, { perPage: sanitized, page: nextPage });
       },
 
       setFilters(filters: PostFilters): void {
@@ -326,10 +309,6 @@ export const PostsStoreAdapter = signalStore(
       },
     };
 
-    /**
-     * Initializes the reactive posts stream that fetches data whenever query criteria change.
-     * Includes debounce to prevent excessive API calls during rapid filter changes.
-     */
     function initializePostsStream(): void {
       if (!isBrowser) {
         patchState(store, { loading: false });
@@ -338,7 +317,7 @@ export const PostsStoreAdapter = signalStore(
 
       toObservable(store.queryCriteria)
         .pipe(
-          debounceTime(300), // Debounce to prevent excessive API calls
+          debounceTime(300),
           distinctUntilChanged(
             (a, b) =>
               a.page === b.page &&

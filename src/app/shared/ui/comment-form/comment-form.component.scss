@@ -9,22 +9,21 @@
 }
 
 .comment-form__grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-md);
   width: 100%;
+  align-items: start;
 
-  > .form-field {
-    flex: 1;
-    min-width: 0; // Prevent flex item overflow
-  }
-
-  @media (max-width: 35rem) {
-    flex-direction: column;
+  @media (max-width: 38rem) {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-sm);
   }
 }
 
 .comment-form .form-field {
   min-width: 0;
+  width: 100%;
 }
 
 .comment-form :is(.form-input, .form-textarea) {
@@ -40,6 +39,12 @@
     background: var(--mat-field-bg-hover);
     background: color-mix(in srgb, var(--mat-field-bg-hover) 120%, transparent);
   }
+}
+
+.comment-form .field-error {
+  line-height: 1.4;
+  margin-bottom: 0;
+  word-break: break-word;
 }
 
 .comment-form__actions {

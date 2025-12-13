@@ -7,9 +7,16 @@
 /bazel-out
 
 # Node
-/node_modules
+node_modules/
 npm-debug.log
 yarn-error.log
+
+# Generated
+.npm-cache/
+.home/
+.cache/
+.codesight/
+test-ci.log
 
 # IDEs and editors
 .idea/

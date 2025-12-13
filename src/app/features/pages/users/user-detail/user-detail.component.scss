@@ -16,10 +16,13 @@
   &__nav {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    margin-bottom: var(--space-xs);
   }
 
   &__header {
     margin-top: var(--space-xs);
+    margin-bottom: var(--space-sm);
   }
 
   &__title {
@@ -116,22 +119,32 @@
 
   &__meta {
     display: grid;
-    gap: var(--space-sm);
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-sm) var(--space-lg);
     margin-top: 0;
   }
 
   &__meta-item {
-    display: inline-flex;
-    gap: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
     font-size: var(--font-size-sm);
     color: color-mix(in srgb, var(--color-on-surface) 64%, transparent);
     min-width: 0;
+    flex-wrap: wrap;
 
     lucide-icon {
       flex-shrink: 0;
-      width: 0.875rem;
-      height: 0.875rem;
+      width: 1rem;
+      height: 1rem;
       opacity: 0.64;
+    }
+
+    span,
+    a {
+      line-height: 1.4;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
   }
 

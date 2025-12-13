@@ -189,6 +189,10 @@
   &:focus-visible {
     box-shadow: var(--shadow-button-primary-focus);
   }
+
+  mat-icon {
+    color: var(--color-on-accent) !important;
+  }
 }
 
 .btn--secondary {

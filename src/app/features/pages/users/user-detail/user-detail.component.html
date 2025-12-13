@@ -9,12 +9,12 @@
         [attr.aria-label]="'common.actions.backToUsers' | appTranslate"
       >
         <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
-        <span>{{ 'common.actions.backToUsers' | appTranslate }}</span>
+        <span class="btn__label">{{ 'common.actions.backToUsers' | appTranslate }}</span>
       </a>
     </nav>
 
     <header class="user-detail__header">
-      <h1 class="user-detail__title">{{ 'userDetail.title' | appTranslate }}</h1>
+      <h1 class="user-detail__title">{{ pageTitle() }}</h1>
     </header>
 
     @if (loading()) {

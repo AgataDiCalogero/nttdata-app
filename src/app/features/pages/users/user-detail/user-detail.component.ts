@@ -11,6 +11,7 @@ import {
   type Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Title } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -66,6 +67,7 @@ export class UserDetail {
   private readonly commentsFacade = inject(CommentsFacadeService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
+  private readonly title = inject(Title);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly pagination =
@@ -109,6 +111,14 @@ export class UserDetail {
     return this.i18n.translate('common.gender.unspecified');
   });
 
+  readonly pageTitle = computed(() => {
+    const detail = this.user();
+    if (detail?.name?.trim()) {
+      return detail.name.trim();
+    }
+    return this.i18n.translate('userDetail.title');
+  });
+
   constructor() {
     if (this.userId === null) {
       this.userSource = signal<User | null>(null);
@@ -139,6 +149,15 @@ export class UserDetail {
         return;
       }
       void this.prefetchCommentCounts(posts);
+    });
+
+    effect(() => {
+      if (!this.isBrowser) {
+        return;
+      }
+      const title = this.pageTitle();
+      const suffix = this.i18n.translate('users.title');
+      this.title.setTitle(`${title} | ${suffix}`);
     });
   }
 

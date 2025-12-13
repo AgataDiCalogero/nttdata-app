@@ -1,4 +1,5 @@
 import { HttpClientTestingModule, provideHttpClientTesting } from '@angular/common/http/testing';
+import { ViewportScroller } from '@angular/common';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -6,7 +7,6 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Comment, Post } from '@/app/shared/models/post';
-import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import { PostsUiService } from './posts-ui.service';
 import { Posts } from './posts.component';
@@ -21,7 +21,7 @@ describe('PostsComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
   let uiServiceSpy: jasmine.SpyObj<PostsUiService>;
   let filtersServiceSpy: jasmine.SpyObj<PostsFiltersService>;
-  let notificationsSpy: jasmine.SpyObj<NotificationsService>;
+  let viewportSpy: jasmine.SpyObj<ViewportScroller>;
 
   function createMockStore() {
     const fb = new FormBuilder();
@@ -70,7 +70,7 @@ describe('PostsComponent', () => {
     filtersServiceSpy = jasmine.createSpyObj('PostsFiltersService', [], {
       filters: signal({}),
     });
-    notificationsSpy = jasmine.createSpyObj('NotificationsService', ['showInfo']);
+    viewportSpy = jasmine.createSpyObj('ViewportScroller', ['scrollToPosition']);
 
     await TestBed.configureTestingModule({
       imports: [Posts, HttpClientTestingModule],
@@ -82,7 +82,7 @@ describe('PostsComponent', () => {
           provide: ActivatedRoute,
           useValue: { snapshot: { queryParamMap: { get: () => null } } },
         },
-        { provide: NotificationsService, useValue: notificationsSpy },
+        { provide: ViewportScroller, useValue: viewportSpy },
       ],
     })
       .overrideComponent(Posts, {
@@ -160,15 +160,14 @@ describe('PostsComponent', () => {
     expect(mockStore.changePerPage).toHaveBeenCalledWith(20);
   });
 
-  it('should navigate to author profile if user exists', () => {
+  it('should navigate to author profile when requested', () => {
     component.handleViewAuthor(1);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/users', 1]);
   });
 
-  it('should show info if author not found', () => {
+  it('navigates even when author is missing in lookup', () => {
     component.handleViewAuthor(999);
-    expect(notificationsSpy.showInfo).toHaveBeenCalled();
-    expect(routerSpy.navigate).not.toHaveBeenCalledWith(['/users', 999]);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/users', 999]);
   });
 
   it('should display loading state and hide posts list', () => {
@@ -197,4 +196,12 @@ describe('PostsComponent', () => {
     expect(fixture.nativeElement.querySelector('.posts-empty')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('app-posts-list')).toBeNull();
   });
+
+  it('scrolls to top on pagination change', fakeAsync(() => {
+    mockStore.currentPage.set(2);
+    fixture.detectChanges();
+    tick();
+
+    expect(viewportSpy.scrollToPosition).toHaveBeenCalledWith([0, 0]);
+  }));
 });

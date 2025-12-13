@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { isPlatformBrowser, ViewportScroller } from '@angular/common';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, effect, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
-import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
 import { PostsUiService } from './posts-ui.service';
@@ -22,8 +21,9 @@ export class Posts {
   protected readonly store = injectPostsService();
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly notifications = inject(NotificationsService);
-  private readonly i18n = inject(I18nService);
+  private readonly viewport = inject(ViewportScroller);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly ui = inject(PostsUiService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
@@ -37,6 +37,16 @@ export class Posts {
       const page = this.store.currentPage();
       const perPage = this.store.currentPerPage();
       this.syncQueryParams(page, perPage);
+    });
+
+    effect(() => {
+      if (!this.isBrowser) {
+        return;
+      }
+      // Scroll to top when pagination changes
+      this.store.currentPage();
+      this.store.currentPerPage();
+      this.viewport.scrollToPosition([0, 0]);
     });
   }
 
@@ -77,11 +87,6 @@ export class Posts {
   }
 
   handleViewAuthor(userId: number): void {
-    const exists = Boolean(this.store.userLookup()[userId]);
-    if (!exists) {
-      this.notifications.showInfo(this.i18n.translate('posts.authorUnavailable'));
-      return;
-    }
     this.router.navigate(['/users', userId]).catch(() => {});
   }
 

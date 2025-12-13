@@ -17,6 +17,7 @@ import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { User } from '@/app/shared/models/user';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { mapHttpError } from '@/app/shared/utils/error-mapper';
+import { normalizePage, findNearestOption } from '@/app/shared/utils/pagination-utils';
 
 import type { SortField, UsersService } from './users.service';
 
@@ -54,30 +55,6 @@ interface UsersLoadCriteria {
   reload: number;
 }
 
-const normalizePage = (value: number | undefined, fallback: number) =>
-  Math.max(1, Number.isFinite(value as number) ? Math.floor(value as number) : fallback);
-
-const findNearestPerPage = (
-  value: number,
-  options: readonly number[],
-  fallback: number,
-): number => {
-  const sorted = options
-    .filter((option) => Number.isFinite(option) && option > 0)
-    .map((option) => Math.floor(option))
-    .sort((a, b) => a - b);
-  if (!sorted.length) {
-    return Math.max(1, Number.isFinite(value) ? Math.floor(value) : Math.floor(fallback));
-  }
-
-  const target = Math.max(1, Number.isFinite(value) ? Math.floor(value) : Math.floor(fallback));
-  if (sorted.includes(target)) {
-    return target;
-  }
-
-  return sorted.find((option) => option >= target) ?? sorted.at(-1) ?? Math.max(1, fallback);
-};
-
 export const UsersStoreAdapter = signalStore(
   withState<UsersState>({
     ids: [],
@@ -99,7 +76,7 @@ export const UsersStoreAdapter = signalStore(
       const entities = store.entities();
 
       const getValue = (u: User) => {
-        const v = u[field]; // SortField ⊂ keyof User → ok per TS
+        const v = u[field];
         const s = typeof v === 'string' ? v : String(v ?? '');
         return s.toLowerCase();
       };
@@ -144,7 +121,7 @@ export const UsersStoreAdapter = signalStore(
     const ensurePerPage = (value: number | undefined): number => {
       const normalized = normalizePage(value, pagination.defaultPerPage);
       const options = store.perPageOptions();
-      return findNearestPerPage(normalized, options, pagination.defaultPerPage);
+      return findNearestOption(normalized, options, pagination.defaultPerPage);
     };
 
     const ensurePage = (value: number | undefined): number =>
@@ -164,7 +141,6 @@ export const UsersStoreAdapter = signalStore(
         currentCriteria.perPage === targetPerPage &&
         currentCriteria.searchTerm === term;
 
-      // Avoid pointless refetches; keep a retry path when we have an error.
       if (sameCriteria && !store.error()) {
         return;
       }
@@ -194,6 +170,32 @@ export const UsersStoreAdapter = signalStore(
         .catch(() => {});
     };
 
+    const handleFetchSuccess = (
+      items: User[],
+      paginationMeta: PaginationMeta | null,
+      criteria: UsersLoadCriteria,
+    ) => {
+      const userList = items ?? [];
+      const entities = userList.reduce<Record<number, User>>((acc, user) => {
+        acc[user.id] = user;
+        return acc;
+      }, {});
+      const ids = userList.map((user) => user.id);
+
+      patchState(store, {
+        ids,
+        entities,
+        pagination: paginationMeta,
+        loading: false,
+        page: paginationMeta?.page ?? criteria.page,
+        perPage: paginationMeta?.limit ?? criteria.perPage,
+      });
+
+      if (paginationMeta) {
+        syncUrl(criteria, paginationMeta);
+      }
+    };
+
     const initializeUsersStream = () => {
       if (!isBrowser) {
         patchState(store, { loading: false });
@@ -202,21 +204,28 @@ export const UsersStoreAdapter = signalStore(
 
       combineLatest([toObservable(criteriaSignal), toObservable(auth.token)])
         .pipe(
-          distinctUntilChanged(([prevCriteria, prevToken], [nextCriteria, nextToken]) => {
-            const prev = prevCriteria;
-            const next = nextCriteria;
-            const prevAuth = prevToken?.trim() ?? '';
-            const nextAuth = nextToken?.trim() ?? '';
-            if (prevAuth !== nextAuth) return false;
-            if (!prev || !next) return prev === next;
-            return (
-              prev.page === next.page &&
-              prev.perPage === next.perPage &&
-              prev.searchTerm === next.searchTerm &&
-              prev.pushUrl === next.pushUrl &&
-              prev.reload === next.reload
-            );
-          }),
+          distinctUntilChanged(
+            (
+              [prevCriteria, prevToken]: [UsersLoadCriteria | null, string | null | undefined],
+              [nextCriteria, nextToken]: [UsersLoadCriteria | null, string | null | undefined],
+            ) => {
+              const prevAuth = prevToken?.trim() ?? '';
+              const nextAuth = nextToken?.trim() ?? '';
+              if (prevAuth !== nextAuth) return false;
+
+              // If strictly same object references, return true (no change) -> but tokens are strings
+              // We cared about criteria equality if token didn't change.
+              if (!prevCriteria || !nextCriteria) return prevCriteria === nextCriteria;
+
+              return (
+                prevCriteria.page === nextCriteria.page &&
+                prevCriteria.perPage === nextCriteria.perPage &&
+                prevCriteria.searchTerm === nextCriteria.searchTerm &&
+                prevCriteria.pushUrl === nextCriteria.pushUrl &&
+                prevCriteria.reload === nextCriteria.reload
+              );
+            },
+          ),
           switchMap(([criteria, token]) => {
             if (!criteria) {
               return EMPTY;
@@ -235,30 +244,25 @@ export const UsersStoreAdapter = signalStore(
               return EMPTY;
             }
 
+            // P0.1 / P0.2 Safety: Clear state on new fetch to avoid race condition artifacts
             patchState(store, {
               loading: true,
               error: null,
               searchTerm: criteria.searchTerm,
               page: criteria.page,
               perPage: criteria.perPage,
+              // We clear entities to be deterministic (no mixing User A data with User B load)
+              ids: [],
+              entities: {},
+              pagination: null,
             });
 
-            const params: {
-              page: number;
-              perPage: number;
-              name?: string;
-              email?: string;
-            } = {
+            const params = {
               page: criteria.page,
               perPage: criteria.perPage,
+              name: criteria.searchTerm || undefined,
+              email: criteria.searchTerm?.includes('@') ? criteria.searchTerm : undefined,
             };
-
-            if (criteria.searchTerm) {
-              params.name = criteria.searchTerm;
-              if (criteria.searchTerm.includes('@')) {
-                params.email = criteria.searchTerm;
-              }
-            }
 
             return usersApi.list(params, { cache: true }).pipe(
               tap(({ items, pagination }) => {
@@ -272,7 +276,7 @@ export const UsersStoreAdapter = signalStore(
                 const normalizedLimit = ensurePerPage(resolvedLimit);
                 const pages = Math.max(1, resolvedPages);
 
-                // If the user asked an out-of-range page, avoid applying an empty state.
+                // P0.2: Handle out of range
                 if (resolvedTotal > 0 && criteria.page > pages) {
                   criteriaSignal.set({
                     ...criteria,
@@ -296,22 +300,7 @@ export const UsersStoreAdapter = signalStore(
                   limit: normalizedLimit,
                 };
 
-                const entities = list.reduce<Record<number, User>>((acc, user) => {
-                  acc[user.id] = user;
-                  return acc;
-                }, {});
-                const ids = list.map((user) => user.id);
-
-                patchState(store, {
-                  ids,
-                  entities,
-                  pagination: meta,
-                  loading: false,
-                  page: meta.page,
-                  perPage: meta.limit,
-                });
-
-                syncUrl(criteria, meta);
+                handleFetchSuccess(list, meta, criteria);
               }),
               catchError((err) => {
                 console.error('Failed to load users:', err);
@@ -395,40 +384,6 @@ export const UsersStoreAdapter = signalStore(
       });
     };
 
-    const onSearch = (value: string) => {
-      const sanitizedTerm = typeof value === 'string' ? value.trim() : '';
-      if (sanitizedTerm === store.searchTerm().trim()) {
-        return;
-      }
-      loadUsers({
-        page: pagination.defaultPage,
-        perPage: store.perPage(),
-        searchTerm: sanitizedTerm,
-        pushUrl: true,
-      });
-    };
-
-    const toggleSort = (field: SortField) => {
-      const current = store.sortState();
-      if (current.field === field) {
-        patchState(store, {
-          sortState: { field, dir: current.dir === 1 ? -1 : 1 },
-        });
-      } else {
-        patchState(store, { sortState: { field, dir: 1 } });
-      }
-    };
-
-    const setPage = (page: number) => {
-      const nextPage = ensurePage(page);
-      loadUsers({ page: nextPage, perPage: store.perPage(), pushUrl: true });
-    };
-
-    const setPerPage = (perPage: number) => {
-      const nextPerPage = ensurePerPage(perPage);
-      loadUsers({ page: pagination.defaultPage, perPage: nextPerPage, pushUrl: true });
-    };
-
     const updateStatus = (userId: number, status: 'active' | 'inactive') => {
       const entities = store.entities();
       const existing = entities[userId];
@@ -446,7 +401,6 @@ export const UsersStoreAdapter = signalStore(
         },
       });
 
-      // Make the API call
       usersApi
         .update(userId, { status })
         .pipe(takeUntilDestroyed(destroyRef))
@@ -461,7 +415,6 @@ export const UsersStoreAdapter = signalStore(
           },
           error: (err) => {
             console.error('Failed to update user status:', err);
-            // Revert the optimistic update
             patchState(store, {
               entities: {
                 ...store.entities(),
@@ -473,21 +426,45 @@ export const UsersStoreAdapter = signalStore(
         });
     };
 
-    const setDeleting = (userId: number | null) => {
-      patchState(store, { deletingId: userId });
-    };
-
     initializeUsersStream();
     initializeBootstrap();
 
     return {
       loadUsers,
-      onSearch,
-      toggleSort,
-      setPage,
-      setPerPage,
-      setDeleting,
       updateStatus,
+      setDeleting(userId: number | null) {
+        patchState(store, { deletingId: userId });
+      },
+      onSearch: (value: string) => {
+        const sanitizedTerm = typeof value === 'string' ? value.trim() : '';
+        if (sanitizedTerm === store.searchTerm().trim()) {
+          return;
+        }
+        loadUsers({
+          page: pagination.defaultPage,
+          perPage: store.perPage(),
+          searchTerm: sanitizedTerm,
+          pushUrl: true,
+        });
+      },
+      toggleSort: (field: SortField) => {
+        const current = store.sortState();
+        if (current.field === field) {
+          patchState(store, {
+            sortState: { field, dir: current.dir === 1 ? -1 : 1 },
+          });
+        } else {
+          patchState(store, { sortState: { field, dir: 1 } });
+        }
+      },
+      setPage: (page: number) => {
+        const nextPage = ensurePage(page);
+        loadUsers({ page: nextPage, perPage: store.perPage(), pushUrl: true });
+      },
+      setPerPage: (perPage: number) => {
+        const nextPerPage = ensurePerPage(perPage);
+        loadUsers({ page: pagination.defaultPage, perPage: nextPerPage, pushUrl: true });
+      },
     };
   }),
 ) satisfies Type<UsersService>;

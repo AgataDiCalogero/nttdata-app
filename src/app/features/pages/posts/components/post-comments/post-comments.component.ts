@@ -25,7 +25,6 @@ import { CommentsFacadeService } from '@/app/shared/services/comments/comments-f
 import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@/app/shared/ui/button/button.component';
-import { CommentFormComponent } from '@/app/shared/ui/comment-form/comment-form.component';
 import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
@@ -34,7 +33,6 @@ import { ToastService } from '@/app/shared/ui/toast/toast.service';
   selector: 'app-post-comments',
   imports: [
     CommonModule,
-    CommentFormComponent,
     ReactiveFormsModule,
     ButtonComponent,
     AlertComponent,

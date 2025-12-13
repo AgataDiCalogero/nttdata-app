@@ -21,7 +21,10 @@
     (ngSubmit)="submit()"
     novalidate
   >
-    <div class="form-field">
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
+    >
       <label class="form-label" for="name">{{ 'userForm.fields.name' | appTranslate }}</label>
       <input
         class="form-input"
@@ -38,13 +41,16 @@
         "
       />
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <app-alert variant="error" padding="compact" id="name-error">{{
-          'userForm.errors.name' | appTranslate
-        }}</app-alert>
+        <p class="field-error" id="name-error">{{ 'userForm.errors.name' | appTranslate }}</p>
       }
     </div>
 
-    <div class="form-field">
+    <div
+      class="form-field"
+      [class.is-invalid]="
+        (form.controls.email.touched && form.controls.email.invalid) || emailError()
+      "
+    >
       <label class="form-label" for="email">{{ 'userForm.fields.email' | appTranslate }}</label>
       <input
         class="form-input"
@@ -58,18 +64,17 @@
         [attr.aria-describedby]="emailDescribedBy"
       />
       @if (form.controls.email.touched && form.controls.email.invalid) {
-        <app-alert variant="error" padding="compact" id="email-error">{{
-          'userForm.errors.email' | appTranslate
-        }}</app-alert>
+        <p class="field-error" id="email-error">{{ 'userForm.errors.email' | appTranslate }}</p>
       }
       @if (emailError()) {
-        <app-alert variant="error" padding="compact" id="email-server-error">{{
-          emailError()
-        }}</app-alert>
+        <p class="field-error" id="email-server-error">{{ emailError() }}</p>
       }
     </div>
 
-    <div class="form-field">
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.gender.touched && form.controls.gender.invalid"
+    >
       <label class="form-label" for="gender">{{ 'userForm.fields.gender' | appTranslate }}</label>
       <app-select
         id="gender"
@@ -80,9 +85,7 @@
         ]"
       ></app-select>
       @if (form.controls.gender.touched && form.controls.gender.invalid) {
-        <app-alert variant="error" padding="compact">{{
-          'userForm.errors.gender' | appTranslate
-        }}</app-alert>
+        <p class="field-error">{{ 'userForm.errors.gender' | appTranslate }}</p>
       }
     </div>
 
