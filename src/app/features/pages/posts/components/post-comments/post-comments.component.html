@@ -1,19 +1,5 @@
 <section class="post-comments">
-  <div class="post-comments__inner">
-    @if (!hideComposer()) {
-      <ng-container>
-        <app-comment-form
-          class="post-comments__composer"
-          [postId]="postId()"
-          [placeholder]="'postComments.composerPlaceholder' | appTranslate"
-          (created)="onCommentCreated($event)"
-          (cancelled)="onComposerCancelled()"
-        ></app-comment-form>
-      </ng-container>
-    }
-
-    <hr class="post-comments__divider" />
-
+  <div class="post-comments__list-area">
     @if (loading()) {
       <output class="app-progress" aria-live="polite">
         <mat-progress-bar
@@ -23,13 +9,15 @@
         ></mat-progress-bar>
         <span class="app-progress__text">{{ 'postComments.loading' | appTranslate }}</span>
       </output>
-    } @else if (comments().length === 0 && hideComposer()) {
+    }
+
+    @if (!loading() && comments().length === 0) {
       <app-alert variant="info">
         <div class="post-comments-empty">
           <p>{{ 'postComments.empty' | appTranslate }}</p>
         </div>
       </app-alert>
-    } @else if (hideComposer()) {
+    } @else if (comments().length > 0) {
       <div class="post-comments__list post-comments__scrollable">
         @for (comment of comments(); track trackByCommentId($index, comment)) {
           <div class="post-comments__item">
@@ -57,10 +45,7 @@
                     "
                     title="{{ 'postComments.editAria' | appTranslate: { name: comment.name } }}"
                   >
-                    <span class="sr-only">{{
-                      'postComments.editAria' | appTranslate: { name: comment.name }
-                    }}</span>
-                    <mat-icon svgIcon="lucide:pencil"></mat-icon>
+                    <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
                   </button>
                   <button
                     appButton
@@ -75,10 +60,7 @@
                     "
                     title="{{ 'postComments.deleteAria' | appTranslate: { name: comment.name } }}"
                   >
-                    <span class="sr-only">{{
-                      'postComments.deleteAria' | appTranslate: { name: comment.name }
-                    }}</span>
-                    <mat-icon svgIcon="lucide:trash-2"></mat-icon>
+                    <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
                   </button>
                 } @else {
                   <button
@@ -95,10 +77,7 @@
                       'postComments.cancelEditAria' | appTranslate: { name: comment.name }
                     }}"
                   >
-                    <span class="sr-only">{{
-                      'postComments.cancelEditAria' | appTranslate: { name: comment.name }
-                    }}</span>
-                    <mat-icon svgIcon="lucide:x"></mat-icon>
+                    <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
                   </button>
                 }
               </div>
@@ -125,8 +104,10 @@
                       size="sm"
                       type="submit"
                       [loading]="submittingEdit()"
+                      [attr.aria-label]="'postComments.editSave' | appTranslate"
                     >
-                      {{ 'postComments.editSave' | appTranslate }}
+                      <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+                      <span class="btn__label">{{ 'postComments.editSave' | appTranslate }}</span>
                     </button>
                     <button
                       appButton
@@ -134,8 +115,10 @@
                       size="sm"
                       type="button"
                       (click)="cancelEdit()"
+                      [attr.aria-label]="'postComments.editCancel' | appTranslate"
                     >
-                      {{ 'postComments.editCancel' | appTranslate }}
+                      <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+                      <span class="btn__label">{{ 'postComments.editCancel' | appTranslate }}</span>
                     </button>
                   </div>
                   @if (editError()) {
@@ -155,4 +138,13 @@
       </div>
     }
   </div>
+
+  <hr class="post-comments__divider" />
+
+  <app-comment-form
+    class="post-comments__composer"
+    [postId]="postId()"
+    [placeholder]="'postComments.composerPlaceholder' | appTranslate"
+    (created)="onCommentCreated($event)"
+  ></app-comment-form>
 </section>

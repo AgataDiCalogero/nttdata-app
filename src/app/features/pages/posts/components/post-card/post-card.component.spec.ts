@@ -21,11 +21,9 @@ class StubPostCommentsComponent {
   @Input() postId!: number;
   @Input() comments: ModelComment[] = [];
   @Input() loading = false;
-  @Input() hideComposer = false;
   @Output() commentCreated = new EventEmitter<ModelComment>();
   @Output() commentUpdated = new EventEmitter<ModelComment>();
   @Output() commentDeleted = new EventEmitter<number>();
-  @Output() composerCancelled = new EventEmitter<void>();
 }
 
 describe('PostCardComponent', () => {
@@ -92,31 +90,28 @@ describe('PostCardComponent', () => {
     expect(component.isExpanded).toBeFalse();
   });
 
-  it('openCommentsList apre e chiude i commenti emettendo toggle', () => {
-    fixture.componentRef.setInput('commentsLoaded', false);
-    fixture.detectChanges();
-
-    component.openCommentsList();
-    expect(component.openSection).toBe('comments');
-    expect(toggleSpy).toHaveBeenCalledTimes(1);
-
-    component.openCommentsList();
-    expect(component.openSection).toBe('none');
-    expect(toggleSpy).toHaveBeenCalledTimes(2);
-  });
-
-  it('openComposer emette toggle se i commenti non sono caricati e permette il toggle back', () => {
+  it('toggleCommentsPanel apre i commenti e richiede fetch se non caricati', () => {
     fixture.componentRef.setInput('commentsLoaded', false);
     fixture.componentRef.setInput('commentsLoading', false);
     fixture.detectChanges();
 
-    component.openComposer();
-    expect(component.openSection).toBe('composer');
+    component.toggleCommentsPanel();
+    expect(component.commentsOpen()).toBeTrue();
     expect(toggleSpy).toHaveBeenCalledTimes(1);
 
-    component.openComposer();
-    expect(component.openSection).toBe('none');
+    component.toggleCommentsPanel();
+    expect(component.commentsOpen()).toBeFalse();
     expect(toggleSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('toggleCommentsPanel non richiede fetch se i commenti sono già caricati', () => {
+    fixture.componentRef.setInput('commentsLoaded', true);
+    fixture.componentRef.setInput('commentsLoading', false);
+    fixture.detectChanges();
+
+    component.toggleCommentsPanel();
+    expect(component.commentsOpen()).toBeTrue();
+    expect(toggleSpy).not.toHaveBeenCalled();
   });
 
   it('commentCount usa commentsPreviewCount quando presente', () => {

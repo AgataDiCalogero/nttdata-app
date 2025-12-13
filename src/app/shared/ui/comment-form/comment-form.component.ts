@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
@@ -24,7 +25,7 @@ import { CommentsFacadeService } from '@/app/shared/services/comments/comments-f
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, ButtonComponent, TranslatePipe],
   templateUrl: './comment-form.component.html',
   styleUrls: ['./comment-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +40,6 @@ export class CommentFormComponent {
   readonly postId = input.required<number>();
   readonly placeholder = input<string>('');
   readonly created = output<Comment>();
-  readonly cancelled = output<void>();
 
   readonly submitting = signal(false);
   readonly submitError = signal<string | null>(null);
@@ -120,9 +120,4 @@ export class CommentFormComponent {
       });
   }
 
-  cancel(): void {
-    this.form.reset();
-    this.submitError.set(null);
-    this.cancelled.emit();
-  }
 }

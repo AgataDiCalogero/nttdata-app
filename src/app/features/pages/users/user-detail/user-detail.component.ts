@@ -28,6 +28,7 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
+import { PostCardCoordinatorService } from '@/app/features/pages/posts/components/post-card/post-card-coordinator.service';
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
@@ -57,6 +58,7 @@ import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PostCardCoordinatorService],
 })
 export class UserDetail {
   private readonly route = inject(ActivatedRoute);

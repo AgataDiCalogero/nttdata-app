@@ -19,7 +19,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
@@ -39,7 +38,6 @@ import { LoginUiService } from './services/login-ui.service';
     MatInputModule,
     ButtonComponent,
     MatIconModule,
-    MatProgressSpinnerModule,
     AlertComponent,
     TranslatePipe,
   ],

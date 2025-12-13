@@ -125,6 +125,13 @@
   --mat-card-border: color-mix(in srgb, var(--color-border) 70%, transparent);
   --mat-card-hover-bg: color-mix(in srgb, var(--color-surface-solid) 88%, transparent);
   --mat-card-shadow: var(--shadow-lg);
+
+  // Material Global Overrides Tokens
+  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  --mat-menu-bg: var(--color-surface-solid);
+  --mat-menu-border: var(--color-border);
+  --radius-menu: var(--radius-xl);
+  --shadow-menu: var(--shadow-xl);
 }
 
 .light-theme {
@@ -172,6 +179,13 @@
   --mat-card-border: rgba(15, 23, 42, 0.08);
   --mat-card-hover-bg: color-mix(in srgb, #ffffff 92%, rgba(249, 115, 22, 0.06) 8%);
   --mat-card-shadow: var(--shadow-md);
+
+  // Mat-Menu and Mat-Option for light theme
+  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  --mat-menu-bg: var(--color-surface-solid);
+  --mat-menu-border: var(--color-border);
+  --radius-menu: var(--radius-xl);
+  --shadow-menu: var(--shadow-xl);
 }
 
 .mat-mdc-form-field {

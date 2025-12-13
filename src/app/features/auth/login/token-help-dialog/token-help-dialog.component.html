@@ -38,8 +38,10 @@
       [href]="gorestUrl"
       target="_blank"
       rel="noopener noreferrer"
+      [attr.aria-label]="'tokenHelp.open' | appTranslate"
     >
-      {{ 'tokenHelp.open' | appTranslate }}
+      <mat-icon svgIcon="lucide:external-link" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'tokenHelp.open' | appTranslate }}</span>
     </a>
 
     <button
@@ -51,7 +53,8 @@
       (click)="close()"
       [attr.aria-label]="'tokenHelp.closeAria' | appTranslate"
     >
-      {{ 'tokenHelp.close' | appTranslate }}
+      <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'tokenHelp.close' | appTranslate }}</span>
     </button>
   </footer>
 </section>

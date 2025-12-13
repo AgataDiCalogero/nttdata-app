@@ -7,9 +7,11 @@ import {
   ViewChild,
   PLATFORM_ID,
   computed,
+  effect,
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,6 +23,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
 
 import { PostCommentsComponent } from '../post-comments/post-comments.component';
+import { PostCardCoordinatorService } from './post-card-coordinator.service';
 
 @Component({
   selector: 'app-post-card',
@@ -41,6 +44,7 @@ export class PostCardComponent implements AfterViewChecked {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly i18n = inject(I18nService);
+  private readonly coordinator = inject(PostCardCoordinatorService, { optional: true });
 
   @ViewChild('commentsSection') commentsSection?: ElementRef<HTMLElement>;
 
@@ -73,6 +77,17 @@ export class PostCardComponent implements AfterViewChecked {
   readonly commentUpdated = output<ModelComment>();
   readonly commentDeleted = output<number>();
 
+  constructor() {
+    effect(() => {
+      if (!this.coordinator) {
+        return;
+      }
+
+      const current = this.post();
+      this.commentsOpen.set(this.coordinator.openCommentsPostId() === (current?.id ?? null));
+    });
+  }
+
   get commentCount(): number {
     const preview = this.commentsPreviewCount();
     if (typeof preview === 'number' && preview >= 0) return preview;
@@ -80,9 +95,8 @@ export class PostCardComponent implements AfterViewChecked {
   }
 
   isExpanded = false;
+  readonly commentsOpen = signal(false);
   private pendingCommentsReveal = false;
-
-  openSection: 'none' | 'comments' | 'composer' = 'none';
 
   shouldTruncate(): boolean {
     const body = this.post()?.body || '';
@@ -112,44 +126,31 @@ export class PostCardComponent implements AfterViewChecked {
     return `post-body-${current?.id ?? 'unknown'}`;
   }
 
-  openCommentsList(): void {
-    if (this.openSection === 'composer') {
-      this.openSection = 'none';
-    }
+  toggleCommentsPanel(): void {
+    const current = this.post();
+    if (!current) return;
 
-    if (this.openSection === 'comments') {
-      this.openSection = 'none';
+    this.commentsOpen.set(
+      this.coordinator
+        ? this.coordinator.toggleCommentsFor(current.id)
+        : !this.commentsOpen(),
+    );
 
-      const current = this.post();
-      if (current) this.toggleComments.emit();
+    if (!this.commentsOpen()) {
       return;
     }
 
-    this.openSection = 'comments';
+    this.pendingCommentsReveal = true;
 
-    const current = this.post();
-    if (current && !this.commentsLoaded()) {
+    if (current && !this.commentsLoaded() && !this.commentsLoading()) {
       this.toggleComments.emit();
     }
   }
 
-  openComposer(): void {
-    if (this.openSection === 'comments') {
-      this.openSection = 'none';
-    }
-
-    if (this.openSection === 'composer') {
-      this.openSection = 'none';
-      return;
-    }
-
-    this.openSection = 'composer';
-
-    const current = this.post();
-    if (current && !this.commentsLoaded() && !this.commentsLoading()) {
-      this.pendingCommentsReveal = true;
-      this.toggleComments.emit();
-    }
+  onEditClick(): void {
+    this.coordinator?.closeAllComments();
+    this.commentsOpen.set(false);
+    this.edit.emit();
   }
 
   onInternalCommentCreated(comment: ModelComment): void {
@@ -164,18 +165,12 @@ export class PostCardComponent implements AfterViewChecked {
     this.commentDeleted.emit(commentId);
   }
 
-  onComposerCancelledFromChild(): void {
-    if (this.openSection === 'composer') {
-      this.openSection = 'none';
-    }
-  }
-
   ngAfterViewChecked(): void {
     if (!this.isBrowser) {
       this.pendingCommentsReveal = false;
       return;
     }
-    if (this.pendingCommentsReveal && this.commentsSection) {
+    if (this.pendingCommentsReveal && this.commentsOpen() && this.commentsSection) {
       this.pendingCommentsReveal = false;
       this.focusComments();
     }
@@ -193,6 +188,5 @@ export class PostCardComponent implements AfterViewChecked {
     const element = this.commentsSection?.nativeElement;
     if (!element) return;
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    element.querySelector('textarea')?.focus();
   }
 }

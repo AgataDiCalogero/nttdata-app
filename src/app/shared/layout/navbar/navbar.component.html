@@ -13,11 +13,7 @@
     </a>
 
     @if (!isLoginRoute()) {
-      <nav
-        class="nav-links"
-        role="navigation"
-        [attr.aria-label]="'nav.ariaMain' | appTranslate"
-      >
+      <nav class="nav-links" role="navigation" [attr.aria-label]="'nav.ariaMain' | appTranslate">
         @if (!isMobile() && isLogged()) {
           <a
             appButton
@@ -49,8 +45,8 @@
 
     <span class="spacer" aria-hidden="true"></span>
 
-      <div class="controls">
-        <div class="toolbar-menu-trigger">
+    <div class="controls">
+      <div class="toolbar-menu-trigger">
         <app-language-switcher
           [attr.aria-label]="'language.menuAria' | appTranslate"
         ></app-language-switcher>
@@ -101,8 +97,9 @@
 
 <mat-menu
   #navMenu="matMenu"
-  class="nav-menu"
+  class="mobile-nav-panel"
   [yPosition]="isMobile() ? 'above' : 'below'"
+  xPosition="before"
   [overlapTrigger]="false"
   [attr.aria-label]="'nav.ariaQuick' | appTranslate"
   [attr.role]="'menu'"

@@ -16,7 +16,7 @@
           [attr.aria-label]="'users.filters.createAria' | appTranslate"
         >
           <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
-          <span>{{ 'users.new' | appTranslate }}</span>
+          <span class="btn__label">{{ 'users.new' | appTranslate }}</span>
         </button>
       </header>
 
@@ -52,7 +52,8 @@
                 (click)="clearError()"
                 [disabled]="loading()"
               >
-                {{ 'common.actions.retry' | appTranslate }}
+                <mat-icon svgIcon="lucide:rotate-cw" aria-hidden="true"></mat-icon>
+                <span class="btn__label">{{ 'common.actions.retry' | appTranslate }}</span>
               </button>
             </div>
           </app-alert>
@@ -85,7 +86,7 @@
                   [attr.aria-label]="'users.filters.createAria' | appTranslate"
                 >
                   <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
-                  <span>{{ 'users.new' | appTranslate }}</span>
+                  <span class="btn__label">{{ 'users.new' | appTranslate }}</span>
                 </button>
               </mat-card-content>
             </mat-card>

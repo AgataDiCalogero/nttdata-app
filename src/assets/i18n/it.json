@@ -60,14 +60,13 @@
       "edit": "Modifica",
       "delete": "Elimina",
       "deleting": "Eliminazione…",
+      "comments": "Commenti",
+      "commentsWithCount": "Commenti ({{count}})",
       "cancel": "Annulla",
       "retry": "Riprova",
       "create": "Crea",
       "update": "Aggiorna",
       "saving": "Salvataggio…",
-      "postComment": "Pubblica commento",
-      "hideComments": "Nascondi commenti",
-      "showComments": "Mostra commenti",
       "showMore": "Mostra altro",
       "showLess": "Mostra meno",
       "open": "Apri",
@@ -200,7 +199,7 @@
     "avatarFallback": "Utente",
     "genderFallback": "Non specificato",
     "postsTitle": "Post di {{name}}",
-    "postsSubtitle": "Post di questo utente. I commenti si aprono in linea.",
+    "postsSubtitle": "Post di questo utente.",
     "postsLoading": "Caricamento post...",
     "postsEmpty": "Ancora nessun post pubblicato.",
     "postsCountSingle": "post pubblicato",
@@ -260,13 +259,9 @@
     "viewAuthorAria": "Visualizza autore {{name}}",
     "editAria": "Modifica il post {{title}}",
     "deleteAria": "Elimina il post {{title}}",
-    "commentToggleOn": "Nascondi commenti",
-    "commentToggleOff": "Mostra commenti",
-    "postComment": "Pubblica commento",
     "showMore": "Mostra altro",
     "showLess": "Mostra meno",
-    "unknownAuthor": "Autore sconosciuto",
-    "commentsCountSrOnly": "{{count}} commenti"
+    "unknownAuthor": "Autore sconosciuto"
   },
   "postForm": {
     "titleNew": "Crea un nuovo post",
@@ -296,7 +291,7 @@
   },
   "postComments": {
     "loading": "Caricamento commenti...",
-    "empty": "Sii il primo ad avviare la conversazione.",
+    "empty": "Non ci sono commenti",
     "composerPlaceholder": "Scrivi un commento...",
     "anonymous": "Anonimo",
     "editPlaceholder": "Aggiorna il tuo commento",
@@ -342,9 +337,8 @@
       "body": "Il commento deve contenere almeno 10 caratteri."
     },
     "buttons": {
-      "cancel": "Annulla",
-      "submit": "Pubblica commento",
-      "submitting": "Pubblicazione in corso..."
+      "submit": "Invia",
+      "submitting": "Invio…"
     },
     "submitErrors": {
       "validation": "I dati del commento non sono validi. Controlla i campi.",

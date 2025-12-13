@@ -6,85 +6,6 @@
   min-width: 0;
 }
 
-.select {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
-  font: inherit;
-  color: var(--color-on-surface);
-  background: var(--mat-field-bg);
-  border-radius: var(--radius-input);
-  border: 1px solid var(--mat-field-border);
-  padding: var(--space-sm) var(--space-md);
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-  box-shadow: none;
-  appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--mat-field-label) 50%),
-    linear-gradient(135deg, var(--mat-field-label) 50%, transparent 50%);
-  background-position:
-    calc(100% - 1.1rem) calc(1.1rem + 2px),
-    calc(100% - 0.6rem) calc(1.1rem + 2px);
-  background-size: 6px 6px;
-  background-repeat: no-repeat;
-
-  &::placeholder {
-    color: var(--mat-field-placeholder);
-    opacity: 0.8;
-    @supports (color: color-mix(in srgb, var(--mat-field-placeholder) 82%, transparent)) {
-      color: color-mix(in srgb, var(--mat-field-placeholder) 82%, transparent);
-      opacity: 1;
-    }
-  }
-
-  &:focus-visible {
-    border-color: var(--mat-field-border-focus);
-    box-shadow: var(--shadow-focus);
-    outline: none;
-    background: var(--mat-field-bg-hover);
-  }
-
-  &:disabled,
-  &[disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: var(--mat-field-disabled-bg);
-    @supports (background: color-mix(in srgb, var(--mat-field-disabled-bg) 94%, transparent)) {
-      background: color-mix(in srgb, var(--mat-field-disabled-bg) 94%, transparent);
-    }
-  }
-
-  &[aria-invalid='true'] {
-    border-color: var(--color-danger-border);
-    box-shadow: var(--shadow-focus-danger);
-
-    @supports (color: color-mix(in srgb, var(--color-danger) 65%, transparent)) {
-      border-color: color-mix(in srgb, var(--color-danger) 65%, transparent);
-    }
-  }
-
-  &--compact {
-    padding: var(--space-xs) var(--space-sm);
-  }
-
-  /* Handle select dropdown overflow in modals */
-  &--in-modal {
-    /* For modals, we need to ensure the dropdown doesn't overflow */
-    /* Since native select dropdowns can't be contained, we'll use a different approach */
-    /* This class can be used for future custom dropdown implementation */
-  }
-
-  /* Allow long options to wrap to avoid forcing dropdown width */
-  option {
-    white-space: normal;
-    word-break: break-word;
-  }
-}
-
 .select-label {
   display: block;
   font-size: 0.875rem;
@@ -94,26 +15,93 @@
   line-height: 1.25;
 }
 
-/* Mobile tuning: avoid dropdown overflow by capping intrinsic width and reducing font size */
-@media (max-width: 48rem) {
-  .select {
-    width: 100%;
-    max-width: 100%;
-    font-size: 0.9rem;
-    text-align: center;
+.select-field {
+  width: 100%;
+
+  // Remove default Material styling conflicts
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
   }
 
-  .select option {
-    font-size: 0.9rem;
-    line-height: 1.2;
+  // Match our design system
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: var(--mat-field-border) !important;
+  }
+
+  &:hover .mdc-notched-outline__leading,
+  &:hover .mdc-notched-outline__notch,
+  &:hover .mdc-notched-outline__trailing {
+    border-color: var(--mat-field-border-hover) !important;
+  }
+
+  &.mat-focused .mdc-notched-outline__leading,
+  &.mat-focused .mdc-notched-outline__notch,
+  &.mat-focused .mdc-notched-outline__trailing {
+    border-color: var(--mat-field-border-focus) !important;
+    border-width: 2px !important;
+  }
+
+  .mat-mdc-select-trigger {
+    padding: var(--space-xs) 0;
+  }
+
+  .mat-mdc-select-value {
+    color: var(--color-on-surface);
+  }
+
+  .mat-mdc-select-placeholder {
+    color: var(--mat-field-placeholder);
+  }
+
+  .mat-mdc-select-arrow {
+    color: var(--mat-field-label);
+  }
+
+  &--compact {
+    .mat-mdc-form-field-infix {
+      padding-top: var(--space-xs) !important;
+      padding-bottom: var(--space-xs) !important;
+      min-height: 2.5rem;
+    }
   }
 }
 
-/* Explicit modal sizing to keep native dropdown aligned with trigger */
-.select.select--in-modal {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  font-size: 0.95rem;
+// Global panel styling (applied via panelClass)
+.app-select-panel {
+  background: var(--mat-menu-bg) !important;
+  border: 1px solid var(--mat-menu-border) !important;
+  border-radius: var(--radius-menu) !important;
+  box-shadow: var(--shadow-menu) !important;
+  padding: var(--space-xs) !important;
+
+  .mat-mdc-option {
+    border-radius: var(--radius-sm) !important;
+    color: var(--color-on-surface) !important;
+    min-height: 2.75rem;
+    margin-bottom: var(--space-2xs);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:hover:not(.mat-mdc-option-disabled),
+    &.mat-mdc-option-active:not(.mat-mdc-option-disabled) {
+      background: var(--mat-option-hover-bg) !important;
+    }
+
+    &.mat-mdc-option-selected:not(.mat-mdc-option-disabled) {
+      background: var(--mat-option-selected-bg) !important;
+      color: var(--color-on-surface) !important;
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+}
+
+// Mobile tuning
+@media (max-width: 48rem) {
+  .select-field {
+    font-size: 0.9rem;
+  }
 }

@@ -135,7 +135,8 @@ describe('PostsStoreAdapter', () => {
 
     store.toggleComments(1);
     tick();
-    expect(store.commentsMap()[1]).toBeUndefined();
+    expect(commentsCache.fetchComments).toHaveBeenCalledTimes(1);
+    expect(store.commentsMap()[1]?.length).toBe(1);
   }));
 
   it('deletePostRequest mostra errore HTTP e resetta deletingId su failure', fakeAsync(() => {

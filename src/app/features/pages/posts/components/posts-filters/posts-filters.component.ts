@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
@@ -17,6 +18,7 @@ import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatIconModule,
     ButtonComponent,
     SelectComponent,
     SearchBarComponent,

@@ -84,27 +84,25 @@
   <div class="comment-form__actions">
     <button
       appButton
-      variant="ghost"
-      type="button"
-      (click)="cancel()"
-      [disabled]="submitting()"
-      class="comment-form__cancel"
-    >
-      {{ 'commentForm.buttons.cancel' | appTranslate }}
-    </button>
-    <button
-      appButton
       variant="primary"
       type="submit"
       [disabled]="submitting()"
       [loading]="submitting()"
       class="comment-form__submit"
-    >
-      {{
+      [attr.aria-label]="
         submitting()
           ? ('commentForm.buttons.submitting' | appTranslate)
           : ('commentForm.buttons.submit' | appTranslate)
-      }}
+      "
+    >
+      <mat-icon svgIcon="lucide:send" aria-hidden="true"></mat-icon>
+      <span class="btn__label">
+        {{
+          submitting()
+            ? ('commentForm.buttons.submitting' | appTranslate)
+            : ('commentForm.buttons.submit' | appTranslate)
+        }}
+      </span>
     </button>
   </div>
 </form>

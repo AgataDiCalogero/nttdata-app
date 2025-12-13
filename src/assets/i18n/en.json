@@ -60,14 +60,13 @@
       "edit": "Edit",
       "delete": "Delete",
       "deleting": "Deleting…",
+      "comments": "Comments",
+      "commentsWithCount": "Comments ({{count}})",
       "cancel": "Cancel",
       "retry": "Retry",
       "create": "Create",
       "update": "Update",
       "saving": "Saving…",
-      "postComment": "Post comment",
-      "hideComments": "Hide comments",
-      "showComments": "View comments",
       "showMore": "Show more",
       "showLess": "Show less",
       "open": "Open",
@@ -200,7 +199,7 @@
     "avatarFallback": "User",
     "genderFallback": "Not specified",
     "postsTitle": "Posts from {{name}}",
-    "postsSubtitle": "Posts by this user. Comments open inline.",
+    "postsSubtitle": "Posts by this user.",
     "postsLoading": "Loading posts...",
     "postsEmpty": "No posts published yet.",
     "postsCountSingle": "post shared",
@@ -260,13 +259,9 @@
     "viewAuthorAria": "View author {{name}}",
     "editAria": "Edit post {{title}}",
     "deleteAria": "Delete post {{title}}",
-    "commentToggleOn": "Hide comments",
-    "commentToggleOff": "View comments",
-    "postComment": "Post comment",
     "showMore": "Show more",
     "showLess": "Show less",
-    "unknownAuthor": "Unknown author",
-    "commentsCountSrOnly": "{{count}} comments"
+    "unknownAuthor": "Unknown author"
   },
   "postForm": {
     "titleNew": "Create a new post",
@@ -296,7 +291,7 @@
   },
   "postComments": {
     "loading": "Loading comments...",
-    "empty": "Be the first to start the conversation.",
+    "empty": "No comments yet",
     "composerPlaceholder": "Write a comment...",
     "anonymous": "Anonymous",
     "editPlaceholder": "Update your comment",
@@ -342,9 +337,8 @@
       "body": "The comment must contain at least 10 characters."
     },
     "buttons": {
-      "cancel": "Cancel",
-      "submit": "Post comment",
-      "submitting": "Publishing..."
+      "submit": "Send",
+      "submitting": "Sending…"
     },
     "submitErrors": {
       "validation": "Comment data not valid. Please review the fields.",

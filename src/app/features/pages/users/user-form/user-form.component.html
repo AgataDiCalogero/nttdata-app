@@ -99,8 +99,16 @@
     </div>
 
     <div class="form-actions form-dialog__actions">
-      <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-        {{ 'common.actions.cancel' | appTranslate }}
+      <button
+        appButton
+        variant="ghost"
+        type="button"
+        (click)="cancel()"
+        [disabled]="submitting()"
+        [attr.aria-label]="'common.actions.cancel' | appTranslate"
+      >
+        <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.cancel' | appTranslate }}</span>
       </button>
 
       <button
@@ -109,14 +117,26 @@
         type="submit"
         [loading]="submitting()"
         [disabled]="form.invalid || submitting()"
+        [attr.aria-label]="
+          isEdit()
+            ? ('userForm.buttons.update' | appTranslate)
+            : ('userForm.buttons.create' | appTranslate)
+        "
       >
-        @if (submitting()) {
-          {{ 'userForm.buttons.saving' | appTranslate }}
-        } @else if (isEdit()) {
-          {{ 'userForm.buttons.update' | appTranslate }}
+        @if (isEdit()) {
+          <mat-icon svgIcon="lucide:save" aria-hidden="true"></mat-icon>
         } @else {
-          {{ 'userForm.buttons.create' | appTranslate }}
+          <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
         }
+        <span class="btn__label">
+          @if (submitting()) {
+            {{ 'userForm.buttons.saving' | appTranslate }}
+          } @else if (isEdit()) {
+            {{ 'userForm.buttons.update' | appTranslate }}
+          } @else {
+            {{ 'userForm.buttons.create' | appTranslate }}
+          }
+        </span>
       </button>
     </div>
   </form>

@@ -109,7 +109,7 @@
   ),
 :is(.form-input, .form-select, .form-textarea, input, select, textarea)[aria-invalid='true'] {
   border-color: var(--color-danger-border);
-  box-shadow: var(--shadow-focus-danger);
+  // Removed box-shadow to prevent double border effect
 
   @supports (color: color-mix(in srgb, var(--color-danger) 65%, transparent)) {
     border-color: color-mix(in srgb, var(--color-danger) 65%, transparent);

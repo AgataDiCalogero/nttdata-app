@@ -54,18 +54,12 @@ export class CommentsFacadeService {
       return;
     }
 
-    const errorMessage =
-      options?.errorMessage ?? this.i18n.translate('userDetail.unableToLoadComments');
-
-    const current = this.commentsSignal()[postId];
-    if (current) {
-      this.commentsSignal.update((state) => {
-        const next = { ...state };
-        delete next[postId];
-        return next;
-      });
+    if (this.isLoading(postId) || this.isLoaded(postId)) {
       return;
     }
+
+    const errorMessage =
+      options?.errorMessage ?? this.i18n.translate('userDetail.unableToLoadComments');
 
     this.loadingSignal.update((state) => ({ ...state, [postId]: true }));
     this.cache

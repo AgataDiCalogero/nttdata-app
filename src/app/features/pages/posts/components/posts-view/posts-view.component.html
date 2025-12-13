@@ -15,7 +15,7 @@
         [attr.aria-label]="'common.actions.newPost' | appTranslate"
       >
         <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
-        <span>{{ 'common.actions.newPost' | appTranslate }}</span>
+        <span class="btn__label">{{ 'common.actions.newPost' | appTranslate }}</span>
       </button>
     </header>
 
@@ -38,8 +38,15 @@
         @if (posts().length > 0) {
           <p class="posts-page__alert-note">{{ 'posts.staleData' | appTranslate }}</p>
         }
-        <button appButton variant="ghost" type="button" (click)="retry.emit()">
-          {{ 'common.actions.retry' | appTranslate }}
+        <button
+          appButton
+          variant="ghost"
+          type="button"
+          (click)="retry.emit()"
+          [attr.aria-label]="'common.actions.retry' | appTranslate"
+        >
+          <mat-icon svgIcon="lucide:rotate-cw" aria-hidden="true"></mat-icon>
+          <span class="btn__label">{{ 'common.actions.retry' | appTranslate }}</span>
         </button>
       </app-alert>
     }
@@ -64,8 +71,15 @@
       <mat-card class="posts-empty" appearance="outlined">
         <mat-icon svgIcon="lucide:file-text" class="posts-empty__icon" aria-hidden="true"></mat-icon>
         <p class="posts-empty__text">{{ 'posts.emptyState' | appTranslate }}</p>
-        <button appButton variant="primary" type="button" (click)="createPost.emit()">
-          {{ 'common.actions.newPost' | appTranslate }}
+        <button
+          appButton
+          variant="primary"
+          type="button"
+          (click)="createPost.emit()"
+          [attr.aria-label]="'common.actions.newPost' | appTranslate"
+        >
+          <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+          <span class="btn__label">{{ 'common.actions.newPost' | appTranslate }}</span>
         </button>
       </mat-card>
     }

@@ -12,15 +12,21 @@
 
   <div class="form-dialog__actions delete-confirm__actions">
     <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-      {{ data.cancelText || ('common.actions.cancel' | appTranslate) }}
+      <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ data.cancelText || ('common.actions.cancel' | appTranslate) }}</span>
     </button>
 
-    <button appButton variant="danger" type="button" (click)="confirm()" [disabled]="submitting()">
-      @if (submitting()) {
-        Deleting…
-      } @else {
-        {{ confirmLabel() }}
-      }
+    <button
+      appButton
+      variant="danger"
+      type="button"
+      (click)="confirm()"
+      [disabled]="submitting()"
+      [loading]="submitting()"
+      [attr.aria-label]="confirmLabel()"
+    >
+      <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ confirmLabel() }}</span>
     </button>
   </div>
 </section>

@@ -12,6 +12,8 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 import { IdService } from '@app/shared/services/id/id.service';
 
@@ -29,7 +31,7 @@ type SelectOption = { value: SelectValue; label: string };
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MatSelectModule, MatFormFieldModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent {
@@ -85,8 +87,7 @@ export class SelectComponent {
     });
   }
 
-  onChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    this.selectionChange.emit(target.value);
+  onSelectionChange(value: SelectValue): void {
+    this.selectionChange.emit(String(value));
   }
 }

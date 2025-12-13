@@ -5,11 +5,8 @@
   width: 100%;
 
   &__composer {
-    border: 1px solid color-mix(in srgb, var(--mat-field-border) 120%, transparent);
-    border-radius: var(--radius-card);
-    padding: 1.25rem;
-    background: color-mix(in srgb, var(--color-surface-solid) 78%, transparent);
-    box-shadow: var(--shadow-lg);
+    display: block;
+    width: 100%;
   }
 
   &__divider {
@@ -18,7 +15,7 @@
     background: color-mix(in srgb, var(--mat-field-border) 140%, transparent);
   }
 
-  &__inner {
+  &__list-area {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -140,7 +137,7 @@
 
 @media (max-width: 40rem) {
   .post-comments {
-    &__inner {
+    &__list-area {
       max-height: 22rem;
     }
 

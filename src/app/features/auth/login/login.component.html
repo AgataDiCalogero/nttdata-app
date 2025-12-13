@@ -56,16 +56,12 @@
             variant="primary"
             type="submit"
             class="login-actions__submit"
+            [loading]="loading()"
             [disabled]="loading() || form.invalid"
+            [attr.aria-label]="'login.submit' | appTranslate"
           >
-            @if (loading()) {
-              <mat-progress-spinner
-                mode="indeterminate"
-                diameter="18"
-                strokeWidth="2"
-              ></mat-progress-spinner>
-            }
-            <span>{{ 'login.submit' | appTranslate }}</span>
+            <mat-icon svgIcon="lucide:log-in" aria-hidden="true"></mat-icon>
+            <span class="btn__label">{{ 'login.submit' | appTranslate }}</span>
           </button>
 
           <button
@@ -75,8 +71,10 @@
             class="login-actions__help"
             (click)="openTokenHelp()"
             [disabled]="loading()"
+            [attr.aria-label]="'login.help' | appTranslate"
           >
-            {{ 'login.help' | appTranslate }}
+            <mat-icon svgIcon="lucide:info" aria-hidden="true"></mat-icon>
+            <span class="btn__label">{{ 'login.help' | appTranslate }}</span>
           </button>
         </div>
       </form>

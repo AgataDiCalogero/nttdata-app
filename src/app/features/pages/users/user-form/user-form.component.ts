@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 import { I18nService } from '@app/shared/i18n/i18n.service';
@@ -27,6 +28,7 @@ import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/mode
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    MatIconModule,
     ButtonComponent,
     AlertComponent,
     SelectComponent,

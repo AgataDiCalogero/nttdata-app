@@ -51,12 +51,9 @@ export class PostCommentsComponent {
   readonly loading = input(false);
   readonly postId = input.required<number>();
 
-  readonly hideComposer = input(false);
-
   readonly commentCreated = output<ModelComment>();
   readonly commentUpdated = output<ModelComment>();
   readonly commentDeleted = output<number>();
-  readonly composerCancelled = output<void>();
 
   private readonly fb = inject(FormBuilder);
   private readonly commentsFacade = inject(CommentsFacadeService);
@@ -197,9 +194,5 @@ export class PostCommentsComponent {
 
   onCommentCreated(comment: ModelComment): void {
     this.commentCreated.emit(comment);
-  }
-
-  onComposerCancelled(): void {
-    this.composerCancelled.emit();
   }
 }

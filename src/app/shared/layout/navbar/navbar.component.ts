@@ -10,6 +10,7 @@ import {
   inject,
   signal,
   PLATFORM_ID,
+  ViewEncapsulation,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,6 +46,7 @@ import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-s
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     role: 'banner',
     '[attr.data-menu-open]': 'menuOpen() ? "true" : "false"',

@@ -105,8 +105,16 @@
     </mat-form-field>
 
     <div class="form-actions form-dialog__actions">
-      <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
-        {{ 'common.actions.cancel' | appTranslate }}
+      <button
+        appButton
+        variant="ghost"
+        type="button"
+        (click)="cancel()"
+        [disabled]="submitting()"
+        [attr.aria-label]="'common.actions.cancel' | appTranslate"
+      >
+        <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.cancel' | appTranslate }}</span>
       </button>
       <button
         appButton
@@ -114,8 +122,14 @@
         type="submit"
         [loading]="submitting()"
         [disabled]="submitting() || !users().length || loadingUsers()"
+        [attr.aria-label]="submitLabel()"
       >
-        {{ submitLabel() }}
+        @if (isEdit()) {
+          <mat-icon svgIcon="lucide:save" aria-hidden="true"></mat-icon>
+        } @else {
+          <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+        }
+        <span class="btn__label">{{ submitLabel() }}</span>
       </button>
     </div>
   </form>

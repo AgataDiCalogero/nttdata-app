@@ -39,22 +39,6 @@
       <div class="post-card__manage">
         <button
           appButton
-          variant="ghost"
-          size="sm"
-          type="button"
-          [iconOnly]="true"
-          (click)="edit.emit()"
-          class="post-card__icon-button"
-          [attr.aria-label]="'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }"
-          title="{{ 'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' } }}"
-        >
-          <span class="sr-only">{{
-            'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }
-          }}</span>
-          <mat-icon svgIcon="lucide:pencil"></mat-icon>
-        </button>
-        <button
-          appButton
           variant="danger"
           size="sm"
           type="button"
@@ -67,10 +51,7 @@
           "
           title="{{ 'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' } }}"
         >
-          <span class="sr-only">{{
-            'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' }
-          }}</span>
-          <mat-icon svgIcon="lucide:trash-2"></mat-icon>
+          <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
         </button>
       </div>
     }
@@ -103,10 +84,19 @@
     }
   </mat-card-content>
 
-  <mat-card-actions align="end" class="post-card__actions">
-    @if (openSection !== 'composer') {
-      <button appButton variant="primary" size="sm" type="button" (click)="openComposer()">
-        {{ 'common.actions.postComment' | appTranslate }}
+  <mat-card-actions align="start" class="post-card__actions">
+    @if (allowManage()) {
+      <button
+        appButton
+        variant="secondary"
+        size="sm"
+        type="button"
+        (click)="onEditClick()"
+        [attr.aria-label]="'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }"
+        title="{{ 'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' } }}"
+      >
+        <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.edit' | appTranslate }}</span>
       </button>
     }
 
@@ -115,53 +105,35 @@
       variant="secondary"
       size="sm"
       type="button"
-      (click)="openCommentsList()"
-      [attr.aria-expanded]="openSection === 'comments' ? 'true' : 'false'"
+      (click)="toggleCommentsPanel()"
+      [attr.aria-expanded]="commentsOpen() ? 'true' : 'false'"
       [attr.aria-controls]="postModel ? 'comments-for-' + postModel.id : null"
-      [attr.aria-label]="
-        (openSection === 'comments'
-          ? ('common.actions.hideComments' | appTranslate)
-          : ('common.actions.showComments' | appTranslate)) +
-        ' (' +
-        commentCount +
-        ')'
-      "
-      [title]="
-        (openSection === 'comments'
-          ? ('common.actions.hideComments' | appTranslate)
-          : ('common.actions.showComments' | appTranslate)) +
-        ' (' +
-        commentCount +
-        ')'
-      "
+      [attr.aria-label]="'common.actions.commentsWithCount' | appTranslate: { count: commentCount }"
+      [title]="'common.actions.commentsWithCount' | appTranslate: { count: commentCount }"
       class="post-card__comments-toggle"
     >
-      <mat-icon svgIcon="lucide:file-text"></mat-icon>
-      {{
-        openSection === 'comments'
-          ? ('common.actions.hideComments' | appTranslate)
-          : ('common.actions.showComments' | appTranslate)
-      }}
+      <mat-icon svgIcon="lucide:message-square" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'common.actions.comments' | appTranslate }}</span>
       <span class="post-card__comment-count" aria-hidden="true">({{ commentCount }})</span>
-      <span class="sr-only">{{
-        'postCard.commentsCountSrOnly' | appTranslate: { count: commentCount }
-      }}</span>
     </button>
   </mat-card-actions>
 
-  @if (openSection !== 'none' && postModel) {
-    <section class="post-card__expanded" [id]="'comments-for-' + postModel.id">
+  @if (commentsOpen() && postModel) {
+    <section
+      #commentsSection
+      class="post-card__expanded"
+      [id]="'comments-for-' + postModel.id"
+      role="region"
+      [attr.aria-label]="'common.actions.commentsWithCount' | appTranslate: { count: commentCount }"
+    >
       <app-post-comments
-        #commentsSection
         class="post-card__comments"
         [postId]="postModel.id"
         [comments]="commentsList"
         [loading]="commentsLoading()"
-        [hideComposer]="openSection === 'comments'"
         (commentCreated)="onInternalCommentCreated($event)"
         (commentUpdated)="onInternalCommentUpdated($event)"
         (commentDeleted)="onInternalCommentDeleted($event)"
-        (composerCancelled)="onComposerCancelledFromChild()"
       ></app-post-comments>
     </section>
   }

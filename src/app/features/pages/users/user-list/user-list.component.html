@@ -65,11 +65,11 @@
               [attr.aria-label]="'userList.viewAria' | appTranslate"
             >
               <mat-icon svgIcon="lucide:eye" aria-hidden="true"></mat-icon>
-              <span>{{ 'common.actions.view' | appTranslate }}</span>
+              <span class="btn__label">{{ 'common.actions.view' | appTranslate }}</span>
             </button>
             <button appButton variant="secondary" (click)="onEdit(user, $event)">
               <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
-              <span>{{ 'common.actions.edit' | appTranslate }}</span>
+              <span class="btn__label">{{ 'common.actions.edit' | appTranslate }}</span>
             </button>
             @if (!isMobile()) {
               <button

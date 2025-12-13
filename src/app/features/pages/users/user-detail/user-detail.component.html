@@ -31,9 +31,16 @@
         <div class="user-detail-alert-content">
           <p>{{ error() }}</p>
           <div class="user-detail-alert-actions">
-            <a routerLink="/users" appButton variant="ghost" size="sm">{{
-              'userDetail.backToList' | appTranslate
-            }}</a>
+            <a
+              routerLink="/users"
+              appButton
+              variant="ghost"
+              size="sm"
+              [attr.aria-label]="'userDetail.backToList' | appTranslate"
+            >
+              <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
+              <span class="btn__label">{{ 'userDetail.backToList' | appTranslate }}</span>
+            </a>
           </div>
         </div>
       </app-alert>

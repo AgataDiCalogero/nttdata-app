@@ -6,6 +6,7 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 import type { Post, Comment } from '@/app/shared/models/post';
 
 import { PostCardComponent } from '../post-card/post-card.component';
+import { PostCardCoordinatorService } from '../post-card/post-card-coordinator.service';
 
 @Component({
   standalone: true,
@@ -14,6 +15,7 @@ import { PostCardComponent } from '../post-card/post-card.component';
   templateUrl: './posts-list.component.html',
   styleUrls: ['./posts-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PostCardCoordinatorService],
 })
 export class PostsListComponent {
   readonly posts = input([] as Post[]);

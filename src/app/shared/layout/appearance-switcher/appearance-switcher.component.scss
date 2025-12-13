@@ -67,13 +67,14 @@
 }
 
 .appearance-option {
-  @include app-menu-item;
   border-radius: calc(var(--radius-lg) + 0.125rem);
   font-size: 0.86rem;
   width: 100%;
   justify-content: flex-start;
   gap: var(--space-sm);
   color: var(--color-on-surface);
+
+  @include app-menu-item;
 
   &:hover,
   &:focus-visible {
