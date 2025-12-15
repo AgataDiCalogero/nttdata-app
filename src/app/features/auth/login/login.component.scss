@@ -58,6 +58,7 @@
   box-shadow: var(--shadow-accent-soft);
 
   mat-icon {
+    color: inherit;
     font-size: 2rem;
     line-height: 1;
     display: inline-flex;

@@ -115,7 +115,14 @@ describe('PostsStoreAdapter', () => {
 
   it('changePerPage e setPage aggiornano i criteri e scatenano list', fakeAsync(() => {
     const store = TestBed.inject(PostsStoreAdapter);
+    tick();
     postsApi.list.calls.reset();
+    postsApi.list.and.returnValue(
+      of({
+        items: [{ id: 1, user_id: 2, title: 'Hello', body: 'World' } as Post],
+        pagination: { total: 50, pages: 5, page: 1, limit: 25 },
+      }),
+    );
 
     store.changePerPage(25);
     tick(400);

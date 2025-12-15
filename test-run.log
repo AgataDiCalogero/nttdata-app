@@ -1,0 +1,104 @@
+[33m>[39m Building...
+[32m√[39m Building...
+[1mInitial chunk files[22m                   [2m | [22m[1mNames[22m                              [2m | [22m [1mRaw size[22m
+[32mchunk-AYKEUFY2.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.18 MB[39m[2m | [22m
+[32mchunk-LQEVN26C.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.13 MB[39m[2m | [22m
+[32mpolyfills.js[39m                          [2m | [22m[2mpolyfills[22m                          [2m | [22m[36m944.09 kB[39m[2m | [22m
+[32mstyles.css[39m                            [2m | [22m[2mstyles[22m                             [2m | [22m[36m520.34 kB[39m[2m | [22m
+[32mchunk-UT5EFSUH.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m242.87 kB[39m[2m | [22m
+[32mchunk-EXPMB67K.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m230.74 kB[39m[2m | [22m
+[32mchunk-55EYPRDP.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m207.71 kB[39m[2m | [22m
+[32mchunk-VWCNOXKM.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m197.33 kB[39m[2m | [22m
+[32mchunk-ZZRYRGOJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m174.35 kB[39m[2m | [22m
+[32mtest_main.js[39m                          [2m | [22m[2mtest_main[22m                          [2m | [22m[36m162.11 kB[39m[2m | [22m
+[32mchunk-PGAE5XQR.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m153.24 kB[39m[2m | [22m
+[32mchunk-3N7WOWR6.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m145.40 kB[39m[2m | [22m
+[32mchunk-C35FWPIF.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m140.38 kB[39m[2m | [22m
+[32mchunk-XGPMFYLK.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m96.68 kB[39m[2m | [22m
+[32mspec-posts.component.spec.js[39m          [2m | [22m[2mspec-posts.component.spec[22m          [2m | [22m [36m67.33 kB[39m[2m | [22m
+[32mchunk-VKYIVRTA.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m65.23 kB[39m[2m | [22m
+[32mchunk-X3W5JV6B.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m47.09 kB[39m[2m | [22m
+[32mchunk-ZWDSYEJX.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m39.73 kB[39m[2m | [22m
+[32mchunk-GBSOT4B4.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m37.01 kB[39m[2m | [22m
+[32mspec-user-detail.component.spec.js[39m    [2m | [22m[2mspec-user-detail.component.spec[22m    [2m | [22m [36m35.65 kB[39m[2m | [22m
+[32mspec-user-list.component.spec.js[39m      [2m | [22m[2mspec-user-list.component.spec[22m      [2m | [22m [36m32.94 kB[39m[2m | [22m
+[32mchunk-UFA62ISY.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m32.89 kB[39m[2m | [22m
+[32mchunk-F6OL37MI.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m32.23 kB[39m[2m | [22m
+[32mchunk-KBKHXLTY.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m31.84 kB[39m[2m | [22m
+[32mchunk-UMSLSVAQ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m28.90 kB[39m[2m | [22m
+[32mchunk-FI7O42MF.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m27.30 kB[39m[2m | [22m
+[32mchunk-VCOGPOL5.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m25.95 kB[39m[2m | [22m
+[32mspec-login.component.spec.js[39m          [2m | [22m[2mspec-login.component.spec[22m          [2m | [22m [36m23.67 kB[39m[2m | [22m
+[32mchunk-NGVF5LKI.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m20.48 kB[39m[2m | [22m
+[32mchunk-H5XKIMF6.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m16.16 kB[39m[2m | [22m
+[32mchunk-7Y6MORUG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m13.46 kB[39m[2m | [22m
+[32mchunk-AC6K7MN2.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.92 kB[39m[2m | [22m
+[32mspec-users-ui.service.spec.js[39m         [2m | [22m[2mspec-users-ui.service.spec[22m         [2m | [22m [36m12.88 kB[39m[2m | [22m
+[32mchunk-X34BNNGO.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.74 kB[39m[2m | [22m
+[32mchunk-MFNYBJI3.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.72 kB[39m[2m | [22m
+[32mspec-user-filters.component.spec.js[39m   [2m | [22m[2mspec-user-filters.component.spec[22m   [2m | [22m [36m12.60 kB[39m[2m | [22m
+[32mspec-toast.component.spec.js[39m          [2m | [22m[2mspec-toast.component.spec[22m          [2m | [22m [36m12.60 kB[39m[2m | [22m
+[32mspec-theme.service.spec.js[39m            [2m | [22m[2mspec-theme.service.spec[22m            [2m | [22m [36m12.51 kB[39m[2m | [22m
+[32mchunk-YUD5DPBP.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.26 kB[39m[2m | [22m
+[32mchunk-5GAN7YWJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.13 kB[39m[2m | [22m
+[32mchunk-EZCUZK3G.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m11.18 kB[39m[2m | [22m
+[32mchunk-2NGAI63C.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m10.81 kB[39m[2m | [22m
+[32mspec-post-card.component.spec.js[39m      [2m | [22m[2mspec-post-card.component.spec[22m      [2m | [22m [36m10.70 kB[39m[2m | [22m
+[32mchunk-AWU4CDDH.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m10.06 kB[39m[2m | [22m
+[32mspec-error.interceptor.spec.js[39m        [2m | [22m[2mspec-error.interceptor.spec[22m        [2m | [22m  [36m9.53 kB[39m[2m | [22m
+[32mchunk-JDLMVR6L.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m9.17 kB[39m[2m | [22m
+[32mchunk-SKVZNATQ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m9.10 kB[39m[2m | [22m
+[32mspec-posts.store.spec.js[39m              [2m | [22m[2mspec-posts.store.spec[22m              [2m | [22m  [36m8.03 kB[39m[2m | [22m
+[32mspec-user-form.component.spec.js[39m      [2m | [22m[2mspec-user-form.component.spec[22m      [2m | [22m  [36m7.52 kB[39m[2m | [22m
+[32mchunk-2TNQBZQN.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m7.48 kB[39m[2m | [22m
+[32mchunk-3HLVSQGX.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m7.32 kB[39m[2m | [22m
+[32mspec-users.store.spec.js[39m              [2m | [22m[2mspec-users.store.spec[22m              [2m | [22m  [36m7.07 kB[39m[2m | [22m
+[32mchunk-UL3R5JCK.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m6.96 kB[39m[2m | [22m
+[32mchunk-DIWKXRKT.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m6.69 kB[39m[2m | [22m
+[32mchunk-5YLEISHE.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m6.01 kB[39m[2m | [22m
+[32mspec-posts-api.service.spec.js[39m        [2m | [22m[2mspec-posts-api.service.spec[22m        [2m | [22m  [36m5.87 kB[39m[2m | [22m
+[32mchunk-V7MWUERZ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m5.50 kB[39m[2m | [22m
+[32mspec-post-comments.component.spec.js[39m  [2m | [22m[2mspec-post-comments.component.spec[22m  [2m | [22m  [36m5.44 kB[39m[2m | [22m
+[32mspec-users-api.service.spec.js[39m        [2m | [22m[2mspec-users-api.service.spec[22m        [2m | [22m  [36m5.29 kB[39m[2m | [22m
+[32mspec-token-validation.service.spec.js[39m [2m | [22m[2mspec-token-validation.service.spec[22m [2m | [22m  [36m5.29 kB[39m[2m | [22m
+[32mspec-auto-focus.directive.spec.js[39m     [2m | [22m[2mspec-auto-focus.directive.spec[22m     [2m | [22m  [36m5.23 kB[39m[2m | [22m
+[32mspec-posts-ui.service.spec.js[39m         [2m | [22m[2mspec-posts-ui.service.spec[22m         [2m | [22m  [36m5.22 kB[39m[2m | [22m
+[32mchunk-IZ57RUTJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m5.17 kB[39m[2m | [22m
+[32mchunk-O5YNP6DJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m5.05 kB[39m[2m | [22m
+[32mchunk-J2JDJZCT.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.62 kB[39m[2m | [22m
+[32mchunk-E24KHLG4.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.44 kB[39m[2m | [22m
+[32mchunk-PWTKEHOP.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.44 kB[39m[2m | [22m
+[32mspec-comments-cache.service.spec.js[39m   [2m | [22m[2mspec-comments-cache.service.spec[22m   [2m | [22m  [36m4.21 kB[39m[2m | [22m
+[32mchunk-OLU7OHY7.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.21 kB[39m[2m | [22m
+[32mspec-login-ui.service.spec.js[39m         [2m | [22m[2mspec-login-ui.service.spec[22m         [2m | [22m  [36m4.16 kB[39m[2m | [22m
+[32mchunk-PVUQS4CR.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.13 kB[39m[2m | [22m
+[32mchunk-NVSGTS2S.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.10 kB[39m[2m | [22m
+[32mchunk-M3FT3FNF.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.09 kB[39m[2m | [22m
+[32mchunk-75TGMKLG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m3.79 kB[39m[2m | [22m
+[32mspec-auth-interceptor.spec.js[39m         [2m | [22m[2mspec-auth-interceptor.spec[22m         [2m | [22m  [36m3.76 kB[39m[2m | [22m
+[32mspec-login-facade.service.spec.js[39m     [2m | [22m[2mspec-login-facade.service.spec[22m     [2m | [22m  [36m3.73 kB[39m[2m | [22m
+[32mspec-comments-facade.service.spec.js[39m  [2m | [22m[2mspec-comments-facade.service.spec[22m  [2m | [22m  [36m3.29 kB[39m[2m | [22m
+[32mspec-auth-guard.service.spec.js[39m       [2m | [22m[2mspec-auth-guard.service.spec[22m       [2m | [22m  [36m3.21 kB[39m[2m | [22m
+[32mspec-notifications.service.spec.js[39m    [2m | [22m[2mspec-notifications.service.spec[22m    [2m | [22m  [36m2.57 kB[39m[2m | [22m
+[32mspec-auth-redirect.guard.spec.js[39m      [2m | [22m[2mspec-auth-redirect.guard.spec[22m      [2m | [22m  [36m2.56 kB[39m[2m | [22m
+[32mchunk-V6FC2DIM.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m2.42 kB[39m[2m | [22m
+[32mspec-ui-overlay.service.spec.js[39m       [2m | [22m[2mspec-ui-overlay.service.spec[22m       [2m | [22m  [36m2.42 kB[39m[2m | [22m
+[32mspec-responsive-dialog.service.spec.js[39m[2m | [22m[2mspec-responsive-dialog.service.spec[22m[2m | [22m  [36m2.40 kB[39m[2m | [22m
+[32mspec-device-type.service.spec.js[39m      [2m | [22m[2mspec-device-type.service.spec[22m      [2m | [22m  [36m2.38 kB[39m[2m | [22m
+[32mspec-auth.service.spec.js[39m             [2m | [22m[2mspec-auth.service.spec[22m             [2m | [22m  [36m2.35 kB[39m[2m | [22m
+[32mspec-api-prefix.interceptor.spec.js[39m   [2m | [22m[2mspec-api-prefix.interceptor.spec[22m   [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-7VQNZHGD.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.74 kB[39m[2m | [22m
+[32mchunk-X326ODEJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.69 kB[39m[2m | [22m
+[32mchunk-I5BQYBNG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.37 kB[39m[2m | [22m
+[32mspec-id.spec.js[39m                       [2m | [22m[2mspec-id.spec[22m                       [2m | [22m  [36m1.32 kB[39m[2m | [22m
+[32mspec-id.service.spec.js[39m               [2m | [22m[2mspec-id.service.spec[22m               [2m | [22m  [36m1.25 kB[39m[2m | [22m
+[32mchunk-FYUT77CE.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.16 kB[39m[2m | [22m
+[32mchunk-RA43KY7Q.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m664 bytes[39m[2m | [22m
+[32mjasmine-cleanup-0.js[39m                  [2m | [22m[2mjasmine-cleanup-0[22m                  [2m | [22m[36m519 bytes[39m[2m | [22m
+[32mchunk-7G77IOZS.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m272 bytes[39m[2m | [22m
+[32mchunk-V2PDABTJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m192 bytes[39m[2m | [22m
+
+[1m [22m                                     [2m | [22m[1mInitial total[22m                      [2m | [22m  [1m6.47 MB[22m
+
+Application bundle generation complete. [3.689 seconds] - 2025-12-15T10:00:00.016Z
+

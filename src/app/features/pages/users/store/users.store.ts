@@ -257,12 +257,23 @@ export const UsersStoreAdapter = signalStore(
               pagination: null,
             });
 
-            const params = {
+            const params: {
+              page: number;
+              perPage: number;
+              name?: string;
+              email?: string;
+            } = {
               page: criteria.page,
               perPage: criteria.perPage,
-              name: criteria.searchTerm || undefined,
-              email: criteria.searchTerm?.includes('@') ? criteria.searchTerm : undefined,
             };
+
+            const term = criteria.searchTerm || '';
+            if (term) {
+              params.name = term;
+              if (term.includes('@')) {
+                params.email = term;
+              }
+            }
 
             return usersApi.list(params, { cache: true }).pipe(
               tap(({ items, pagination }) => {

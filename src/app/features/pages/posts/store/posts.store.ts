@@ -1,16 +1,8 @@
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  of,
-  switchMap,
-  tap,
-  throwError,
-} from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, switchMap, tap, throwError } from 'rxjs';
 
 import {
   DEFAULT_PAGINATION_CONFIG,
@@ -201,15 +193,21 @@ export const PostsStoreAdapter = signalStore(
     bootstrapUserOptions();
     syncPaginationOnFilterChange();
 
-    const performDeletePost = (post: Post) => {
+    const performDeletePost = (post: Post | null | undefined) => {
+      const postId = post?.id;
+      if (!Number.isFinite(postId) || postId === null || postId === undefined) {
+        patchState(store, { deletingId: null });
+        return throwError(() => new Error('Invalid post'));
+      }
+
       const shouldGoPrev = shouldGoToPreviousPage();
 
-      patchState(store, { deletingId: post.id });
+      patchState(store, { deletingId: postId });
 
-      return postsApi.delete(post.id).pipe(
+      return postsApi.delete(postId).pipe(
         tap({
           next: () => {
-            patchState(store, (state) => removePostFromState(state, post.id));
+            patchState(store, (state) => removePostFromState(state, postId));
             invalidatePostsCache();
             notifications.showSuccess(i18n.translate('posts.delete.success'));
             if (shouldGoPrev) {
