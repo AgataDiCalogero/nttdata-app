@@ -2,6 +2,8 @@ import { HttpHeaders, provideHttpClient, withInterceptorsFromDi } from '@angular
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
+
 import { TokenValidationService } from './token-validation.service';
 import { SKIP_GLOBAL_ERROR } from '../interceptors/http-context-tokens';
 
@@ -15,6 +17,31 @@ describe('TokenValidationService', () => {
         TokenValidationService,
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        {
+          provide: I18nService,
+          useValue: {
+            translate: (key: string, params?: Record<string, string | number>) => {
+              switch (key) {
+                case 'login.errors.required':
+                  return 'Access token is required.';
+                case 'login.errors.invalidOrExpired':
+                  return 'The provided token is invalid or expired.';
+                case 'login.errors.invalid':
+                  return 'The provided token could not be validated.';
+                case 'login.errors.rateLimited':
+                  return 'Too many requests.';
+                case 'login.errors.rateLimitedRetryIn':
+                  return `Too many requests. Try again in ${params?.seconds ?? 1}s.`;
+                case 'login.errors.network':
+                  return 'Network error.';
+                case 'login.errors.unableToVerify':
+                  return 'Unable to verify the token right now.';
+                default:
+                  return key;
+              }
+            },
+          } satisfies Pick<I18nService, 'translate'>,
+        },
       ],
     });
     service = TestBed.inject(TokenValidationService);

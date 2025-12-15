@@ -55,7 +55,7 @@ export class UsersApiService {
             }
           },
         }),
-        shareReplay({ bufferSize: 1, refCount: false, resetOnRefCountZero: false }),
+        shareReplay({ bufferSize: 1, refCount: false }),
       );
 
     if (cacheKey) {

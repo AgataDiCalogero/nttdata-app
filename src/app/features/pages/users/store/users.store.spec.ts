@@ -63,7 +63,7 @@ describe('UsersStoreAdapter', () => {
     const store = TestBed.inject(usersServiceInjectionToken);
     tick();
 
-    expect(usersApi.list).toHaveBeenCalledWith({ page: 1, perPage: 10 });
+    expect(usersApi.list).toHaveBeenCalledWith({ page: 1, perPage: 10 }, { cache: true });
     expect(store.users().length).toBe(1);
     expect(store.pagination()?.total).toBe(1);
   }));
@@ -82,6 +82,7 @@ describe('UsersStoreAdapter', () => {
         name: 'bob@example.com',
         email: 'bob@example.com',
       }),
+      { cache: true },
     );
   }));
 
@@ -94,7 +95,9 @@ describe('UsersStoreAdapter', () => {
     store.setPerPage(25);
     tick();
     expect(store.perPage()).toBe(50);
-    expect(usersApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ page: 1, perPage: 50 }));
+    expect(usersApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ page: 1, perPage: 50 }), {
+      cache: true,
+    });
     expect(router.navigate).toHaveBeenCalledWith(
       [],
       jasmine.objectContaining({
@@ -164,7 +167,9 @@ describe('UsersStoreAdapter', () => {
 
     const store = TestBed.inject(usersServiceInjectionToken);
     tick();
-    expect(usersApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ perPage: 50 }));
+    expect(usersApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ perPage: 50 }), {
+      cache: true,
+    });
     expect(store.perPage()).toBe(50);
     expect(router.navigate).toHaveBeenCalledWith(
       [],
@@ -184,7 +189,10 @@ describe('UsersStoreAdapter', () => {
     tick();
 
     expect(store.page()).toBe(1);
-    expect(usersApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ page: 1, perPage: 10 }));
+    expect(usersApi.list.calls.count()).toBe(2);
+    expect(usersApi.list.calls.argsFor(0)[0]).toEqual(jasmine.objectContaining({ page: 999 }));
+    expect(usersApi.list.calls.argsFor(1)[0]).toEqual(jasmine.objectContaining({ page: 1 }));
+    expect(usersApi.list.calls.argsFor(1)[1]).toEqual({ cache: true });
     expect(router.navigate).toHaveBeenCalledWith(
       [],
       jasmine.objectContaining({

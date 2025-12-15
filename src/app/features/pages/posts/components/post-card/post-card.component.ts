@@ -1,39 +1,43 @@
-import { Dialog } from '@angular/cdk/dialog';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  PLATFORM_ID,
   computed,
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { take } from 'rxjs';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
-import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
+import { CommentFormComponent } from '@/app/shared/ui/comment-form/comment-form.component';
+
+import { PostCommentsComponent } from '../post-comments/post-comments.component';
 
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatCardModule, ButtonComponent, TranslatePipe],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatCardModule,
+    ButtonComponent,
+    TranslatePipe,
+    PostCommentsComponent,
+    CommentFormComponent,
+  ],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostCardComponent {
-  private readonly platformId = inject(PLATFORM_ID);
-  private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly i18n = inject(I18nService);
-  private readonly dialog = inject(Dialog);
-  private readonly overlays = inject(UiOverlayService);
 
   readonly post = input.required<Post>();
   readonly isDeleting = input(false);
@@ -43,6 +47,8 @@ export class PostCardComponent {
   readonly commentsLoaded = input(false);
   readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
+
+  readonly commentsOpen = signal(false);
 
   readonly author = computed(() => {
     const provided = this.authorName();
@@ -65,15 +71,26 @@ export class PostCardComponent {
   readonly commentUpdated = output<ModelComment>();
   readonly commentDeleted = output<number>();
 
-  get commentsList(): ModelComment[] {
-    return this.comments() || [];
-  }
-
   get commentCount(): number {
     return this.commentsPreviewCount() ?? this.post().comments_count ?? 0;
   }
 
   isExpanded = false;
+
+  toggleCommentsPanel(): void {
+    const next = !this.commentsOpen();
+    this.commentsOpen.set(next);
+
+    if (!next) {
+      return;
+    }
+
+    if (this.commentsLoaded() || this.commentsLoading()) {
+      return;
+    }
+
+    this.toggleComments.emit();
+  }
 
   shouldTruncate(): boolean {
     const body = this.post().body || '';
@@ -101,38 +118,6 @@ export class PostCardComponent {
   bodyId(): string {
     const current = this.post();
     return `post-body-${current?.id ?? 'unknown'}`;
-  }
-
-  openCommentsModal(): void {
-    const post = this.post();
-    if (!post) return;
-
-    // Trigger explicit load if needed?
-    // The modal will use Facade.toggleComments which handles loading.
-
-    import('../comments-modal/comments-modal.component').then(({ CommentsModalComponent }) => {
-      const ref = this.dialog.open(CommentsModalComponent, {
-        width: '500px',
-        maxWidth: '95vw',
-        height: '80vh',
-        maxHeight: '100vh',
-        panelClass: 'app-dialog-panel',
-        backdropClass: 'app-dialog-overlay',
-        data: { postId: post.id },
-        autoFocus: false,
-        restoreFocus: true,
-      });
-
-      this.overlays.activate({
-        key: 'comments-modal',
-        close: () => ref.close(),
-        blockGlobalControls: true,
-      });
-
-      ref.closed.pipe(take(1)).subscribe(() => {
-        this.overlays.release('comments-modal');
-      });
-    });
   }
 
   onEditClick(): void {

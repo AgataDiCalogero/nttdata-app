@@ -15,6 +15,7 @@ import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
+import { QueryCacheService } from '@/app/shared/services/query-cache/query-cache.service';
 
 import { PostsFiltersService } from './posts-filters.service';
 import { PostsStoreAdapter } from './posts.store';
@@ -91,12 +92,14 @@ describe('PostsStoreAdapter', () => {
         { provide: AuthService, useValue: auth },
         { provide: PAGINATION_CONFIG, useValue: DEFAULT_PAGINATION_CONFIG },
         { provide: PLATFORM_ID, useValue: 'browser' },
+        QueryCacheService,
         PostsStoreAdapter,
         CommentsFacadeService,
       ],
     });
 
     TestBed.inject(CommentsFacadeService);
+    TestBed.inject(QueryCacheService).clear();
   });
 
   it('carica i post iniziali e applica paginazione di default', fakeAsync(() => {

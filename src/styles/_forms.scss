@@ -127,6 +127,16 @@
   }
 }
 
+.form-field.is-invalid .mat-mdc-form-field .mdc-notched-outline__leading,
+.form-field.is-invalid .mat-mdc-form-field .mdc-notched-outline__notch,
+.form-field.is-invalid .mat-mdc-form-field .mdc-notched-outline__trailing {
+  border-color: var(--color-danger) !important;
+}
+
+.form-field.is-invalid .mat-mdc-form-field .mat-mdc-select-arrow {
+  color: var(--color-danger) !important;
+}
+
 .form-field--inline {
   align-items: center;
   flex-direction: row;

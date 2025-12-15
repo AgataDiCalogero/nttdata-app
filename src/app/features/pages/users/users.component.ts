@@ -1,5 +1,12 @@
-import { CommonModule, ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { CommonModule, ViewportScroller, isPlatformBrowser } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  PLATFORM_ID,
+  computed,
+  effect,
+  inject,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -50,6 +57,8 @@ export class Users {
   private readonly router = inject(Router);
   private readonly i18n = inject(I18nService);
   private readonly viewport = inject(ViewportScroller);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly numberFormatter = new Intl.NumberFormat('en-US');
 
   readonly loading = this.usersService.loading;
@@ -63,6 +72,9 @@ export class Users {
 
   constructor() {
     effect(() => {
+      if (!this.isBrowser) {
+        return;
+      }
       this.page();
       this.viewport.scrollToPosition([0, 0]);
     });

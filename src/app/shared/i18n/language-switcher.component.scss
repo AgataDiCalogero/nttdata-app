@@ -46,22 +46,21 @@
   width: 100%;
   text-transform: uppercase;
 
-  @include app-menu-item;
   font-size: 0.88rem;
   justify-content: space-between;
   font-weight: var(--font-weight-semibold);
+  @include app-menu-item;
 
   &--active {
     background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     border-color: var(--color-accent);
     transform: none;
     box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+    color: var(--color-on-surface);
 
     @supports (color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))) {
       background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
       border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
     }
-
-    color: var(--color-on-surface);
   }
 }

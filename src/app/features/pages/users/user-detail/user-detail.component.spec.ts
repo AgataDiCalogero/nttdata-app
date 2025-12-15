@@ -4,6 +4,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Title } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -37,6 +38,7 @@ describe('UserDetailComponent', () => {
   let commentsCacheSpy: jasmine.SpyObj<CommentsCacheService>;
   let notificationsSpy: jasmine.SpyObj<NotificationsService>;
   let i18nSpy: jasmine.SpyObj<I18nService>;
+  let titleSpy: jasmine.SpyObj<Title>;
   const routeStub = { snapshot: { paramMap: { get: () => '1' } } };
   let createComponent: () => void;
 
@@ -61,6 +63,7 @@ describe('UserDetailComponent', () => {
     ]);
     notificationsSpy = jasmine.createSpyObj('NotificationsService', ['showHttpError']);
     i18nSpy = jasmine.createSpyObj('I18nService', ['translate']);
+    titleSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     usersApiSpy.getById.and.returnValue(of(mockUser));
     postsApiSpy.list.and.returnValue(
@@ -89,6 +92,7 @@ describe('UserDetailComponent', () => {
         { provide: CommentsCacheService, useValue: commentsCacheSpy },
         { provide: NotificationsService, useValue: notificationsSpy },
         { provide: I18nService, useValue: i18nSpy },
+        { provide: Title, useValue: titleSpy },
         CommentsFacadeService,
         UsersFacadeService,
         { provide: PLATFORM_ID, useValue: 'browser' },
@@ -165,7 +169,9 @@ describe('UserDetailComponent', () => {
     expect(component.commentsLoaded(101)).toBeTrue();
 
     component.onToggleComments(101);
-    expect(component.commentsLoaded(101)).toBeFalse();
+    tick();
+    expect(component.commentsLoaded(101)).toBeTrue();
+    expect(commentsCacheSpy.fetchComments).toHaveBeenCalledTimes(1);
   }));
 
   it('should handle comment fetch errors without crashing UI', fakeAsync(() => {

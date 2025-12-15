@@ -62,6 +62,8 @@
       "deleting": "Eliminazione…",
       "comments": "Commenti",
       "commentsWithCount": "Commenti ({{count}})",
+      "viewComments": "Vedi commenti",
+      "hideComments": "Nascondi commenti",
       "cancel": "Annulla",
       "retry": "Riprova",
       "create": "Crea",
@@ -310,9 +312,9 @@
       "errorMessage": "Impossibile eliminare il commento in questo momento."
     },
     "toast": {
-      "updated": "Commento aggiornato",
-      "updateFailed": "Impossibile aggiornare il commento",
-      "deleted": "Commento eliminato"
+      "updated": "Commento aggiornato con successo",
+      "updateFailed": "Impossibile aggiornare il commento. Riprova.",
+      "deleted": "Commento eliminato con successo"
     },
     "errors": {
       "rateLimit": "Troppe richieste. Riprova più tardi.",

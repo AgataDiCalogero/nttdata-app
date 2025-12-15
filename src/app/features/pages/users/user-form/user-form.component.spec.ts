@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 
+import { I18nService } from '@app/shared/i18n/i18n.service';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
@@ -42,6 +43,23 @@ describe('UserFormComponent', () => {
         { provide: DialogRef, useValue: dialogRefSpy },
         { provide: ToastService, useValue: toastSpy },
         { provide: DIALOG_DATA, useValue: {} },
+        {
+          provide: I18nService,
+          useValue: {
+            translate: (key: string) => {
+              switch (key) {
+                case 'userForm.errors.emailInUse':
+                  return 'Email already in use';
+                case 'userForm.submitErrors.rateLimit':
+                  return 'Too many requests';
+                case 'userForm.submitErrors.saveFailed':
+                  return 'An error occurred while saving';
+                default:
+                  return key;
+              }
+            },
+          } satisfies Pick<I18nService, 'translate'>,
+        },
       ],
     }).compileComponents();
   });

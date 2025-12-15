@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 
 import { ThemeService } from './theme.service';
 
@@ -167,7 +167,7 @@ describe('ThemeService', () => {
     expect(matchMediaSpy).toHaveBeenCalled();
   });
 
-  it('does not crash when localStorage.setItem throws (Safari private mode)', () => {
+  it('does not crash when localStorage.setItem throws (Safari private mode)', fakeAsync(() => {
     (localStorage.setItem as jasmine.Spy).and.callFake(() => {
       throw new Error('blocked');
     });
@@ -180,6 +180,7 @@ describe('ThemeService', () => {
       service.setPreference('light');
     }).not.toThrow();
 
+    flush();
     expect(body.classList.contains('light-theme')).toBeTrue();
-  });
+  }));
 });

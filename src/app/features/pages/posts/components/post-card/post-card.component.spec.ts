@@ -26,6 +26,17 @@ class StubPostCommentsComponent {
   @Output() commentDeleted = new EventEmitter<number>();
 }
 
+@Component({
+  selector: 'app-comment-form',
+  standalone: true,
+  template: '',
+})
+class StubCommentFormComponent {
+  @Input() postId!: number;
+  @Input() placeholder = '';
+  @Output() created = new EventEmitter<ModelComment>();
+}
+
 describe('PostCardComponent', () => {
   let fixture: ComponentFixture<PostCardComponent>;
   let component: PostCardComponent;
@@ -41,6 +52,7 @@ describe('PostCardComponent', () => {
           ButtonComponent,
           TranslatePipe,
           StubPostCommentsComponent,
+          StubCommentFormComponent,
         ],
       },
     });

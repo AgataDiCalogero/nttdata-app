@@ -62,6 +62,8 @@
       "deleting": "Deleting…",
       "comments": "Comments",
       "commentsWithCount": "Comments ({{count}})",
+      "viewComments": "View comments",
+      "hideComments": "Hide comments",
       "cancel": "Cancel",
       "retry": "Retry",
       "create": "Create",
@@ -310,9 +312,9 @@
       "errorMessage": "Unable to delete comment right now."
     },
     "toast": {
-      "updated": "Comment updated",
-      "updateFailed": "Unable to update comment",
-      "deleted": "Comment deleted"
+      "updated": "Comment updated successfully",
+      "updateFailed": "Unable to update the comment. Please try again.",
+      "deleted": "Comment deleted successfully"
     },
     "errors": {
       "rateLimit": "Too many requests. Please try again later.",
