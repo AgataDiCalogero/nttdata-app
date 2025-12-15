@@ -222,7 +222,7 @@
 .mat-mdc-text-field-wrapper.mdc-text-field:not(.mdc-text-field--outlined):hover,
 .mat-mdc-text-field-wrapper.mdc-text-field:not(.mdc-text-field--outlined):focus-within {
   background: var(--mat-field-bg-hover) !important;
-  box-shadow: var(--mat-control-focus-outline) !important;
+  box-shadow: none !important;
 }
 
 .mat-mdc-form-field .mdc-notched-outline__leading,
@@ -237,14 +237,14 @@
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
   border-color: var(--mat-field-border-focus) !important;
-  box-shadow: var(--mat-control-focus-outline) !important;
+  box-shadow: none !important;
 }
 
 .mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__trailing {
   border-color: var(--color-danger) !important;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-danger) 45%, transparent) !important;
+  box-shadow: none !important;
 }
 
 .mat-mdc-form-field .mdc-floating-label {

@@ -14,6 +14,7 @@
       [control]="perPageControl"
       [options]="perPageSelectOptions()"
       [showPlaceholder]="false"
+      [label]="'users.filters.perPage' | appTranslate"
       [ariaLabel]="'users.filters.perPage' | appTranslate"
       (selectionChange)="onPerPageSelected($event)"
     ></app-select>

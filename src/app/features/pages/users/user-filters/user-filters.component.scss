@@ -3,7 +3,7 @@
 .user-filters {
   display: flex;
   gap: var(--space-sm);
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   @include mixins.flex-grow();
   min-width: 0;
@@ -12,13 +12,12 @@
   app-search-bar {
     flex: 1 1 auto;
     min-width: 0;
-    margin-right: var(--space-sm);
   }
 }
 
 .user-filters__actions {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: var(--space-sm);
   flex-wrap: wrap;
   justify-content: flex-end;

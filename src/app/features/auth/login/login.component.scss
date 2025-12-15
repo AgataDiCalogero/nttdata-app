@@ -207,6 +207,13 @@
   align-self: center;
   text-transform: none;
   font-weight: var(--font-weight-medium);
+
+  mat-icon.mat-icon {
+    inline-size: 0.975rem;
+    block-size: 0.975rem;
+    font-size: 0.975rem;
+    line-height: 1;
+  }
 }
 
 .login-page__alert {

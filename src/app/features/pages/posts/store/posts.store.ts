@@ -1,8 +1,19 @@
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, DestroyRef, Type, computed, effect, inject, signal } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { catchError, debounceTime, distinctUntilChanged, of, switchMap, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  of,
+  Subject,
+  startWith,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 
 import {
   DEFAULT_PAGINATION_CONFIG,
@@ -20,6 +31,7 @@ import { UsersLookupService } from '@/app/shared/services/users/users-lookup.ser
 import { normalizePage } from '@/app/shared/utils/pagination-utils';
 
 import { PostsFiltersService } from './posts-filters.service';
+import { POSTS_STORE_CONFIG } from './posts-store.config';
 import type { PostsService } from './posts.service';
 
 interface PostsState {
@@ -97,6 +109,7 @@ export const PostsStoreAdapter = signalStore(
     const platformId = inject(PLATFORM_ID);
     const filtersService = inject(PostsFiltersService);
     const queryCache = inject(QueryCacheService);
+    const postsStoreConfig = inject(POSTS_STORE_CONFIG);
     const pagination =
       inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
       DEFAULT_PAGINATION_CONFIG;
@@ -165,14 +178,14 @@ export const PostsStoreAdapter = signalStore(
       }
 
       return postsApi.list({ page, perPage, title, userId }).pipe(
-        tap((result) => {
-          const toCache = {
-            items: result?.items ?? [],
-            pagination: result?.pagination ?? null,
-          };
+        map((result) => ({
+          items: result?.items ?? [],
+          pagination: result?.pagination ?? null,
+        })),
+        tap((toCache) => {
           queryCache.set(cacheKey, toCache, { ttl: POSTS_CACHE_TTL_MS });
-          applyPostsResult(result);
-          prefetchCommentCounts(result?.items ?? []);
+          applyPostsResult(toCache);
+          prefetchCommentCounts(toCache.items);
         }),
         catchError((err) => handleListError(err)),
       );
@@ -180,6 +193,9 @@ export const PostsStoreAdapter = signalStore(
 
     const shouldGoToPreviousPage = () =>
       store.posts().length <= 1 && store.currentPage() > 1 && store.totalPages() > 1;
+
+    const immediateListRequests$ = new Subject<QueryCriteria>();
+    const debouncedListRequests$ = new Subject<QueryCriteria>();
 
     patchState(store, {
       page: pagination.defaultPage,
@@ -209,9 +225,11 @@ export const PostsStoreAdapter = signalStore(
           next: () => {
             patchState(store, (state) => removePostFromState(state, postId));
             invalidatePostsCache();
+            patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
             notifications.showSuccess(i18n.translate('posts.delete.success'));
             if (shouldGoPrev) {
               patchState(store, (state) => ({ page: Math.max(state.page - 1, 1) }));
+              requestImmediateListReload();
             }
           },
           error: (err) => {
@@ -234,17 +252,23 @@ export const PostsStoreAdapter = signalStore(
         const sanitizedPerPage = Math.max(1, perPage);
         const sanitizedPage = Math.max(1, page);
         patchState(store, { perPage: sanitizedPerPage, page: sanitizedPage });
+        requestImmediateListReload();
       },
 
       setPage(page: number): void {
-        const totalPages = Math.max(store.totalPages(), 1);
-        const next = Math.max(1, Math.min(page, totalPages));
+        const configuredTotalPages = store.pagination()?.pages;
+        const next =
+          typeof configuredTotalPages === 'number' && Number.isFinite(configuredTotalPages)
+            ? Math.max(1, Math.min(page, Math.max(1, configuredTotalPages)))
+            : Math.max(1, page);
         patchState(store, { page: next });
+        requestImmediateListReload();
       },
 
       refresh(): void {
         invalidatePostsCache();
         patchState(store, (state) => ({ reloadToken: state.reloadToken + 1 }));
+        requestImmediateListReload();
       },
 
       resetFilters(): void {
@@ -253,6 +277,7 @@ export const PostsStoreAdapter = signalStore(
           page: pagination.defaultPage,
           perPage: pagination.defaultPerPage,
         });
+        requestDebouncedListReload();
       },
 
       deletePost(post: Post): void {
@@ -300,10 +325,12 @@ export const PostsStoreAdapter = signalStore(
         if (sanitized === store.perPage()) return;
         const nextPage = normalizePage(1, pagination.defaultPage);
         patchState(store, { perPage: sanitized, page: nextPage });
+        requestImmediateListReload();
       },
 
       setFilters(filters: PostFilters): void {
         filtersService.patch(filters);
+        requestDebouncedListReload();
       },
     };
 
@@ -313,9 +340,11 @@ export const PostsStoreAdapter = signalStore(
         return;
       }
 
-      toObservable(store.queryCriteria)
+      const debounceMs = Math.max(0, postsStoreConfig.debounceMs);
+
+      immediateListRequests$
         .pipe(
-          debounceTime(300),
+          startWith(store.queryCriteria()),
           distinctUntilChanged(
             (a, b) =>
               a.page === b.page &&
@@ -330,7 +359,36 @@ export const PostsStoreAdapter = signalStore(
           }),
           takeUntilDestroyed(destroyRef),
         )
-        .subscribe();
+        .subscribe({ next: () => void 0, error: () => void 0 });
+
+      debouncedListRequests$
+        .pipe(
+          debounceTime(debounceMs),
+          distinctUntilChanged(
+            (a, b) =>
+              a.page === b.page &&
+              a.perPage === b.perPage &&
+              a.title === b.title &&
+              a.userId === b.userId &&
+              a.reload === b.reload,
+          ),
+          switchMap((criteria) => {
+            patchState(store, { loading: true, error: null });
+            return fetchPosts(criteria);
+          }),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe({ next: () => void 0, error: () => void 0 });
+    }
+
+    function requestImmediateListReload(): void {
+      if (!isBrowser) return;
+      immediateListRequests$.next(store.queryCriteria());
+    }
+
+    function requestDebouncedListReload(): void {
+      if (!isBrowser) return;
+      debouncedListRequests$.next(store.queryCriteria());
     }
 
     function prefetchCommentCounts(items: Post[]): void {
@@ -364,6 +422,7 @@ export const PostsStoreAdapter = signalStore(
         }
         if (previous) {
           patchState(store, { page: pagination.defaultPage });
+          requestDebouncedListReload();
         }
         previous = filters;
       });

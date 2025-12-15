@@ -1,0 +1,358 @@
+[33m>[39m Building...
+[32m√[39m Building...
+[1mInitial chunk files[22m                   [2m | [22m[1mNames[22m                              [2m | [22m [1mRaw size[22m
+[32mchunk-JBPL2KPN.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.18 MB[39m[2m | [22m
+[32mchunk-74JUXEXY.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.13 MB[39m[2m | [22m
+[32mpolyfills.js[39m                          [2m | [22m[2mpolyfills[22m                          [2m | [22m[36m944.09 kB[39m[2m | [22m
+[32mstyles.css[39m                            [2m | [22m[2mstyles[22m                             [2m | [22m[36m520.34 kB[39m[2m | [22m
+[32mchunk-ICJFIWZK.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m242.87 kB[39m[2m | [22m
+[32mchunk-AEDFDWJO.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m230.74 kB[39m[2m | [22m
+[32mchunk-YNEJP6UB.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m207.71 kB[39m[2m | [22m
+[32mchunk-HOMMOEM5.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m197.33 kB[39m[2m | [22m
+[32mchunk-74TO3JVF.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m174.35 kB[39m[2m | [22m
+[32mtest_main.js[39m                          [2m | [22m[2mtest_main[22m                          [2m | [22m[36m162.11 kB[39m[2m | [22m
+[32mchunk-V5VUKZGV.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m153.24 kB[39m[2m | [22m
+[32mchunk-DHQOL7Z7.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m145.40 kB[39m[2m | [22m
+[32mchunk-4VBK7COQ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m140.38 kB[39m[2m | [22m
+[32mchunk-OVTFLKO3.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m96.68 kB[39m[2m | [22m
+[32mspec-posts.component.spec.js[39m          [2m | [22m[2mspec-posts.component.spec[22m          [2m | [22m [36m67.33 kB[39m[2m | [22m
+[32mchunk-PNUE6J6C.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m65.23 kB[39m[2m | [22m
+[32mchunk-R4Q2USHL.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m47.09 kB[39m[2m | [22m
+[32mchunk-QOAS2TXB.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m39.73 kB[39m[2m | [22m
+[32mchunk-SFBC7SNG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m37.01 kB[39m[2m | [22m
+[32mspec-user-detail.component.spec.js[39m    [2m | [22m[2mspec-user-detail.component.spec[22m    [2m | [22m [36m35.65 kB[39m[2m | [22m
+[32mspec-user-list.component.spec.js[39m      [2m | [22m[2mspec-user-list.component.spec[22m      [2m | [22m [36m32.94 kB[39m[2m | [22m
+[32mchunk-OMTYNHQK.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m32.89 kB[39m[2m | [22m
+[32mchunk-HNVAFKGO.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m32.23 kB[39m[2m | [22m
+[32mchunk-YZWDFFEG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m31.84 kB[39m[2m | [22m
+[32mchunk-3HDF6LKN.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m28.97 kB[39m[2m | [22m
+[32mchunk-7TNGSN6C.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m27.30 kB[39m[2m | [22m
+[32mchunk-RDC2X757.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m25.95 kB[39m[2m | [22m
+[32mspec-login.component.spec.js[39m          [2m | [22m[2mspec-login.component.spec[22m          [2m | [22m [36m23.59 kB[39m[2m | [22m
+[32mchunk-WNT6XSTY.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m20.48 kB[39m[2m | [22m
+[32mchunk-MFFONYHU.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m16.16 kB[39m[2m | [22m
+[32mchunk-3OH4XV7G.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m13.46 kB[39m[2m | [22m
+[32mchunk-IH3I3KOA.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.92 kB[39m[2m | [22m
+[32mspec-users-ui.service.spec.js[39m         [2m | [22m[2mspec-users-ui.service.spec[22m         [2m | [22m [36m12.88 kB[39m[2m | [22m
+[32mchunk-O6KYVQMZ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.74 kB[39m[2m | [22m
+[32mchunk-2VLR5LB4.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.72 kB[39m[2m | [22m
+[32mspec-user-filters.component.spec.js[39m   [2m | [22m[2mspec-user-filters.component.spec[22m   [2m | [22m [36m12.60 kB[39m[2m | [22m
+[32mspec-toast.component.spec.js[39m          [2m | [22m[2mspec-toast.component.spec[22m          [2m | [22m [36m12.60 kB[39m[2m | [22m
+[32mspec-theme.service.spec.js[39m            [2m | [22m[2mspec-theme.service.spec[22m            [2m | [22m [36m12.51 kB[39m[2m | [22m
+[32mchunk-EA5NWKAL.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.26 kB[39m[2m | [22m
+[32mchunk-DBCPK6VW.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.13 kB[39m[2m | [22m
+[32mchunk-T4XZVCGY.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m11.18 kB[39m[2m | [22m
+[32mchunk-AE7AN4YH.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m10.81 kB[39m[2m | [22m
+[32mspec-post-card.component.spec.js[39m      [2m | [22m[2mspec-post-card.component.spec[22m      [2m | [22m [36m10.70 kB[39m[2m | [22m
+[32mchunk-I56BH2UR.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m10.06 kB[39m[2m | [22m
+[32mspec-error.interceptor.spec.js[39m        [2m | [22m[2mspec-error.interceptor.spec[22m        [2m | [22m  [36m9.53 kB[39m[2m | [22m
+[32mchunk-NGE25ETU.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m9.17 kB[39m[2m | [22m
+[32mchunk-WZ6PV5KB.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m9.10 kB[39m[2m | [22m
+[32mspec-posts.store.spec.js[39m              [2m | [22m[2mspec-posts.store.spec[22m              [2m | [22m  [36m8.04 kB[39m[2m | [22m
+[32mspec-user-form.component.spec.js[39m      [2m | [22m[2mspec-user-form.component.spec[22m      [2m | [22m  [36m7.52 kB[39m[2m | [22m
+[32mchunk-VU3PR3MM.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m7.48 kB[39m[2m | [22m
+[32mchunk-ASPEALUW.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m7.32 kB[39m[2m | [22m
+[32mspec-users.store.spec.js[39m              [2m | [22m[2mspec-users.store.spec[22m              [2m | [22m  [36m7.07 kB[39m[2m | [22m
+[32mchunk-HJXTNIBP.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m6.96 kB[39m[2m | [22m
+[32mchunk-WID5PGN3.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m6.69 kB[39m[2m | [22m
+[32mchunk-CDJ4SFHC.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m6.01 kB[39m[2m | [22m
+[32mspec-posts-api.service.spec.js[39m        [2m | [22m[2mspec-posts-api.service.spec[22m        [2m | [22m  [36m5.87 kB[39m[2m | [22m
+[32mchunk-PKWMQ7IG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m5.50 kB[39m[2m | [22m
+[32mspec-post-comments.component.spec.js[39m  [2m | [22m[2mspec-post-comments.component.spec[22m  [2m | [22m  [36m5.44 kB[39m[2m | [22m
+[32mspec-users-api.service.spec.js[39m        [2m | [22m[2mspec-users-api.service.spec[22m        [2m | [22m  [36m5.29 kB[39m[2m | [22m
+[32mspec-token-validation.service.spec.js[39m [2m | [22m[2mspec-token-validation.service.spec[22m [2m | [22m  [36m5.29 kB[39m[2m | [22m
+[32mspec-auto-focus.directive.spec.js[39m     [2m | [22m[2mspec-auto-focus.directive.spec[22m     [2m | [22m  [36m5.23 kB[39m[2m | [22m
+[32mspec-posts-ui.service.spec.js[39m         [2m | [22m[2mspec-posts-ui.service.spec[22m         [2m | [22m  [36m5.22 kB[39m[2m | [22m
+[32mchunk-SINMY7WY.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m5.17 kB[39m[2m | [22m
+[32mchunk-XN64HYKQ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m5.05 kB[39m[2m | [22m
+[32mchunk-GWRH5YCA.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.62 kB[39m[2m | [22m
+[32mchunk-MXVLHU7I.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.44 kB[39m[2m | [22m
+[32mchunk-GPPBJT4Y.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.44 kB[39m[2m | [22m
+[32mspec-comments-cache.service.spec.js[39m   [2m | [22m[2mspec-comments-cache.service.spec[22m   [2m | [22m  [36m4.21 kB[39m[2m | [22m
+[32mchunk-L4KE3YFC.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.21 kB[39m[2m | [22m
+[32mspec-login-ui.service.spec.js[39m         [2m | [22m[2mspec-login-ui.service.spec[22m         [2m | [22m  [36m4.16 kB[39m[2m | [22m
+[32mchunk-SU4LHIOB.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.13 kB[39m[2m | [22m
+[32mchunk-HB4REGCM.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.10 kB[39m[2m | [22m
+[32mchunk-6IR6CWCL.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.09 kB[39m[2m | [22m
+[32mchunk-NN5ICEN6.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m3.79 kB[39m[2m | [22m
+[32mspec-auth-interceptor.spec.js[39m         [2m | [22m[2mspec-auth-interceptor.spec[22m         [2m | [22m  [36m3.76 kB[39m[2m | [22m
+[32mspec-login-facade.service.spec.js[39m     [2m | [22m[2mspec-login-facade.service.spec[22m     [2m | [22m  [36m3.73 kB[39m[2m | [22m
+[32mspec-comments-facade.service.spec.js[39m  [2m | [22m[2mspec-comments-facade.service.spec[22m  [2m | [22m  [36m3.29 kB[39m[2m | [22m
+[32mspec-auth-guard.service.spec.js[39m       [2m | [22m[2mspec-auth-guard.service.spec[22m       [2m | [22m  [36m3.21 kB[39m[2m | [22m
+[32mspec-notifications.service.spec.js[39m    [2m | [22m[2mspec-notifications.service.spec[22m    [2m | [22m  [36m2.57 kB[39m[2m | [22m
+[32mspec-auth-redirect.guard.spec.js[39m      [2m | [22m[2mspec-auth-redirect.guard.spec[22m      [2m | [22m  [36m2.56 kB[39m[2m | [22m
+[32mchunk-V6FC2DIM.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m2.42 kB[39m[2m | [22m
+[32mspec-ui-overlay.service.spec.js[39m       [2m | [22m[2mspec-ui-overlay.service.spec[22m       [2m | [22m  [36m2.42 kB[39m[2m | [22m
+[32mspec-responsive-dialog.service.spec.js[39m[2m | [22m[2mspec-responsive-dialog.service.spec[22m[2m | [22m  [36m2.40 kB[39m[2m | [22m
+[32mspec-device-type.service.spec.js[39m      [2m | [22m[2mspec-device-type.service.spec[22m      [2m | [22m  [36m2.38 kB[39m[2m | [22m
+[32mspec-auth.service.spec.js[39m             [2m | [22m[2mspec-auth.service.spec[22m             [2m | [22m  [36m2.35 kB[39m[2m | [22m
+[32mspec-api-prefix.interceptor.spec.js[39m   [2m | [22m[2mspec-api-prefix.interceptor.spec[22m   [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-7VQNZHGD.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.74 kB[39m[2m | [22m
+[32mchunk-UFKA35I4.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.69 kB[39m[2m | [22m
+[32mchunk-GMYYH3BU.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.37 kB[39m[2m | [22m
+[32mspec-id.spec.js[39m                       [2m | [22m[2mspec-id.spec[22m                       [2m | [22m  [36m1.32 kB[39m[2m | [22m
+[32mspec-id.service.spec.js[39m               [2m | [22m[2mspec-id.service.spec[22m               [2m | [22m  [36m1.25 kB[39m[2m | [22m
+[32mchunk-2GTNDQZG.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.16 kB[39m[2m | [22m
+[32mchunk-7GFDBX2Y.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m664 bytes[39m[2m | [22m
+[32mjasmine-cleanup-0.js[39m                  [2m | [22m[2mjasmine-cleanup-0[22m                  [2m | [22m[36m519 bytes[39m[2m | [22m
+[32mchunk-BMFMI37R.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m272 bytes[39m[2m | [22m
+[32mchunk-V2PDABTJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m192 bytes[39m[2m | [22m
+
+[1m [22m                                     [2m | [22m[1mInitial total[22m                      [2m | [22m  [1m6.47 MB[22m
+
+Application bundle generation complete. [4.123 seconds] - 2025-12-15T10:05:14.583Z
+
+[32m15 12 2025 11:05:33.000:INFO [karma-server]: [39mKarma v6.4.4 server started at http://localhost:9876/
+[32m15 12 2025 11:05:33.014:INFO [launcher]: [39mLaunching browsers Chrome with concurrency unlimited
+[32m15 12 2025 11:05:33.086:INFO [launcher]: [39mStarting browser Chrome
+[32m15 12 2025 11:05:38.234:INFO [Chrome 143.0.0.0 (Windows 10)]: [39mConnected on socket ZoZZClxBkfuxNauRAAAB with id 34343314
+Chrome 143.0.0.0 (Windows 10): Executed 0 of 169[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 1 of 169[32m SUCCESS[39m (0 secs / 0.079 secs)
+[1A[2KERROR: [36m'Failed to delete comment', Object{status: 429, message: 'rate limit'}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 1 of 169[32m SUCCESS[39m (0 secs / 0.079 secs)
+ERROR: 'Failed to delete comment', Object{status: 429, message: 'rate limit'}
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 2 of 169[32m SUCCESS[39m (0 secs / 0.087 secs)
+[1A[2KERROR: [36m'Failed to update comment', Object{status: 422, message: 'invalid'}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 2 of 169[32m SUCCESS[39m (0 secs / 0.087 secs)
+ERROR: 'Failed to update comment', Object{status: 422, message: 'invalid'}
+[1A[2KERROR: [36m'Failed to update comment', Object{status: 429, message: 'limit'}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 2 of 169[32m SUCCESS[39m (0 secs / 0.087 secs)
+ERROR: 'Failed to update comment', Object{status: 429, message: 'limit'}
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 3 of 169[32m SUCCESS[39m (0 secs / 0.094 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 4 of 169[32m SUCCESS[39m (0 secs / 0.133 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 5 of 169[32m SUCCESS[39m (0 secs / 0.15 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 6 of 169[32m SUCCESS[39m (0 secs / 0.168 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 7 of 169[32m SUCCESS[39m (0 secs / 0.18 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 8 of 169[32m SUCCESS[39m (0 secs / 0.193 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 9 of 169[32m SUCCESS[39m (0 secs / 0.204 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 10 of 169[32m SUCCESS[39m (0 secs / 0.227 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 11 of 169[32m SUCCESS[39m (0 secs / 0.234 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 12 of 169[32m SUCCESS[39m (0 secs / 0.239 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 13 of 169[32m SUCCESS[39m (0 secs / 0.245 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 14 of 169[32m SUCCESS[39m (0 secs / 0.25 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 15 of 169[32m SUCCESS[39m (0 secs / 0.258 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 16 of 169[32m SUCCESS[39m (0 secs / 0.267 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 17 of 169[32m SUCCESS[39m (0 secs / 0.364 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 18 of 169[32m SUCCESS[39m (0 secs / 0.384 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 19 of 169[32m SUCCESS[39m (0 secs / 0.41 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 20 of 169[32m SUCCESS[39m (0 secs / 0.421 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 21 of 169[32m SUCCESS[39m (0 secs / 0.456 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 22 of 169[32m SUCCESS[39m (0 secs / 0.533 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 23 of 169[32m SUCCESS[39m (0 secs / 0.574 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 24 of 169[32m SUCCESS[39m (0 secs / 1.039 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 25 of 169[32m SUCCESS[39m (0 secs / 1.207 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 26 of 169[32m SUCCESS[39m (0 secs / 1.256 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 27 of 169[32m SUCCESS[39m (0 secs / 1.3 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 28 of 169[32m SUCCESS[39m (0 secs / 1.321 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 29 of 169[32m SUCCESS[39m (0 secs / 2.52 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 30 of 169[32m SUCCESS[39m (0 secs / 2.545 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 31 of 169[32m SUCCESS[39m (0 secs / 2.579 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 32 of 169[32m SUCCESS[39m (0 secs / 2.614 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 33 of 169[32m SUCCESS[39m (0 secs / 2.652 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 34 of 169[32m SUCCESS[39m (0 secs / 2.687 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 35 of 169[32m SUCCESS[39m (0 secs / 2.713 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 36 of 169[32m SUCCESS[39m (0 secs / 2.732 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 37 of 169[32m SUCCESS[39m (0 secs / 2.736 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 38 of 169[32m SUCCESS[39m (0 secs / 2.748 secs)
+[1A[2KERROR: [36m'Save failed:', Object{status: 500}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 38 of 169[32m SUCCESS[39m (0 secs / 2.748 secs)
+ERROR: 'Save failed:', Object{status: 500}
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 39 of 169[32m SUCCESS[39m (0 secs / 3.139 secs)
+[1A[2KERROR: [36m'Save failed:', Object{status: 429}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 39 of 169[32m SUCCESS[39m (0 secs / 3.139 secs)
+ERROR: 'Save failed:', Object{status: 429}
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 40 of 169[32m SUCCESS[39m (0 secs / 3.219 secs)
+[1A[2KERROR: [36m'Save failed:', Object{status: 422}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 40 of 169[32m SUCCESS[39m (0 secs / 3.219 secs)
+ERROR: 'Save failed:', Object{status: 422}
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 41 of 169[32m SUCCESS[39m (0 secs / 3.277 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 42 of 169[32m SUCCESS[39m (0 secs / 3.355 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 43 of 169[32m SUCCESS[39m (0 secs / 3.416 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 44 of 169[32m SUCCESS[39m (0 secs / 3.485 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 45 of 169[32m SUCCESS[39m (0 secs / 3.63 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 46 of 169[32m SUCCESS[39m (0 secs / 3.652 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 47 of 169[32m SUCCESS[39m (0 secs / 3.674 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 48 of 169[32m SUCCESS[39m (0 secs / 3.678 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 49 of 169[32m SUCCESS[39m (0 secs / 3.681 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 50 of 169[32m SUCCESS[39m (0 secs / 3.685 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 51 of 169[32m SUCCESS[39m (0 secs / 3.687 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 52 of 169[32m SUCCESS[39m (0 secs / 3.691 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 53 of 169[32m SUCCESS[39m (0 secs / 3.694 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 54 of 169[32m SUCCESS[39m (0 secs / 3.696 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 55 of 169[32m SUCCESS[39m (0 secs / 3.698 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 56 of 169[32m SUCCESS[39m (0 secs / 3.7 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 57 of 169[32m SUCCESS[39m (0 secs / 3.73 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 58 of 169[32m SUCCESS[39m (0 secs / 3.739 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 59 of 169[32m SUCCESS[39m (0 secs / 3.761 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 60 of 169[32m SUCCESS[39m (0 secs / 3.772 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 61 of 169[32m SUCCESS[39m (0 secs / 3.782 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 62 of 169[32m SUCCESS[39m (0 secs / 3.794 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 63 of 169[32m SUCCESS[39m (0 secs / 3.796 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 64 of 169[32m SUCCESS[39m (0 secs / 3.799 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 65 of 169[32m SUCCESS[39m (0 secs / 3.8 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 66 of 169[32m SUCCESS[39m (0 secs / 3.803 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 169[32m SUCCESS[39m (0 secs / 3.805 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 68 of 169[32m SUCCESS[39m (0 secs / 3.807 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 69 of 169[32m SUCCESS[39m (0 secs / 3.808 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 70 of 169[32m SUCCESS[39m (0 secs / 3.81 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 71 of 169[32m SUCCESS[39m (0 secs / 3.811 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 72 of 169[32m SUCCESS[39m (0 secs / 3.812 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 73 of 169[32m SUCCESS[39m (0 secs / 3.813 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 74 of 169[32m SUCCESS[39m (0 secs / 3.814 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 75 of 169[32m SUCCESS[39m (0 secs / 3.815 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 76 of 169[32m SUCCESS[39m (0 secs / 3.831 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 77 of 169[32m SUCCESS[39m (0 secs / 3.836 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 78 of 169[32m SUCCESS[39m (0 secs / 3.839 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 79 of 169[32m SUCCESS[39m (0 secs / 3.841 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 80 of 169[32m SUCCESS[39m (0 secs / 3.843 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 81 of 169[32m SUCCESS[39m (0 secs / 3.846 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 82 of 169[32m SUCCESS[39m (0 secs / 3.85 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 83 of 169[32m SUCCESS[39m (0 secs / 3.852 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 84 of 169[32m SUCCESS[39m (0 secs / 3.856 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 85 of 169[32m SUCCESS[39m (0 secs / 3.858 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 86 of 169[32m SUCCESS[39m (0 secs / 3.861 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 87 of 169[32m SUCCESS[39m (0 secs / 3.863 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 88 of 169[32m SUCCESS[39m (0 secs / 3.865 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 89 of 169[32m SUCCESS[39m (0 secs / 3.866 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 90 of 169[32m SUCCESS[39m (0 secs / 3.868 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 91 of 169[32m SUCCESS[39m (0 secs / 3.869 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 92 of 169[32m SUCCESS[39m (0 secs / 3.87 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 93 of 169[32m SUCCESS[39m (0 secs / 3.872 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 94 of 169[32m SUCCESS[39m (0 secs / 3.873 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 95 of 169[32m SUCCESS[39m (0 secs / 3.874 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 96 of 169[32m SUCCESS[39m (0 secs / 3.875 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 97 of 169[32m SUCCESS[39m (0 secs / 3.876 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 98 of 169[32m SUCCESS[39m (0 secs / 3.882 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 99 of 169[32m SUCCESS[39m (0 secs / 3.884 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 100 of 169[32m SUCCESS[39m (0 secs / 3.885 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 101 of 169[32m SUCCESS[39m (0 secs / 3.886 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 102 of 169[32m SUCCESS[39m (0 secs / 3.887 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 103 of 169[32m SUCCESS[39m (0 secs / 3.888 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 104 of 169[32m SUCCESS[39m (0 secs / 3.889 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 105 of 169[32m SUCCESS[39m (0 secs / 3.89 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 106 of 169[32m SUCCESS[39m (0 secs / 3.89 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 107 of 169[32m SUCCESS[39m (0 secs / 3.89 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 108 of 169[32m SUCCESS[39m (0 secs / 3.89 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 109 of 169[32m SUCCESS[39m (0 secs / 3.892 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 110 of 169[32m SUCCESS[39m (0 secs / 3.894 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 111 of 169[32m SUCCESS[39m (0 secs / 3.895 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 112 of 169[32m SUCCESS[39m (0 secs / 3.896 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 113 of 169[32m SUCCESS[39m (0 secs / 3.898 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 114 of 169[32m SUCCESS[39m (0 secs / 3.9 secs)
+[1A[2KERROR: [36m'Failed to load user for edit:', Object{status: 500}[39m
+Chrome 143.0.0.0 (Windows 10): Executed 114 of 169[32m SUCCESS[39m (0 secs / 3.9 secs)
+ERROR: 'Failed to load user for edit:', Object{status: 500}
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 115 of 169[32m SUCCESS[39m (0 secs / 3.901 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 116 of 169[32m SUCCESS[39m (0 secs / 3.902 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 117 of 169[32m SUCCESS[39m (0 secs / 3.903 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 118 of 169[32m SUCCESS[39m (0 secs / 3.903 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 119 of 169[32m SUCCESS[39m (0 secs / 3.903 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 120 of 169[32m SUCCESS[39m (0 secs / 3.903 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 121 of 169[32m SUCCESS[39m (0 secs / 3.903 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 122 of 169[32m SUCCESS[39m (0 secs / 3.944 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 123 of 169[32m SUCCESS[39m (0 secs / 3.956 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 124 of 169[32m SUCCESS[39m (0 secs / 3.97 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 125 of 169[32m SUCCESS[39m (0 secs / 3.984 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 126 of 169[32m SUCCESS[39m (0 secs / 4.006 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 127 of 169[32m SUCCESS[39m (0 secs / 4.021 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 128 of 169[32m SUCCESS[39m (0 secs / 4.034 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 129 of 169[32m SUCCESS[39m (0 secs / 4.057 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 130 of 169[32m SUCCESS[39m (0 secs / 4.071 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 131 of 169[32m SUCCESS[39m (0 secs / 4.092 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 132 of 169[32m SUCCESS[39m (0 secs / 4.111 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 133 of 169[32m SUCCESS[39m (0 secs / 4.113 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 134 of 169[32m SUCCESS[39m (0 secs / 4.114 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 135 of 169[32m SUCCESS[39m (0 secs / 4.127 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 136 of 169[32m SUCCESS[39m (0 secs / 4.128 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 137 of 169[32m SUCCESS[39m (0 secs / 4.129 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 138 of 169[32m SUCCESS[39m (0 secs / 4.13 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 139 of 169[32m SUCCESS[39m (0 secs / 4.133 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 140 of 169[32m SUCCESS[39m (0 secs / 4.134 secs)
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) PostsStoreAdapter changePerPage e setPage aggiornano i criteri e scatenano list FAILED[39m
+	Expected 0 to be greater than 0.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (src/app/features/pages/posts/store/posts.store.spec.ts:133:41)
+	    at UserContext.fakeAsyncFn (node_modules/zone.js/fesm2015/zone-testing.js:1715:26)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+	    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+Chrome 143.0.0.0 (Windows 10): Executed 141 of 169[31m (1 FAILED)[39m (0 secs / 4.138 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 142 of 169[31m (1 FAILED)[39m (0 secs / 4.14 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 143 of 169[31m (1 FAILED)[39m (0 secs / 4.144 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 144 of 169[31m (1 FAILED)[39m (0 secs / 4.145 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 145 of 169[31m (1 FAILED)[39m (0 secs / 4.146 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 146 of 169[31m (1 FAILED)[39m (0 secs / 4.147 secs)
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) PostsStoreAdapter invalida la cache su delete e non riusa dati stale FAILED[39m
+	Expected 1 to be 2.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (src/app/features/pages/posts/store/posts.store.spec.ts:211:41)
+	    at UserContext.fakeAsyncFn (node_modules/zone.js/fesm2015/zone-testing.js:1715:26)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+	    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+	Expected 1 to be 2.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (src/app/features/pages/posts/store/posts.store.spec.ts:215:41)
+	    at UserContext.fakeAsyncFn (node_modules/zone.js/fesm2015/zone-testing.js:1715:26)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+	    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+	Expected 1 to be 3.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (src/app/features/pages/posts/store/posts.store.spec.ts:222:41)
+	    at UserContext.fakeAsyncFn (node_modules/zone.js/fesm2015/zone-testing.js:1715:26)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+	    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+	Expected 1 to be 4.
+	    at <Jasmine>
+	    at UserContext.<anonymous> (src/app/features/pages/posts/store/posts.store.spec.ts:226:41)
+	    at UserContext.fakeAsyncFn (node_modules/zone.js/fesm2015/zone-testing.js:1715:26)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+	    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+Chrome 143.0.0.0 (Windows 10): Executed 147 of 169[31m (2 FAILED)[39m (0 secs / 4.15 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 148 of 169[31m (2 FAILED)[39m (0 secs / 4.152 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 149 of 169[31m (2 FAILED)[39m (0 secs / 4.153 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 150 of 169[31m (2 FAILED)[39m (0 secs / 4.155 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 151 of 169[31m (2 FAILED)[39m (0 secs / 4.156 secs)
+[1A[2KERROR: [36m'Login error:', Error: Network error
+Error: Network error
+    at http://localhost:9876/base/src/app/features/auth/login/services/login-facade.service.spec.ts:81:61
+    at _Observable.init [as _subscribe] (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/observable/throwError.js:5:51)
+    at _Observable._trySubscribe (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:37:25)
+    at http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:31:30
+    at errorContext (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/util/errorContext.js:19:9)
+    at _Observable.subscribe (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:22:9)
+    at http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/operators/map.js:6:16
+    at OperatorSubscriber.<anonymous> (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/util/lift.js:10:28)
+    at http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:26:30
+    at errorContext (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/util/errorContext.js:19:9)[39m
+Chrome 143.0.0.0 (Windows 10): Executed 151 of 169[31m (2 FAILED)[39m (0 secs / 4.156 secs)
+ERROR: 'Login error:', Error: Network error
+Error: Network error
+    at http://localhost:9876/base/src/app/features/auth/login/services/login-facade.service.spec.ts:81:61
+    at _Observable.init [as _subscribe] (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/observable/throwError.js:5:51)
+    at _Observable._trySubscribe (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:37:25)
+    at http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:31:30
+    at errorContext (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/util/errorContext.js:19:9)
+    at _Observable.subscribe (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:22:9)
+    at http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/operators/map.js:6:16
+    at OperatorSubscriber.<anonymous> (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/util/lift.js:10:28)
+    at http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/Observable.js:26:30
+    at errorContext (http://localhost:9876/base/node_modules/rxjs/dist/esm/internal/util/errorContext.js:19:9)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 152 of 169[31m (2 FAILED)[39m (0 secs / 4.158 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 153 of 169[31m (2 FAILED)[39m (0 secs / 4.16 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 154 of 169[31m (2 FAILED)[39m (0 secs / 4.162 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 155 of 169[31m (2 FAILED)[39m (0 secs / 4.163 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 156 of 169[31m (2 FAILED)[39m (0 secs / 4.163 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 157 of 169[31m (2 FAILED)[39m (0 secs / 4.164 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 158 of 169[31m (2 FAILED)[39m (0 secs / 4.165 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 159 of 169[31m (2 FAILED)[39m (0 secs / 4.166 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 160 of 169[31m (2 FAILED)[39m (0 secs / 4.166 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 161 of 169[31m (2 FAILED)[39m (0 secs / 4.167 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 162 of 169[31m (2 FAILED)[39m (0 secs / 4.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 163 of 169[31m (2 FAILED)[39m (0 secs / 4.17 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 164 of 169[31m (2 FAILED)[39m (0 secs / 4.171 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 165 of 169[31m (2 FAILED)[39m (0 secs / 4.195 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 166 of 169[31m (2 FAILED)[39m (0 secs / 4.199 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 167 of 169[31m (2 FAILED)[39m (0 secs / 4.211 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 168 of 169[31m (2 FAILED)[39m (0 secs / 4.213 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 169 of 169[31m (2 FAILED)[39m (0 secs / 4.225 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 169 of 169[31m (2 FAILED)[39m (11.691 secs / 4.225 secs)
+[31mTOTAL: 2 FAILED, 167 SUCCESS[39m
