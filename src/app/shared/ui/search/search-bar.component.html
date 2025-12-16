@@ -1,34 +1,38 @@
-<div
-  class="app-search"
-  [class.app-search--wide]="isWide()"
-  [class.app-search--compact]="isCompact()"
-  [class.app-search--small]="isSmall()"
-  [class.app-search--full]="isFull()"
+<mat-form-field
+  class="app-search-field"
+  appearance="outline"
+  color="accent"
+  [floatLabel]="'always'"
+  [class.app-search-field--wide]="isWide()"
+  [class.app-search-field--compact]="isCompact()"
+  [class.app-search-field--small]="isSmall()"
+  [class.app-search-field--full]="isFull()"
 >
-  <label [attr.for]="control() ? inputId() : null">{{ labelText() }}</label>
-  <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
+  <mat-label>{{ labelText() }}</mat-label>
+
+  <lucide-icon matPrefix [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
 
   @if (control(); as ctrl) {
     <input
+      matInput
       type="search"
-	      class="app-search__input"
-	      placeholder="{{ placeholder() }}"
-	      title="{{ labelText() }}"
-	      [attr.aria-label]="labelText()"
-	      id="{{ inputId() }}"
-	      [formControl]="ctrl"
-	      [appDebounceInput]="debounceTime()"
-	      (debounced)="onDebounced($event)"
+      class="app-search__input"
+      [placeholder]="placeholder()"
+      [attr.aria-label]="labelText()"
+      [id]="inputId()"
+      [formControl]="ctrl"
+      [appDebounceInput]="debounceTime()"
+      (debounced)="onDebounced($event)"
     />
   } @else {
     <input
-	      type="search"
-	      class="app-search__input"
-	      placeholder="{{ placeholder() }}"
-	      title="{{ labelText() }}"
-	      [attr.aria-label]="labelText()"
-	      [appDebounceInput]="debounceTime()"
-	      (debounced)="onDebounced($event)"
-	    />
+      matInput
+      type="search"
+      class="app-search__input"
+      [placeholder]="placeholder()"
+      [attr.aria-label]="labelText()"
+      [appDebounceInput]="debounceTime()"
+      (debounced)="onDebounced($event)"
+    />
   }
-</div>
+</mat-form-field>

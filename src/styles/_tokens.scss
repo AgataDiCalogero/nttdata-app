@@ -100,7 +100,6 @@
     color-mix(in srgb, var(--color-accent-light) 30%, var(--color-accent) 70%),
     var(--color-accent)
   );
-
   --gradient-success: linear-gradient(135deg, var(--color-success-light), var(--color-success));
   --gradient-error: linear-gradient(135deg, var(--color-danger), var(--color-danger-dark));
   --gradient-info: linear-gradient(135deg, var(--color-info), var(--color-info-dark));
@@ -116,18 +115,20 @@
   --mat-field-helper: rgba(255, 255, 255, 0.62);
   --mat-field-disabled-bg: rgba(17, 24, 39, 0.32);
   --mat-field-disabled-text: rgba(255, 255, 255, 0.35);
+
   --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
   --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 26%, transparent);
+  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
   --mat-option-hover-text: var(--color-on-surface);
   --mat-option-active-text: var(--color-on-surface);
-  --mat-control-focus-outline: 0 0 0 1px color-mix(in srgb, var(--color-accent) 38%, transparent);
+
+  --mat-control-focus-outline: none;
+
   --mat-card-bg: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
   --mat-card-border: color-mix(in srgb, var(--color-border) 70%, transparent);
   --mat-card-hover-bg: color-mix(in srgb, var(--color-surface-solid) 88%, transparent);
   --mat-card-shadow: var(--shadow-lg);
 
-  // Material Global Overrides Tokens
-  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
   --mat-menu-bg: var(--color-surface-solid);
   --mat-menu-border: var(--color-border);
   --radius-menu: var(--radius-xl);
@@ -170,18 +171,20 @@
   --mat-field-helper: rgba(8, 18, 27, 0.62);
   --mat-field-disabled-bg: rgba(15, 23, 42, 0.08);
   --mat-field-disabled-text: rgba(8, 18, 27, 0.4);
+
   --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
   --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
   --mat-option-hover-text: var(--color-on-surface);
   --mat-option-active-text: var(--color-on-surface);
-  --mat-control-focus-outline: 0 0 0 1px color-mix(in srgb, var(--color-accent) 45%, transparent);
+
+  --mat-control-focus-outline: none;
+
   --mat-card-bg: color-mix(in srgb, #f8fafc 92%, var(--color-white) 8%);
   --mat-card-border: rgba(15, 23, 42, 0.08);
   --mat-card-hover-bg: color-mix(in srgb, #ffffff 92%, rgba(249, 115, 22, 0.06) 8%);
   --mat-card-shadow: var(--shadow-md);
 
-  // Mat-Menu and Mat-Option for light theme
-  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
   --mat-menu-bg: var(--color-surface-solid);
   --mat-menu-border: var(--color-border);
   --radius-menu: var(--radius-xl);
@@ -190,6 +193,12 @@
 
 .mat-mdc-form-field {
   --mdc-theme-error: var(--color-danger) !important;
+
+  --mdc-outlined-text-field-outline-color: var(--mat-field-border) !important;
+  --mdc-outlined-text-field-hover-outline-color: var(--mat-field-border-hover) !important;
+  --mdc-outlined-text-field-focus-outline-color: var(--mat-field-border-focus) !important;
+  --mdc-outlined-text-field-error-outline-color: var(--color-danger) !important;
+
   --mdc-filled-text-field-label-text-color: var(--mat-field-label) !important;
   --mdc-filled-text-field-container-color: transparent !important;
   --mdc-filled-text-field-active-indicator-color: var(--mat-field-border-focus) !important;
@@ -215,10 +224,9 @@
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:hover,
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:focus-within {
   background: transparent !important;
-  box-shadow: none !important; /* No box-shadow on outlined to prevent double border */
+  box-shadow: none !important;
 }
 
-/* For filled/standard fields (NOT outlined), keep the box-shadow */
 .mat-mdc-text-field-wrapper.mdc-text-field:not(.mdc-text-field--outlined):hover,
 .mat-mdc-text-field-wrapper.mdc-text-field:not(.mdc-text-field--outlined):focus-within {
   background: var(--mat-field-bg-hover) !important;
@@ -259,6 +267,10 @@
   color: var(--mat-field-border-focus) !important;
 }
 
+.mat-mdc-form-field.mat-form-field-invalid .mdc-floating-label {
+  color: var(--color-danger) !important;
+}
+
 .mat-mdc-input-element,
 .mat-mdc-select-trigger,
 .mat-mdc-select-arrow,
@@ -281,13 +293,11 @@
 }
 
 .mat-mdc-form-field-subscript-wrapper,
-.mat-mdc-form-field-hint,
-.mat-mdc-form-field-error {
+.mat-mdc-form-field-hint {
   color: var(--mat-field-helper) !important;
 }
 
-.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-subscript-wrapper,
-.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-error {
+.mat-mdc-form-field-error {
   color: var(--color-danger) !important;
 }
 
@@ -303,7 +313,7 @@
   box-shadow: none !important;
 }
 
-.mat-mdc-select-panel {
+.app-select-panel.mat-mdc-select-panel {
   background: var(--color-surface) !important;
   border-radius: var(--radius-lg) !important;
   border: 1px solid var(--mat-field-border) !important;
@@ -313,25 +323,25 @@
   padding-block: 0.25rem;
 }
 
-.mat-mdc-option {
+.app-select-panel .mat-mdc-option {
   border-radius: var(--radius-md) !important;
   color: var(--color-on-surface) !important;
   margin-inline: 0.25rem;
 }
 
-.mat-mdc-option:hover:not(.mat-mdc-option-disabled),
-.mat-mdc-option.mat-mdc-option-active:not(.mat-mdc-option-disabled) {
+.app-select-panel .mat-mdc-option:hover:not(.mat-mdc-option-disabled),
+.app-select-panel .mat-mdc-option.mat-mdc-option-active:not(.mat-mdc-option-disabled) {
   background: var(--mat-option-hover-bg) !important;
   color: var(--mat-option-hover-text) !important;
 }
 
-.mat-mdc-option.mat-mdc-option-selected {
-  background: var(--mat-option-active-bg) !important;
+.app-select-panel .mat-mdc-option.mat-mdc-option-selected {
+  background: var(--mat-option-selected-bg) !important;
   color: var(--mat-option-active-text) !important;
   font-weight: var(--font-weight-semibold);
 }
 
-.mat-mdc-option.mat-mdc-option-disabled {
+.app-select-panel .mat-mdc-option.mat-mdc-option-disabled {
   color: var(--mat-field-disabled-text) !important;
 }
 

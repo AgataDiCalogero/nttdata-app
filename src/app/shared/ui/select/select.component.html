@@ -1,13 +1,14 @@
-@if (label()) {
-  <label [for]="resolvedId()" class="select-label">{{ label() }}</label>
-}
-
 <mat-form-field
   class="select-field"
   [class.select-field--compact]="variant() === 'compact'"
   appearance="outline"
   color="accent"
+  [floatLabel]="'always'"
 >
+  @if (label()) {
+    <mat-label>{{ label() }}</mat-label>
+  }
+
   @if (control(); as ctrl) {
     <mat-select
       [id]="resolvedId()"
@@ -26,8 +27,7 @@
         <mat-option [value]="option.value">{{ option.label }}</mat-option>
       }
     </mat-select>
-  }
-  @if (!control()) {
+  } @else {
     <mat-select
       [id]="resolvedId()"
       [placeholder]="placeholder()"

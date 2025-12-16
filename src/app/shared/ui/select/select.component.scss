@@ -1,107 +1,57 @@
-:host {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+@use '../../../../styles/mixins' as mixins;
+
+.user-filters {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: space-between;
+  align-items: flex-end;
+  @include mixins.flex-grow();
   min-width: 0;
-}
-
-.select-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 0.35rem;
-  color: var(--color-on-surface);
-  line-height: 1.25;
-}
-
-.select-field {
   width: 100%;
 
-  // Remove default Material styling conflicts
-  .mat-mdc-form-field-subscript-wrapper {
-    display: none;
-  }
-
-  // Match our design system
-  .mdc-notched-outline__leading,
-  .mdc-notched-outline__notch,
-  .mdc-notched-outline__trailing {
-    border-color: var(--mat-field-border) !important;
-  }
-
-  &:hover .mdc-notched-outline__leading,
-  &:hover .mdc-notched-outline__notch,
-  &:hover .mdc-notched-outline__trailing {
-    border-color: var(--mat-field-border-hover) !important;
-  }
-
-  &.mat-focused .mdc-notched-outline__leading,
-  &.mat-focused .mdc-notched-outline__notch,
-  &.mat-focused .mdc-notched-outline__trailing {
-    border-color: var(--mat-field-border-focus) !important;
-    border-width: 2px !important;
-  }
-
-  .mat-mdc-select-trigger {
-    padding: var(--space-xs) 0;
-  }
-
-  .mat-mdc-select-value {
-    color: var(--color-on-surface);
-  }
-
-  .mat-mdc-select-placeholder {
-    color: var(--mat-field-placeholder);
-  }
-
-  .mat-mdc-select-arrow {
-    color: var(--mat-field-label);
-  }
-
-  &--compact {
-    .mat-mdc-form-field-infix {
-      padding-top: var(--space-xs) !important;
-      padding-bottom: var(--space-xs) !important;
-      min-height: 2.5rem;
-    }
+  app-search-bar {
+    display: block;
+    flex: 1 1 22rem;
+    min-width: 0;
   }
 }
 
-// Global panel styling (applied via panelClass)
-.app-select-panel {
-  background: var(--mat-menu-bg) !important;
-  border: 1px solid var(--mat-menu-border) !important;
-  border-radius: var(--radius-menu) !important;
-  box-shadow: var(--shadow-menu) !important;
-  padding: var(--space-xs) !important;
+.user-filters__actions {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  flex-wrap: nowrap;
+  justify-content: flex-end;
 
-  .mat-mdc-option {
-    border-radius: var(--radius-sm) !important;
-    color: var(--color-on-surface) !important;
-    min-height: 2.75rem;
-    margin-bottom: var(--space-2xs);
+  .user-filters__per-page {
+    display: block;
+    width: 10rem;
+    min-width: 8rem;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    &:hover:not(.mat-mdc-option-disabled),
-    &.mat-mdc-option-active:not(.mat-mdc-option-disabled) {
-      background: var(--mat-option-hover-bg) !important;
-    }
-
-    &.mat-mdc-option-selected:not(.mat-mdc-option-disabled) {
-      background: var(--mat-option-selected-bg) !important;
-      color: var(--color-on-surface) !important;
-      font-weight: var(--font-weight-semibold);
-    }
+  button[appButton] {
+    white-space: nowrap;
   }
 }
 
-// Mobile tuning
-@media (max-width: 48rem) {
-  .select-field {
-    font-size: 0.9rem;
+@media (max-width: 640px) {
+  .user-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-filters__actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .user-filters__per-page {
+      flex: 1 1 10rem;
+      width: auto;
+    }
+
+    button[appButton] {
+      width: 100%;
+    }
   }
 }

@@ -1,1 +1,9 @@
-/* No component-specific styles: relies on shared styles in src/styles/_search.scss */
+.app-search-field {
+  width: 100%;
+}
+
+.app-search__icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  opacity: 0.75;
+}

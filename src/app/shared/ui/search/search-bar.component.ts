@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { LucideAngularModule, Search } from 'lucide-angular';
 
 import { DebounceInputDirective } from '@app/shared/directives/debounce-input.directive';
@@ -22,6 +24,8 @@ type SearchControl = FormControl<string> | FormControl<string | null>;
     ReactiveFormsModule,
     DebounceInputDirective,
     LucideAngularModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
