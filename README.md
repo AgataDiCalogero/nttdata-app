@@ -81,3 +81,7 @@ API base URLs live in `src/environments/*.ts`. Interceptors automatically prefix
 - Sessione in `sessionStorage`: persistenza limitata alla scheda/browser per evitare token dimenticati; invalidata centralmente su 401 via interceptor.
 - Design system SCSS modulare: variables/tokens, mixin condivisi, temi light/dark e partial specifici per pattern UI (bottoni, form, pagination, skeleton). Card/avatar condivisi tramite mixin `app-surface-card` e `app-avatar-gradient` riusati da UserCard/PostCard.
 - SSR presente ma non focus primario: rotte protette renderizzate lato server senza chiamate API, con fetch delegato al browser dopo l’hydration.
+
+## Style governance
+
+I layer globali sono congelati nel documento `STYLE_LAYERS.md`: ci sono i token (solo CSS vars), il partial unico per gli override MDC (e overlay), e la baseline numerica con il conteggio dei `!important`/`.mat-mdc-`/`.cdk-overlay-` che servono a capire se stiamo migliorando. Qualsiasi modifica ai layer o ai Material overrides deve seguire i checkpoint di Milestone 0–6 (vedi il documento) e aggiornare i contatori `rg` indicati lì.

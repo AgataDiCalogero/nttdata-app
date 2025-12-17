@@ -108,6 +108,17 @@
   margin: 0;
 }
 
+.app-results-summary {
+  margin: 0;
+  padding-block: var(--space-sm);
+  font-size: 0.95rem;
+  color: var(--color-muted);
+
+  &--spaced {
+    margin-bottom: var(--space-md);
+  }
+}
+
 .app-stack {
   display: flex;
   flex-direction: column;

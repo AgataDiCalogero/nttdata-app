@@ -5,7 +5,10 @@
   [attr.aria-label]="'commentForm.aria' | appTranslate"
 >
   <div class="comment-form__grid">
-    <div class="form-field">
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
+    >
       <label class="form-label" for="comment-name">{{
         'commentForm.fields.name' | appTranslate
       }}</label>
@@ -30,7 +33,10 @@
       }
     </div>
 
-    <div class="form-field">
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid"
+    >
       <label class="form-label" for="comment-email">{{
         'commentForm.fields.email' | appTranslate
       }}</label>
@@ -56,7 +62,10 @@
     </div>
   </div>
 
-  <div class="form-field">
+  <div
+    class="form-field"
+    [class.is-invalid]="form.controls.body.touched && form.controls.body.invalid"
+  >
     <label class="form-label" for="comment-body">{{
       'commentForm.fields.body' | appTranslate
     }}</label>

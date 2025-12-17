@@ -1,29 +1,33 @@
 @let formGroup = searchForm();
 
 <form class="posts-filters" [formGroup]="formGroup" (submit)="$event.preventDefault()">
-  <app-search-bar
-    size="compact"
-    [control]="formGroup.controls.title"
-    [id]="searchId"
-    [placeholder]="'postsFilters.searchPlaceholder' | appTranslate"
-    [label]="'postsFilters.searchLabel' | appTranslate"
-  />
-  <app-select
-    [id]="userSelectId"
-    [control]="formGroup.controls.userId"
-    [options]="userSelectOptions()"
-    [label]="'postsFilters.author' | appTranslate"
-    [ariaLabel]="'postsFilters.authorAria' | appTranslate"
-  ></app-select>
-  <app-select
-    [id]="perPageSelectId"
-    [control]="perPageControl()"
-    [options]="perPageSelectOptions()"
-    (selectionChange)="onPerPageChange($event)"
-    [label]="'postsFilters.perPage' | appTranslate"
-    [ariaLabel]="'postsFilters.perPageAria' | appTranslate"
-    [showPlaceholder]="false"
-  ></app-select>
+  <div class="posts-filters__controls">
+    <app-search-bar
+      size="compact"
+      [control]="formGroup.controls.title"
+      [id]="searchId"
+      [placeholder]="'postsFilters.searchPlaceholder' | appTranslate"
+      [label]="'postsFilters.searchLabel' | appTranslate"
+    />
+    <app-select
+      variant="compact"
+      [id]="userSelectId"
+      [control]="formGroup.controls.userId"
+      [options]="userSelectOptions()"
+      [label]="'postsFilters.author' | appTranslate"
+      [ariaLabel]="'postsFilters.authorAria' | appTranslate"
+    ></app-select>
+    <app-select
+      variant="compact"
+      [id]="perPageSelectId"
+      [control]="perPageControl()"
+      [options]="perPageSelectOptions()"
+      (selectionChange)="onPerPageChange($event)"
+      [label]="'postsFilters.perPage' | appTranslate"
+      [ariaLabel]="'postsFilters.perPageAria' | appTranslate"
+      [showPlaceholder]="false"
+    ></app-select>
+  </div>
   <div class="posts-filters__actions">
     <button appButton variant="ghost" type="button" (click)="onReset()">
       <mat-icon svgIcon="lucide:rotate-ccw" aria-hidden="true"></mat-icon>

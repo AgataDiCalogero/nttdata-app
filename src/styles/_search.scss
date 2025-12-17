@@ -1,31 +1,17 @@
 @use './mixins' as mixins;
 
 /* Shared search control */
-.app-search {
+.app-search-field {
   position: relative;
   flex: 1 1 100%;
   min-width: 0;
   max-width: 100%;
 }
 
-.app-search label {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
 .app-search__icon {
-  position: absolute;
-  left: var(--space-md);
-  top: 50%;
-  transform: translateY(-50%);
   width: 0.9rem;
   height: 0.9rem;
   color: var(--color-muted);
-  pointer-events: none;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,8 +28,7 @@
 .app-search__input {
   width: 100%;
   min-width: 0;
-  /* Leave a bit more space between the icon and the text */
-  padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 0.9rem + 1.5rem);
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-mix-60);
   background: var(--color-surface);

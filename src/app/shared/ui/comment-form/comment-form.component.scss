@@ -3,26 +3,31 @@
 .comment-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   width: 100%;
 }
 
 .comment-form__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: var(--space-sm);
   width: 100%;
   align-items: start;
 
   @media (max-width: 38rem) {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--space-sm);
+    row-gap: var(--space-xs);
   }
 }
 
 .comment-form .form-field {
   min-width: 0;
   width: 100%;
+}
+
+.comment-form .form-textarea {
+  min-height: 6rem;
+  resize: vertical;
 }
 
 .comment-form :is(.form-input, .form-textarea) {
@@ -50,8 +55,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: calc(var(--space-sm) + 0.25rem);
-  margin-top: var(--space-md);
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
 
   > button {
     min-height: 2.5rem;
