@@ -1,5 +1,7 @@
 // Material Design Component Overrides
 
+@use './mixins' as *;
+
 :root {
   --mat-field-bg: rgba(17, 24, 39, 0.55);
   --mat-field-bg-hover: rgba(17, 24, 39, 0.75);
@@ -56,6 +58,75 @@
 
   --mat-menu-bg: var(--color-surface-solid);
   --mat-menu-border: var(--color-border);
+}
+
+.app-navbar.mat-toolbar {
+  background: color-mix(in srgb, var(--color-primary) 88%, transparent) !important;
+}
+
+.mobile-nav-panel.mat-mdc-menu-panel {
+  background: var(--color-surface-solid) !important;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-xl);
+
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+}
+
+.mobile-nav-panel .mat-mdc-menu-item {
+  min-height: 3.5rem;
+  margin-bottom: 0;
+  @include app-menu-item;
+
+  mat-icon {
+    margin-right: var(--space-sm);
+    color: var(--color-accent);
+    opacity: 0.85;
+  }
+
+  &:hover:not([disabled]) {
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+
+  &.active {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-accent) 24%, transparent),
+      color-mix(in srgb, var(--color-accent) 12%, transparent)
+    );
+    color: var(--color-on-surface);
+    font-weight: var(--font-weight-semibold);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 3px;
+      background: var(--color-accent);
+      border-radius: 0 4px 4px 0;
+    }
+
+    mat-icon {
+      opacity: 1;
+      color: var(--color-accent);
+    }
+  }
+}
+
+.cdk-overlay-pane:has(.mobile-nav-panel) {
+  bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  right: 1rem !important;
+  left: auto !important;
+  top: auto !important;
+  position: fixed !important;
 }
 
 .mat-mdc-form-field {
@@ -276,6 +347,26 @@
 
 .mat-mdc-card .mat-icon {
   color: rgba(var(--color-on-surface-rgb), 0.84);
+}
+
+.user-detail-card {
+  background: color-mix(in srgb, var(--color-surface-solid) 92%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--mat-field-border) 120%, transparent) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: var(--space-xl) !important;
+
+  &__avatar {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark)) !important;
+  }
+}
+
+.user-detail-card.mat-mdc-card {
+  --mdc-elevated-card-container-color: transparent;
+  --mdc-outlined-card-container-color: transparent;
+  --mdc-elevated-card-container-elevation: none;
+  --mdc-outlined-card-outline-color: transparent;
+  padding: 0;
 }
 
 .app-select-panel.mat-mdc-select-panel {

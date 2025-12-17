@@ -43,21 +43,7 @@
 }
 
 .user-detail-card {
-  // Override Material card defaults
-  &.mat-mdc-card {
-    --mdc-elevated-card-container-color: transparent;
-    --mdc-outlined-card-container-color: transparent;
-    --mdc-elevated-card-container-elevation: none;
-    --mdc-outlined-card-outline-color: transparent;
-    padding: 0;
-  }
-
   width: 100%;
-  background: color-mix(in srgb, var(--color-surface-solid) 92%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--mat-field-border) 120%, transparent) !important;
-  border-radius: var(--radius-card) !important;
-  box-shadow: var(--shadow-lg) !important;
-  padding: var(--space-xl) !important;
 
   &__layout {
     display: flex;
@@ -71,7 +57,6 @@
     height: 4rem;
     min-width: 4rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark)) !important;
     color: var(--color-on-accent);
     font-weight: var(--font-weight-bold);
     font-size: 1.25rem;

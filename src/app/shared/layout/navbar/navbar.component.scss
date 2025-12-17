@@ -13,7 +13,7 @@
   min-height: var(--app-navbar-height, 4.5rem);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
-  background: color-mix(in srgb, var(--color-primary) 88%, transparent) !important;
+  background: color-mix(in srgb, var(--color-primary) 88%, transparent);
   border-bottom: 1px solid var(--border-accent-soft, rgba(255, 255, 255, 0.08));
   padding-inline: var(--app-page-gutter-tight);
   transition: background var(--duration-normal) var(--ease-in-out);
@@ -235,71 +235,7 @@
   min-width: 14rem;
   max-width: calc(100vw - 2rem);
 
-  &.mat-mdc-menu-panel {
-    background: var(--color-surface-solid) !important;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-2xl);
-    padding: var(--space-sm);
-    box-shadow: var(--shadow-xl);
-
-    .mat-mdc-menu-content {
-      padding: 0 !important;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2xs);
-    }
-  }
-
-  .mat-mdc-menu-item {
-    min-height: 3.5rem;
-    margin-bottom: 0;
-    @include app-menu-item;
-
-    mat-icon {
-      margin-right: var(--space-sm);
-      color: var(--color-accent);
-      opacity: 0.85;
-    }
-
-    &:hover:not([disabled]) {
-      background: color-mix(in srgb, var(--color-accent) 6%, transparent);
-    }
-    &.active {
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--color-accent) 24%, transparent),
-        color-mix(in srgb, var(--color-accent) 12%, transparent)
-      );
-      color: var(--color-on-surface);
-      font-weight: var(--font-weight-semibold);
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0.5rem;
-        bottom: 0.5rem;
-        width: 3px;
-        background: var(--color-accent);
-        border-radius: 0 4px 4px 0;
-      }
-
-      mat-icon {
-        opacity: 1;
-        color: var(--color-accent);
-      }
-    }
-  }
 }
-
-.cdk-overlay-pane:has(.mobile-nav-panel) {
-  bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)) !important;
-  right: 1rem !important;
-  left: auto !important;
-  top: auto !important;
-  position: fixed !important;
-}
-
 .floating-menu-trigger {
   position: fixed;
   bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));

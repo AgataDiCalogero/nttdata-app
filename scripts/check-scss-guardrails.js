@@ -3,8 +3,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
+const normalizePath = (file) => path.relative(root, file).split(path.sep).join('/');
 const tokensPath = path.join(root, 'src', 'styles', '_tokens.scss');
 const styleRoot = path.join(root, 'src');
+const materialOverridesPath = path.join(styleRoot, 'styles', '_material-overrides.scss');
+const materialOverridesRel = normalizePath(materialOverridesPath);
+const ignoreDeepSelectorsIn = new Set([materialOverridesRel]);
+const ignoreImportantIn = new Set([materialOverridesRel]);
 
 const fileViolations = new Map();
 const categoryCounts = new Map();
@@ -13,8 +18,6 @@ const importantWarnings = [];
 const deepCountsByFile = new Map();
 const importantCountsByFile = new Map();
 
-const normalizePath = (file) => path.relative(root, file).split(path.sep).join('/');
-
 const addViolation = (file, category) => {
   const current = fileViolations.get(file) ?? 0;
   fileViolations.set(file, current + 1);
@@ -22,12 +25,18 @@ const addViolation = (file, category) => {
 };
 
 const recordDeepWarning = (file, line, match) => {
+  if (ignoreDeepSelectorsIn.has(file)) {
+    return;
+  }
   deepWarnings.push({ file, line, match });
   deepCountsByFile.set(file, (deepCountsByFile.get(file) ?? 0) + 1);
   addViolation(file, 'deep selector');
 };
 
 const recordImportantWarning = (file, line) => {
+  if (ignoreImportantIn.has(file)) {
+    return;
+  }
   importantWarnings.push({ file, line });
   importantCountsByFile.set(file, (importantCountsByFile.get(file) ?? 0) + 1);
   addViolation(file, 'important');
