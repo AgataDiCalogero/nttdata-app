@@ -13,7 +13,9 @@
   <div class="form-dialog__actions delete-confirm__actions">
     <button appButton variant="ghost" type="button" (click)="cancel()" [disabled]="submitting()">
       <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
-      <span class="btn__label">{{ data.cancelText || ('common.actions.cancel' | appTranslate) }}</span>
+      <span class="btn__label">{{
+        data.cancelText || ('common.actions.cancel' | appTranslate)
+      }}</span>
     </button>
 
     <button

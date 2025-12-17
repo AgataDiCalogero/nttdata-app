@@ -1,15 +1,16 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { computed, signal } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 
-import { PostForm } from './post-form.component';
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
-import { ToastService } from '@/app/shared/ui/toast/toast.service';
-import { UsersLookupService } from '@/app/shared/services/users/users-lookup.service';
-import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
+import { UsersLookupService } from '@/app/shared/services/users/users-lookup.service';
+import { ToastService } from '@/app/shared/ui/toast/toast.service';
+
+import { PostForm } from './post-form.component';
 
 const mockUser: User = {
   id: 2,
@@ -25,7 +26,7 @@ const mockPost: Post = {
   body: 'Original body content that is long enough',
 };
 
-class DialogRefStub<T = any> {
+class DialogRefStub {
   close = jasmine.createSpy('close');
   disableClose = false;
 }
@@ -36,9 +37,7 @@ class UsersLookupStub {
   readonly isLoading = computed(() => false);
 
   ensureUsersLoaded = jasmine.createSpy('ensureUsersLoaded').and.returnValue(of([]));
-  ensureUserInCache = jasmine
-    .createSpy('ensureUserInCache')
-    .and.returnValue(of(mockUser));
+  ensureUserInCache = jasmine.createSpy('ensureUserInCache').and.returnValue(of(mockUser));
   seed = jasmine.createSpy('seed').and.callFake((users: User[]) => this.cache.set(users));
 
   setUsers(users: User[]): void {
@@ -84,7 +83,10 @@ describe('PostForm', () => {
     fixture.detectChanges();
   };
 
-  const fillValidForm = (title = 'New title', body = 'This body content is intentionally longer than twenty characters'): void => {
+  const fillValidForm = (
+    title = 'New title',
+    body = 'This body content is intentionally longer than twenty characters',
+  ): void => {
     component['userIdControl'].setValue(mockUser.id);
     component['titleControl'].setValue(`  ${title}  `);
     component['bodyControl'].setValue(body);

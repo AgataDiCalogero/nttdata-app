@@ -295,8 +295,7 @@
 }
 
 .app-select-panel .mat-mdc-option:hover:not(.mat-mdc-option-disabled),
-.app-select-panel
-.mat-mdc-option.mat-mdc-option-active:not(.mat-mdc-option-disabled) {
+.app-select-panel .mat-mdc-option.mat-mdc-option-active:not(.mat-mdc-option-disabled) {
   background: var(--mat-option-hover-bg) !important;
   color: var(--mat-option-hover-text) !important;
 }

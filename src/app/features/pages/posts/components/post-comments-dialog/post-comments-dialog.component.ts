@@ -1,15 +1,17 @@
+import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CommentFormComponent } from '@app/shared/ui/comment-form/comment-form.component';
-import { PostCommentsComponent } from '../post-comments/post-comments.component';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+
 import type { Comment, Post } from '@/app/shared/models/post';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+
+import { PostCommentsComponent } from '../post-comments/post-comments.component';
 
 interface PostCommentsDialogData {
   post: Post;

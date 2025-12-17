@@ -70,7 +70,9 @@
           <span class="appearance-option__icon" aria-hidden="true">
             <lucide-icon [img]="BookOpenCheck"></lucide-icon>
           </span>
-          <span class="appearance-option__label">{{ 'appearance.readingMode' | appTranslate }}</span>
+          <span class="appearance-option__label">{{
+            'appearance.readingMode' | appTranslate
+          }}</span>
           <mat-slide-toggle
             class="appearance-toggle"
             [attr.aria-label]="'appearance.readingMode' | appTranslate"

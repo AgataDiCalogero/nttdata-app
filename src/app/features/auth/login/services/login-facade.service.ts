@@ -40,16 +40,18 @@ export class LoginFacadeService {
         }
 
         this.auth.setToken(normalized);
-        this.router.navigate(['/users']);
+        void this.router.navigate(['/users']);
 
         return { success: true };
       }),
-      catchError((error) => {
+      catchError((error: unknown) => {
         console.error('Login error:', error);
+        const message =
+          error instanceof Error ? error.message : typeof error === 'string' ? error : undefined;
         return of({
           success: false,
           code: 'network' as const,
-          message: error?.message,
+          message,
         });
       }),
     );

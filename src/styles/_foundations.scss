@@ -76,7 +76,9 @@
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-on-surface);
-  scroll-margin-top: calc(var(--app-navbar-offset) + var(--space-sm) + env(safe-area-inset-top, 0px));
+  scroll-margin-top: calc(
+    var(--app-navbar-offset) + var(--space-sm) + env(safe-area-inset-top, 0px)
+  );
 }
 
 :where(h2, .app-section-title) {

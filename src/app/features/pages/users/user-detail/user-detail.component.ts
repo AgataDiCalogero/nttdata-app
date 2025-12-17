@@ -28,8 +28,8 @@ import { tap } from 'rxjs';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
-import { PostCommentsDialogService } from '@/app/features/pages/posts/services/post-comments-dialog.service';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
+import { PostCommentsDialogService } from '@/app/features/pages/posts/services/post-comments-dialog.service';
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import {
   DEFAULT_PAGINATION_CONFIG,

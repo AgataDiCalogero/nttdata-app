@@ -1,10 +1,6 @@
 <div class="toast-list" aria-atomic="true" [attr.aria-live]="ariaLive">
   @for (toast of toasts(); track toast.id) {
-    <div
-      class="toast toast--{{ toast.type }}"
-      attr.data-toast-id="{{ toast.id }}"
-      role="alert"
-    >
+    <div class="toast toast--{{ toast.type }}" attr.data-toast-id="{{ toast.id }}" role="alert">
       <div class="toast__icon">
         @switch (toast.type) {
           @case ('success') {

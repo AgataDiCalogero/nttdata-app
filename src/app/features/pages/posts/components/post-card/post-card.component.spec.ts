@@ -20,13 +20,7 @@ describe('PostCardComponent', () => {
   beforeEach(() => {
     TestBed.overrideComponent(PostCardComponent, {
       set: {
-        imports: [
-          CommonModule,
-          MatIconModule,
-          MatCardModule,
-          ButtonComponent,
-          TranslatePipe,
-        ],
+        imports: [CommonModule, MatIconModule, MatCardModule, ButtonComponent, TranslatePipe],
       },
     });
 

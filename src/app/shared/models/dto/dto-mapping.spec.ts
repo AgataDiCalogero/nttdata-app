@@ -1,5 +1,11 @@
-import type { CreateComment, CreatePost, UpdateComment, UpdatePost } from '@/app/shared/models/post';
+import type {
+  CreateComment,
+  CreatePost,
+  UpdateComment,
+  UpdatePost,
+} from '@/app/shared/models/post';
 import type { CreateUser, UpdateUser } from '@/app/shared/models/user';
+
 import {
   mapCommentDto,
   mapCommentsDto,
@@ -10,12 +16,7 @@ import {
   mapUpdateCommentToDto,
   mapUpdatePostToDto,
 } from './post.dto';
-import {
-  mapCreateUserToDto,
-  mapUpdateUserToDto,
-  mapUserDto,
-  mapUsersDto,
-} from './user.dto';
+import { mapCreateUserToDto, mapUpdateUserToDto, mapUserDto, mapUsersDto } from './user.dto';
 import type { UserDto } from './user.dto';
 
 describe('DTO mapping helpers', () => {
@@ -50,7 +51,11 @@ describe('DTO mapping helpers', () => {
       expect(mapCommentsDto(undefined)).toEqual([]);
       const dto = { id: 1, post_id: 1, name: 'N', email: 'E', body: 'B' };
       expect(mapCommentDto(dto).id).toBe(1);
-      const createPayload: CreateComment = { name: ' Foo ', email: ' BAR@EXAMPLE.COM', body: ' Baz ' };
+      const createPayload: CreateComment = {
+        name: ' Foo ',
+        email: ' BAR@EXAMPLE.COM',
+        body: ' Baz ',
+      };
       expect(mapCreateCommentToDto(5, createPayload)).toEqual({
         post_id: 5,
         name: 'Foo',

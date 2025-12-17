@@ -26,8 +26,9 @@ describe('PaginationComponent', () => {
     hostFixture = TestBed.createComponent(PaginationHostComponent);
     host = hostFixture.componentInstance;
     hostFixture.detectChanges();
-    component = hostFixture.debugElement.query(By.directive(PaginationComponent))!
-      .componentInstance;
+    component = hostFixture.debugElement.query(
+      By.directive(PaginationComponent),
+    )!.componentInstance;
   });
 
   const configure = (page: number, pageCount: number) => {

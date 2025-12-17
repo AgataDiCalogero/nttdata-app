@@ -1,17 +1,14 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { DestroyRef, Injectable, inject } from '@angular/core';
-import { take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { take } from 'rxjs';
 
-import type { Post } from '@/app/shared/models/post';
-import { I18nService } from '@/app/shared/i18n/i18n.service';
-import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
-import {
-  OverlayKey,
-  UiOverlayService,
-} from '@/app/shared/services/ui-overlay/ui-overlay.service';
 import { PostCommentsDialogComponent } from '@/app/features/pages/posts/components/post-comments-dialog/post-comments-dialog.component';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
+import type { Post } from '@/app/shared/models/post';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
+import { OverlayKey, UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
 
 @Injectable({ providedIn: 'root' })
 export class PostCommentsDialogService {

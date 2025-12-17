@@ -69,7 +69,11 @@
 
     @if (!loading() && !error() && posts().length === 0) {
       <mat-card class="posts-empty" appearance="outlined">
-        <mat-icon svgIcon="lucide:file-text" class="posts-empty__icon" aria-hidden="true"></mat-icon>
+        <mat-icon
+          svgIcon="lucide:file-text"
+          class="posts-empty__icon"
+          aria-hidden="true"
+        ></mat-icon>
         <p class="posts-empty__text">{{ 'posts.emptyState' | appTranslate }}</p>
         <button
           appButton
@@ -85,16 +89,16 @@
     }
 
     @if (!loading() && posts().length > 0) {
-        <app-posts-list
-          [posts]="posts()"
-          [commentsCountMap]="commentsCountMap()"
-          [deletingId]="deletingId()"
-          [userLookup]="userLookup()"
-          (deletePost)="deletePost.emit($event)"
-          (editPost)="editPost.emit($event)"
-          (viewAuthor)="viewAuthor.emit($event)"
-          (viewComments)="onViewComments($event)"
-        ></app-posts-list>
+      <app-posts-list
+        [posts]="posts()"
+        [commentsCountMap]="commentsCountMap()"
+        [deletingId]="deletingId()"
+        [userLookup]="userLookup()"
+        (deletePost)="deletePost.emit($event)"
+        (editPost)="editPost.emit($event)"
+        (viewAuthor)="viewAuthor.emit($event)"
+        (viewComments)="onViewComments($event)"
+      ></app-posts-list>
     }
 
     @if (hasPagination()) {

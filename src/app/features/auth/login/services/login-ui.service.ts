@@ -3,9 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { take } from 'rxjs';
 
 import { I18nService } from '@/app/shared/i18n/i18n.service';
-import {
-  DialogOverlayCoordinator,
-} from '@/app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
+import { DialogOverlayCoordinator } from '@/app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
 import { TokenHelpDialogComponent } from '../token-help-dialog/token-help-dialog.component';

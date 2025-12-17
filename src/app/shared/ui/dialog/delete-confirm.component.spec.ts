@@ -1,12 +1,13 @@
+import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 
-import { DeleteConfirmComponent } from './delete-confirm.component';
-import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 
-class DialogRefStub<T = any> {
+import { DeleteConfirmComponent } from './delete-confirm.component';
+
+class DialogRefStub {
   close = jasmine.createSpy('close');
 }
 

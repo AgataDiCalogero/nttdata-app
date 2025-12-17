@@ -123,7 +123,6 @@ export class PostsViewComponent {
     return this.deletingId() === postId;
   }
 
-
   onEditPost(post: Post): void {
     this.editPost.emit(post);
   }

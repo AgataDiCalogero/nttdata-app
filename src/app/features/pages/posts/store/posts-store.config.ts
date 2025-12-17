@@ -12,4 +12,3 @@ export const POSTS_STORE_CONFIG = new InjectionToken<PostsStoreConfig>('POSTS_ST
   providedIn: 'root',
   factory: () => DEFAULT_POSTS_STORE_CONFIG,
 });
-

@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -19,13 +12,7 @@ import type { Post } from '@/app/shared/models/post';
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatCardModule,
-    ButtonComponent,
-    TranslatePipe,
-  ],
+  imports: [CommonModule, MatIconModule, MatCardModule, ButtonComponent, TranslatePipe],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

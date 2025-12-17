@@ -41,7 +41,7 @@ export class UsersLookupService {
         this.loading.set(false);
         this.inFlight = null;
       }),
-      catchError((err) => {
+      catchError((err: unknown) => {
         this.loading.set(false);
         this.inFlight = null;
         return throwError(() => err);
@@ -65,7 +65,7 @@ export class UsersLookupService {
         this.lastFetchedAt.set(Date.now());
         this.loading.set(false);
       }),
-      catchError((err) => {
+      catchError((err: unknown) => {
         this.loading.set(false);
         return throwError(() => err);
       }),

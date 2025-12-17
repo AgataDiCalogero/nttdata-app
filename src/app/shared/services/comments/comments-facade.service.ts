@@ -75,7 +75,7 @@ export class CommentsFacadeService {
           }));
           this.cache.setComments(postId, list);
         },
-        error: (err) => {
+        error: (err: unknown) => {
           console.error('Failed to load comments', err);
           this.notifications.showHttpError(err, errorMessage);
           this.loadingSignal.update((state) => ({ ...state, [postId]: false }));
@@ -117,7 +117,7 @@ export class CommentsFacadeService {
       if (counts) {
         this.countsSignal.update((state) => ({ ...state, ...counts }));
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Failed to prefetch comment counts', err);
     }
   }

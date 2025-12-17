@@ -3,11 +3,12 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 
-import { CommentFormComponent } from './comment-form.component';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
-import { ToastService } from '@/app/shared/ui/toast/toast.service';
 import type { Comment } from '@/app/shared/models/post';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { ToastService } from '@/app/shared/ui/toast/toast.service';
+
+import { CommentFormComponent } from './comment-form.component';
 
 const mockComment: Comment = {
   id: 99,
@@ -52,7 +53,9 @@ describe('CommentFormComponent', () => {
 
     hostFixture = TestBed.createComponent(CommentFormHostComponent);
     hostFixture.detectChanges();
-    component = hostFixture.debugElement.query(By.directive(CommentFormComponent))!.componentInstance;
+    component = hostFixture.debugElement.query(
+      By.directive(CommentFormComponent),
+    )!.componentInstance;
   });
 
   const fillValidForm = (): void => {

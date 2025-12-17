@@ -7,5 +7,6 @@
     "**/node_modules/**": true,
     "**/.vscode/**": true
   },
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
 }

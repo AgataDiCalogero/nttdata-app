@@ -1,4 +1,5 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
+
 import { mapPaginatedResponse } from './list-response.util';
 
 describe('mapPaginatedResponse', () => {
