@@ -40,6 +40,8 @@
   --radius-card: var(--radius-xl);
   --radius-input: var(--radius-lg);
   --radius-dialog: var(--radius-xl);
+  --radius-menu: var(--radius-xl);
+  --shadow-menu: var(--shadow-xl);
 
   --z-base: 0;
   --z-dropdown: 1000;
@@ -105,34 +107,6 @@
   --gradient-info: linear-gradient(135deg, var(--color-info), var(--color-info-dark));
   --gradient-warning: linear-gradient(135deg, var(--color-warning), var(--color-warning-text-dark));
 
-  --mat-field-bg: rgba(17, 24, 39, 0.55);
-  --mat-field-bg-hover: rgba(17, 24, 39, 0.75);
-  --mat-field-border: rgba(148, 163, 184, 0.32);
-  --mat-field-border-hover: rgba(249, 115, 22, 0.45);
-  --mat-field-border-focus: var(--color-accent);
-  --mat-field-label: rgba(255, 255, 255, 0.72);
-  --mat-field-placeholder: rgba(255, 255, 255, 0.5);
-  --mat-field-helper: rgba(255, 255, 255, 0.62);
-  --mat-field-disabled-bg: rgba(17, 24, 39, 0.32);
-  --mat-field-disabled-text: rgba(255, 255, 255, 0.35);
-
-  --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
-  --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 26%, transparent);
-  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
-  --mat-option-hover-text: var(--color-on-surface);
-  --mat-option-active-text: var(--color-on-surface);
-
-  --mat-control-focus-outline: none;
-
-  --mat-card-bg: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
-  --mat-card-border: color-mix(in srgb, var(--color-border) 70%, transparent);
-  --mat-card-hover-bg: color-mix(in srgb, var(--color-surface-solid) 88%, transparent);
-  --mat-card-shadow: var(--shadow-lg);
-
-  --mat-menu-bg: var(--color-surface-solid);
-  --mat-menu-border: var(--color-border);
-  --radius-menu: var(--radius-xl);
-  --shadow-menu: var(--shadow-xl);
 }
 
 .light-theme {
@@ -161,32 +135,4 @@
   --shadow-toast-hover: 0 12px 30px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.15);
   --shadow-toast-focus: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 12px 30px rgba(0, 0, 0, 0.2);
 
-  --mat-field-bg: rgba(255, 255, 255, 0.95);
-  --mat-field-bg-hover: #ffffff;
-  --mat-field-border: rgba(15, 23, 42, 0.14);
-  --mat-field-border-hover: rgba(249, 115, 22, 0.42);
-  --mat-field-border-focus: var(--color-accent);
-  --mat-field-label: rgba(8, 18, 27, 0.72);
-  --mat-field-placeholder: rgba(8, 18, 27, 0.48);
-  --mat-field-helper: rgba(8, 18, 27, 0.62);
-  --mat-field-disabled-bg: rgba(15, 23, 42, 0.08);
-  --mat-field-disabled-text: rgba(8, 18, 27, 0.4);
-
-  --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
-  --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 28%, transparent);
-  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
-  --mat-option-hover-text: var(--color-on-surface);
-  --mat-option-active-text: var(--color-on-surface);
-
-  --mat-control-focus-outline: none;
-
-  --mat-card-bg: color-mix(in srgb, #f8fafc 92%, var(--color-white) 8%);
-  --mat-card-border: rgba(15, 23, 42, 0.08);
-  --mat-card-hover-bg: color-mix(in srgb, #ffffff 92%, rgba(249, 115, 22, 0.06) 8%);
-  --mat-card-shadow: var(--shadow-md);
-
-  --mat-menu-bg: var(--color-surface-solid);
-  --mat-menu-border: var(--color-border);
-  --radius-menu: var(--radius-xl);
-  --shadow-menu: var(--shadow-xl);
 }

@@ -1,5 +1,63 @@
 // Material Design Component Overrides
 
+:root {
+  --mat-field-bg: rgba(17, 24, 39, 0.55);
+  --mat-field-bg-hover: rgba(17, 24, 39, 0.75);
+  --mat-field-bg-focus: rgba(17, 24, 39, 0.75);
+  --mat-field-border: rgba(148, 163, 184, 0.32);
+  --mat-field-border-hover: rgba(249, 115, 22, 0.45);
+  --mat-field-border-focus: var(--color-accent);
+  --mat-field-label: rgba(255, 255, 255, 0.72);
+  --mat-field-placeholder: rgba(255, 255, 255, 0.5);
+  --mat-field-helper: rgba(255, 255, 255, 0.62);
+  --mat-field-disabled-bg: rgba(17, 24, 39, 0.32);
+  --mat-field-disabled-text: rgba(255, 255, 255, 0.35);
+
+  --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 26%, transparent);
+  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  --mat-option-hover-text: var(--color-on-surface);
+  --mat-option-active-text: var(--color-on-surface);
+
+  --mat-control-focus-outline: none;
+
+  --mat-card-bg: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
+  --mat-card-border: color-mix(in srgb, var(--color-border) 70%, transparent);
+  --mat-card-hover-bg: color-mix(in srgb, var(--color-surface-solid) 88%, transparent);
+  --mat-card-shadow: var(--shadow-lg);
+
+  --mat-menu-bg: var(--color-surface-solid);
+  --mat-menu-border: var(--color-border);
+}
+
+.light-theme {
+  --mat-field-bg: rgba(255, 255, 255, 0.95);
+  --mat-field-bg-hover: #ffffff;
+  --mat-field-bg-focus: #ffffff;
+  --mat-field-border: rgba(15, 23, 42, 0.14);
+  --mat-field-border-hover: rgba(249, 115, 22, 0.42);
+  --mat-field-border-focus: var(--color-accent);
+  --mat-field-label: rgba(8, 18, 27, 0.72);
+  --mat-field-placeholder: rgba(8, 18, 27, 0.48);
+  --mat-field-helper: rgba(8, 18, 27, 0.62);
+  --mat-field-disabled-bg: rgba(15, 23, 42, 0.08);
+  --mat-field-disabled-text: rgba(8, 18, 27, 0.4);
+
+  --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --mat-option-selected-bg: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  --mat-option-hover-text: var(--color-on-surface);
+  --mat-option-active-text: var(--color-on-surface);
+
+  --mat-card-bg: color-mix(in srgb, #f8fafc 92%, var(--color-white) 8%);
+  --mat-card-border: rgba(15, 23, 42, 0.08);
+  --mat-card-hover-bg: color-mix(in srgb, #ffffff 92%, rgba(249, 115, 22, 0.06) 8%);
+  --mat-card-shadow: var(--shadow-md);
+
+  --mat-menu-bg: var(--color-surface-solid);
+  --mat-menu-border: var(--color-border);
+}
+
 .mat-mdc-form-field {
   --mdc-theme-error: var(--color-danger) !important;
   --mdc-outlined-text-field-outline-color: var(--mat-field-border) !important;
@@ -158,29 +216,6 @@
   color: var(--color-on-surface) !important;
 }
 
-.mat-mdc-checkbox {
-  --mdc-checkbox-selected-checkmark-color: var(--color-on-accent) !important;
-  --mdc-checkbox-selected-focus-icon-color: var(--color-accent) !important;
-  --mdc-checkbox-selected-hover-icon-color: var(--color-accent) !important;
-  --mdc-checkbox-selected-icon-color: var(--color-accent) !important;
-  --mdc-checkbox-selected-pressed-icon-color: var(--color-accent) !important;
-  --mdc-checkbox-unselected-focus-icon-color: var(--color-on-surface) !important;
-  --mdc-checkbox-unselected-hover-icon-color: var(--color-on-surface) !important;
-  --mdc-checkbox-unselected-icon-color: var(--color-on-surface) !important;
-  --mdc-checkbox-unselected-pressed-icon-color: var(--color-on-surface) !important;
-}
-
-.mat-mdc-radio-button {
-  --mdc-radio-selected-focus-icon-color: var(--color-accent) !important;
-  --mdc-radio-selected-hover-icon-color: var(--color-accent) !important;
-  --mdc-radio-selected-icon-color: var(--color-accent) !important;
-  --mdc-radio-selected-pressed-icon-color: var(--color-accent) !important;
-  --mdc-radio-unselected-focus-icon-color: var(--color-on-surface) !important;
-  --mdc-radio-unselected-hover-icon-color: var(--color-on-surface) !important;
-  --mdc-radio-unselected-icon-color: var(--color-on-surface) !important;
-  --mdc-radio-unselected-pressed-icon-color: var(--color-on-surface) !important;
-}
-
 .mat-mdc-slide-toggle {
   --mdc-switch-selected-focus-state-layer-color: var(--color-accent) !important;
   --mdc-switch-selected-handle-color: var(--color-accent) !important;
@@ -303,6 +338,7 @@
     transparent
   ) !important;
   --mdc-checkbox-disabled-label-color: var(--mat-field-disabled-text) !important;
+  --mdc-checkbox-unselected-pressed-icon-color: var(--color-on-surface) !important;
 }
 
 .mat-mdc-checkbox .mdc-form-field > label {
@@ -316,6 +352,8 @@
   --mdc-radio-selected-icon-color: var(--color-accent) !important;
   --mdc-radio-selected-hover-icon-color: var(--color-accent) !important;
   --mdc-radio-selected-focus-icon-color: var(--color-accent) !important;
+  --mdc-radio-selected-pressed-icon-color: var(--color-accent) !important;
+  --mdc-radio-unselected-pressed-icon-color: var(--color-on-surface) !important;
   --mat-radio-ripple-color: color-mix(in srgb, var(--color-accent) 28%, transparent) !important;
   --mat-radio-checked-ripple-color: color-mix(
     in srgb,

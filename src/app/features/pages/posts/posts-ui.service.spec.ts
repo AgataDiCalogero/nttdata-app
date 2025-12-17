@@ -7,7 +7,7 @@ import type { DeleteConfirmData } from '@app/shared/models/dialog';
 import type { Post } from '@app/shared/models/post';
 import { ResponsiveDialogService } from '@app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@app/shared/services/notifications/notifications.service';
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { DialogOverlayCoordinator } from '@app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 
 import { PostsUiService } from './posts-ui.service';
 import { postsServiceInjectionToken } from './store/posts.inject';
@@ -18,6 +18,7 @@ describe('PostsUiService', () => {
   let overlays: { activate: jasmine.Spy; release: jasmine.Spy };
   let notifications: { showSuccess: jasmine.Spy };
   let dialogLayouts: { form: jasmine.Spy };
+  let overlayCoordinator: jasmine.SpyObj<DialogOverlayCoordinator>;
   let closed$: Subject<unknown>;
 
   const mockStore = {
@@ -37,6 +38,15 @@ describe('PostsUiService', () => {
     dialogLayouts = {
       form: jasmine.createSpy('form').and.callFake((cfg) => cfg),
     };
+    overlayCoordinator = jasmine.createSpyObj('DialogOverlayCoordinator', ['coordinate']);
+    overlayCoordinator.coordinate.and.callFake((key, dialogRef) => {
+      overlays.activate({
+        key,
+        close: () => dialogRef.close(),
+        blockGlobalControls: true,
+      });
+      return () => overlays.release(key);
+    });
 
     dialog.open.and.callFake(
       () =>
@@ -51,7 +61,7 @@ describe('PostsUiService', () => {
         PostsUiService,
         { provide: Dialog, useValue: dialog },
         { provide: postsServiceInjectionToken, useValue: mockStore },
-        { provide: UiOverlayService, useValue: overlays },
+        { provide: DialogOverlayCoordinator, useValue: overlayCoordinator },
         { provide: ResponsiveDialogService, useValue: dialogLayouts },
         { provide: NotificationsService, useValue: notifications },
         {
@@ -71,6 +81,10 @@ describe('PostsUiService', () => {
     const config = dialog.open.calls.mostRecent().args[1] as { data?: { users?: unknown } };
     expect(config?.data?.users).toEqual([{ id: 1, name: 'User 1' }]);
     expect(overlays.activate).toHaveBeenCalledWith(jasmine.objectContaining({ key: 'post-form' }));
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'post-form',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
 
     closed$.next({ status: 'created' });
 
@@ -94,6 +108,10 @@ describe('PostsUiService', () => {
     expect(notifications.showSuccess).toHaveBeenCalled();
     expect(mockStore.onPostUpdated).toHaveBeenCalledWith(jasmine.objectContaining({ title: 'T2' }));
     expect(overlays.release).toHaveBeenCalledWith('post-form');
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'post-form',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
   });
 
   it('confirmDelete invoca deletePostRequest e overlay', () => {
@@ -108,6 +126,10 @@ describe('PostsUiService', () => {
     expect(mockStore.deletePostRequest).toHaveBeenCalledWith(post);
     expect(overlays.activate).toHaveBeenCalledWith(
       jasmine.objectContaining({ key: 'post-delete-confirm' }),
+    );
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'post-delete-confirm',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
     );
   });
 });

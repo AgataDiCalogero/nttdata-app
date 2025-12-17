@@ -3,7 +3,7 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs';
 
-import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
+import { DialogOverlayCoordinator } from '@app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
@@ -23,7 +23,7 @@ type PostFormDialogData = { users: User[]; post?: Post };
 export class PostsUiService {
   private readonly dialog = inject(Dialog);
   private readonly dialogLayouts = inject(ResponsiveDialogService);
-  private readonly overlays = inject(UiOverlayService);
+  private readonly overlayCoordinator = inject(DialogOverlayCoordinator);
   private readonly notifications = inject(NotificationsService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(I18nService);
@@ -66,13 +66,9 @@ export class PostsUiService {
       restoreFocus: true,
       data,
     });
-    this.overlays.activate({
-      key: 'post-delete-confirm',
-      close: () => ref.close(),
-      blockGlobalControls: true,
-    });
+    const releaseOverlay = this.overlayCoordinator.coordinate('post-delete-confirm', ref);
     ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.overlays.release('post-delete-confirm');
+      releaseOverlay();
     });
   }
 
@@ -87,15 +83,9 @@ export class PostsUiService {
       PostForm,
       dialogConfig,
     );
-
-    this.overlays.activate({
-      key: 'post-form',
-      close: () => ref.close(),
-      blockGlobalControls: true,
-    });
-
+    const releaseOverlay = this.overlayCoordinator.coordinate('post-form', ref);
     ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
-      this.overlays.release('post-form');
+      releaseOverlay();
       if (!result || typeof result !== 'object' || !('status' in result)) {
         return;
       }

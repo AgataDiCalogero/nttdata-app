@@ -10,9 +10,9 @@ import type { User } from '@/app/shared/models/user';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import {
-  UiOverlayService,
+  DialogOverlayCoordinator,
   type OverlayKey,
-} from '@/app/shared/services/ui-overlay/ui-overlay.service';
+} from '@/app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 
 import { injectUsersService } from './store/users.inject';
@@ -21,7 +21,7 @@ import { UserForm } from './user-form/user-form.component';
 @Injectable()
 export class UsersUiService {
   private readonly dialog = inject(Dialog);
-  private readonly overlays = inject(UiOverlayService);
+  private readonly overlayCoordinator = inject(DialogOverlayCoordinator);
   private readonly dialogLayouts = inject(ResponsiveDialogService);
   private readonly notifications = inject(NotificationsService);
   private readonly usersApi = inject(UsersApiService);
@@ -37,9 +37,9 @@ export class UsersUiService {
       shared: { panelClass: 'app-dialog--scrollable' },
     });
     const ref = this.dialog.open<'success' | 'cancel', void, UserForm>(UserForm, config);
-    this.activateOverlay('user-form', ref);
+    const releaseOverlay = this.activateOverlay('user-form', ref);
     ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
-      this.overlays.release('user-form');
+      releaseOverlay();
       if (result === 'success') {
         this.notifications.showSuccess(this.i18n.translate('users.create.success'));
         this.usersStore.loadUsers({ pushUrl: false });
@@ -64,9 +64,9 @@ export class UsersUiService {
             UserForm,
             config,
           );
-          this.activateOverlay('user-form', ref);
+          const releaseOverlay = this.activateOverlay('user-form', ref);
           ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe((result) => {
-            this.overlays.release('user-form');
+            releaseOverlay();
             if (result === 'success') {
               this.notifications.showSuccess(this.i18n.translate('users.update.success'));
               this.usersStore.loadUsers({ pushUrl: false });
@@ -120,17 +120,13 @@ export class UsersUiService {
       restoreFocus: true,
       data,
     });
-    this.activateOverlay('user-delete-confirm', ref);
+    const releaseConfirmOverlay = this.activateOverlay('user-delete-confirm', ref);
     ref.closed.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.overlays.release('user-delete-confirm');
+      releaseConfirmOverlay();
     });
   }
 
-  private activateOverlay(key: OverlayKey, ref: { close(): void }): void {
-    this.overlays.activate({
-      key,
-      close: () => ref.close(),
-      blockGlobalControls: true,
-    });
+  private activateOverlay(key: OverlayKey, ref: { close(): void }): () => void {
+    return this.overlayCoordinator.coordinate(key, ref);
   }
 }

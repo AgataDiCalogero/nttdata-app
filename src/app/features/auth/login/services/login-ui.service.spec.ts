@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { I18nService } from '@/app/shared/i18n/i18n.service';
-import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
+import { DialogOverlayCoordinator } from '@/app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
 import { LoginUiService } from './login-ui.service';
@@ -11,15 +11,18 @@ import { LoginUiService } from './login-ui.service';
 describe('LoginUiService', () => {
   let service: LoginUiService;
   let mockDialog: jasmine.SpyObj<Dialog>;
-  let mockOverlays: jasmine.SpyObj<UiOverlayService>;
+  let mockOverlayCoordinator: jasmine.SpyObj<DialogOverlayCoordinator>;
   let mockToast: jasmine.SpyObj<ToastService>;
   let mockI18n: jasmine.SpyObj<I18nService>;
   let mockDialogRef: jasmine.SpyObj<DialogRef>;
+  let overlayRelease: jasmine.Spy;
 
   beforeEach(() => {
     mockDialogRef = jasmine.createSpyObj('DialogRef', ['close'], { closed: of(undefined) });
     mockDialog = jasmine.createSpyObj('Dialog', ['open']);
-    mockOverlays = jasmine.createSpyObj('UiOverlayService', ['activate', 'release']);
+    mockOverlayCoordinator = jasmine.createSpyObj('DialogOverlayCoordinator', ['coordinate']);
+    overlayRelease = jasmine.createSpy('overlayRelease');
+    mockOverlayCoordinator.coordinate.and.returnValue(overlayRelease);
     mockToast = jasmine.createSpyObj('ToastService', ['show']);
     mockI18n = jasmine.createSpyObj('I18nService', ['translate']);
 
@@ -29,7 +32,7 @@ describe('LoginUiService', () => {
       providers: [
         LoginUiService,
         { provide: Dialog, useValue: mockDialog },
-        { provide: UiOverlayService, useValue: mockOverlays },
+        { provide: DialogOverlayCoordinator, useValue: mockOverlayCoordinator },
         { provide: ToastService, useValue: mockToast },
         { provide: I18nService, useValue: mockI18n },
       ],
@@ -50,20 +53,16 @@ describe('LoginUiService', () => {
       panelClass: ['token-help-dialog', 'app-dialog-panel', 'app-dialog--sm'],
       backdropClass: 'app-dialog-overlay',
     });
-    expect(mockOverlays.activate).toHaveBeenCalledWith({
-      key: 'token-help-dialog',
-      close: jasmine.any(Function),
-      blockGlobalControls: true,
-    });
+    expect(mockOverlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'token-help-dialog',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
   });
 
-  it('should release overlay when dialog closes', (done) => {
+  it('should release overlay when dialog closes', () => {
     service.openTokenHelp();
 
-    setTimeout(() => {
-      expect(mockOverlays.release).toHaveBeenCalledWith('token-help-dialog');
-      done();
-    }, 10);
+    expect(overlayRelease).toHaveBeenCalled();
   });
 
   it('should show error toast with correct parameters', () => {

@@ -3,7 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { take } from 'rxjs';
 
 import { I18nService } from '@/app/shared/i18n/i18n.service';
-import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
+import {
+  DialogOverlayCoordinator,
+} from '@/app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
 import { TokenHelpDialogComponent } from '../token-help-dialog/token-help-dialog.component';
@@ -13,7 +15,7 @@ import { TokenHelpDialogComponent } from '../token-help-dialog/token-help-dialog
 })
 export class LoginUiService {
   private readonly dialog = inject(Dialog);
-  private readonly overlays = inject(UiOverlayService);
+  private readonly overlayCoordinator = inject(DialogOverlayCoordinator);
   private readonly toast = inject(ToastService);
   private readonly i18n = inject(I18nService);
 
@@ -27,14 +29,9 @@ export class LoginUiService {
       backdropClass: 'app-dialog-overlay',
     });
 
-    this.overlays.activate({
-      key: 'token-help-dialog',
-      close: () => dialogRef.close(),
-      blockGlobalControls: true,
-    });
-
+    const releaseOverlay = this.overlayCoordinator.coordinate('token-help-dialog', dialogRef);
     dialogRef.closed.pipe(take(1)).subscribe(() => {
-      this.overlays.release('token-help-dialog');
+      releaseOverlay();
     });
   }
 

@@ -17,6 +17,8 @@ yarn-error.log
 .cache/
 .codesight/
 test-ci.log
+latest-test-run.log
+test-*.log
 
 # IDEs and editors
 .idea/

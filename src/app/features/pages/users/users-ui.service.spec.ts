@@ -8,6 +8,7 @@ import type { DeleteConfirmData } from '@app/shared/models/dialog';
 import type { User } from '@app/shared/models/user';
 import { ResponsiveDialogService } from '@app/shared/services/dialog/responsive-dialog.service';
 import { NotificationsService } from '@app/shared/services/notifications/notifications.service';
+import { DialogOverlayCoordinator } from '@app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
 import { usersServiceInjectionToken } from './store/users.inject';
@@ -20,6 +21,7 @@ describe('UsersUiService', () => {
   let notifications: jasmine.SpyObj<NotificationsService>;
   let dialogLayouts: jasmine.SpyObj<ResponsiveDialogService>;
   let usersApi: jasmine.SpyObj<UsersApiService>;
+  let overlayCoordinator: jasmine.SpyObj<DialogOverlayCoordinator>;
   let closed$: Subject<unknown>;
 
   const mockStore = {
@@ -36,6 +38,15 @@ describe('UsersUiService', () => {
     dialogLayouts = jasmine.createSpyObj('ResponsiveDialogService', ['form']);
     dialogLayouts.form.and.callFake((cfg) => cfg);
     usersApi = jasmine.createSpyObj('UsersApiService', ['getById', 'delete']);
+    overlayCoordinator = jasmine.createSpyObj('DialogOverlayCoordinator', ['coordinate']);
+    overlayCoordinator.coordinate.and.callFake((key, dialogRef) => {
+      overlays.activate({
+        key,
+        close: () => dialogRef.close(),
+        blockGlobalControls: true,
+      });
+      return () => overlays.release(key);
+    });
 
     dialog.open.and.callFake(
       () =>
@@ -52,7 +63,7 @@ describe('UsersUiService', () => {
       providers: [
         UsersUiService,
         { provide: Dialog, useValue: dialog },
-        { provide: UiOverlayService, useValue: overlays },
+        { provide: DialogOverlayCoordinator, useValue: overlayCoordinator },
         { provide: ResponsiveDialogService, useValue: dialogLayouts },
         { provide: NotificationsService, useValue: notifications },
         { provide: UsersApiService, useValue: usersApi },
@@ -71,12 +82,20 @@ describe('UsersUiService', () => {
     const openArgs = dialog.open.calls.mostRecent().args[1];
     expect(openArgs?.ariaLabel).toBe('users.create.ariaLabel');
     expect(overlays.activate).toHaveBeenCalledWith(jasmine.objectContaining({ key: 'user-form' }));
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'user-form',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
 
     closed$.next('success');
 
     expect(notifications.showSuccess).toHaveBeenCalledWith('users.create.success');
     expect(mockStore.loadUsers).toHaveBeenCalledWith({ pushUrl: false });
     expect(overlays.release).toHaveBeenCalledWith('user-form');
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'user-form',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
   });
 
   it('openEditUserModal carica utente, apre dialog e gestisce successo', () => {
@@ -91,6 +110,10 @@ describe('UsersUiService', () => {
     expect(notifications.showSuccess).toHaveBeenCalledWith('users.update.success');
     expect(mockStore.loadUsers).toHaveBeenCalledWith({ pushUrl: false });
     expect(overlays.release).toHaveBeenCalledWith('user-form');
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'user-form',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
   });
 
   it('confirmDelete chiama delete e refresha lo store', () => {
@@ -105,6 +128,10 @@ describe('UsersUiService', () => {
     expect(mockStore.setDeleting).toHaveBeenCalledWith(7);
     expect(usersApi.delete).toHaveBeenCalledWith(7);
     expect(notifications.showSuccess).toHaveBeenCalledWith('users.delete.success');
+    expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
+      'user-delete-confirm',
+      jasmine.objectContaining({ close: jasmine.any(Function) }),
+    );
   });
 
   it('openEditUserModal gestisce errore caricamento utente', () => {

@@ -49,6 +49,7 @@ export class ResponsiveDialogService {
         sharedConfig.panelClass,
         'app-dialog-panel',
         this.variantClass(desktopVariant),
+        this.sizeClass(desktopVariant),
       ),
     };
     const desktopConfig = this.mergeConfig(desktopBase, options.desktop);
@@ -62,6 +63,7 @@ export class ResponsiveDialogService {
         sharedConfig.panelClass,
         'app-dialog-panel',
         this.variantClass(mobileVariant),
+        this.sizeClass(mobileVariant),
       ),
     };
     const mobileConfig = this.mergeConfig(mobileBase, options.mobile);
@@ -113,5 +115,9 @@ export class ResponsiveDialogService {
 
   private variantClass(variant?: DialogPanelVariant): string | undefined {
     return variant ? `app-dialog--${variant}` : undefined;
+  }
+
+  private sizeClass(variant?: DialogPanelVariant): string | undefined {
+    return variant ? `app-dialog-size-${variant}` : undefined;
   }
 }

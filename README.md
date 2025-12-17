@@ -85,3 +85,19 @@ API base URLs live in `src/environments/*.ts`. Interceptors automatically prefix
 ## Style governance
 
 I layer globali sono congelati nel documento `STYLE_LAYERS.md`: ci sono i token (solo CSS vars), il partial unico per gli override MDC (e overlay), e la baseline numerica con il conteggio dei `!important`/`.mat-mdc-`/`.cdk-overlay-` che servono a capire se stiamo migliorando. Qualsiasi modifica ai layer o ai Material overrides deve seguire i checkpoint di Milestone 0–6 (vedi il documento) e aggiornare i contatori `rg` indicati lì.
+ Prima di modificare `src/styles/_tokens.scss`, esegui `npm run check:token-selectors` per bloccare automaticamente qualsiasi selettore `.mat-`/`.mdc-`/`.cdk-` introdotto accidentalmente nei token.
+
+## Guardrails & smoke tests
+
+- **Guardrails (automated)**
+  1. `npm run check:token-selectors` – tokens must not contain `.mat-/.mdc-/.cdk-` selectors or Material `!important` rules.  
+  2. `npm run check:no-logs` – ensure no `.log` files are tracked in git (lint guard against noisy commits).  
+  3. `npm run check:empty-dirs` – fail if any directory under `src/app` is empty, preventing stale scaffolding.  
+  4. `npm run check:guards` – convenience meta script that runs all three.
+
+- **Smoke tests (manual/regression)**
+  1. Open the user creation/edit dialog and confirm `body.dataset.uiOverlayKey` becomes `user-form`, then closes to `null`, ensuring overlay lifecycle/`DialogOverlayCoordinator` wiring works.  
+  2. Trigger the post creation dialog and the delete confirmation; verify `app-dialog-size-*` classes plus `panelClass` states match the layout rules in `_dialog.scss`.  
+  3. Resize the filters bar (desktop vs mobile) and check that `filters-bar__controls` changes between row and column, and `filters-bar__actions` buttons stretch to 100% width on small screens.  
+  4. Toggle light/dark theme (and optionally reading mode) via the UI switcher and confirm `body` classes (`light-theme`/`dark-theme`) follow the signals coming from `ThemeService`.  
+  5. Open the login token-help dialog and ensure the overlay key becomes `token-help-dialog` while it is open and removes itself on close (keeping `UiOverlayService` state consistent).

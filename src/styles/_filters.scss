@@ -1,0 +1,75 @@
+.filters-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.filters-bar__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  width: 100%;
+}
+
+.filters-bar__controls app-search-bar,
+.filters-bar__controls app-select {
+  min-width: 0;
+}
+
+.filters-bar__controls app-search-bar {
+  flex: 1 1 min(20rem, 100%);
+}
+
+.filters-bar__controls app-select {
+  flex: 1 1 12rem;
+}
+
+.filters-bar__actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.posts-filters input,
+.posts-filters select,
+.user-filters input,
+.user-filters select {
+  min-height: 42px;
+}
+
+@media (min-width: 60rem) {
+  .filters-bar,
+  .posts-filters,
+  .user-filters {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filters-bar__controls {
+    flex: 1;
+  }
+
+  .filters-bar__actions {
+    width: auto;
+  }
+}
+
+@media (max-width: 36rem) {
+  .filters-bar__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-bar__actions {
+    justify-content: flex-start;
+  }
+
+  .filters-bar__actions button[appButton] {
+    width: 100%;
+  }
+}
