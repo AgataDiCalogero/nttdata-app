@@ -24,7 +24,7 @@ describe('ResponsiveDialogService', () => {
     breakpointObserver.isMatched.and.returnValue(false);
     const config = service.form({ ariaLabel: 'Create post' });
     expect(config.width).toBe('37.5rem');
-    expect(config.panelClass).toEqual(['app-dialog-panel', 'app-dialog--md']);
+    expect(config.panelClass).toEqual(['app-dialog-panel', 'app-dialog--md', 'app-dialog-size-md']);
   });
 
   it('should return mobile configuration when breakpoint matches mobile query', () => {
@@ -33,7 +33,11 @@ describe('ResponsiveDialogService', () => {
     expect(config.width).toBe('100vw');
     expect(config.maxWidth).toBe('100vw');
     expect(config.maxHeight).toBeUndefined();
-    expect(config.panelClass).toEqual(['app-dialog-panel', 'app-dialog--sheet']);
+    expect(config.panelClass).toEqual([
+      'app-dialog-panel',
+      'app-dialog--sheet',
+      'app-dialog-size-sheet',
+    ]);
   });
 
   it('should merge shared and desktop overrides keeping panel classes unique', () => {
@@ -49,6 +53,7 @@ describe('ResponsiveDialogService', () => {
       'shared-class',
       'app-dialog-panel',
       'app-dialog--md',
+      'app-dialog-size-md',
       'desktop-class',
     ]);
   });

@@ -36,10 +36,8 @@ export class ResponsiveDialogService {
     };
 
     const sharedConfig = this.mergeConfig(sharedDefaults, options.shared);
-    const desktopVariant =
-      options.desktopPanelVariant ?? options.panelVariant ?? 'md';
-    const mobileVariant =
-      options.mobilePanelVariant ?? options.panelVariant ?? 'sheet';
+    const desktopVariant = options.desktopPanelVariant ?? options.panelVariant ?? 'md';
+    const mobileVariant = options.mobilePanelVariant ?? options.panelVariant ?? 'sheet';
 
     const desktopBase: ResponsiveDialogConfig<TData, R, C> = {
       ...sharedConfig,
@@ -73,9 +71,7 @@ export class ResponsiveDialogService {
       mobileConfig.data = options.data;
     }
 
-    return this.breakpointObserver.isMatched(MOBILE_QUERY)
-      ? mobileConfig
-      : desktopConfig;
+    return this.breakpointObserver.isMatched(MOBILE_QUERY) ? mobileConfig : desktopConfig;
   }
 
   private mergeConfig<TData, R, C>(
@@ -87,10 +83,7 @@ export class ResponsiveDialogService {
     }
 
     const merged: ResponsiveDialogConfig<TData, R, C> = { ...base, ...override };
-    merged.panelClass = this.combinePanelClasses(
-      base.panelClass,
-      override?.panelClass,
-    );
+    merged.panelClass = this.combinePanelClasses(base.panelClass, override?.panelClass);
     return merged;
   }
 
