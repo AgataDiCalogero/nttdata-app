@@ -16,7 +16,7 @@ function shouldAttachToken(url: string): boolean {
     return true;
   }
 
-  const apiBase = (environment?.baseUrl ?? '').trim();
+  const apiBase = environment.baseUrl.trim();
   if (!apiBase) {
     return false;
   }
@@ -36,22 +36,23 @@ export const authInterceptor: HttpInterceptorFn = (
 ) => {
   const auth = inject(AuthService);
   const token = auth.token();
+  const normalizedToken = token?.trim() ?? '';
 
   if (req.headers.has('Authorization')) {
     return next(req);
   }
 
-  if (!token?.trim()) {
+  if (!normalizedToken) {
     return next(req);
   }
 
-  if (!shouldAttachToken(req.url ?? '')) {
+  if (!shouldAttachToken(req.url)) {
     return next(req);
   }
 
   const authReq = req.clone({
     setHeaders: {
-      Authorization: `Bearer ${token.trim()}`,
+      Authorization: `Bearer ${normalizedToken}`,
     },
   });
 

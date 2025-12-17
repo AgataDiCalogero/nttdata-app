@@ -79,7 +79,7 @@ describe('PostsUiService', () => {
 
     expect(dialog.open).toHaveBeenCalled();
     const config = dialog.open.calls.mostRecent().args[1] as { data?: { users?: unknown } };
-    expect(config?.data?.users).toEqual([{ id: 1, name: 'User 1' }]);
+    expect(config.data?.users).toEqual([{ id: 1, name: 'User 1' }]);
     expect(overlays.activate).toHaveBeenCalledWith(jasmine.objectContaining({ key: 'post-form' }));
     expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
       'post-form',
@@ -98,7 +98,7 @@ describe('PostsUiService', () => {
     service.openEditDialog({ id: 5, user_id: 1, title: 'T', body: 'B' } as Post);
 
     const config = dialog.open.calls.mostRecent().args[1] as { data?: { post?: Post } };
-    expect(config?.data?.post?.id).toBe(5);
+    expect(config.data?.post?.id).toBe(5);
 
     closed$.next({
       status: 'updated',

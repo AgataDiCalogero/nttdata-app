@@ -83,7 +83,7 @@ export class ResponsiveDialogService {
     }
 
     const merged: ResponsiveDialogConfig<TData, R, C> = { ...base, ...override };
-    merged.panelClass = this.combinePanelClasses(base.panelClass, override?.panelClass);
+    merged.panelClass = this.combinePanelClasses(base.panelClass, override.panelClass);
     return merged;
   }
 
@@ -95,7 +95,7 @@ export class ResponsiveDialogService {
         if (Array.isArray(value)) {
           return value;
         }
-        return value ? [value] : [];
+        return value != null && value.length > 0 ? [value] : [];
       })
       .filter((value, index, all) => all.indexOf(value) === index);
 

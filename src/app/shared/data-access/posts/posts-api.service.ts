@@ -43,10 +43,10 @@ export class PostsApiService {
   ): Observable<ListResponse<Post>> {
     let httpParams = new HttpParams();
     const { page, perPage, userId, title } = params;
-    if (page) httpParams = httpParams.set('page', String(page));
-    if (perPage) httpParams = httpParams.set('per_page', String(perPage));
-    if (userId) httpParams = httpParams.set('user_id', String(userId));
-    if (title) httpParams = httpParams.set('title', title);
+    if (page != null) httpParams = httpParams.set('page', String(page));
+    if (perPage != null) httpParams = httpParams.set('per_page', String(perPage));
+    if (userId != null) httpParams = httpParams.set('user_id', String(userId));
+    if (title != null && title !== '') httpParams = httpParams.set('title', title);
     return this.http
       .get<PostDto[]>(this.base, { params: httpParams, observe: 'response' })
       .pipe(map((resp) => mapPaginatedResponse(resp, mapPostDto)));

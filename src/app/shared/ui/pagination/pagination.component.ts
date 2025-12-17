@@ -20,18 +20,18 @@ export class PaginationComponent {
 
   readonly pageChange = output<number>();
 
-  protected readonly canPrev = computed(() => (this.page() ?? 1) > 1);
-  protected readonly canNext = computed(() => (this.page() ?? 1) < (this.pageCount() ?? 1));
+  protected readonly canPrev = computed(() => this.page() > 1);
+  protected readonly canNext = computed(() => this.page() < this.pageCount());
 
   prev(): void {
     if (!this.canPrev()) return;
-    const nextPage = Math.max(1, (this.page() || 1) - 1);
+    const nextPage = Math.max(1, this.page() - 1);
     this.pageChange.emit(nextPage);
   }
 
   next(): void {
     if (!this.canNext()) return;
-    const nextPage = Math.min(this.pageCount() || 1, (this.page() || 1) + 1);
+    const nextPage = Math.min(this.pageCount(), this.page() + 1);
     this.pageChange.emit(nextPage);
   }
 }

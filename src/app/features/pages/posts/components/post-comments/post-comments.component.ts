@@ -28,6 +28,13 @@ import { ButtonComponent } from '@/app/shared/ui/button/button.component';
 import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
+const extractStatus = (error: unknown): number | undefined => {
+  if (typeof error === 'object' && error !== null && 'status' in error) {
+    return (error as { status?: number }).status;
+  }
+  return undefined;
+};
+
 @Component({
   standalone: true,
   selector: 'app-post-comments',
@@ -82,8 +89,9 @@ export class PostCommentsComponent {
             error: (err) => {
               this.deletingId.set(null);
               console.error('Failed to delete comment', err);
+              const status = extractStatus(err);
               const message =
-                err?.status === 429
+                status === 429
                   ? this.i18n.translate('postComments.errors.rateLimit')
                   : this.i18n.translate('postComments.deleteConfirm.errorMessage');
               this.toast.show('error', message);
@@ -165,9 +173,7 @@ export class PostCommentsComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (updated) => {
-          if (updated) {
-            this.commentUpdated.emit(updated);
-          }
+          this.commentUpdated.emit(updated);
           this.toast.show('success', this.i18n.translate('postComments.toast.updated'));
           this.submittingEdit.set(false);
           this.cancelEdit();
@@ -175,9 +181,10 @@ export class PostCommentsComponent {
         error: (err) => {
           console.error('Failed to update comment', err);
           this.submittingEdit.set(false);
-          if (err?.status === 422) {
+          const status = extractStatus(err);
+          if (status === 422) {
             this.editError.set(this.i18n.translate('postComments.errors.editInvalid'));
-          } else if (err?.status === 429) {
+          } else if (status === 429) {
             this.toast.show('error', this.i18n.translate('postComments.errors.rateLimit'));
           } else {
             this.toast.show('error', this.i18n.translate('postComments.toast.updateFailed'));

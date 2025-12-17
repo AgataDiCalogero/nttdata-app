@@ -25,7 +25,7 @@ function shouldSkipGlobalError(req: HttpRequest<unknown>): boolean {
   }
 
   const headerValue = req.headers.get(SKIP_GLOBAL_ERROR_HEADER);
-  if (!headerValue) {
+  if (headerValue == null || headerValue.trim() === '') {
     return false;
   }
 

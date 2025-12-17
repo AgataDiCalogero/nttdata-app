@@ -28,6 +28,8 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { LoginFacadeService } from './services/login-facade.service';
 import { LoginUiService } from './services/login-ui.service';
 
+type MinLengthError = { requiredLength: number };
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -84,8 +86,8 @@ export class Login {
       return this.i18n.translate('login.errors.required');
     }
 
-    const minlength = control.getError('minlength');
-    if (minlength) {
+    const minlength = control.getError('minlength') as MinLengthError | null;
+    if (minlength != null) {
       return this.i18n.translate('login.errors.minLength', { count: minlength.requiredLength });
     }
 
@@ -98,10 +100,10 @@ export class Login {
 
   readonly tokenDescribedBy = computed(() => {
     const ids: string[] = [];
-    if (this.tokenErrorMessage()) {
+    if (this.tokenErrorMessage() != null) {
       ids.push(this.tokenErrorId);
     }
-    if (this.submissionMessage()) {
+    if (this.submissionMessage() != null) {
       ids.push(this.formErrorId);
     }
     return ids.length ? ids.join(' ') : null;
@@ -131,10 +133,10 @@ export class Login {
         ) as ValidationErrors;
         this.tokenControl.setErrors(Object.keys(rest).length ? rest : null);
       }
-      if (this.apiErrorMessage()) {
+      if (this.apiErrorMessage() != null) {
         this.apiErrorMessage.set(null);
       }
-      if (this.submissionMessage()) {
+      if (this.submissionMessage() != null) {
         this.submissionMessage.set(null);
       }
     });
@@ -195,11 +197,11 @@ export class Login {
 
   private focusTokenInput(): void {
     if (!this.isBrowser) return;
-    afterNextRender(() => this.tokenInput?.nativeElement?.focus(), { injector: this.injector });
+    afterNextRender(() => this.tokenInput?.nativeElement.focus(), { injector: this.injector });
   }
 
   private focusFormAlert(): void {
     if (!this.isBrowser) return;
-    afterNextRender(() => this.formAlert?.nativeElement?.focus(), { injector: this.injector });
+    afterNextRender(() => this.formAlert?.nativeElement.focus(), { injector: this.injector });
   }
 }

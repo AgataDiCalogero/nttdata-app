@@ -71,7 +71,9 @@ describe('ThemeService', () => {
   let storage: StorageStub;
   let matchMediaSpy: jasmine.Spy<(query: string) => MediaQueryList>;
   let mediaQueryList: MockMediaQueryList;
-  const originalMatchMedia = globalThis.matchMedia ?? null;
+  type MatchMediaFn = (query: string) => MediaQueryList;
+  const originalMatchMedia = (globalThis as typeof globalThis & { matchMedia?: MatchMediaFn })
+    .matchMedia;
 
   beforeEach(() => {
     storage = new StorageStub();
@@ -103,9 +105,8 @@ describe('ThemeService', () => {
   });
 
   afterEach(() => {
-    (
-      globalThis as typeof globalThis & { matchMedia?: (query: string) => MediaQueryList }
-    ).matchMedia = originalMatchMedia ?? undefined;
+    (globalThis as typeof globalThis & { matchMedia?: MatchMediaFn }).matchMedia =
+      originalMatchMedia;
   });
 
   it('should toggle theme from system preference to dark and persist it', (done) => {

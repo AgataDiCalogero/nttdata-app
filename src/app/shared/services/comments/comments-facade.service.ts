@@ -114,9 +114,7 @@ export class CommentsFacadeService {
     this.lastPrefetchAt = now;
     try {
       const counts = await firstValueFrom(this.cache.prefetchCounts(idsToFetch));
-      if (counts) {
-        this.countsSignal.update((state) => ({ ...state, ...counts }));
-      }
+      this.countsSignal.update((state) => ({ ...state, ...counts }));
     } catch (err: unknown) {
       console.error('Failed to prefetch comment counts', err);
     }

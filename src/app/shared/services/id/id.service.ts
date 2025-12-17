@@ -19,7 +19,7 @@ export class IdService {
    * Reset counters (useful in tests)
    */
   reset(prefix?: string): void {
-    if (prefix) {
+    if (prefix != null && prefix !== '') {
       this.counters.delete(prefix);
     } else {
       this.counters.clear();

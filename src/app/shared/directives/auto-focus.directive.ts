@@ -23,7 +23,7 @@ export class AutoFocusDirective implements AfterViewInit {
     }
 
     try {
-      this.el.nativeElement.focus?.();
+      this.el.nativeElement.focus();
     } catch {
       // ignore focus failures
     }

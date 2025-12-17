@@ -13,8 +13,8 @@ export type UpdateUserDto = Partial<CreateUserDto>;
 
 export const mapUserDto = (dto: UserDto): User => ({
   id: dto.id,
-  name: dto.name?.trim() ?? '',
-  email: dto.email?.trim() ?? '',
+  name: dto.name.trim(),
+  email: dto.email.trim(),
   gender: dto.gender ?? undefined,
   status: dto.status,
 });
@@ -23,10 +23,8 @@ export const mapUsersDto = (list: UserDto[] | null | undefined): User[] =>
   (list ?? []).map((dto) => mapUserDto(dto));
 
 export const mapCreateUserToDto = (payload: CreateUser): CreateUserDto => ({
-  name: String(payload.name ?? '').trim(),
-  email: String(payload.email ?? '')
-    .trim()
-    .toLowerCase(),
+  name: payload.name.trim(),
+  email: payload.email.trim().toLowerCase(),
   gender: payload.gender ?? 'male',
   status: payload.status ?? 'active',
 });

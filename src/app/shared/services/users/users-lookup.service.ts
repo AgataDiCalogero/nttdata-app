@@ -15,7 +15,7 @@ export class UsersLookupService {
 
   readonly users = computed(() => this.cache());
   readonly userLookup = computed(() =>
-    this.cache().reduce<Record<number, User>>((acc, user) => {
+    this.cache().reduce<Record<number, User | undefined>>((acc, user) => {
       acc[user.id] = user;
       return acc;
     }, {}),
@@ -23,7 +23,8 @@ export class UsersLookupService {
   readonly isLoading = computed(() => this.loading());
 
   ensureUsersLoaded(options?: { force?: boolean; perPage?: number }): Observable<User[]> {
-    if (!options?.force && this.cache().length && !this.isExpired()) {
+    const isForce = options?.force === true;
+    if (!isForce && this.cache().length > 0 && !this.isExpired()) {
       return of(this.cache());
     }
 
@@ -34,7 +35,7 @@ export class UsersLookupService {
     const perPage = options?.perPage ?? 50;
     this.loading.set(true);
     const request$ = this.usersApi.list({ perPage }, { cache: true }).pipe(
-      map((resp) => resp.items ?? []),
+      map((resp) => resp.items),
       tap((list) => {
         this.mergeUsers(list);
         this.lastFetchedAt.set(Date.now());
@@ -73,7 +74,7 @@ export class UsersLookupService {
   }
 
   seed(users: User[]): void {
-    if (!users.length) return;
+    if (users.length === 0) return;
     this.mergeUsers(users);
   }
 
@@ -83,7 +84,7 @@ export class UsersLookupService {
   }
 
   private mergeUsers(users: User[]): void {
-    if (!users.length) {
+    if (users.length === 0) {
       return;
     }
     const incoming = new Map<number, User>();
@@ -104,7 +105,7 @@ export class UsersLookupService {
 
   private isExpired(): boolean {
     const ts = this.lastFetchedAt();
-    if (!ts) return true;
+    if (ts === null) return true;
     return Date.now() - ts > this.ttlMs;
   }
 }

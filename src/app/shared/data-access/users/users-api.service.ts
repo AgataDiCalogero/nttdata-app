@@ -31,13 +31,13 @@ export class UsersApiService {
   ): Observable<ListResponse<User>> {
     let httpParams = new HttpParams();
     const { page, perPage, name, email } = params;
-    if (page) httpParams = httpParams.set('page', String(page));
-    if (perPage) httpParams = httpParams.set('per_page', String(perPage));
-    if (name) httpParams = httpParams.set('name', name);
-    if (email) httpParams = httpParams.set('email', email);
+    if (page != null) httpParams = httpParams.set('page', String(page));
+    if (perPage != null) httpParams = httpParams.set('per_page', String(perPage));
+    if (name != null && name !== '') httpParams = httpParams.set('name', name);
+    if (email != null && email !== '') httpParams = httpParams.set('email', email);
 
-    const cacheKey = options?.cache ? this.getCacheKey(httpParams) : null;
-    if (cacheKey) {
+    const cacheKey = options?.cache === true ? this.getCacheKey(httpParams) : null;
+    if (cacheKey != null) {
       const cached = this.listCache.get(cacheKey);
       if (cached) {
         return cached;
@@ -50,7 +50,7 @@ export class UsersApiService {
         map((resp) => mapPaginatedResponse(resp, mapUserDto)),
         tap({
           error: () => {
-            if (cacheKey) {
+            if (cacheKey != null) {
               this.listCache.delete(cacheKey);
             }
           },
@@ -58,7 +58,7 @@ export class UsersApiService {
         shareReplay({ bufferSize: 1, refCount: false }),
       );
 
-    if (cacheKey) {
+    if (cacheKey != null) {
       this.listCache.set(cacheKey, request$);
     }
 

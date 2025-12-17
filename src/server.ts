@@ -29,7 +29,9 @@ app.use((req, res, next) => {
 });
 
 if (isMainModule(import.meta.url)) {
-  const port = process.env['PORT'] || 4000;
+  const portEnv = process.env['PORT'];
+  const port =
+    portEnv != null && portEnv !== '' && !Number.isNaN(Number(portEnv)) ? Number(portEnv) : 4000;
   app.listen(port, (error) => {
     if (error) {
       throw error;

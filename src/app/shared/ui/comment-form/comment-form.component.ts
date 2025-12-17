@@ -44,8 +44,8 @@ export class CommentFormComponent {
   readonly submitting = signal(false);
   readonly submitError = signal<string | null>(null);
   protected readonly placeholderText = computed(() => {
-    const placeholder = this.placeholder()?.trim();
-    return placeholder?.length ? placeholder : this.i18n.translate('commentForm.placeholders.body');
+    const placeholder = this.placeholder().trim();
+    return placeholder.length ? placeholder : this.i18n.translate('commentForm.placeholders.body');
   });
 
   protected readonly form = this.fb.nonNullable.group({
@@ -92,9 +92,7 @@ export class CommentFormComponent {
       .subscribe({
         next: (comment) => {
           this.submitting.set(false);
-          if (comment) {
-            this.created.emit(comment);
-          }
+          this.created.emit(comment);
           this.toast.show('success', this.i18n.translate('commentForm.toastSuccess'));
           this.submitError.set(null);
           this.form.reset();
@@ -102,7 +100,10 @@ export class CommentFormComponent {
         error: (err) => {
           this.submitting.set(false);
           console.error('Failed to create comment:', err);
-          const status = err?.status;
+          const status =
+            typeof err === 'object' && err !== null && 'status' in err
+              ? (err as { status?: number }).status
+              : undefined;
           if (status === 422) {
             const message = this.i18n.translate('commentForm.submitErrors.validation');
             this.toast.show('error', message);

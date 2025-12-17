@@ -22,7 +22,7 @@ export class PostCommentsDialogService {
   open(post: Post, authorName?: string | null): void {
     this.commentsFacade.toggleComments(post.id);
     const config = this.dialogLayouts.form({
-      ariaLabel: this.i18n.translate('postComments.dialogAria', { title: post.title ?? '' }),
+      ariaLabel: this.i18n.translate('postComments.dialogAria', { title: post.title }),
       data: { post, authorName },
       panelVariant: 'sheet',
       mobile: {

@@ -40,12 +40,15 @@ export class PostsFiltersComponent {
     { value: 0 as const, label: this.i18n.translate('postsFilters.authorAll') },
     ...this.userOptions().map((user) => ({
       value: user.id,
-      label: user.name || this.i18n.translate('users.unnamed'),
+      label:
+        user.name != null && user.name.trim() !== ''
+          ? user.name
+          : this.i18n.translate('users.unnamed'),
     })),
   ]);
   readonly resetFilters = output<void>();
 
-  readonly perPageSelectOptions = computed(() => this.perPageOptions() ?? []);
+  readonly perPageSelectOptions = computed(() => this.perPageOptions());
 
   private readonly idService = inject(IdService);
   protected readonly searchId = this.idService.next('posts-search');

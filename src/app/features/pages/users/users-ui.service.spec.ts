@@ -103,7 +103,7 @@ describe('UsersUiService', () => {
 
     const config = dialog.open.calls.mostRecent().args[1] as { data?: { user?: User } };
     expect(usersApi.getById).toHaveBeenCalledWith(1);
-    expect(config?.data?.user?.id).toBe(1);
+    expect(config.data?.user?.id).toBe(1);
 
     closed$.next('success');
 

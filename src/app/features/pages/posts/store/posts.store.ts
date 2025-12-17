@@ -92,7 +92,7 @@ export const PostsStoreAdapter = signalStore(
       userOptions: computed(() => usersLookup.users()),
       userLookup: computed(() =>
         usersLookup.users().reduce<Record<number, string>>((acc, user) => {
-          acc[user.id] = user.name ?? `User #${user.id}`;
+          acc[user.id] = user.name;
           return acc;
         }, {}),
       ),
@@ -168,7 +168,7 @@ export const PostsStoreAdapter = signalStore(
 
     const fetchPosts = (params: QueryCriteria) => {
       const { page, perPage, title, userId, reload } = params;
-      const cacheKey = `posts|${page}|${perPage}|${title ?? ''}|${userId ?? ''}|${reload ?? 0}`;
+      const cacheKey = `posts|${page}|${perPage}|${title ?? ''}|${userId ?? ''}|${reload}`;
 
       const cached = queryCache.get<{ items: Post[]; pagination: PaginationMeta | null }>(cacheKey);
 
@@ -179,8 +179,8 @@ export const PostsStoreAdapter = signalStore(
 
       return postsApi.list({ page, perPage, title, userId }).pipe(
         map((result) => ({
-          items: result?.items ?? [],
-          pagination: result?.pagination ?? null,
+          items: result.items,
+          pagination: result.pagination ?? null,
         })),
         tap((toCache) => {
           queryCache.set(cacheKey, toCache, { ttl: POSTS_CACHE_TTL_MS });
@@ -211,7 +211,7 @@ export const PostsStoreAdapter = signalStore(
 
     const performDeletePost = (post: Post | null | undefined) => {
       const postId = post?.id;
-      if (!Number.isFinite(postId) || postId === null || postId === undefined) {
+      if (typeof postId !== 'number' || !Number.isFinite(postId)) {
         patchState(store, { deletingId: null });
         return throwError(() => new Error('Invalid post'));
       }

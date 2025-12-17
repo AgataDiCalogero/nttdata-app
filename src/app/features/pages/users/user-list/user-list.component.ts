@@ -66,10 +66,11 @@ export class UserListComponent {
   }
 
   getGenderLabel(gender?: string): string {
-    if (!gender) {
+    const normalized = gender?.trim();
+    if (normalized == null || normalized === '') {
       return this.i18n.translate('common.gender.unspecified');
     }
-    const genderKey = gender.toLowerCase();
+    const genderKey = normalized.toLowerCase();
     if (genderKey === 'male' || genderKey === 'female') {
       return this.i18n.translate(`common.gender.${genderKey}`);
     }

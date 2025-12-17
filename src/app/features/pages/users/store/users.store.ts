@@ -76,15 +76,15 @@ export const UsersStoreAdapter = signalStore(
       const entities = store.entities();
 
       const getValue = (u: User) => {
-        const v = u[field];
-        const s = typeof v === 'string' ? v : String(v ?? '');
-        return s.toLowerCase();
+        const rawValue = u[field];
+        const normalized = typeof rawValue === 'string' ? rawValue : String(rawValue);
+        return normalized.toLowerCase();
       };
 
-      return store
-        .ids()
-        .map((id) => entities[id])
-        .filter(Boolean)
+    return store
+      .ids()
+      .map((id) => entities[id])
+      .filter((user): user is User => Boolean(user))
         .sort((a, b) => {
           const av = getValue(a);
           const bv = getValue(b);
@@ -135,13 +135,14 @@ export const UsersStoreAdapter = signalStore(
       const term = (options.searchTerm ?? store.searchTerm()).trim();
 
       const currentCriteria = criteriaSignal();
+      const currentError = store.error();
       const sameCriteria =
         currentCriteria !== null &&
         currentCriteria.page === targetPage &&
         currentCriteria.perPage === targetPerPage &&
         currentCriteria.searchTerm === term;
 
-      if (sameCriteria && !store.error()) {
+      if (sameCriteria && currentError === null) {
         return;
       }
 
@@ -175,7 +176,7 @@ export const UsersStoreAdapter = signalStore(
       paginationMeta: PaginationMeta | null,
       criteria: UsersLoadCriteria,
     ) => {
-      const userList = items ?? [];
+      const userList = items;
       const entities = userList.reduce<Record<number, User>>((acc, user) => {
         acc[user.id] = user;
         return acc;
@@ -273,7 +274,7 @@ export const UsersStoreAdapter = signalStore(
 
             return usersApi.list(params, { cache: true }).pipe(
               tap(({ items, pagination }) => {
-                const list = items ?? [];
+                const list = items;
                 const resolvedLimit = Math.max(1, pagination?.limit ?? criteria.perPage);
                 const resolvedTotal = pagination?.total ?? list.length;
                 const resolvedPages =
@@ -362,7 +363,8 @@ export const UsersStoreAdapter = signalStore(
           return;
         }
         const token = auth.token();
-        if (!token?.trim()) {
+        const normalizedToken = token?.trim() ?? '';
+        if (!normalizedToken) {
           return;
         }
         bootstrapped = true;
@@ -373,7 +375,8 @@ export const UsersStoreAdapter = signalStore(
 
       effect(() => {
         const token = auth.token();
-        if (token?.trim()) {
+        const normalizedToken = token?.trim() ?? '';
+        if (normalizedToken) {
           attempt();
         } else if (bootstrapped) {
           bootstrapped = false;

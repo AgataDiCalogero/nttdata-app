@@ -98,11 +98,11 @@ export class UserDetail {
   readonly posts = computed(() => this.postsSource());
 
   readonly genderLabel = computed(() => {
-    const detail = this.user();
-    if (!detail?.gender) {
+    const gender = this.user()?.gender?.trim();
+    if (!gender) {
       return this.i18n.translate('common.gender.unspecified');
     }
-    const genderKey = detail.gender.toLowerCase();
+    const genderKey = gender.toLowerCase();
     if (genderKey === 'male' || genderKey === 'female') {
       return this.i18n.translate(`common.gender.${genderKey}`);
     }
@@ -110,9 +110,9 @@ export class UserDetail {
   });
 
   readonly pageTitle = computed(() => {
-    const detail = this.user();
-    if (detail?.name?.trim()) {
-      return detail.name.trim();
+    const name = this.user()?.name.trim();
+    if (name) {
+      return name;
     }
     return this.i18n.translate('userDetail.title');
   });

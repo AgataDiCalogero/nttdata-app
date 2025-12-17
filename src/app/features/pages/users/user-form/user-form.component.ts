@@ -20,6 +20,13 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+const getStatusCode = (error: unknown): number | undefined => {
+  if (typeof error === 'object' && error !== null && 'status' in error) {
+    return (error as { status?: number }).status;
+  }
+  return undefined;
+};
+
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { CreateUser, UpdateUser, User, UserStatus } from '@/app/shared/models/user';
 
@@ -69,7 +76,7 @@ export class UserForm {
     if (this.form.controls.email.invalid && this.form.controls.email.touched) {
       ids.push('email-error');
     }
-    if (this.emailError()) {
+    if (this.emailError() != null) {
       ids.push('email-server-error');
     }
     return ids.length ? ids.join(' ') : null;
@@ -87,8 +94,8 @@ export class UserForm {
       this.userId.set(inputUser.id);
 
       this.form.patchValue({
-        name: inputUser.name ?? '',
-        email: inputUser.email ?? '',
+        name: inputUser.name,
+        email: inputUser.email,
         gender: this.normalizeGender(inputUser.gender) ?? this.form.controls.gender.value,
         status: this.normalizeStatus(inputUser.status) ?? this.form.controls.status.value,
       });
@@ -159,7 +166,7 @@ export class UserForm {
 
         this.dialogRef.disableClose = false;
 
-        const status = err?.status;
+        const status = getStatusCode(err);
         if (status === 422) {
           this.emailError.set(this.i18n.translate('userForm.errors.emailInUse'));
         } else if (status === 429) {

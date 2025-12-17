@@ -71,6 +71,6 @@ export class SearchBarComponent {
   );
 
   onDebounced(value: string): void {
-    this.debounced.emit(value ?? '');
+    this.debounced.emit(value);
   }
 }

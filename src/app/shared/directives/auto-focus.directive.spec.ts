@@ -1,9 +1,10 @@
-import { Component, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AutoFocusDirective } from './auto-focus.directive';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<input type="text" [appAutoFocus]="enabled" />`,
   imports: [AutoFocusDirective],
 })

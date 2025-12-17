@@ -37,14 +37,10 @@ export class ThemeService {
   readonly readingMode = this.readingModeSignal.asReadonly();
   readonly isReadingMode = computed(() => this.readingModeSignal());
 
-  private readonly mediaQuery: MediaQueryList | null = null;
+  private readonly mediaQuery: MediaQueryList | undefined = undefined;
 
   constructor() {
-    if (
-      isPlatformBrowser(this.platformId) &&
-      globalThis.window != null &&
-      globalThis.matchMedia != null
-    ) {
+    if (isPlatformBrowser(this.platformId) && typeof globalThis.matchMedia === 'function') {
       this.mediaQuery = globalThis.matchMedia('(prefers-color-scheme: light)');
 
       const update = (event?: MediaQueryList | MediaQueryListEvent) => {
@@ -52,7 +48,7 @@ export class ThemeService {
         this.systemThemeSignal.set(matches ? 'light' : 'dark');
       };
 
-      update(this.mediaQuery ?? undefined);
+      update(this.mediaQuery);
 
       const listener = (event: MediaQueryListEvent) => update(event);
 
@@ -63,9 +59,12 @@ export class ThemeService {
         removeEventListener?: (t: string, l?: unknown) => void;
       };
 
-      const mq = this.mediaQuery as MQLWithLegacy | null;
+      const mq = this.mediaQuery as MQLWithLegacy | undefined;
+      if (!mq) {
+        return;
+      }
 
-      if (mq?.addEventListener) {
+      if (mq.addEventListener) {
         mq.addEventListener('change', listener);
         this.destroyRef.onDestroy(() => mq.removeEventListener?.('change', listener));
       } else {
@@ -140,11 +139,7 @@ export class ThemeService {
   }
 
   private detectSystemTheme(): ThemeName {
-    if (
-      !isPlatformBrowser(this.platformId) ||
-      globalThis.window == null ||
-      globalThis.matchMedia == null
-    ) {
+    if (!isPlatformBrowser(this.platformId) || typeof globalThis.matchMedia !== 'function') {
       return 'dark';
     }
 

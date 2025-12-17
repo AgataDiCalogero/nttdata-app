@@ -65,7 +65,7 @@ export class SelectComponent {
     if (!doc) return false;
     let element: HTMLElement | null = this.elementRef.nativeElement as HTMLElement | null;
     while (element && element !== doc.body) {
-      if (element.classList?.contains('cdk-overlay-pane')) {
+      if (element.classList.contains('cdk-overlay-pane')) {
         return true;
       }
       element = element.parentElement;

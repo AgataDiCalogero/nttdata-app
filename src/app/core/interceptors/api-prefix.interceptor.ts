@@ -6,9 +6,9 @@ export const apiPrefixInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ) => {
-  const apiBase = (environment?.baseUrl ?? '').trim();
+  const apiBase = environment.baseUrl.trim();
   if (!apiBase) return next(req);
-  const url = req.url ?? '';
+  const url = req.url;
 
   const isAbsolute = /^(https?:)?\/\//.test(url);
   if (!url || isAbsolute || url.startsWith(apiBase)) {

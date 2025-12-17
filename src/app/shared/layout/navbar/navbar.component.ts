@@ -121,8 +121,8 @@ export class Navbar implements OnInit {
 
   private syncBodyClass(isLogin: boolean): void {
     if (!this.isBrowser) return;
-    const doc = this.document as Document | null;
-    if (!doc || !doc.body) return;
+    const doc = this.document;
+    if (!doc.body) return;
     doc.body.classList.toggle('login-route', isLogin);
   }
 }

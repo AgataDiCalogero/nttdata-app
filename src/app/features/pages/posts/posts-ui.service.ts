@@ -97,7 +97,7 @@ export class PostsUiService {
         return;
       }
 
-      if (result.status === 'updated' && result.post) {
+      if (result.post) {
         this.notifications.showSuccess(this.i18n.translate('posts.update.success'));
         this.store.onPostUpdated(result.post);
       }

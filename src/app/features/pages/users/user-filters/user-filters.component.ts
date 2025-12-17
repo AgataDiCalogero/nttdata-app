@@ -51,7 +51,7 @@ export class UserFiltersComponent {
   protected readonly perPageControl = new FormControl<string>('');
 
   protected readonly perPageSelectOptions = computed(() =>
-    (this.perPageOptions() ?? []).map((value) => ({
+    this.perPageOptions().map((value) => ({
       value: String(value),
       label: String(value),
     })),
@@ -67,7 +67,7 @@ export class UserFiltersComponent {
   }
 
   onDebounced(value: string): void {
-    this.searchChange.emit(value ?? '');
+    this.searchChange.emit(value);
   }
 
   onPerPageSelected(value: string): void {

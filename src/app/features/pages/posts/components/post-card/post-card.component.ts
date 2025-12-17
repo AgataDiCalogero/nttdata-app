@@ -27,13 +27,9 @@ export class PostCardComponent {
   readonly allowManage = input(true);
   readonly author = computed(() => {
     const provided = this.authorName();
-    if (provided) return provided;
+    if (provided != null && provided !== '') return provided;
 
     const current = this.post();
-    if (!current) {
-      return this.i18n.translate('postCard.unknownAuthor');
-    }
-
     const fallback = this.i18n.translate('userDetail.avatarFallback');
     return `${fallback} #${current.user_id}`;
   });
@@ -50,7 +46,7 @@ export class PostCardComponent {
   isExpanded = false;
 
   shouldTruncate(): boolean {
-    const body = this.post().body || '';
+    const body = this.post().body;
     return body.length > 220;
   }
 
@@ -59,7 +55,7 @@ export class PostCardComponent {
   }
 
   preview(text?: string, max = 220): string {
-    const body = text ?? this.post().body ?? '';
+    const body = text ?? this.post().body;
     if (body.length <= max) {
       return body;
     }
@@ -74,7 +70,7 @@ export class PostCardComponent {
 
   bodyId(): string {
     const current = this.post();
-    return `post-body-${current?.id ?? 'unknown'}`;
+    return `post-body-${current.id}`;
   }
 
   onEditClick(): void {
@@ -83,15 +79,11 @@ export class PostCardComponent {
 
   onAuthorClick(): void {
     const current = this.post();
-    if (current) {
-      this.viewAuthor.emit(current.user_id);
-    }
+    this.viewAuthor.emit(current.user_id);
   }
 
   onViewComments(): void {
     const current = this.post();
-    if (current) {
-      this.viewComments.emit(current);
-    }
+    this.viewComments.emit(current);
   }
 }

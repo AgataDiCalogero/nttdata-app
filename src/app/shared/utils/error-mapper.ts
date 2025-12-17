@@ -48,7 +48,7 @@ export function mapHttpError(error: unknown): UiError {
     return {
       kind: 'rate-limit',
       messageKey: 'common.errors.rateLimit',
-      retryAfterMs: parseRetryAfter(error.headers?.get('Retry-After')),
+      retryAfterMs: parseRetryAfter(error.headers.get('Retry-After')),
     };
   }
 
@@ -59,7 +59,7 @@ export function mapHttpError(error: unknown): UiError {
 }
 
 function parseRetryAfter(value: string | null): number | undefined {
-  if (!value) {
+  if (value == null || value === '') {
     return undefined;
   }
 

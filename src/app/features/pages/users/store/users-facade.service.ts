@@ -29,7 +29,7 @@ export class UsersFacadeService {
     const resolvedErrorMessage =
       errorMessage ?? this.i18n.translate('userDetail.unableToLoadPosts');
     return this.postsApi.list({ userId, perPage }).pipe(
-      map((result) => result?.items ?? []),
+      map((result) => result.items),
       catchError((err) => {
         this.notifications.showHttpError(err, resolvedErrorMessage);
         return of<Post[]>([]);

@@ -40,7 +40,7 @@ export class CommentsCacheService {
     }
 
     const obs = this.postsApi.listComments(postId).pipe(
-      map((comments) => comments ?? []),
+      map((comments) => comments),
       tap((comments) => {
         this.commentsMap.set(postId, comments);
         this.countMap.set(postId, comments.length);
@@ -145,7 +145,7 @@ export class CommentsCacheService {
     }
 
     const expiresAt = this.countExpiry.get(postId);
-    if (!expiresAt) {
+    if (expiresAt === undefined) {
       return false;
     }
 
@@ -191,7 +191,7 @@ export class CommentsCacheService {
 
   private isExpired(store: Map<number, number>, postId: number): boolean {
     const expiresAt = store.get(postId);
-    if (!expiresAt) {
+    if (expiresAt === undefined) {
       return false;
     }
     if (Date.now() > expiresAt) {

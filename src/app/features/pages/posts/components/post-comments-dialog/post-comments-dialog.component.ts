@@ -43,15 +43,15 @@ export class PostCommentsDialogComponent {
   readonly loading = computed(() => Boolean(this.commentsFacade.loading()[this.data.post.id]));
   readonly authorName = computed(() => {
     const provided = this.data.authorName?.trim();
-    if (provided) return provided;
+    if (provided != null && provided !== '') return provided;
 
     const fallback = this.i18n.translate('userDetail.avatarFallback');
-    const id = this.data.post.user_id ?? 'unknown';
+    const id = this.data.post.user_id;
     return `${fallback} #${id}`;
   });
 
   readonly ariaLabel = computed(() =>
-    this.i18n.translate('postComments.dialogAria', { title: this.data.post.title ?? '' }),
+    this.i18n.translate('postComments.dialogAria', { title: this.data.post.title }),
   );
 
   readonly labelText = computed(() => this.i18n.translate('postComments.dialogLabel'));

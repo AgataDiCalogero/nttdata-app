@@ -18,7 +18,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-    "lint:ci": "node scripts/ensure-windows-shell.js && ng lint --max-warnings 319",
+    "lint:ci": "node scripts/ensure-windows-shell.js && ng lint --max-warnings 0",
     "build:ci": "ng build --configuration production"
   },
   "prettier": {

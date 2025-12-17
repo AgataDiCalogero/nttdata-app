@@ -24,6 +24,13 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
+const extractStatusCode = (error: unknown): number | undefined => {
+  if (typeof error === 'object' && error !== null && 'status' in error) {
+    return (error as { status?: number }).status;
+  }
+  return undefined;
+};
+
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import type { CreatePost, Post, UpdatePost } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
@@ -229,7 +236,7 @@ export class PostForm {
         console.error('Failed to create post:', err);
         this.submitting.set(false);
         this.dialogRef.disableClose = false;
-        const status = err?.status;
+        const status = extractStatusCode(err);
         if (status === 422) {
           this.titleControl.setErrors({ api: true });
         } else if (status === 429) {

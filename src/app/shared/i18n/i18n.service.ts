@@ -44,9 +44,9 @@ export class I18nService {
       return '';
     }
     const locale = this.localeSignal();
-    const dictionary = TRANSLATIONS[locale] ?? {};
+    const dictionary = TRANSLATIONS[locale];
     const value = key.split('.').reduce<unknown>((acc, token) => {
-      if (acc && typeof acc === 'object' && token in acc) {
+      if (acc != null && typeof acc === 'object' && token in acc) {
         return (acc as Record<string, unknown>)[token];
       }
       return undefined;

@@ -17,9 +17,9 @@ export class AuthService {
     const local = this.getLocalStorage();
 
     let saved = session?.getItem(STORAGE_KEY) ?? null;
-    if (!saved) {
+    if (saved == null || saved === '') {
       const legacy = local?.getItem(STORAGE_KEY) ?? null;
-      if (legacy) {
+      if (legacy != null && legacy !== '') {
         saved = legacy;
         session?.setItem(STORAGE_KEY, legacy);
         local?.removeItem(STORAGE_KEY);
@@ -34,8 +34,8 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    const t = this.tokenSignal();
-    return !!t && t.trim().length > 0;
+    const token = this.tokenSignal();
+    return token != null && token.trim().length > 0;
   }
 
   setToken(token: string) {
@@ -59,7 +59,8 @@ export class AuthService {
       return null;
     }
     try {
-      return globalThis?.sessionStorage ?? null;
+      const globalObj = globalThis as typeof globalThis & { sessionStorage?: Storage };
+      return globalObj.sessionStorage ?? null;
     } catch {
       return null;
     }
@@ -70,7 +71,8 @@ export class AuthService {
       return null;
     }
     try {
-      return globalThis?.localStorage ?? null;
+      const globalObj = globalThis as typeof globalThis & { localStorage?: Storage };
+      return globalObj.localStorage ?? null;
     } catch {
       return null;
     }
