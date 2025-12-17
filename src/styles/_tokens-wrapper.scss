@@ -1,8 +1,0 @@
-// Provides selectors that import the token definitions needed by the runtime.
-:root {
-  @import './tokens';
-}
-
-.light-theme {
-  @import './tokens-light';
-}

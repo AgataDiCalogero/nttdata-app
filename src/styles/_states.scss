@@ -107,14 +107,6 @@
   width: min(22rem, 100%);
   border-radius: var(--radius-lg);
   overflow: hidden;
-
-  .mdc-linear-progress__bar-inner {
-    border-color: var(--color-accent) !important;
-  }
-
-  .mdc-linear-progress__buffer-bar {
-    background-color: color-mix(in srgb, var(--color-accent) 14%, transparent) !important;
-  }
 }
 
 .app-progress__text {

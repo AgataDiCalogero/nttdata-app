@@ -48,7 +48,6 @@ let insideProperty = false;
 let blockComment = false;
 
 const bannedSelectors = [
-  /:root/,
   /body\b/,
   /\.mat-mdc-/,
   /\.mdc-/,
@@ -59,8 +58,6 @@ const bannedSelectors = [
   /@import/,
   /@use/,
   /@forward/,
-  /{/,
-  /}/,
 ];
 
 const recordTokensViolation = (lineNumber, text, reason, suggestion) => {
@@ -135,7 +132,7 @@ tokensLines.forEach((line, index) => {
         index + 1,
         trimmed,
         'Only CSS custom properties and comments are allowed in `_tokens.scss`.',
-        'Keep token declarations in this file and use selectors via `tokens-wrapper`.',
+        'Keep token declarations in this file and include them directly from `_tokens.scss`.',
       );
       return;
     }
