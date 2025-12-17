@@ -26,7 +26,7 @@ export const mapCreateUserToDto = (payload: CreateUser): CreateUserDto => ({
   name: payload.name.trim(),
   email: payload.email.trim().toLowerCase(),
   gender: payload.gender ?? 'male',
-  status: payload.status ?? 'active',
+  status: payload.status,
 });
 
 export const mapUpdateUserToDto = (payload: UpdateUser): UpdateUserDto => ({

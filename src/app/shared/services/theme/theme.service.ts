@@ -64,21 +64,29 @@ export class ThemeService {
         return;
       }
 
-      if (mq.addEventListener) {
-        mq.addEventListener('change', listener);
-        this.destroyRef.onDestroy(() => mq.removeEventListener?.('change', listener));
-      } else {
-        type LegacyAddFn = (listener: (ev: MediaQueryListEvent) => void) => void;
-        type LegacyRemoveFn = (listener?: (ev: MediaQueryListEvent) => void) => void;
-        const legacy = mq as unknown as Record<string, unknown>;
-        const addLegacy = legacy['addListener'] as LegacyAddFn | undefined;
-        addLegacy?.call(mq as MediaQueryList, listener);
-        this.destroyRef.onDestroy(() =>
-          (legacy['removeListener'] as LegacyRemoveFn | undefined)?.call(
-            mq as MediaQueryList,
-            listener,
-          ),
-        );
+      const hasModernListeners =
+        typeof mq.addEventListener === 'function' && typeof mq.removeEventListener === 'function';
+
+      if (hasModernListeners) {
+        const addListener = mq.addEventListener.bind(mq);
+        const removeListener = mq.removeEventListener.bind(mq);
+        addListener('change', listener);
+        this.destroyRef.onDestroy(() => removeListener('change', listener));
+        return;
+      }
+
+      type LegacyAddFn = (listener: (ev: MediaQueryListEvent) => void) => void;
+      type LegacyRemoveFn = (listener?: (ev: MediaQueryListEvent) => void) => void;
+      const legacy = mq as unknown as Record<string, unknown>;
+      const addLegacy = legacy['addListener'] as LegacyAddFn | undefined;
+      const removeLegacy = legacy['removeListener'] as LegacyRemoveFn | undefined;
+      if (typeof addLegacy === 'function') {
+        addLegacy.call(mq as MediaQueryList, listener);
+        this.destroyRef.onDestroy(() => {
+          if (typeof removeLegacy === 'function') {
+            removeLegacy.call(mq as MediaQueryList, listener);
+          }
+        });
       }
     }
 
@@ -136,6 +144,14 @@ export class ThemeService {
 
   setReadingMode(enabled: boolean): void {
     this.readingModeSignal.set(enabled);
+  }
+
+  toggleBodyClass(className: string, enabled: boolean): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.document.body.classList.toggle(className, enabled);
   }
 
   private detectSystemTheme(): ThemeName {

@@ -28,7 +28,7 @@ interface SortState {
 
 interface UsersState {
   ids: number[];
-  entities: Record<number, User>;
+  entities: Record<number, User | undefined>;
   pagination: PaginationMeta | null;
   loading: boolean;
   error: string | null;
@@ -81,10 +81,10 @@ export const UsersStoreAdapter = signalStore(
         return normalized.toLowerCase();
       };
 
-    return store
-      .ids()
-      .map((id) => entities[id])
-      .filter((user): user is User => Boolean(user))
+      return store
+        .ids()
+        .map((id) => entities[id])
+        .filter((user): user is User => Boolean(user))
         .sort((a, b) => {
           const av = getValue(a);
           const bv = getValue(b);
@@ -396,7 +396,7 @@ export const UsersStoreAdapter = signalStore(
     const updateStatus = (userId: number, status: 'active' | 'inactive') => {
       const entities = store.entities();
       const existing = entities[userId];
-      if (!existing) {
+      if (existing === undefined) {
         return;
       }
 

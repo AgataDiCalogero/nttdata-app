@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
   NavigationCancel,
@@ -31,10 +32,11 @@ import { ToastComponent } from './shared/ui/toast/toast.component';
 })
 export class App {
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   readonly loading = signal(false);
 
   constructor() {
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.loading.set(true);
       } else if (

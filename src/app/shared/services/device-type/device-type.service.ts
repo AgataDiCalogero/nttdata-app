@@ -1,5 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, DestroyRef, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type DeviceType = 'mobile' | 'tablet' | 'desktop';
 
@@ -16,9 +17,13 @@ export class DeviceTypeService {
   private readonly TABLET_BREAKPOINT = '(min-width: 769px) and (max-width: 1024px)';
   private readonly DESKTOP_BREAKPOINT = '(min-width: 1025px)';
 
-  constructor(private readonly breakpointObserver: BreakpointObserver) {
+  constructor(
+    private readonly breakpointObserver: BreakpointObserver,
+    private readonly destroyRef: DestroyRef,
+  ) {
     this.breakpointObserver
       .observe([this.MOBILE_BREAKPOINT, this.TABLET_BREAKPOINT, this.DESKTOP_BREAKPOINT])
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((result) => {
         if (result.breakpoints[this.MOBILE_BREAKPOINT]) {
           this.deviceType.set('mobile');

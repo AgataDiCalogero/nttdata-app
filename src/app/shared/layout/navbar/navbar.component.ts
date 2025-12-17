@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { DOCUMENT, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,7 +9,6 @@ import {
   computed,
   inject,
   signal,
-  PLATFORM_ID,
   ViewEncapsulation,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -26,6 +25,7 @@ import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service'
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
+import { ThemeService } from '@/app/shared/services/theme/theme.service';
 
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 
@@ -57,9 +57,7 @@ export class Navbar implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly breakpointObserver = inject(BreakpointObserver);
-  private readonly document = inject(DOCUMENT);
-  private readonly platformId = inject(PLATFORM_ID);
-  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly themeService = inject(ThemeService);
   private readonly _lucideIcons = inject(LucideMatIconService);
 
   @ViewChild(MatMenuTrigger) private readonly menuTrigger?: MatMenuTrigger;
@@ -120,9 +118,6 @@ export class Navbar implements OnInit {
   }
 
   private syncBodyClass(isLogin: boolean): void {
-    if (!this.isBrowser) return;
-    const doc = this.document;
-    if (!doc.body) return;
-    doc.body.classList.toggle('login-route', isLogin);
+    this.themeService.toggleBodyClass('login-route', isLogin);
   }
 }

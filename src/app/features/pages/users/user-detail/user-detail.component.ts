@@ -98,8 +98,9 @@ export class UserDetail {
   readonly posts = computed(() => this.postsSource());
 
   readonly genderLabel = computed(() => {
-    const gender = this.user()?.gender?.trim();
-    if (!gender) {
+    const genderRaw = this.user()?.gender;
+    const gender = typeof genderRaw === 'string' ? genderRaw.trim() : '';
+    if (gender.length === 0) {
       return this.i18n.translate('common.gender.unspecified');
     }
     const genderKey = gender.toLowerCase();
@@ -110,8 +111,9 @@ export class UserDetail {
   });
 
   readonly pageTitle = computed(() => {
-    const name = this.user()?.name.trim();
-    if (name) {
+    const nameRaw = this.user()?.name;
+    const name = typeof nameRaw === 'string' ? nameRaw.trim() : '';
+    if (name.length > 0) {
       return name;
     }
     return this.i18n.translate('userDetail.title');
