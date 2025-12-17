@@ -118,15 +118,9 @@
                 <app-post-card
                   [post]="post"
                   [allowManage]="false"
-                  [comments]="commentsFor(post.id)"
-                  [commentsLoaded]="commentsLoaded(post.id)"
-                  [commentsLoading]="commentsAreLoading(post.id)"
                   [commentsPreviewCount]="commentsCount()[post.id]"
                   [authorName]="detail.name"
-                  (toggleComments)="onToggleComments(post.id)"
-                  (commentCreated)="onCommentCreated(post.id, $event)"
-                  (commentUpdated)="onCommentUpdated(post.id, $event)"
-                  (commentDeleted)="onCommentDeleted(post.id, $event)"
+                  (viewComments)="handleViewComments(post)"
                 ></app-post-card>
               }
             </div>

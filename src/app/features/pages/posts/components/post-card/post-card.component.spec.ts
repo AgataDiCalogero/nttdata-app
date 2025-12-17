@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { PLATFORM_ID, Component, EventEmitter, Input, Output } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,39 +8,14 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
-import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
+import type { Post } from '@/app/shared/models/post';
 
 import { PostCardComponent } from './post-card.component';
-
-@Component({
-  selector: 'app-post-comments',
-  standalone: true,
-  template: '',
-})
-class StubPostCommentsComponent {
-  @Input() postId!: number;
-  @Input() comments: ModelComment[] = [];
-  @Input() loading = false;
-  @Output() commentCreated = new EventEmitter<ModelComment>();
-  @Output() commentUpdated = new EventEmitter<ModelComment>();
-  @Output() commentDeleted = new EventEmitter<number>();
-}
-
-@Component({
-  selector: 'app-comment-form',
-  standalone: true,
-  template: '',
-})
-class StubCommentFormComponent {
-  @Input() postId!: number;
-  @Input() placeholder = '';
-  @Output() created = new EventEmitter<ModelComment>();
-}
 
 describe('PostCardComponent', () => {
   let fixture: ComponentFixture<PostCardComponent>;
   let component: PostCardComponent;
-  let toggleSpy: jasmine.Spy;
+  let viewCommentsSpy: jasmine.Spy;
 
   beforeEach(() => {
     TestBed.overrideComponent(PostCardComponent, {
@@ -51,8 +26,6 @@ describe('PostCardComponent', () => {
           MatCardModule,
           ButtonComponent,
           TranslatePipe,
-          StubPostCommentsComponent,
-          StubCommentFormComponent,
         ],
       },
     });
@@ -82,8 +55,8 @@ describe('PostCardComponent', () => {
       title: 'Test title',
       body: 'Lorem ipsum dolor sit amet',
     } as Post);
-    toggleSpy = jasmine.createSpy('toggleComments');
-    component.toggleComments.subscribe(toggleSpy);
+    viewCommentsSpy = jasmine.createSpy('viewComments');
+    component.viewComments.subscribe(viewCommentsSpy);
     fixture.detectChanges();
   });
 
@@ -102,32 +75,17 @@ describe('PostCardComponent', () => {
     expect(component.isExpanded).toBeFalse();
   });
 
-  it('toggleCommentsPanel apre i commenti e richiede fetch se non caricati', () => {
-    fixture.componentRef.setInput('commentsLoaded', false);
-    fixture.componentRef.setInput('commentsLoading', false);
-    fixture.detectChanges();
-
-    component.toggleCommentsPanel();
-    expect(component.commentsOpen()).toBeTrue();
-    expect(toggleSpy).toHaveBeenCalledTimes(1);
-
-    component.toggleCommentsPanel();
-    expect(component.commentsOpen()).toBeFalse();
-    expect(toggleSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('toggleCommentsPanel non richiede fetch se i commenti sono già caricati', () => {
-    fixture.componentRef.setInput('commentsLoaded', true);
-    fixture.componentRef.setInput('commentsLoading', false);
-    fixture.detectChanges();
-
-    component.toggleCommentsPanel();
-    expect(component.commentsOpen()).toBeTrue();
-    expect(toggleSpy).not.toHaveBeenCalled();
+  it('emits viewComments with the current post', () => {
+    component.onViewComments();
+    expect(viewCommentsSpy).toHaveBeenCalledWith({
+      id: 1,
+      user_id: 2,
+      title: 'Test title',
+      body: 'Lorem ipsum dolor sit amet',
+    });
   });
 
   it('commentCount usa commentsPreviewCount quando presente', () => {
-    fixture.componentRef.setInput('comments', [{ id: 10 } as ModelComment]);
     fixture.componentRef.setInput('commentsPreviewCount', 7);
     fixture.detectChanges();
 

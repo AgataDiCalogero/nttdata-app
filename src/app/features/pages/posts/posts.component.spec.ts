@@ -6,12 +6,13 @@ import { FormBuilder } from '@angular/forms';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Comment, Post } from '@/app/shared/models/post';
+import { Post } from '@/app/shared/models/post';
 
 import { PostsUiService } from './posts-ui.service';
 import { Posts } from './posts.component';
 import { PostsFiltersService } from './store/posts-filters.service';
 import { postsServiceInjectionToken } from './store/posts.inject';
+import { PostCommentsDialogService } from './services/post-comments-dialog.service';
 
 describe('PostsComponent', () => {
   let component: Posts;
@@ -21,6 +22,7 @@ describe('PostsComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
   let uiServiceSpy: jasmine.SpyObj<PostsUiService>;
   let filtersServiceSpy: jasmine.SpyObj<PostsFiltersService>;
+  let commentsDialogSpy: jasmine.SpyObj<PostCommentsDialogService>;
   let viewportSpy: jasmine.SpyObj<ViewportScroller>;
 
   function createMockStore() {
@@ -35,17 +37,11 @@ describe('PostsComponent', () => {
       currentPage: signal(1),
       currentPerPage: signal(10),
       resetFilters: jasmine.createSpy('resetFilters'),
-      toggleComments: jasmine.createSpy('toggleComments'),
-      onCommentCreated: jasmine.createSpy('onCommentCreated'),
-      onCommentUpdated: jasmine.createSpy('onCommentUpdated'),
-      onCommentDeleted: jasmine.createSpy('onCommentDeleted'),
       setPage: jasmine.createSpy('setPage'),
       changePerPage: jasmine.createSpy('changePerPage'),
       userLookup: signal<Record<number, string>>({ 1: 'Author' }),
       userOptions: signal([{ id: 1, name: 'Author' }]),
       posts: signal<Post[]>([{ id: 101, user_id: 1, title: 'Test Post', body: 'Body' }]),
-      commentsMap: signal<Record<number, Comment[]>>({}),
-      commentsLoading: signal<Record<number, boolean>>({}),
       commentsCountMap: signal<Record<number, number>>({}),
       perPageOptions: signal([10, 20]),
       totalPages: signal(1),
@@ -67,6 +63,7 @@ describe('PostsComponent', () => {
       'openEditDialog',
       'confirmDelete',
     ]);
+    commentsDialogSpy = jasmine.createSpyObj('PostCommentsDialogService', ['open']);
     filtersServiceSpy = jasmine.createSpyObj('PostsFiltersService', [], {
       filters: signal({}),
     });
@@ -91,6 +88,7 @@ describe('PostsComponent', () => {
             { provide: postsServiceInjectionToken, useValue: mockStore },
             { provide: PostsUiService, useValue: uiServiceSpy },
             { provide: PostsFiltersService, useValue: filtersServiceSpy },
+            { provide: PostCommentsDialogService, useValue: commentsDialogSpy },
           ],
         },
       })
@@ -150,14 +148,17 @@ describe('PostsComponent', () => {
     component.handleResetFilters();
     expect(mockStore.resetFilters).toHaveBeenCalled();
 
-    component.handleToggleComments(101);
-    expect(mockStore.toggleComments).toHaveBeenCalledWith(101);
-
     component.handleChangePage(3);
     expect(mockStore.setPage).toHaveBeenCalledWith(3);
 
     component.handleChangePerPage(20);
     expect(mockStore.changePerPage).toHaveBeenCalledWith(20);
+  });
+
+  it('opens comments dialog for selected post', () => {
+    const post = { id: 101, user_id: 1 } as Post;
+    component.handleViewComments(post);
+    expect(commentsDialogSpy.open).toHaveBeenCalledWith(post, 'Author');
   });
 
   it('should navigate to author profile when requested', () => {

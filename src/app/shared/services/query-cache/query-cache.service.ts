@@ -15,11 +15,7 @@ export interface CacheOptions {
 })
 export class QueryCacheService {
   private readonly cache = new Map<string, CacheEntry<unknown>>();
-  private readonly defaultTTL = 60 * 1000; // 1 minute default
-
-  // Basic LRU implementation details could be added if needed,
-  // currently using simple Map as per requirement "Introduci QueryCacheService generico".
-  // User mentioned optional LRU. For P0, simple TTL/Map is enough unless size grows.
+  private readonly defaultTTL = 60 * 1000;
 
   get<T>(key: string): T | null {
     const entry = this.cache.get(key);

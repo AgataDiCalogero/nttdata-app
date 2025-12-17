@@ -1,0 +1,52 @@
+import { Dialog } from '@angular/cdk/dialog';
+import { DestroyRef, Injectable, inject } from '@angular/core';
+import { take } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import type { Post } from '@/app/shared/models/post';
+import { I18nService } from '@/app/shared/i18n/i18n.service';
+import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
+import {
+  OverlayKey,
+  UiOverlayService,
+} from '@/app/shared/services/ui-overlay/ui-overlay.service';
+import { PostCommentsDialogComponent } from '@/app/features/pages/posts/components/post-comments-dialog/post-comments-dialog.component';
+import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+
+@Injectable({ providedIn: 'root' })
+export class PostCommentsDialogService {
+  private readonly dialog = inject(Dialog);
+  private readonly dialogLayouts = inject(ResponsiveDialogService);
+  private readonly overlays = inject(UiOverlayService);
+  private readonly i18n = inject(I18nService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly commentsFacade = inject(CommentsFacadeService);
+
+  open(post: Post, authorName?: string | null): void {
+    this.commentsFacade.toggleComments(post.id);
+    const config = this.dialogLayouts.form({
+      ariaLabel: this.i18n.translate('postComments.dialogAria', { title: post.title ?? '' }),
+      data: { post, authorName },
+      mobile: {
+        maxHeight: '90vh',
+        width: '100vw',
+      },
+      desktop: {
+        width: '38rem',
+        maxHeight: '90vh',
+      },
+    });
+
+    const ref = this.dialog.open(PostCommentsDialogComponent, config);
+    const key: OverlayKey = 'post-comments';
+    this.overlays.activate({
+      key,
+      close: () => ref.close(),
+      blockGlobalControls: true,
+    });
+
+    ref.closed
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.overlays.release(key));
+  }
+}

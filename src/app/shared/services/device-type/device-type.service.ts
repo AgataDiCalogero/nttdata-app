@@ -12,7 +12,6 @@ export class DeviceTypeService {
   isTablet = signal<boolean>(false);
   isDesktop = signal<boolean>(true);
 
-  // Breakpoints personalizzati che corrispondono ai tuoi media query CSS
   private readonly MOBILE_BREAKPOINT = '(max-width: 768px)';
   private readonly TABLET_BREAKPOINT = '(min-width: 769px) and (max-width: 1024px)';
   private readonly DESKTOP_BREAKPOINT = '(min-width: 1025px)';

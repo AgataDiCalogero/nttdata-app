@@ -53,7 +53,6 @@ export class PostsFiltersComponent {
   protected readonly perPageSelectId = this.idService.next('posts-perpage-select');
 
   onPerPageChange(value: number | string): void {
-    // normalize to number and forward to parent
     const num = typeof value === 'string' ? +value : value;
     this.perPageChange.emit(num);
   }

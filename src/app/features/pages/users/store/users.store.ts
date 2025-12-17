@@ -213,8 +213,6 @@ export const UsersStoreAdapter = signalStore(
               const nextAuth = nextToken?.trim() ?? '';
               if (prevAuth !== nextAuth) return false;
 
-              // If strictly same object references, return true (no change) -> but tokens are strings
-              // We cared about criteria equality if token didn't change.
               if (!prevCriteria || !nextCriteria) return prevCriteria === nextCriteria;
 
               return (
@@ -244,14 +242,12 @@ export const UsersStoreAdapter = signalStore(
               return EMPTY;
             }
 
-            // P0.1 / P0.2 Safety: Clear state on new fetch to avoid race condition artifacts
             patchState(store, {
               loading: true,
               error: null,
               searchTerm: criteria.searchTerm,
               page: criteria.page,
               perPage: criteria.perPage,
-              // We clear entities to be deterministic (no mixing User A data with User B load)
               ids: [],
               entities: {},
               pagination: null,
@@ -287,7 +283,6 @@ export const UsersStoreAdapter = signalStore(
                 const normalizedLimit = ensurePerPage(resolvedLimit);
                 const pages = Math.max(1, resolvedPages);
 
-                // P0.2: Handle out of range
                 if (resolvedTotal > 0 && criteria.page > pages) {
                   criteriaSignal.set({
                     ...criteria,

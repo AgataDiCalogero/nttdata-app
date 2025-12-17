@@ -132,8 +132,7 @@ describe('UsersStoreAdapter', () => {
 
   it('doppia ricerca rapida: applica solo l’ultima risposta', fakeAsync(() => {
     const store = TestBed.inject(usersServiceInjectionToken);
-    tick(); // completa il bootstrap iniziale
-
+    tick();
     usersApi.list.calls.reset();
     router.navigate.calls.reset();
 
@@ -149,7 +148,7 @@ describe('UsersStoreAdapter', () => {
     );
 
     store.onSearch('slow');
-    tick(0); // assicura che la prima richiesta parta
+    tick(0);
     store.onSearch('fast');
 
     tick(20);

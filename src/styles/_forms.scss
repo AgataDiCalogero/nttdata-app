@@ -55,7 +55,8 @@
   .form-input,
   .form-select,
   .form-textarea,
-  .form-field input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element):not(
+  .form-field
+    input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element):not(
       .mdc-text-field__input
     ),
   .form-field select,
@@ -112,15 +113,14 @@
     textarea:not(.mat-mdc-input-element):not(.mdc-text-field__input)
   ),
 :is(
-    .form-input,
-    .form-select,
-    .form-textarea,
-    input:not(.mat-mdc-input-element):not(.mdc-text-field__input),
-    select,
-    textarea:not(.mat-mdc-input-element):not(.mdc-text-field__input)
-  )[aria-invalid='true'] {
+  .form-input,
+  .form-select,
+  .form-textarea,
+  input:not(.mat-mdc-input-element):not(.mdc-text-field__input),
+  select,
+  textarea:not(.mat-mdc-input-element):not(.mdc-text-field__input)
+)[aria-invalid='true'] {
   border-color: var(--color-danger-border);
-  // Removed box-shadow to prevent double border effect
 
   @supports (color: color-mix(in srgb, var(--color-danger) 65%, transparent)) {
     border-color: color-mix(in srgb, var(--color-danger) 65%, transparent);

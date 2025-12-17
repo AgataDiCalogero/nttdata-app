@@ -5,7 +5,6 @@
   display: block;
 }
 
-// Increased specificity to override Material toolbar defaults globally
 .app-navbar.mat-toolbar {
   position: fixed;
   top: 0;
@@ -232,14 +231,12 @@
   }
 }
 
-// Mobile Menu Styling (Global due to ViewEncapsulation.None)
 .mobile-nav-panel {
   min-width: 14rem;
   max-width: calc(100vw - 2rem);
 
-  // Base panel styles (matching appearance-switcher)
   &.mat-mdc-menu-panel {
-    background: var(--color-surface-solid) !important; // Force valid surface color
+    background: var(--color-surface-solid) !important;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
     padding: var(--space-sm);
@@ -254,23 +251,19 @@
   }
 
   .mat-mdc-menu-item {
-    min-height: 3.5rem; // Larger touch target
+    min-height: 3.5rem;
     margin-bottom: 0;
     @include app-menu-item;
 
-    // Icon styling
     mat-icon {
       margin-right: var(--space-sm);
       color: var(--color-accent);
       opacity: 0.85;
     }
 
-    // Hover state
     &:hover:not([disabled]) {
       background: color-mix(in srgb, var(--color-accent) 6%, transparent);
     }
-
-    // Active State (Gradient + Border + Stronger Text)
     &.active {
       background: linear-gradient(
         90deg,
@@ -280,7 +273,6 @@
       color: var(--color-on-surface);
       font-weight: var(--font-weight-semibold);
 
-      // Left border accent
       &::before {
         content: '';
         position: absolute;
@@ -298,17 +290,9 @@
       }
     }
   }
-
-  // Positioning adjustments handled by [overlapTrigger] and ViewEncapsulation.None
 }
 
-// Force CDK overlay to position correctly for fixed trigger
-// (bounding box styling not needed, the pane override below handles it)
-
-// Ensure the overlay pane for our mobile menu positions correctly
 .cdk-overlay-pane:has(.mobile-nav-panel) {
-  // Force positioning from bottom-right to anchor to the button
-  // The menu should appear ABOVE the button (yPosition="above")
   bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)) !important;
   right: 1rem !important;
   left: auto !important;

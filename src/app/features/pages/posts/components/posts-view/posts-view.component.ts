@@ -21,7 +21,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
 import { PostCardSkeletonComponent } from '@app/shared/ui/skeletons/post-card-skeleton.component';
 
-import type { Comment, Post } from '@/app/shared/models/post';
+import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 
 import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
@@ -58,8 +58,6 @@ export class PostsViewComponent {
   readonly loading = input.required<boolean>();
   readonly error = input<string | null>(null);
   readonly posts = input.required<Post[]>();
-  readonly commentsMap = input.required<Partial<Record<number, Comment[]>>>();
-  readonly commentsLoading = input.required<Partial<Record<number, boolean>>>();
   readonly commentsCountMap = input.required<Partial<Record<number, number>>>();
   readonly perPageOptions = input.required<number[]>();
   readonly currentPage = input.required<number>();
@@ -91,15 +89,12 @@ export class PostsViewComponent {
 
   readonly createPost = output<void>();
   readonly resetFilters = output<void>();
-  readonly toggleComments = output<number>();
   readonly deletePost = output<Post>();
-  readonly commentCreated = output<{ postId: number; comment: Comment }>();
-  readonly commentUpdated = output<{ postId: number; comment: Comment }>();
-  readonly commentDeleted = output<{ postId: number; commentId: number }>();
   readonly changePage = output<number>();
   readonly changePerPage = output<number>();
   readonly editPost = output<Post>();
   readonly viewAuthor = output<number>();
+  readonly viewComments = output<Post>();
   readonly retry = output<void>();
 
   readonly Plus = Plus;
@@ -128,28 +123,9 @@ export class PostsViewComponent {
     return this.deletingId() === postId;
   }
 
-  commentsFor(postId: number): Comment[] {
-    return this.commentsMap()[postId] ?? [];
-  }
-
-  commentsAreLoading(postId: number): boolean {
-    return Boolean(this.commentsLoading()[postId]);
-  }
-
-  onCommentCreated(postId: number, comment: Comment): void {
-    this.commentCreated.emit({ postId, comment });
-  }
 
   onEditPost(post: Post): void {
     this.editPost.emit(post);
-  }
-
-  onCommentUpdated(postId: number, comment: Comment): void {
-    this.commentUpdated.emit({ postId, comment });
-  }
-
-  onCommentDeleted(postId: number, commentId: number): void {
-    this.commentDeleted.emit({ postId, commentId });
   }
 
   onViewAuthor(userId: number): void {
@@ -164,7 +140,7 @@ export class PostsViewComponent {
     return user.id;
   }
 
-  trackByCommentId(_index: number, comment: Comment): number {
-    return comment.id;
+  onViewComments(post: Post): void {
+    this.viewComments.emit(post);
   }
 }

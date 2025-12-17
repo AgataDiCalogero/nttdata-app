@@ -3,7 +3,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
-// ButtonComponent no longer used here
 
 @Component({
   selector: 'app-footer',

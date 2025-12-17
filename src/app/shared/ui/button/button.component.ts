@@ -10,7 +10,6 @@ const SIZE_SET = new Set<ButtonSize>(['sm', 'md', 'lg']);
   selector: 'button[appButton], a[appButton]',
   standalone: true,
   templateUrl: './button.component.html',
-  // styles centralized in global theme; no local styles required
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'btn',

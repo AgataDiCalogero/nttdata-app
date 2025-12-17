@@ -55,7 +55,6 @@
   box-shadow: var(--shadow);
 }
 
-// App-level shorthand for cards used across components
 @mixin app-card($padding: var(--space-md), $radius: 'lg', $shadow-level: 'md') {
   background: var(--color-surface);
   border: 0.0625rem solid var(--color-border);
@@ -64,7 +63,6 @@
   @include shadow($shadow-level);
 }
 
-// Shared card shell used by UserCard/PostCard components
 @mixin app-surface-card(
   $padding: var(--space-md),
   $background: var(--mat-card-bg, color-mix(in srgb, var(--color-surface-solid) 82%, transparent)),
@@ -84,7 +82,6 @@
     box-shadow var(--duration-normal) var(--ease-in-out);
 }
 
-// Gradient avatar badge for cards
 @mixin app-avatar-gradient(
   $size: 3rem,
   $start: color-mix(in srgb, var(--color-accent) 68%, transparent),

@@ -32,11 +32,7 @@ export interface PostsService {
   resetFilters(): void;
   deletePost(post: Post): void;
   deletePostRequest(post: Post): Observable<void>;
-  toggleComments(postId: number): void;
   onPostUpdated(post: Post): void;
-  onCommentCreated(postId: number, comment: Comment): void;
-  onCommentUpdated(postId: number, comment: Comment): void;
-  onCommentDeleted(postId: number, commentId: number): void;
   changePerPage(perPage: number): void;
   setFilters(filters: PostFilters): void;
 }

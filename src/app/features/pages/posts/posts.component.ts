@@ -2,10 +2,11 @@ import { isPlatformBrowser, ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, PLATFORM_ID, effect, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import type { Post, Comment } from '@/app/shared/models/post';
+import type { Post } from '@/app/shared/models/post';
 
 import { PostsViewComponent } from './components/posts-view/posts-view.component';
 import { PostsUiService } from './posts-ui.service';
+import { PostCommentsDialogService } from './services/post-comments-dialog.service';
 import { PostsFiltersService } from './store/posts-filters.service';
 import { providePostsService, injectPostsService } from './store/posts.inject';
 
@@ -25,6 +26,7 @@ export class Posts {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly ui = inject(PostsUiService);
+  private readonly commentsDialog = inject(PostCommentsDialogService);
   private lastSyncedPage = 1;
   private lastSyncedPerPage = 10;
 
@@ -43,7 +45,6 @@ export class Posts {
       if (!this.isBrowser) {
         return;
       }
-      // Scroll to top when pagination changes
       this.store.currentPage();
       this.store.currentPerPage();
       this.viewport.scrollToPosition([0, 0]);
@@ -58,10 +59,6 @@ export class Posts {
     this.store.resetFilters();
   }
 
-  handleToggleComments(postId: number): void {
-    this.store.toggleComments(postId);
-  }
-
   handleEditPost(post: Post): void {
     this.ui.openEditDialog(post);
   }
@@ -74,16 +71,9 @@ export class Posts {
     this.store.refresh();
   }
 
-  handleCommentCreated(event: { postId: number; comment: Comment }): void {
-    this.store.onCommentCreated(event.postId, event.comment);
-  }
-
-  handleCommentUpdated(event: { postId: number; comment: Comment }): void {
-    this.store.onCommentUpdated(event.postId, event.comment);
-  }
-
-  handleCommentDeleted(event: { postId: number; commentId: number }): void {
-    this.store.onCommentDeleted(event.postId, event.commentId);
+  handleViewComments(post: Post): void {
+    const authorName = this.store.userLookup()[post.user_id] ?? null;
+    this.commentsDialog.open(post, authorName);
   }
 
   handleViewAuthor(userId: number): void {

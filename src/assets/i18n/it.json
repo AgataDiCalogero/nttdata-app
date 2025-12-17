@@ -258,6 +258,7 @@
   },
   "postCard": {
     "sharedBy": "Pubblicato da {{name}}",
+    "viewComments": "Leggi commenti",
     "viewAuthorAria": "Visualizza autore {{name}}",
     "editAria": "Modifica il post {{title}}",
     "deleteAria": "Elimina il post {{title}}",
@@ -295,6 +296,9 @@
     "loading": "Caricamento commenti...",
     "empty": "Non ci sono commenti",
     "composerPlaceholder": "Scrivi un commento...",
+    "dialogLabel": "Lascia un commento...",
+    "dialogAria": "Sezione commenti per {{title}}",
+    "dialogCloseAria": "Chiudi la finestra dei commenti",
     "anonymous": "Anonimo",
     "editPlaceholder": "Aggiorna il tuo commento",
     "editSave": "Salva",

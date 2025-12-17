@@ -23,7 +23,7 @@ import {
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
-import type { Comment, Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
+import type { Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { QueryCacheService } from '@/app/shared/services/query-cache/query-cache.service';
@@ -291,22 +291,6 @@ export const PostsStoreAdapter = signalStore(
 
       deletePostRequest(post: Post) {
         return performDeletePost(post);
-      },
-
-      toggleComments(postId: number): void {
-        commentsFacade.toggleComments(postId);
-      },
-
-      onCommentCreated(postId: number, comment: Comment): void {
-        commentsFacade.applyCreated(postId, comment);
-      },
-
-      onCommentUpdated(postId: number, comment: Comment): void {
-        commentsFacade.applyUpdated(postId, comment);
-      },
-
-      onCommentDeleted(postId: number, commentId: number): void {
-        commentsFacade.applyDeleted(postId, commentId);
       },
 
       onPostUpdated(updated: Post): void {

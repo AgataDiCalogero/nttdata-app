@@ -258,6 +258,7 @@
   },
   "postCard": {
     "sharedBy": "Shared by {{name}}",
+    "viewComments": "View comments",
     "viewAuthorAria": "View author {{name}}",
     "editAria": "Edit post {{title}}",
     "deleteAria": "Delete post {{title}}",
@@ -295,6 +296,9 @@
     "loading": "Loading comments...",
     "empty": "No comments yet",
     "composerPlaceholder": "Write a comment...",
+    "dialogLabel": "Leave a comment...",
+    "dialogAria": "Comments for {{title}}",
+    "dialogCloseAria": "Close comments overlay",
     "anonymous": "Anonymous",
     "editPlaceholder": "Update your comment",
     "editSave": "Save",

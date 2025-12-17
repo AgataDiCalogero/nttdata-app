@@ -25,6 +25,7 @@ import { I18nService } from '@/app/shared/i18n/i18n.service';
 import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { PostCommentsDialogService } from '@/app/features/pages/posts/services/post-comments-dialog.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import { UserDetail } from './user-detail.component';
@@ -39,6 +40,7 @@ describe('UserDetailComponent', () => {
   let notificationsSpy: jasmine.SpyObj<NotificationsService>;
   let i18nSpy: jasmine.SpyObj<I18nService>;
   let titleSpy: jasmine.SpyObj<Title>;
+  let commentsDialogSpy: jasmine.SpyObj<PostCommentsDialogService>;
   const routeStub = { snapshot: { paramMap: { get: () => '1' } } };
   let createComponent: () => void;
 
@@ -64,6 +66,7 @@ describe('UserDetailComponent', () => {
     notificationsSpy = jasmine.createSpyObj('NotificationsService', ['showHttpError']);
     i18nSpy = jasmine.createSpyObj('I18nService', ['translate']);
     titleSpy = jasmine.createSpyObj('Title', ['setTitle']);
+    commentsDialogSpy = jasmine.createSpyObj('PostCommentsDialogService', ['open']);
 
     usersApiSpy.getById.and.returnValue(of(mockUser));
     postsApiSpy.list.and.returnValue(
@@ -95,6 +98,7 @@ describe('UserDetailComponent', () => {
         { provide: Title, useValue: titleSpy },
         CommentsFacadeService,
         UsersFacadeService,
+        { provide: PostCommentsDialogService, useValue: commentsDialogSpy },
         { provide: PLATFORM_ID, useValue: 'browser' },
       ],
     }).compileComponents();
@@ -154,43 +158,14 @@ describe('UserDetailComponent', () => {
     expect(component.commentsCount()[101]).toBe(5);
   }));
 
-  it('should toggle comments visibility', fakeAsync(() => {
+  it('opens comments dialog for a post', () => {
     createComponent();
     fixture.detectChanges();
-    tick();
 
-    const comments = [{ id: 1, post_id: 101, name: 'C1', email: 'e@e.com', body: 'Comment 1' }];
-    commentsCacheSpy.fetchComments.and.returnValue(of(comments));
-
-    component.onToggleComments(101);
-    tick();
-
-    expect(component.commentsFor(101)).toEqual(comments);
-    expect(component.commentsLoaded(101)).toBeTrue();
-
-    component.onToggleComments(101);
-    tick();
-    expect(component.commentsLoaded(101)).toBeTrue();
-    expect(commentsCacheSpy.fetchComments).toHaveBeenCalledTimes(1);
-  }));
-
-  it('should handle comment fetch errors without crashing UI', fakeAsync(() => {
-    createComponent();
-    fixture.detectChanges();
-    tick();
-    const error = new Error('comments failed');
-    commentsCacheSpy.fetchComments.and.returnValue(throwError(() => error));
-    notificationsSpy.showHttpError.and.returnValue('unable to load comments');
-
-    component.onToggleComments(101);
-    tick();
-
-    expect(component.commentsLoaded(101)).toBeFalse();
-    expect(notificationsSpy.showHttpError).toHaveBeenCalledWith(
-      error,
-      'userDetail.unableToLoadComments',
-    );
-  }));
+    const post = mockPosts[0];
+    component.handleViewComments(post);
+    expect(commentsDialogSpy.open).toHaveBeenCalledWith(post, mockUser.name);
+  });
 
   it('should clear postsLoading and keep UI stable when posts fail to load', fakeAsync(() => {
     postsApiSpy.list.and.returnValue(throwError(() => new Error('posts failed')));

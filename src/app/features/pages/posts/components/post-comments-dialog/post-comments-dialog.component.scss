@@ -1,0 +1,73 @@
+.post-comments-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-sm);
+  width: min(100vw, 420px);
+  max-height: min(90vh, 720px);
+  background: var(--color-surface);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-xl);
+}
+
+.post-comments-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
+.post-comments-dialog__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.post-comments-dialog__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.post-comments-dialog__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--color-on-surface) 80%, transparent);
+}
+
+.post-comments-dialog__close {
+  padding: 0.25rem;
+  border-radius: 999px;
+}
+
+.post-comments-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  border-radius: var(--radius-panel);
+  background: var(--surface-elevation-1);
+  overflow: hidden;
+}
+
+.post-comments-dialog__comments {
+  max-height: 400px;
+  min-height: 180px;
+  overflow-y: auto;
+  padding: var(--space-xs) var(--space-md);
+}
+
+.post-comments-dialog__composer {
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-surface);
+  border-top: 1px solid var(--mat-card-border, rgba(148, 163, 184, 0.25));
+}
+
+@media (min-width: 48rem) {
+  .post-comments-dialog__body {
+    min-height: 320px;
+  }
+  .post-comments-dialog {
+    width: min(100vw, 560px);
+  }
+}

@@ -104,38 +104,14 @@
       variant="secondary"
       size="sm"
       type="button"
-      (click)="toggleCommentsPanel()"
+      (click)="onViewComments()"
       class="post-card__comments-toggle"
-      [attr.aria-expanded]="commentsOpen() ? 'true' : 'false'"
-      [attr.aria-controls]="'post-comments-' + postModel.id"
+      [attr.aria-label]="'postCard.viewComments' | appTranslate"
     >
       <mat-icon svgIcon="lucide:message-square" aria-hidden="true"></mat-icon>
-      <span class="btn__label">
-        {{
-          commentsOpen()
-            ? ('common.actions.hideComments' | appTranslate)
-            : ('common.actions.viewComments' | appTranslate)
-        }}
-      </span>
+      <span class="btn__label">{{ 'common.actions.viewComments' | appTranslate }}</span>
       <span class="post-card__comment-count" aria-hidden="true">({{ commentCount }})</span>
     </button>
   </mat-card-actions>
 
-  @if (commentsOpen()) {
-    <section class="post-card__expanded" [id]="'post-comments-' + postModel.id">
-      <app-post-comments
-        [postId]="postModel.id"
-        [comments]="comments()"
-        [loading]="!commentsLoaded() || commentsLoading()"
-        (commentUpdated)="commentUpdated.emit($event)"
-        (commentDeleted)="commentDeleted.emit($event)"
-      ></app-post-comments>
-
-      <app-comment-form
-        [postId]="postModel.id"
-        [placeholder]="'postComments.composerPlaceholder' | appTranslate"
-        (created)="commentCreated.emit($event)"
-      ></app-comment-form>
-    </section>
-  }
 </mat-card>

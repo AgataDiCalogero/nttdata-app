@@ -28,7 +28,7 @@ import { tap } from 'rxjs';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
-import { PostCardCoordinatorService } from '@/app/features/pages/posts/components/post-card/post-card-coordinator.service';
+import { PostCommentsDialogService } from '@/app/features/pages/posts/services/post-comments-dialog.service';
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import {
@@ -37,7 +37,7 @@ import {
   type PaginationConfig,
 } from '@/app/shared/config/pagination.config';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
-import type { Post, Comment } from '@/app/shared/models/post';
+import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
@@ -59,7 +59,6 @@ import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PostCardCoordinatorService],
 })
 export class UserDetail {
   private readonly route = inject(ActivatedRoute);
@@ -73,6 +72,7 @@ export class UserDetail {
   private readonly pagination =
     inject<PaginationConfig | null>(PAGINATION_CONFIG, { optional: true }) ??
     DEFAULT_PAGINATION_CONFIG;
+  private readonly commentsDialog = inject(PostCommentsDialogService);
 
   readonly Mail = Mail;
   readonly UserIcon = UserIcon;
@@ -84,8 +84,6 @@ export class UserDetail {
   readonly error = signal<string | null>(null);
   readonly postsLoading = signal(true);
 
-  readonly commentsMap = computed(() => this.commentsFacade.comments());
-  readonly commentsLoading = computed(() => this.commentsFacade.loading());
   readonly commentsCount = computed(() => this.commentsFacade.counts());
 
   private readonly userId = this.resolveUserId();
@@ -161,38 +159,13 @@ export class UserDetail {
     });
   }
 
-  commentsFor(postId: number): Comment[] {
-    return this.commentsMap()[postId] ?? [];
-  }
-
-  commentsLoaded(postId: number): boolean {
-    return Object.hasOwn(this.commentsMap(), postId);
-  }
-
-  commentsAreLoading(postId: number): boolean {
-    return Boolean(this.commentsLoading()[postId]);
-  }
-
-  async onToggleComments(postId: number): Promise<void> {
-    this.commentsFacade.toggleComments(postId, {
-      errorMessage: this.i18n.translate('userDetail.unableToLoadComments'),
-    });
-  }
-
-  onCommentCreated(postId: number, comment: Comment): void {
-    this.commentsFacade.applyCreated(postId, comment);
-  }
-
-  onCommentUpdated(postId: number, comment: Comment): void {
-    this.commentsFacade.applyUpdated(postId, comment);
-  }
-
-  onCommentDeleted(postId: number, commentId: number): void {
-    this.commentsFacade.applyDeleted(postId, commentId);
-  }
-
   trackPostId(_idx: number, post: Post): number {
     return post.id;
+  }
+
+  handleViewComments(post: Post): void {
+    const authorName = this.user()?.name ?? null;
+    this.commentsDialog.open(post, authorName);
   }
 
   private resolveUserId(): number | null {

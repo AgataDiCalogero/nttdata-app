@@ -6,7 +6,6 @@ import {
   inject,
   input,
   output,
-  signal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,10 +14,7 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
-import type { Comment as ModelComment, Post } from '@/app/shared/models/post';
-import { CommentFormComponent } from '@/app/shared/ui/comment-form/comment-form.component';
-
-import { PostCommentsComponent } from '../post-comments/post-comments.component';
+import type { Post } from '@/app/shared/models/post';
 
 @Component({
   selector: 'app-post-card',
@@ -29,8 +25,6 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
     MatCardModule,
     ButtonComponent,
     TranslatePipe,
-    PostCommentsComponent,
-    CommentFormComponent,
   ],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
@@ -41,15 +35,9 @@ export class PostCardComponent {
 
   readonly post = input.required<Post>();
   readonly isDeleting = input(false);
-  readonly comments = input<ModelComment[]>([]);
-  readonly commentsLoading = input(false);
   readonly authorName = input<string | null>(null);
-  readonly commentsLoaded = input(false);
   readonly commentsPreviewCount = input<number | null | undefined>(undefined);
   readonly allowManage = input(true);
-
-  readonly commentsOpen = signal(false);
-
   readonly author = computed(() => {
     const provided = this.authorName();
     if (provided) return provided;
@@ -64,33 +52,15 @@ export class PostCardComponent {
   });
 
   readonly delete = output<void>();
-  readonly toggleComments = output<void>();
   readonly edit = output<void>();
   readonly viewAuthor = output<number>();
-  readonly commentCreated = output<ModelComment>();
-  readonly commentUpdated = output<ModelComment>();
-  readonly commentDeleted = output<number>();
+  readonly viewComments = output<Post>();
 
   get commentCount(): number {
     return this.commentsPreviewCount() ?? this.post().comments_count ?? 0;
   }
 
   isExpanded = false;
-
-  toggleCommentsPanel(): void {
-    const next = !this.commentsOpen();
-    this.commentsOpen.set(next);
-
-    if (!next) {
-      return;
-    }
-
-    if (this.commentsLoaded() || this.commentsLoading()) {
-      return;
-    }
-
-    this.toggleComments.emit();
-  }
 
   shouldTruncate(): boolean {
     const body = this.post().body || '';
@@ -128,6 +98,13 @@ export class PostCardComponent {
     const current = this.post();
     if (current) {
       this.viewAuthor.emit(current.user_id);
+    }
+  }
+
+  onViewComments(): void {
+    const current = this.post();
+    if (current) {
+      this.viewComments.emit(current);
     }
   }
 }

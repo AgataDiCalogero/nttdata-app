@@ -116,7 +116,6 @@ describe('PostsStoreAdapter', () => {
   }));
 
   it('changePerPage e setPage aggiornano i criteri e ricaricano la lista', fakeAsync(() => {
-    // Ensure pagination allows page > 1, otherwise setPage clamps to 1
     postsApi.list.and.returnValue(
       of({
         items: [{ id: 1, user_id: 2, title: 'Hello', body: 'World' } as Post],
@@ -125,7 +124,7 @@ describe('PostsStoreAdapter', () => {
     );
 
     const store = TestBed.inject(PostsStoreAdapter);
-    tick(0); // init load
+    tick(0);
     flushMicrotasks();
     postsApi.list.calls.reset();
 
@@ -135,9 +134,7 @@ describe('PostsStoreAdapter', () => {
 
     expect(store.perPage()).toBe(25);
     expect(store.page()).toBe(1);
-    expect(postsApi.list).toHaveBeenCalledWith(
-      jasmine.objectContaining({ page: 1, perPage: 25 }),
-    );
+    expect(postsApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ page: 1, perPage: 25 }));
 
     postsApi.list.calls.reset();
     store.setPage(3);
@@ -145,25 +142,7 @@ describe('PostsStoreAdapter', () => {
     flushMicrotasks();
 
     expect(store.page()).toBe(3);
-    expect(postsApi.list).toHaveBeenCalledWith(
-      jasmine.objectContaining({ page: 3, perPage: 25 }),
-    );
-  }));
-
-  it('toggleComments recupera e memorizza i commenti quando non in cache', fakeAsync(() => {
-    const store = TestBed.inject(PostsStoreAdapter);
-    commentsCache.fetchComments.calls.reset();
-
-    store.toggleComments(1);
-    tick();
-
-    expect(commentsCache.fetchComments).toHaveBeenCalledWith(1);
-    expect(store.commentsMap()[1]?.length).toBe(1);
-
-    store.toggleComments(1);
-    tick();
-    expect(commentsCache.fetchComments).toHaveBeenCalledTimes(1);
-    expect(store.commentsMap()[1]?.length).toBe(1);
+    expect(postsApi.list).toHaveBeenCalledWith(jasmine.objectContaining({ page: 3, perPage: 25 }));
   }));
 
   it('deletePostRequest mostra errore HTTP e resetta deletingId su failure', fakeAsync(() => {
@@ -206,7 +185,7 @@ describe('PostsStoreAdapter', () => {
     expect(store.deletingId()).toBeNull();
   }));
 
-  it('deletePostRequest rifiuta post invalidi senza chiamare l\'API', fakeAsync(() => {
+  it("deletePostRequest rifiuta post invalidi senza chiamare l'API", fakeAsync(() => {
     const store = TestBed.inject(PostsStoreAdapter);
     tick();
     flushMicrotasks();
@@ -221,7 +200,7 @@ describe('PostsStoreAdapter', () => {
     expect(store.deletingId()).toBeNull();
   }));
 
-  it('deletePostRequest torna alla pagina precedente quando l\'ultimo post di una pagina superiore viene rimosso', fakeAsync(() => {
+  it("deletePostRequest torna alla pagina precedente quando l'ultimo post di una pagina superiore viene rimosso", fakeAsync(() => {
     const queryCache = TestBed.inject(QueryCacheService);
     spyOn(queryCache, 'invalidate').and.callThrough();
 
@@ -260,9 +239,9 @@ describe('PostsStoreAdapter', () => {
     expect(queryCache.invalidate).toHaveBeenCalledWith('posts|');
     expect(store.page()).toBe(1);
     expect(store.posts().map((p) => p.id)).toEqual([101]);
-    const calledWithPage1 = postsApi.list.calls.allArgs().some(
-      (args) => (args[0]?.page ?? 1) === 1,
-    );
+    const calledWithPage1 = postsApi.list.calls
+      .allArgs()
+      .some((args) => (args[0]?.page ?? 1) === 1);
     expect(calledWithPage1).toBeTrue();
   }));
 
@@ -280,7 +259,8 @@ describe('PostsStoreAdapter', () => {
           : ([{ id: 99, user_id: 2, title: 'P1-new', body: 'B1-new' }] as Post[]);
 
       return of({
-        items: page === 1 ? page1Items : ([{ id: 2, user_id: 2, title: 'P2', body: 'B2' }] as Post[]),
+        items:
+          page === 1 ? page1Items : ([{ id: 2, user_id: 2, title: 'P2', body: 'B2' }] as Post[]),
         pagination: { total: 20, pages: 2, page, limit: 10 },
       });
     });
@@ -295,13 +275,11 @@ describe('PostsStoreAdapter', () => {
     flushMicrotasks();
     expect(store.posts().map((p) => p.id)).toEqual([2]);
 
-    // Go back to page 1: it may be served from cache, that's fine
     store.setPage(1);
     tick(0);
     flushMicrotasks();
     expect(store.posts().map((p) => p.id)).toEqual([1]);
 
-    // After delete -> invalidation should happen; subsequent navigation should not reuse stale cache
     page1Version = 2;
     store.deletePostRequest({ id: 1, user_id: 2, title: 'P1', body: 'B1' } as Post).subscribe();
     tick();

@@ -172,11 +172,10 @@ a:focus-visible {
   text-decoration: underline;
 }
 
-// Input focus handled by _forms.scss to prevent double border
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: none; // Disable default outline, custom focus handled in component styles
+  outline: none;
 }
 
 body.ui-overlay-blocked .app-navbar .controls {
