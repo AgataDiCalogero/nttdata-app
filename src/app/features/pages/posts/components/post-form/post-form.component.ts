@@ -21,6 +21,7 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { SelectComponent } from '@app/shared/ui/select/select.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.service';
@@ -46,6 +47,7 @@ interface PostFormResult {
     AutoFocusDirective,
     ButtonComponent,
     AlertComponent,
+    SelectComponent,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

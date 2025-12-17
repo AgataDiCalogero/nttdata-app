@@ -27,6 +27,7 @@ export class PostCommentsDialogService {
     const config = this.dialogLayouts.form({
       ariaLabel: this.i18n.translate('postComments.dialogAria', { title: post.title ?? '' }),
       data: { post, authorName },
+      panelVariant: 'sheet',
       mobile: {
         maxHeight: '90vh',
         width: '100vw',

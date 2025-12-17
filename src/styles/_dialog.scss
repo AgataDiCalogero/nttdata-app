@@ -25,6 +25,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--space-md);
+  flex-direction: column;
 }
 
 .cdk-overlay-pane.app-dialog-panel > * {
@@ -42,6 +44,60 @@
     padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom, 2rem));
     display: flex;
     flex-direction: column;
+  }
+}
+
+.cdk-overlay-pane.app-dialog-panel.app-dialog--sm > * {
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sm > cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sm > .cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sm > mat-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sm > .mat-mdc-dialog-container {
+    width: min(calc(100vw - 2 * var(--space-md)), 26rem);
+    max-width: 100%;
+  }
+}
+
+.cdk-overlay-pane.app-dialog-panel.app-dialog--lg > * {
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--lg > cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--lg > .cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--lg > mat-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--lg > .mat-mdc-dialog-container {
+    width: min(calc(100vw - 2 * var(--space-md)), 52rem);
+    max-width: 100%;
+  }
+}
+
+.cdk-overlay-pane.app-dialog-panel.app-dialog--sheet {
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 1rem));
+}
+
+.cdk-overlay-pane.app-dialog-panel.app-dialog--sheet > * {
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sheet > cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sheet > .cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sheet > mat-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--sheet > .mat-mdc-dialog-container {
+    width: min(100vw, 100%);
+    max-width: 100%;
+  }
+}
+
+.cdk-overlay-pane.app-dialog-panel.app-dialog--fullscreen {
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+}
+
+.cdk-overlay-pane.app-dialog-panel.app-dialog--fullscreen > * {
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--fullscreen > cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--fullscreen > .cdk-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--fullscreen > mat-dialog-container,
+  .cdk-overlay-pane.app-dialog-panel.app-dialog--fullscreen > .mat-mdc-dialog-container {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    margin: 0;
   }
 }
 

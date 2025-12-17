@@ -60,7 +60,7 @@ export class PostsUiService {
       width: '26.25rem',
       maxWidth: '90vw',
       backdropClass: 'app-dialog-overlay',
-      panelClass: 'app-dialog-panel',
+      panelClass: ['app-dialog-panel', 'app-dialog--sm'],
       ariaLabel: this.i18n.translate('posts.delete.title'),
       autoFocus: true,
       restoreFocus: true,
@@ -79,6 +79,7 @@ export class PostsUiService {
   private openPostFormDialog(config: { label: string; data: PostFormDialogData }): void {
     const dialogConfig = this.dialogLayouts.form<PostFormDialogData, DialogResult, PostForm>({
       ariaLabel: config.label,
+      panelVariant: 'lg',
       desktop: { width: '38.75rem' },
       data: config.data,
     });

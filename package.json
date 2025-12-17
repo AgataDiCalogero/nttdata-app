@@ -9,6 +9,7 @@
     "test": "ng test",
     "serve:ssr:nttdata-app": "node dist/nttdata-app/server/server.mjs",
     "lint": "eslint . --max-warnings=0",
+    "lint:style-layers": "node -e \"const fs=require('fs');const path=require('path');const tokens=fs.readFileSync(path.resolve(__dirname,'src/styles/_tokens.scss'),'utf8');const lines=tokens.split(/\\r?\\n/);const guards=[{name:'.mat-mdc-* selector',regex:/\\.mat-mdc-/},{name:'.mdc-* selector',regex:/\\.mdc-/},{name:'.cdk-* selector',regex:/\\.cdk-/},{name:'!important directive',regex:/!important/}];const violations=[];lines.forEach((line,i)=>{guards.forEach((guard)=>{if(guard.regex.test(line)){violations.push({guard:guard.name,line:i+1,text:line.trim()});}});});if(violations.length){console.error('Style guardrail failed: tokens may only contain CSS custom properties.');violations.forEach(({guard,line,text})=>{console.error(`  [${guard}] src/styles/_tokens.scss:${line}: ${text}`);});process.exit(1);}console.log('Style guardrail passed.');\"",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

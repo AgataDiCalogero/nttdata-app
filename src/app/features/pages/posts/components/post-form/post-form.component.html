@@ -34,75 +34,72 @@
   }
 
   <form class="form form-dialog__body" [formGroup]="form" (ngSubmit)="submit()">
-    <mat-form-field
-      class="post-form__field"
-      appearance="outline"
-      color="accent"
-      [floatLabel]="'always'"
-    >
-      <mat-label>{{ 'postForm.fields.author' | appTranslate }}</mat-label>
-      <mat-select
-        id="post-user"
-        formControlName="userId"
-        [attr.aria-invalid]="userIdInvalid ? 'true' : null"
+    <div class="form-field" [class.is-invalid]="userIdInvalid">
+      <app-select
+        class="post-form__field"
+        [control]="form.controls.userId"
+        [label]="'postForm.fields.author' | appTranslate"
+        [placeholder]="'postForm.selectAuthor' | appTranslate"
+        [options]="userOptions()"
+        [required]="true"
       >
-        <mat-option [value]="0" disabled>{{ 'postForm.selectAuthor' | appTranslate }}</mat-option>
-        @for (option of userOptions(); track option.value) {
-          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        @if (loadingUsers()) {
+          <mat-hint>{{ 'postForm.loadingUsers' | appTranslate }}</mat-hint>
         }
-      </mat-select>
-      @if (loadingUsers()) {
-        <mat-hint>{{ 'postForm.loadingUsers' | appTranslate }}</mat-hint>
-      }
-      @if (userIdInvalid) {
-        <mat-error>{{ 'postForm.errors.author' | appTranslate }}</mat-error>
-      }
-    </mat-form-field>
+        @if (userIdInvalid) {
+          <mat-error>{{ 'postForm.errors.author' | appTranslate }}</mat-error>
+        }
+      </app-select>
+    </div>
 
-    <mat-form-field
-      class="post-form__field"
-      appearance="outline"
-      color="accent"
-      [floatLabel]="'always'"
-    >
-      <mat-label>{{ 'postForm.fields.title' | appTranslate }}</mat-label>
-      <input
-        matInput
-        id="post-title"
-        type="text"
-        formControlName="title"
-        placeholder="{{ 'common.placeholders.postTitle' | appTranslate }}"
-        appAutoFocus
-        [attr.aria-invalid]="titleInvalid ? 'true' : null"
-        maxlength="120"
-      />
-      <mat-hint align="end">{{ form.controls.title.value.length }}/120</mat-hint>
-      @if (titleInvalid) {
-        <mat-error>{{ 'postForm.errors.title' | appTranslate }}</mat-error>
-      }
-    </mat-form-field>
+    <div class="form-field" [class.is-invalid]="titleInvalid">
+      <mat-form-field
+        class="post-form__field"
+        appearance="outline"
+        color="accent"
+        [floatLabel]="'always'"
+      >
+        <mat-label>{{ 'postForm.fields.title' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="post-title"
+          type="text"
+          formControlName="title"
+          placeholder="{{ 'common.placeholders.postTitle' | appTranslate }}"
+          appAutoFocus
+          [attr.aria-invalid]="titleInvalid ? 'true' : null"
+          maxlength="120"
+        />
+        <mat-hint align="end">{{ form.controls.title.value.length }}/120</mat-hint>
+        @if (titleInvalid) {
+          <mat-error>{{ 'postForm.errors.title' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
 
-    <mat-form-field
-      class="post-form__field post-form__field--textarea"
-      appearance="outline"
-      color="accent"
-      [floatLabel]="'always'"
-    >
-      <mat-label>{{ 'postForm.fields.content' | appTranslate }}</mat-label>
-      <textarea
-        matInput
-        id="post-body"
-        formControlName="body"
-        rows="8"
-        placeholder="{{ 'common.placeholders.postBody' | appTranslate }}"
-        [attr.aria-invalid]="bodyInvalid ? 'true' : null"
-        maxlength="500"
-      ></textarea>
-      <mat-hint align="end">{{ form.controls.body.value.length }}/500</mat-hint>
-      @if (bodyInvalid) {
-        <mat-error>{{ 'postForm.errors.body' | appTranslate }}</mat-error>
-      }
-    </mat-form-field>
+    <div class="form-field" [class.is-invalid]="bodyInvalid">
+      <mat-form-field
+        class="post-form__field post-form__field--textarea"
+        appearance="outline"
+        color="accent"
+        [floatLabel]="'always'"
+      >
+        <mat-label>{{ 'postForm.fields.content' | appTranslate }}</mat-label>
+        <textarea
+          matInput
+          id="post-body"
+          formControlName="body"
+          rows="8"
+          placeholder="{{ 'common.placeholders.postBody' | appTranslate }}"
+          [attr.aria-invalid]="bodyInvalid ? 'true' : null"
+          maxlength="500"
+        ></textarea>
+        <mat-hint align="end">{{ form.controls.body.value.length }}/500</mat-hint>
+        @if (bodyInvalid) {
+          <mat-error>{{ 'postForm.errors.body' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
 
     <div class="form-actions form-dialog__actions">
       <button

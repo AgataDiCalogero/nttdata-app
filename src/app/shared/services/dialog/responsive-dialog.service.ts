@@ -4,6 +4,8 @@ import { Injectable, inject } from '@angular/core';
 
 const MOBILE_QUERY = '(max-width: 639.98px)';
 
+export type DialogPanelVariant = 'sm' | 'md' | 'lg' | 'sheet' | 'fullscreen';
+
 type ResponsiveDialogConfig<TData, R, C> = DialogConfig<TData, DialogRef<R, C>>;
 
 export interface ResponsiveDialogOptions<TData = unknown, R = unknown, C = unknown> {
@@ -12,6 +14,9 @@ export interface ResponsiveDialogOptions<TData = unknown, R = unknown, C = unkno
   shared?: Partial<ResponsiveDialogConfig<TData, R, C>>;
   desktop?: Partial<ResponsiveDialogConfig<TData, R, C>>;
   mobile?: Partial<ResponsiveDialogConfig<TData, R, C>>;
+  panelVariant?: DialogPanelVariant;
+  desktopPanelVariant?: DialogPanelVariant;
+  mobilePanelVariant?: DialogPanelVariant;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -31,11 +36,20 @@ export class ResponsiveDialogService {
     };
 
     const sharedConfig = this.mergeConfig(sharedDefaults, options.shared);
+    const desktopVariant =
+      options.desktopPanelVariant ?? options.panelVariant ?? 'md';
+    const mobileVariant =
+      options.mobilePanelVariant ?? options.panelVariant ?? 'sheet';
+
     const desktopBase: ResponsiveDialogConfig<TData, R, C> = {
       ...sharedConfig,
       width: '37.5rem',
       maxWidth: '90vw',
-      panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'app-dialog-panel'),
+      panelClass: this.combinePanelClasses(
+        sharedConfig.panelClass,
+        'app-dialog-panel',
+        this.variantClass(desktopVariant),
+      ),
     };
     const desktopConfig = this.mergeConfig(desktopBase, options.desktop);
 
@@ -44,7 +58,11 @@ export class ResponsiveDialogService {
       width: '100vw',
       maxWidth: '100vw',
       maxHeight: undefined,
-      panelClass: this.combinePanelClasses(sharedConfig.panelClass, 'app-dialog-panel'),
+      panelClass: this.combinePanelClasses(
+        sharedConfig.panelClass,
+        'app-dialog-panel',
+        this.variantClass(mobileVariant),
+      ),
     };
     const mobileConfig = this.mergeConfig(mobileBase, options.mobile);
 
@@ -53,7 +71,9 @@ export class ResponsiveDialogService {
       mobileConfig.data = options.data;
     }
 
-    return this.breakpointObserver.isMatched(MOBILE_QUERY) ? mobileConfig : desktopConfig;
+    return this.breakpointObserver.isMatched(MOBILE_QUERY)
+      ? mobileConfig
+      : desktopConfig;
   }
 
   private mergeConfig<TData, R, C>(
@@ -65,7 +85,10 @@ export class ResponsiveDialogService {
     }
 
     const merged: ResponsiveDialogConfig<TData, R, C> = { ...base, ...override };
-    merged.panelClass = this.combinePanelClasses(base.panelClass, override?.panelClass);
+    merged.panelClass = this.combinePanelClasses(
+      base.panelClass,
+      override?.panelClass,
+    );
     return merged;
   }
 
@@ -86,5 +109,9 @@ export class ResponsiveDialogService {
     }
 
     return flattened.length === 1 ? flattened[0] : flattened;
+  }
+
+  private variantClass(variant?: DialogPanelVariant): string | undefined {
+    return variant ? `app-dialog--${variant}` : undefined;
   }
 }

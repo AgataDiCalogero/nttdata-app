@@ -32,6 +32,7 @@ export class UsersUiService {
   openCreateUserModal(): void {
     const config = this.dialogLayouts.form<void, 'success' | 'cancel', UserForm>({
       ariaLabel: this.i18n.translate('users.create.ariaLabel'),
+      panelVariant: 'md',
       desktop: { width: '37.5rem' },
       shared: { panelClass: 'app-dialog--scrollable' },
     });
@@ -54,6 +55,7 @@ export class UsersUiService {
         next: (user) => {
           const config = this.dialogLayouts.form<{ user: User }, 'success' | 'cancel', UserForm>({
             ariaLabel: this.i18n.translate('users.update.ariaLabel'),
+            panelVariant: 'md',
             desktop: { width: '37.5rem' },
             shared: { panelClass: 'app-dialog--scrollable' },
             data: { user },
@@ -112,7 +114,7 @@ export class UsersUiService {
       width: '25rem',
       maxWidth: '90vw',
       backdropClass: 'app-dialog-overlay',
-      panelClass: 'app-dialog-panel',
+      panelClass: ['app-dialog-panel', 'app-dialog--sm'],
       ariaLabel: this.i18n.translate('users.delete.title'),
       autoFocus: true,
       restoreFocus: true,

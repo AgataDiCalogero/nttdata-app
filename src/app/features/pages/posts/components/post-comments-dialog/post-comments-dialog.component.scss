@@ -3,11 +3,12 @@
   flex-direction: column;
   gap: var(--space-2xs);
   padding: var(--space-sm);
-  width: min(100vw, 420px);
-  max-height: min(90vh, 720px);
+  width: min(100vw, 26rem);
+  max-height: min(90vh, 45rem);
   background: var(--color-surface);
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-xl);
+  overflow: hidden;
 }
 
 .post-comments-dialog__header {
@@ -48,11 +49,13 @@
   border-radius: var(--radius-panel);
   background: var(--surface-elevation-1);
   overflow: hidden;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .post-comments-dialog__comments {
-  max-height: 400px;
-  min-height: 180px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   padding: var(--space-xs) var(--space-md);
 }
@@ -61,13 +64,14 @@
   padding: var(--space-xs) var(--space-md);
   background: var(--color-surface);
   border-top: 1px solid var(--mat-card-border, rgba(148, 163, 184, 0.25));
+  flex: 0 0 auto;
 }
 
 @media (min-width: 48rem) {
   .post-comments-dialog__body {
-    min-height: 320px;
+    min-height: 20rem;
   }
   .post-comments-dialog {
-    width: min(100vw, 560px);
+    width: min(100vw, 35rem);
   }
 }

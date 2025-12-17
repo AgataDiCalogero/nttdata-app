@@ -23,7 +23,7 @@ export class LoginUiService {
   openTokenHelp(): void {
     const dialogRef = this.dialog.open(TokenHelpDialogComponent, {
       autoFocus: false,
-      panelClass: ['token-help-dialog', 'app-dialog-panel'],
+      panelClass: ['token-help-dialog', 'app-dialog-panel', 'app-dialog--sm'],
       backdropClass: 'app-dialog-overlay',
     });
 

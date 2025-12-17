@@ -47,7 +47,7 @@ describe('LoginUiService', () => {
 
     expect(mockDialog.open).toHaveBeenCalledWith(jasmine.any(Function), {
       autoFocus: false,
-      panelClass: ['token-help-dialog', 'app-dialog-panel'],
+      panelClass: ['token-help-dialog', 'app-dialog-panel', 'app-dialog--sm'],
       backdropClass: 'app-dialog-overlay',
     });
     expect(mockOverlays.activate).toHaveBeenCalledWith({

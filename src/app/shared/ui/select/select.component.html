@@ -27,6 +27,7 @@
         <mat-option [value]="option.value">{{ option.label }}</mat-option>
       }
     </mat-select>
+    <ng-content></ng-content>
   } @else {
     <mat-select
       [id]="resolvedId()"
@@ -45,5 +46,6 @@
         <mat-option [value]="option.value">{{ option.label }}</mat-option>
       }
     </mat-select>
+    <ng-content></ng-content>
   }
 </mat-form-field>

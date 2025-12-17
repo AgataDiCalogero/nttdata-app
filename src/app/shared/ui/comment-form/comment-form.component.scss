@@ -8,21 +8,28 @@
 }
 
 .comment-form__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-sm);
   width: 100%;
-  align-items: start;
+  align-items: stretch;
+
+  & .form-field {
+    flex: 1 1 min(16rem, 100%);
+    min-width: 0;
+  }
 
   @media (max-width: 38rem) {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--space-xs);
+    gap: var(--space-sm);
+
+    & .form-field {
+      flex: 1 1 100%;
+    }
   }
 }
 
 .comment-form .form-field {
   min-width: 0;
-  width: 100%;
 }
 
 .comment-form .form-textarea {

@@ -1,15 +1,16 @@
 <div class="user-filters">
-  <app-search-bar
-    size="full"
-    [id]="searchId"
-    [placeholder]="'users.filters.searchPlaceholder' | appTranslate"
-    [label]="'users.filters.searchLabel' | appTranslate"
-    (debounced)="onDebounced($event)"
-  />
+  <div class="filters-bar__controls">
+    <app-search-bar
+      size="compact"
+      [id]="searchId"
+      [placeholder]="'users.filters.searchPlaceholder' | appTranslate"
+      [label]="'users.filters.searchLabel' | appTranslate"
+      (debounced)="onDebounced($event)"
+    />
 
-  <div class="user-filters__actions">
     <app-select
       class="user-filters__per-page"
+      variant="compact"
       [id]="perPageSelectId"
       [control]="perPageControl"
       [options]="perPageSelectOptions()"
@@ -18,7 +19,9 @@
       [ariaLabel]="'users.filters.perPage' | appTranslate"
       (selectionChange)="onPerPageSelected($event)"
     ></app-select>
+  </div>
 
+  <div class="filters-bar__actions">
     @if (showCreate()) {
       <button
         appButton
