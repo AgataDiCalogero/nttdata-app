@@ -1,0 +1,27 @@
+﻿**********************
+Inizio trascrizione Windows PowerShell
+Ora di inizio: 20251218091313
+Nome utente: MSI\agata
+Esegui come utente: MSI\agata
+Nome configurazione: 
+Computer MSI (Microsoft Windows NT 10.0.26200.0)
+Applicazione host: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\agata\AppData\Local\Programs\Antigravity\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+ID processo: 21164
+PSVersion: 5.1.26100.7462
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.7462
+BuildVersion: 10.0.26100.7462
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Trascrizione avviata. File di output: audit-logs\audit-transcript.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cUsers\x5cagata\x5cPROGETTI\x5cESERCITAZIONI\x5cnttdata-appPS C:\Users\agata\PROGETTI\ESERCITAZIONI\nttdata-app> ]633;B
+PS>cd 'c:\Users\agata\PROGETTI\ESERCITAZIONI\nttdata-app'
+]633;D;0]633;A]633;P;Cwd=C:\x5cUsers\x5cagata\x5cPROGETTI\x5cESERCITAZIONI\x5cnttdata-appPS C:\Users\agata\PROGETTI\ESERCITAZIONI\nttdata-app> ]633;B
+PS>git diff --name-only; git diff --stat
+
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cUsers\x5cagata\x5cPROGETTI\x5cESERCITAZIONI\x5cnttdata-appPS C:\Users\agata\PROGETTI\ESERCITAZIONI\nttdata-app> ]633;B
