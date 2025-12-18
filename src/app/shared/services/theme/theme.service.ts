@@ -96,8 +96,8 @@ export class ThemeService {
       const currentTheme = this.theme();
       const readingMode = this.readingModeSignal();
 
-    const body = this.document.body;
-    const docEl = this.document.documentElement;
+      const body = this.document.body;
+      const docEl = this.document.documentElement;
 
       body.classList.toggle('light-theme', currentTheme === 'light');
       body.classList.toggle('dark-theme', currentTheme === 'dark');

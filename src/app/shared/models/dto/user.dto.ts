@@ -29,12 +29,11 @@ export const mapCreateUserToDto = (payload: CreateUser): CreateUserDto => ({
   name: safeTrim(payload.name),
   email: safeLower(payload.email),
   gender: payload.gender ?? 'male',
-  status: payload.status ?? 'active',
+  status: payload.status === undefined ? 'active' : payload.status,
 });
 
 export const mapUpdateUserToDto = (payload: UpdateUser): UpdateUserDto => ({
   ...payload,
   name: typeof payload.name === 'string' ? safeTrim(payload.name) : undefined,
-  email:
-    typeof payload.email === 'string' ? safeLower(payload.email) : undefined,
+  email: typeof payload.email === 'string' ? safeLower(payload.email) : undefined,
 });

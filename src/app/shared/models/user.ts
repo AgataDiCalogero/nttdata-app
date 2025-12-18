@@ -8,5 +8,5 @@ export interface User {
   status: UserStatus;
 }
 
-export type CreateUser = Omit<User, 'id'>;
+export type CreateUser = Omit<User, 'id' | 'status'> & { status?: UserStatus };
 export type UpdateUser = Partial<CreateUser>;

@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, Input, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  Input,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
@@ -43,25 +51,17 @@ export class PaginationComponent {
   });
 
   protected readonly canPrev = computed(() => this.resolvedPage() > 1);
-  protected readonly canNext = computed(
-    () => this.resolvedPage() < this.resolvedPageCount(),
-  );
+  protected readonly canNext = computed(() => this.resolvedPage() < this.resolvedPageCount());
 
   prev(): void {
     if (!this.canPrev()) return;
-    const nextPage = Math.max(
-      1,
-      this.resolvedPage() - 1,
-    );
+    const nextPage = Math.max(1, this.resolvedPage() - 1);
     this.pageChange.emit(nextPage);
   }
 
   next(): void {
     if (!this.canNext()) return;
-    const nextPage = Math.min(
-      this.resolvedPageCount(),
-      this.resolvedPage() + 1,
-    );
+    const nextPage = Math.min(this.resolvedPageCount(), this.resolvedPage() + 1);
     this.pageChange.emit(nextPage);
   }
 }
