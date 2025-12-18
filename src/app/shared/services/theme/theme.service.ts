@@ -23,6 +23,7 @@ export class ThemeService {
   private readonly preferenceSignal = signal<ThemePreference>(this.resolveInitialPreference());
   private readonly systemThemeSignal = signal<ThemeName>(this.detectSystemTheme());
   private readonly readingModeSignal = signal<boolean>(this.resolveInitialReadingMode());
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   private readonly appliedTheme = computed<ThemeName>(() =>
     this.preferenceSignal() === 'system'
@@ -40,7 +41,7 @@ export class ThemeService {
   private readonly mediaQuery: MediaQueryList | undefined = undefined;
 
   constructor() {
-    if (isPlatformBrowser(this.platformId) && typeof globalThis.matchMedia === 'function') {
+    if (this.isBrowser && typeof globalThis.matchMedia === 'function') {
       this.mediaQuery = globalThis.matchMedia('(prefers-color-scheme: light)');
 
       const update = (event?: MediaQueryList | MediaQueryListEvent) => {
@@ -60,63 +61,48 @@ export class ThemeService {
       };
 
       const mq = this.mediaQuery as MQLWithLegacy | undefined;
-      if (!mq) {
-        return;
-      }
+      if (mq) {
+        const hasModernListeners =
+          typeof mq.addEventListener === 'function' && typeof mq.removeEventListener === 'function';
 
-      const hasModernListeners =
-        typeof mq.addEventListener === 'function' && typeof mq.removeEventListener === 'function';
-
-      if (hasModernListeners) {
-        const addListener = mq.addEventListener.bind(mq);
-        const removeListener = mq.removeEventListener.bind(mq);
-        addListener('change', listener);
-        this.destroyRef.onDestroy(() => removeListener('change', listener));
-        return;
-      }
-
-      type LegacyAddFn = (listener: (ev: MediaQueryListEvent) => void) => void;
-      type LegacyRemoveFn = (listener?: (ev: MediaQueryListEvent) => void) => void;
-      const legacy = mq as unknown as Record<string, unknown>;
-      const addLegacy = legacy['addListener'] as LegacyAddFn | undefined;
-      const removeLegacy = legacy['removeListener'] as LegacyRemoveFn | undefined;
-      if (typeof addLegacy === 'function') {
-        addLegacy.call(mq as MediaQueryList, listener);
-        this.destroyRef.onDestroy(() => {
-          if (typeof removeLegacy === 'function') {
-            removeLegacy.call(mq as MediaQueryList, listener);
+        if (hasModernListeners) {
+          const addListener = mq.addEventListener.bind(mq);
+          const removeListener = mq.removeEventListener.bind(mq);
+          addListener('change', listener);
+          this.destroyRef.onDestroy(() => removeListener('change', listener));
+        } else {
+          type LegacyAddFn = (listener: (ev: MediaQueryListEvent) => void) => void;
+          type LegacyRemoveFn = (listener?: (ev: MediaQueryListEvent) => void) => void;
+          const legacy = mq as unknown as Record<string, unknown>;
+          const addLegacy = legacy['addListener'] as LegacyAddFn | undefined;
+          const removeLegacy = legacy['removeListener'] as LegacyRemoveFn | undefined;
+          if (typeof addLegacy === 'function') {
+            addLegacy.call(mq as MediaQueryList, listener);
+            this.destroyRef.onDestroy(() => {
+              if (typeof removeLegacy === 'function') {
+                removeLegacy.call(mq as MediaQueryList, listener);
+              }
+            });
           }
-        });
+        }
       }
     }
 
     effect(() => {
-      const currentTheme = this.theme();
-      const preference = this.preferenceSignal();
-      const readingMode = this.readingModeSignal();
-
-      if (!isPlatformBrowser(this.platformId)) {
+      if (!this.isBrowser) {
         return;
       }
 
-      const body = this.document.body;
-      const docEl = this.document.documentElement;
+      const currentTheme = this.theme();
+      const readingMode = this.readingModeSignal();
+
+    const body = this.document.body;
+    const docEl = this.document.documentElement;
 
       body.classList.toggle('light-theme', currentTheme === 'light');
       body.classList.toggle('dark-theme', currentTheme === 'dark');
       body.classList.toggle('reading-mode', readingMode);
       docEl.dataset.theme = currentTheme;
-
-      try {
-        localStorage.setItem(STORAGE_KEY, preference);
-      } catch {
-        // ignore storage failures (e.g. Safari private mode)
-      }
-      try {
-        localStorage.setItem(READING_STORAGE_KEY, readingMode ? 'true' : 'false');
-      } catch {
-        // ignore storage failures (e.g. Safari private mode)
-      }
     });
   }
 
@@ -124,18 +110,19 @@ export class ThemeService {
     const preference = this.preferenceSignal();
     if (preference === 'system') {
       const next = this.systemThemeSignal() === 'light' ? 'dark' : 'light';
-      this.preferenceSignal.set(next);
+      this.setPreference(next);
       return;
     }
-    this.preferenceSignal.set(preference === 'light' ? 'dark' : 'light');
+    this.setPreference(preference === 'light' ? 'dark' : 'light');
   }
 
   setTheme(theme: ThemeName): void {
-    this.preferenceSignal.set(theme);
+    this.setPreference(theme);
   }
 
   setPreference(preference: ThemePreference): void {
     this.preferenceSignal.set(preference);
+    this.persistPreference(preference);
   }
 
   toggleReadingMode(): void {
@@ -144,10 +131,11 @@ export class ThemeService {
 
   setReadingMode(enabled: boolean): void {
     this.readingModeSignal.set(enabled);
+    this.persistReadingMode(enabled);
   }
 
   toggleBodyClass(className: string, enabled: boolean): void {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!this.isBrowser) {
       return;
     }
 
@@ -188,6 +176,30 @@ export class ThemeService {
       return stored === 'true';
     } catch {
       return false;
+    }
+  }
+
+  private persistPreference(preference: ThemePreference): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      localStorage.setItem(STORAGE_KEY, preference);
+    } catch {
+      // ignore storage failures (e.g. Safari private mode)
+    }
+  }
+
+  private persistReadingMode(enabled: boolean): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      localStorage.setItem(READING_STORAGE_KEY, enabled ? 'true' : 'false');
+    } catch {
+      // ignore storage failures (e.g. Safari private mode)
     }
   }
 }

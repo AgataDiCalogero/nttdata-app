@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, Input, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
@@ -14,24 +14,54 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
-  readonly page = input.required<number>();
-  readonly pageCount = input.required<number>();
+  private readonly pageSignal = signal(1);
+  private readonly pageCountSignal = signal(1);
+
+  readonly page = this.pageSignal;
+  readonly pageCount = this.pageCountSignal;
   readonly ariaLabel = input<string>('');
+
+  @Input('page')
+  set pageInput(value: number) {
+    this.pageSignal.set(Number.isFinite(value) ? Math.max(1, value) : 1);
+  }
+
+  @Input('pageCount')
+  set pageCountInput(value: number) {
+    this.pageCountSignal.set(Number.isFinite(value) ? Math.max(1, value) : 1);
+  }
 
   readonly pageChange = output<number>();
 
-  protected readonly canPrev = computed(() => this.page() > 1);
-  protected readonly canNext = computed(() => this.page() < this.pageCount());
+  private readonly resolvedPage = computed(() => {
+    const page = this.page();
+    return Number.isFinite(page) ? Math.max(1, page) : 1;
+  });
+  private readonly resolvedPageCount = computed(() => {
+    const pageCount = this.pageCount();
+    return Number.isFinite(pageCount) ? Math.max(1, pageCount) : 1;
+  });
+
+  protected readonly canPrev = computed(() => this.resolvedPage() > 1);
+  protected readonly canNext = computed(
+    () => this.resolvedPage() < this.resolvedPageCount(),
+  );
 
   prev(): void {
     if (!this.canPrev()) return;
-    const nextPage = Math.max(1, this.page() - 1);
+    const nextPage = Math.max(
+      1,
+      this.resolvedPage() - 1,
+    );
     this.pageChange.emit(nextPage);
   }
 
   next(): void {
     if (!this.canNext()) return;
-    const nextPage = Math.min(this.pageCount(), this.page() + 1);
+    const nextPage = Math.min(
+      this.resolvedPageCount(),
+      this.resolvedPage() + 1,
+    );
     this.pageChange.emit(nextPage);
   }
 }

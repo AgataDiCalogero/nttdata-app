@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -35,6 +35,7 @@ describe('PaginationComponent', () => {
   const configure = (page: number, pageCount: number) => {
     host.page = page;
     host.pageCount = pageCount;
+    hostFixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
     hostFixture.detectChanges();
   };
 

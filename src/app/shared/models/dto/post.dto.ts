@@ -28,33 +28,36 @@ export interface CommentDto {
 export type CreateCommentDto = Omit<CommentDto, 'id'>;
 export type UpdateCommentDto = Partial<Omit<CommentDto, 'id'>>;
 
+const safeTrim = (value?: string | null): string => (value ?? '').trim();
+const safeLower = (value?: string | null): string => safeTrim(value).toLowerCase();
+
 export const mapPostDto = (dto: PostDto): Post => ({
   ...dto,
-  title: dto.title.trim(),
-  body: dto.body.trim(),
+  title: dto.title,
+  body: dto.body,
 });
 export const mapPostsDto = (list: PostDto[] | null | undefined): Post[] =>
   (list ?? []).map((dto) => mapPostDto(dto));
 
 export const mapCommentDto = (dto: CommentDto): Comment => ({
   ...dto,
-  name: dto.name.trim(),
-  email: dto.email.trim(),
-  body: dto.body.trim(),
+  name: safeTrim(dto.name),
+  email: safeTrim(dto.email),
+  body: safeTrim(dto.body),
 });
 export const mapCommentsDto = (list: CommentDto[] | null | undefined): Comment[] =>
   (list ?? []).map((dto) => mapCommentDto(dto));
 
 export const mapCreatePostToDto = (payload: CreatePost): CreatePostDto => ({
   user_id: payload.user_id,
-  title: payload.title.trim(),
-  body: payload.body.trim(),
+  title: safeTrim(payload.title),
+  body: safeTrim(payload.body),
 });
 
 export const mapUpdatePostToDto = (payload: UpdatePost): UpdatePostDto => ({
   ...payload,
-  title: typeof payload.title === 'string' ? payload.title.trim() : undefined,
-  body: typeof payload.body === 'string' ? payload.body.trim() : undefined,
+  title: typeof payload.title === 'string' ? safeTrim(payload.title) : undefined,
+  body: typeof payload.body === 'string' ? safeTrim(payload.body) : undefined,
 });
 
 export const mapCreateCommentToDto = (
@@ -62,12 +65,12 @@ export const mapCreateCommentToDto = (
   payload: CreateComment,
 ): CreateCommentDto => ({
   post_id: postId,
-  name: payload.name.trim(),
-  email: payload.email.trim().toLowerCase(),
-  body: payload.body.trim(),
+  name: safeTrim(payload.name),
+  email: safeLower(payload.email),
+  body: safeTrim(payload.body),
 });
 
 export const mapUpdateCommentToDto = (payload: UpdateComment): UpdateCommentDto => ({
   ...payload,
-  body: typeof payload.body === 'string' ? payload.body.trim() : undefined,
+  body: typeof payload.body === 'string' ? safeTrim(payload.body) : undefined,
 });
