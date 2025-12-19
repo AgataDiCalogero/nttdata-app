@@ -148,11 +148,20 @@ tokensLines.forEach((line, index) => {
     return;
   }
 
+  if (
+    trimmed === ':root {' ||
+    trimmed === '.light-theme {' ||
+    trimmed === '.dark-theme {' ||
+    trimmed === '}'
+  ) {
+    return;
+  }
+
   recordTokensViolation(
     index + 1,
     trimmed,
     'Unexpected content in `_tokens.scss`.',
-    'Ensure only `--token: value;` or comments are present.',
+    'Ensure only `--token: value;`, `:root {`, theme selectors, or comments are present.',
   );
 });
 
@@ -269,13 +278,15 @@ if (deepWarnings.length) {
   console.log(
     `\nDeep selector warnings: ${deepWarnings.length} total, top file ${topFile} (${topCount} occurrences).`,
   );
-  deepWarnings.slice(0, 3).forEach(({ file, line, match }) =>
-    console.log(`  ${file}:${line} contains "${match}".`),
-  );
+  deepWarnings
+    .slice(0, 3)
+    .forEach(({ file, line, match }) => console.log(`  ${file}:${line} contains "${match}".`));
 }
 
 if (importantWarnings.length) {
-  const [topFile, topCount] = Array.from(importantCountsByFile.entries()).sort((a, b) => b[1] - a[1])[0];
+  const [topFile, topCount] = Array.from(importantCountsByFile.entries()).sort(
+    (a, b) => b[1] - a[1],
+  )[0];
   console.log(
     `\n'!important' warnings: ${importantWarnings.length} total, top file ${topFile} (${topCount} occurrences).`,
   );
