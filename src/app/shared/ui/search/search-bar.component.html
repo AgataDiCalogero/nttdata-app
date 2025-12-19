@@ -3,6 +3,7 @@
   appearance="outline"
   color="accent"
   [floatLabel]="'always'"
+  subscriptSizing="dynamic"
   [class.app-search-field--wide]="isWide()"
   [class.app-search-field--compact]="isCompact()"
   [class.app-search-field--small]="isSmall()"
@@ -10,9 +11,8 @@
 >
   <mat-label>{{ labelText() }}</mat-label>
 
-  <lucide-icon matPrefix [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
-
   @if (control(); as ctrl) {
+    <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
     <input
       matInput
       type="search"
@@ -25,6 +25,7 @@
       (debounced)="onDebounced($event)"
     />
   } @else {
+    <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
     <input
       matInput
       type="search"

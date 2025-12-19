@@ -6,10 +6,10 @@
 
 .filters-bar__controls {
   display: flex;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   gap: var(--space-sm);
   align-items: flex-end;
-  width: 100%;
 }
 
 .filters-bar__controls app-search-bar,
@@ -29,44 +29,65 @@
   display: flex;
   gap: var(--space-sm);
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
-  width: 100%;
+  flex: 0 0 auto;
+}
+
+// Force Reset button to match the height of the form fields exactly
+.filters-bar__actions button[appButton] {
+  min-height: var(--btn-height-md);
+  height: var(--btn-height-md);
+  padding-inline: var(--space-md);
 }
 
 .posts-filters input,
 .posts-filters select,
 .user-filters input,
 .user-filters select {
-  min-height: 42px;
+  min-height: var(--btn-height-md);
 }
 
+// Desktop: row layout with space-between
 @media (min-width: 60rem) {
   .filters-bar,
   .posts-filters,
   .user-filters {
     flex-direction: row;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-end;
     justify-content: space-between;
-  }
-
-  .filters-bar__controls {
-    flex: 1;
   }
 
   .filters-bar__actions {
     width: auto;
+    flex: 0 0 auto;
   }
 }
 
-@media (max-width: 36rem) {
+// Mobile: clean stacked column layout
+@media (max-width: 48rem) {
+  .filters-bar,
+  .posts-filters,
+  .user-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .filters-bar__controls {
     flex-direction: column;
     align-items: stretch;
   }
 
+  .filters-bar__controls app-search-bar,
+  .filters-bar__controls app-select {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
   .filters-bar__actions {
-    justify-content: flex-start;
+    justify-content: stretch;
+    width: 100%;
   }
 
   .filters-bar__actions button[appButton] {

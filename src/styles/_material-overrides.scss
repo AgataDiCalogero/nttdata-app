@@ -471,27 +471,46 @@
   border-color: var(--color-danger) !important;
 }
 
-.app-search-field .mat-mdc-form-field-flex {
-  align-items: center;
-}
+// ═══════════════════════════════════════════════════════════════════════════
+// SEARCH & SELECT COMPACT FIELD OVERRIDES (used in filters)
+// ═══════════════════════════════════════════════════════════════════════════
 
-.app-search-field .mat-mdc-form-field-prefix {
-  display: flex;
-  align-items: center;
+// Shared height for all compact fields and filter buttons
+$filter-control-height: var(--btn-height-md); // 2.75rem = 44px
+
+// Search field icon (now inside infix, not prefix)
+.app-search-field .app-search__icon {
+  flex-shrink: 0;
   margin-right: var(--space-xs);
+  color: var(--color-muted);
 }
 
+// Compact form field infix for both search and select
 .app-search-field--compact .mat-mdc-form-field-infix,
 .select-field--compact .mat-mdc-form-field-infix {
-  min-height: 40px;
-  padding-block: calc(var(--space-2xs) + 0.25rem);
-  padding-inline: var(--space-lg);
+  min-height: $filter-control-height;
+  height: $filter-control-height;
+  padding-block: 0;
+  padding-inline: var(--space-md);
   display: flex;
   align-items: center;
   gap: var(--space-xs);
 }
 
+// Force the outer text-field-wrapper to the same height
+.app-search-field--compact .mat-mdc-text-field-wrapper,
+.select-field--compact .mat-mdc-text-field-wrapper {
+  height: $filter-control-height !important;
+  min-height: $filter-control-height !important;
+  padding-block: 0 !important;
+}
 
+// Hide subscript wrapper in filter contexts (no hints/errors needed)
+.filters-bar .mat-mdc-form-field-subscript-wrapper,
+.user-filters .mat-mdc-form-field-subscript-wrapper,
+.posts-filters .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
 
 /* Material button icons (moved from _buttons.scss) */
 .btn--primary mat-icon {
@@ -508,7 +527,6 @@ body.light-theme .btn--secondary mat-icon {
 .btn--danger:hover mat-icon {
   color: var(--color-danger) !important;
 }
-
 
 /* Material progress overrides moved from _states.scss */
 .app-progress-bar .mdc-linear-progress__bar-inner {
