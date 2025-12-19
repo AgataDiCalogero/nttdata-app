@@ -33,5 +33,9 @@
         <span class="btn__label">{{ 'common.actions.newUser' | appTranslate }}</span>
       </button>
     }
+    <button appButton variant="ghost" type="button" (click)="onReset()">
+      <mat-icon svgIcon="lucide:rotate-ccw" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'common.actions.reset' | appTranslate }}</span>
+    </button>
   </div>
 </div>

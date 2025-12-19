@@ -16,6 +16,7 @@ import { IdService } from '@app/shared/services/id/id.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
@@ -24,6 +25,7 @@ import { SelectComponent } from '@app/shared/ui/select/select.component';
   styleUrls: ['./user-filters.component.scss'],
   imports: [
     CommonModule,
+    MatIconModule,
     ButtonComponent,
     LucideAngularModule,
     SearchBarComponent,
@@ -42,6 +44,7 @@ export class UserFiltersComponent {
   readonly searchChange = output<string>();
   readonly perPageChange = output<number>();
   readonly create = output<void>();
+  readonly reset = output<void>();
 
   private readonly idService = inject(IdService);
 
@@ -53,7 +56,7 @@ export class UserFiltersComponent {
   protected readonly perPageSelectOptions = computed(() =>
     this.perPageOptions().map((value) => ({
       value: String(value),
-      label: String(value),
+      label: `${value}/page`,
     })),
   );
 
@@ -79,5 +82,9 @@ export class UserFiltersComponent {
 
   onCreate(): void {
     this.create.emit();
+  }
+
+  onReset(): void {
+    this.reset.emit();
   }
 }
