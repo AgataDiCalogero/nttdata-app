@@ -1,7 +1,9 @@
 @use '../../../../styles/mixins' as *;
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .login-page {
@@ -11,12 +13,17 @@
   --login-field-bg: color-mix(in srgb, var(--mat-field-bg) 110%, transparent);
   --login-field-bg-hover: color-mix(in srgb, var(--mat-field-bg-hover) 120%, transparent);
   --login-field-icon-color: color-mix(in srgb, var(--color-on-surface) 80%, transparent);
+  --login-vertical-offset: clamp(var(--space-3xl), 12vh, var(--space-5xl));
+
+  flex: 1;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: var(--space-md);
   overflow: visible;
-  padding-block: var(--space-md);
+  padding-block: var(--space-lg);
   padding-inline: var(--app-page-gutter);
   box-sizing: border-box;
 }
