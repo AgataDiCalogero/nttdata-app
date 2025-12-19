@@ -197,6 +197,18 @@
   gap: var(--space-sm);
 }
 
+/* Keep labels visible on mobile for critical login actions */
+.login-actions .btn__label {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+}
+
 .login-actions__submit {
   display: inline-flex;
   align-items: center;

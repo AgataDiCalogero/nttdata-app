@@ -2,52 +2,108 @@
 
 .app-footer {
   margin-top: auto;
-  padding-block: clamp(var(--space-lg), 6vw, var(--space-lg));
-  background: transparent;
-  color: var(--color-muted);
-  text-align: center;
+  // Reduced padding for a more compact, desktop-friendly height
+  padding-block: var(--space-lg);
   position: relative;
+  z-index: var(--z-sticky);
+
+  // Theme-aware palette: distinct from navbar but unified with background
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-bg) 92%, var(--color-accent) 8%),
+    var(--color-bg)
+  );
+  border-top: 1px solid var(--color-border);
+  transition: all 0.3s var(--ease-in-out);
 
   .app-footer__divider {
-    width: min(92%, 70rem);
-    margin: 0 auto var(--space-lg);
-    border-color: color-mix(in srgb, var(--border-accent-soft) 65%, transparent);
+    // Hidden in favor of a clean top border on the footer itself
+    display: none;
   }
 }
 
 .app-footer__inner {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-lg);
   align-items: center;
   justify-content: center;
-  padding-block: var(--space-sm);
-  text-align: center;
+  padding-block: 0;
 }
 
 .app-footer__meta {
-  display: inline-flex;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-sm);
   margin: 0;
   font-size: var(--font-size-sm);
-  color: color-mix(in srgb, var(--color-on-surface) 72%, transparent);
+  // Line-height normalized for perfect flex centering
+  line-height: 1;
+  color: var(--color-muted);
 
   mat-icon {
-    font-size: 0.7em;
-    display: inline-block;
-    vertical-align: baseline;
-    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // Scaled for high visibility
+    font-size: 1.15rem;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--color-accent);
+    opacity: 0.95;
+    transition: transform 0.3s var(--ease-bounce);
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 
+.app-footer__text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  opacity: 0.9;
+}
+
+.app-footer__label {
+  display: inline-flex;
+}
+
 .app-footer__author {
-  color: var(--color-accent);
-  font-weight: var(--font-weight-semibold);
+  color: var(--color-on-surface);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+// Special theme adjustments
+:host-context(body.light-theme) {
+  .app-footer {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bg) 95%, var(--color-accent) 5%),
+      var(--color-bg)
+    );
+    border-top-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+  }
+}
+
+:host-context(body.reading-mode) {
+  .app-footer {
+    background: var(--color-surface);
+    border-top-color: var(--color-border);
+    backdrop-filter: blur(8px);
+  }
+  .app-footer__meta {
+    color: var(--color-on-surface);
+  }
 }
 
 @media (max-width: 40rem) {
+  .app-footer {
+    padding-block: var(--space-md);
+  }
   .app-footer__inner {
     flex-direction: column;
+    gap: var(--space-xs);
   }
 }
