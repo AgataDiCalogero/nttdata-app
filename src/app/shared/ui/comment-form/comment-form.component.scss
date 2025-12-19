@@ -1,5 +1,9 @@
 @use '../../../../styles/mixins' as mixins;
 
+// ═══════════════════════════════════════════════════════════════════════════
+// COMMENT FORM - Facebook-style mobile-first redesign
+// ═══════════════════════════════════════════════════════════════════════════
+
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -7,103 +11,105 @@
   width: 100%;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// NAME & EMAIL ROW - Flexbox with proper wrapping
+// ═══════════════════════════════════════════════════════════════════════════
 .comment-form__grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: var(--space-sm);
   width: 100%;
-  align-items: stretch;
 
+  // Each field takes full width on mobile
   & .form-field {
-    flex: 1 1 min(16rem, 100%);
+    flex: 1 1 100%;
     min-width: 0;
   }
 
-  @media (max-width: 38rem) {
-    gap: var(--space-sm);
+  // On larger screens: side by side with equal widths
+  @media (min-width: 30rem) {
+    flex-direction: row;
+    gap: var(--space-md);
 
     & .form-field {
-      flex: 1 1 100%;
+      flex: 1 1 0;
+      min-width: 0;
     }
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// TEXTAREA - Compact and auto-expanding
+// ═══════════════════════════════════════════════════════════════════════════
 .comment-form .form-field {
   min-width: 0;
 }
 
 .comment-form .form-textarea {
-  min-height: 6rem;
+  min-height: 2.5rem;
+  max-height: 12rem;
   resize: vertical;
+  field-sizing: content; // Modern auto-sizing (Chrome 123+, Edge 123+)
+  transition: height 0.15s ease;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// INPUT STYLES
+// ═══════════════════════════════════════════════════════════════════════════
 .comment-form :is(.form-input, .form-textarea) {
   background: var(--mat-field-bg);
   border: 1px solid var(--mat-field-border);
-  background: color-mix(in srgb, var(--mat-field-bg) 120%, transparent);
-  border-color: color-mix(in srgb, var(--mat-field-border) 140%, transparent);
-  box-shadow: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+
+  &::placeholder {
+    color: var(--color-muted);
+  }
 
   &:focus-visible {
     border-color: var(--mat-field-border-focus);
     box-shadow: var(--shadow-focus);
     background: var(--mat-field-bg-hover);
-    background: color-mix(in srgb, var(--mat-field-bg-hover) 120%, transparent);
+    outline: none;
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// ERROR MESSAGES
+// ═══════════════════════════════════════════════════════════════════════════
 .comment-form .field-error {
   line-height: 1.4;
   margin-bottom: 0;
   word-break: break-word;
+  font-size: var(--font-size-xs);
 }
 
+.comment-form .field-hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  margin-top: var(--space-2xs);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SUBMIT BUTTON
+// ═══════════════════════════════════════════════════════════════════════════
 .comment-form__actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: var(--space-sm);
-  margin-top: var(--space-sm);
+  margin-top: var(--space-xs);
 
   > button {
-    min-height: 2.5rem;
+    min-height: var(--btn-height-sm);
     padding-inline: var(--space-md);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-  }
-
-  > .comment-form__submit {
-    height: 2.5rem;
-  }
-}
-
-.comment-form__scrollable {
-  max-height: 25rem;
-  overflow-y: auto;
-  padding-right: calc(var(--space-md) + 0.5rem);
-  margin-right: calc(-1 * var(--space-md));
-
-  &::-webkit-scrollbar {
-    width: 0.5rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--color-surface-container-low);
-    border-radius: var(--radius-sm);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--color-outline);
-    border-radius: var(--radius-sm);
-
-    &:hover {
-      background: var(--color-outline-variant);
-    }
-  }
-
-  @supports not (-webkit-appearance: none) {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-outline) var(--color-surface-container-low);
   }
 }
