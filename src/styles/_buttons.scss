@@ -199,7 +199,6 @@
   &:focus-visible {
     box-shadow: var(--shadow-button-primary-focus);
   }
-
 }
 
 .btn--secondary {
@@ -278,7 +277,6 @@ body.light-theme .btn--secondary,
   &:active {
     background: color-mix(in srgb, #0f172a 18%, #ffffff);
   }
-
 }
 
 .btn--danger {
@@ -291,9 +289,8 @@ body.light-theme .btn--secondary,
     background: color-mix(in srgb, var(--color-danger) 20%, transparent);
     background: rgba(239, 68, 68, 0.2);
     border-color: var(--color-danger);
-    color: var(--color-on-primary);
+    color: var(--color-danger);
     transform: translateY(-1px);
-
   }
 
   &:active {
