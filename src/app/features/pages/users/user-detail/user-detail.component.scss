@@ -80,14 +80,15 @@
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-tight);
     color: var(--color-on-surface);
-    word-break: break-word;
+    @include text-truncate;
   }
 
   &__email-link {
     color: inherit;
     text-decoration: none;
-    word-break: break-all;
-    overflow-wrap: anywhere;
+    display: inline-block;
+    max-width: 100%;
+    @include text-truncate;
 
     &:hover,
     &:focus-visible {
@@ -104,7 +105,7 @@
 
   &__meta {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--space-sm) var(--space-lg);
     margin-top: 0;
   }
@@ -130,7 +131,7 @@
     a {
       line-height: 1.4;
       min-width: 0;
-      overflow-wrap: anywhere;
+      @include text-truncate;
     }
   }
 
@@ -150,6 +151,12 @@
 
     &__meta {
       justify-items: start;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    &__meta {
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     }
   }
 }

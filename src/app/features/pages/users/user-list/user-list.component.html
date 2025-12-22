@@ -10,7 +10,9 @@
                 {{ initials(user) }}
               </div>
               <div class="user-card__title-wrapper">
-                <mat-card-title>{{ user.name || ('users.unnamed' | appTranslate) }}</mat-card-title>
+                <mat-card-title [attr.title]="user.name || ('users.unnamed' | appTranslate)">
+                  {{ user.name || ('users.unnamed' | appTranslate) }}
+                </mat-card-title>
               </div>
               <app-status-badge
                 [status]="user.status"
@@ -47,7 +49,7 @@
             <div class="user-card__meta">
               <div class="user-card__meta-item">
                 <mat-icon svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
-                <span>{{ user.email }}</span>
+                <span [attr.title]="user.email">{{ user.email }}</span>
               </div>
               <div class="user-card__meta-item">
                 <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>

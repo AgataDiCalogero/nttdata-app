@@ -1,3 +1,5 @@
+@use '../../../../../styles/mixins' as mixins;
+
 .user-list-section {
   width: 100%;
 }
@@ -5,7 +7,7 @@
 .user-list {
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  grid-template-columns: 1fr;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -39,11 +41,23 @@
   align-items: center;
   gap: 1rem;
   width: 100%;
+  min-width: 0;
 }
 
 .user-card__title-wrapper {
   flex: 1;
   min-width: 0;
+
+  mat-card-title {
+    display: block;
+    @include mixins.text-truncate;
+  }
+}
+
+.user-card__heading app-status-badge,
+.user-card__heading .user-card__delete-desktop,
+.user-card__heading .user-card__delete-mobile {
+  flex-shrink: 0;
 }
 
 .user-card__avatar {
@@ -76,11 +90,14 @@
   color: var(--color-on-surface);
   color: color-mix(in srgb, var(--color-on-surface) 90%, transparent);
   font-size: 0.95rem;
+  min-width: 0;
 }
 
 .user-card__meta-item span {
   margin: 0;
-  word-break: break-word;
+  min-width: 0;
+  flex: 1 1 auto;
+  @include mixins.text-truncate;
 }
 
 .user-card__delete-mobile {
@@ -120,5 +137,11 @@ mat-card-actions {
     button {
       width: 100%;
     }
+  }
+}
+
+@include mixins.tablet-up {
+  .user-list {
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   }
 }
