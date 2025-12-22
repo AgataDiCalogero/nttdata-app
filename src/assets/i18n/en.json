@@ -167,6 +167,8 @@
   "userForm": {
     "titleNew": "New User",
     "titleEdit": "Edit User",
+    "subtitleNew": "Add a new user to the registry.",
+    "subtitleEdit": "Update user details and status.",
     "fields": {
       "name": "Name",
       "email": "Email",

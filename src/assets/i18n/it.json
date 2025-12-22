@@ -167,6 +167,8 @@
   "userForm": {
     "titleNew": "Nuovo utente",
     "titleEdit": "Modifica utente",
+    "subtitleNew": "Aggiungi un nuovo utente al registro.",
+    "subtitleEdit": "Aggiorna i dettagli e lo stato dell'utente.",
     "fields": {
       "name": "Nome",
       "email": "Email",

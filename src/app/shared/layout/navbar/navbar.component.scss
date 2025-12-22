@@ -74,7 +74,7 @@
       text-decoration: none;
       color: var(--color-accent);
       font-weight: var(--font-weight-extrabold);
-      font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+      font-size: clamp(1rem, 5vw, 1.5rem);
       letter-spacing: var(--letter-spacing-tight);
 
       text-shadow:
@@ -112,7 +112,7 @@
       margin-left: auto;
       display: inline-flex;
       align-items: center;
-      gap: var(--space-xs);
+      gap: var(--space-2xs);
 
       app-appearance-switcher {
         display: inline-flex;
@@ -226,7 +226,7 @@
 
   @media (max-width: 40rem) {
     .brand__label {
-      font-size: var(--font-size-md);
+      font-size: clamp(1rem, 5vw, 1.25rem);
     }
   }
 }
@@ -234,7 +234,6 @@
 .mobile-nav-panel {
   min-width: 14rem;
   max-width: calc(100vw - 2rem);
-
 }
 .floating-menu-trigger {
   position: fixed;

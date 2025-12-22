@@ -7,6 +7,13 @@
         {{ 'userForm.titleNew' | appTranslate }}
       }
     </h2>
+    <p class="form-dialog__subtitle">
+      @if (isEdit()) {
+        {{ 'userForm.subtitleEdit' | appTranslate }}
+      } @else {
+        {{ 'userForm.subtitleNew' | appTranslate }}
+      }
+    </p>
   </header>
 
   @if (loadError(); as error) {

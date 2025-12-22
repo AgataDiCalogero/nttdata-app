@@ -233,9 +233,9 @@
     .form-select,
     .form-textarea,
     .select,
-    .form-field input:not([type='checkbox']):not([type='radio']),
-    .form-field select,
-    .form-field textarea
+    .form-field input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element),
+    .form-field select:not(.mat-mdc-input-element),
+    .form-field textarea:not(.mat-mdc-input-element)
   ) {
   padding: calc(var(--space-sm) + 4px) var(--space-lg);
   background: var(--color-bg-input-dark);
@@ -249,6 +249,11 @@
 
   @supports (background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg))) {
     background: color-mix(in srgb, var(--color-surface-solid) 88%, var(--color-bg));
+  }
+
+  body.light-theme & {
+    background: var(--color-bg-input-light) !important;
+    color: var(--color-on-surface) !important;
   }
 }
 

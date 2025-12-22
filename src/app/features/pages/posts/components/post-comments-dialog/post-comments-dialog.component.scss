@@ -7,7 +7,8 @@
   flex-direction: column;
   gap: var(--space-sm);
   padding: var(--space-md);
-  width: min(100vw - 2rem, 30rem);
+  width: 100%;
+  max-width: 30rem;
   max-height: min(90vh, 50rem);
   background: var(--color-surface-solid);
   border-radius: var(--radius-xl);
@@ -96,7 +97,7 @@
 // ═══════════════════════════════════════════════════════════════════════════
 @media (min-width: 48rem) {
   .post-comments-dialog {
-    width: min(100vw - 4rem, 40rem);
+    max-width: 40rem;
     padding: var(--space-lg);
   }
 
