@@ -31,7 +31,9 @@
   justify-content: flex-end;
   align-items: flex-end;
   flex-wrap: wrap;
+  min-width: 10rem;
   flex: 0 0 auto;
+  margin-left: auto;
 }
 
 // Force Reset button to match the height of the form fields exactly
@@ -39,6 +41,12 @@
   min-height: var(--btn-height-md);
   height: var(--btn-height-md);
   padding-inline: var(--space-md);
+  width: auto;
+}
+
+// Posts filters: keep Reset aligned with the compact selects.
+.posts-filters .filters-bar__actions button[appButton] {
+  width: auto;
 }
 
 .posts-filters input,
@@ -88,6 +96,7 @@
   .filters-bar__actions {
     justify-content: stretch;
     width: 100%;
+    margin-left: 0;
   }
 
   .filters-bar__actions button[appButton] {

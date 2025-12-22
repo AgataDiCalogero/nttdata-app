@@ -9,17 +9,16 @@
               <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
                 {{ initials(user) }}
               </div>
-              <button
-                type="button"
-                class="user-card__title-wrapper ellipsis-expand-parent"
-              >
+              <div class="user-card__title-wrapper">
                 <mat-card-title
                   class="ellipsis-expand"
+                  appOverflowReveal
+                  [appOverflowReveal]="user.name || ('users.unnamed' | appTranslate)"
                   [attr.title]="user.name || ('users.unnamed' | appTranslate)"
                 >
                   {{ user.name || ('users.unnamed' | appTranslate) }}
                 </mat-card-title>
-              </button>
+              </div>
               <app-status-badge
                 [status]="user.status"
                 [ariaLabel]="
@@ -53,16 +52,27 @@
 
           <mat-card-content>
             <div class="user-card__meta">
-              <button type="button" class="user-card__meta-item ellipsis-expand-parent">
+              <div class="user-card__meta-item">
                 <mat-icon svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
-                <span class="ellipsis-expand" [attr.title]="user.email">{{
-                  user.email
-                }}</span>
-              </button>
-              <button type="button" class="user-card__meta-item ellipsis-expand-parent">
+                <span
+                  class="ellipsis-expand"
+                  appOverflowReveal
+                  [appOverflowReveal]="user.email"
+                  [attr.title]="user.email"
+                >
+                  {{ user.email }}
+                </span>
+              </div>
+              <div class="user-card__meta-item">
                 <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>
-                <span class="ellipsis-expand">{{ getGenderLabel(user.gender) }}</span>
-              </button>
+                <span
+                  class="ellipsis-expand"
+                  appOverflowReveal
+                  [appOverflowReveal]="getGenderLabel(user.gender)"
+                >
+                  {{ getGenderLabel(user.gender) }}
+                </span>
+              </div>
             </div>
           </mat-card-content>
 

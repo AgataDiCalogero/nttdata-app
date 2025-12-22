@@ -10,6 +10,7 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,6 +42,7 @@ const extractStatus = (error: unknown): number | undefined => {
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TextFieldModule,
     ButtonComponent,
     AlertComponent,
     MatIconModule,

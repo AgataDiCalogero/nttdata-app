@@ -10,6 +10,7 @@ import {
   effect,
   computed,
 } from '@angular/core';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,6 +31,7 @@ import { CommentsFacadeService } from '@/app/shared/services/comments/comments-f
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TextFieldModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,

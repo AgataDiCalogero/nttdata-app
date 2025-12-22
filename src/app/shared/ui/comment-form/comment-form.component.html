@@ -62,7 +62,9 @@
         matInput
         id="comment-body"
         formControlName="body"
-        rows="2"
+        cdkTextareaAutosize
+        [cdkAutosizeMinRows]="2"
+        [cdkAutosizeMaxRows]="6"
         [placeholder]="placeholderText()"
         [attr.aria-invalid]="
           form.controls.body.invalid && form.controls.body.touched ? 'true' : null

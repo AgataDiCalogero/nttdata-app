@@ -10,6 +10,7 @@
   top: 0;
   z-index: var(--z-header, 900);
   width: 100%;
+  box-sizing: border-box;
   min-height: var(--app-navbar-height, 4.5rem);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -43,6 +44,7 @@
     padding-inline: 0;
     margin-inline-start: 0;
     color: var(--color-on-surface);
+    min-width: 0;
 
     &,
     &:link,
@@ -76,6 +78,10 @@
       font-weight: var(--font-weight-extrabold);
       font-size: clamp(1rem, 5vw, 1.5rem);
       letter-spacing: var(--letter-spacing-tight);
+      max-width: clamp(8rem, 40vw, 14rem);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       text-shadow:
         0 1px 0 rgba(255, 255, 255, 0.25),
@@ -242,6 +248,12 @@
     .toolbar-menu-trigger .logout-btn {
       padding-inline: var(--space-sm);
       min-height: 2.25rem;
+    }
+  }
+
+  @media (max-width: 26rem) {
+    .brand__label {
+      max-width: 7rem;
     }
   }
 }

@@ -184,7 +184,7 @@
     justify-content: center;
   }
 }
-// Shared text truncation with focus-to-expand behavior.
+// Shared text truncation + overflow reveal (tap/click).
 .ellipsis-expand {
   display: inline-block;
   max-width: 100%;
@@ -192,53 +192,46 @@
   @include text-truncate;
 }
 
-.ellipsis-expand:focus,
-.ellipsis-expand:focus-visible {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-.ellipsis-expand:active {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-.ellipsis-expand-parent:focus-within .ellipsis-expand {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-.ellipsis-expand-parent:focus .ellipsis-expand {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-.ellipsis-expand-parent:active .ellipsis-expand {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-.ellipsis-expand-parent {
-  cursor: text;
-}
-
-button.ellipsis-expand-parent {
-  background: none;
+.overflow-reveal-target {
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  background: transparent;
   border: 0;
   padding: 0;
-  font: inherit;
   color: inherit;
-  text-align: left;
-  width: 100%;
+  font: inherit;
+  box-shadow: none;
+  appearance: none;
+  display: inline-block;
+  max-width: 100%;
 }
 
-.ellipsis-expand-parent:focus-visible {
+.overflow-reveal-target:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
+}
+
+.overflow-reveal-panel {
+  pointer-events: none;
+}
+
+.overflow-reveal-backdrop {
+  background: transparent;
+}
+
+.overflow-reveal-popover {
+  z-index: var(--z-tooltip);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface-solid) 92%, transparent);
+  color: var(--color-on-surface);
+  border: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
+  box-shadow: var(--shadow-lg);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  word-break: break-word;
+  max-width: min(80vw, 24rem);
+  pointer-events: none;
 }

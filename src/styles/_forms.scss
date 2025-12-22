@@ -179,6 +179,7 @@
   border: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
   border-radius: var(--radius-xl);
   padding: var(--space-sm) var(--space-md);
+  box-sizing: border-box;
 
   @media (min-width: 48rem) {
     flex-direction: row;

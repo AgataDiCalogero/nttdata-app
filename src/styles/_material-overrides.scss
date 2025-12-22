@@ -42,8 +42,6 @@
   --mat-field-border-hover: rgba(249, 115, 22, 0.42);
   --mat-field-border-focus: var(--color-accent);
   --mat-field-text: #111827;
-  --mat-field-label: rgba(8, 18, 27, 0.72);
-  --mat-field-placeholder: rgba(8, 18, 27, 0.48);
   --mat-field-helper: rgba(8, 18, 27, 0.62);
   --mat-field-disabled-bg: rgba(15, 23, 42, 0.08);
   --mat-field-disabled-text: rgba(8, 18, 27, 0.4);
@@ -337,6 +335,7 @@ mat-icon svg,
   border-radius: var(--radius-input) !important;
   border: none !important;
   box-shadow: none !important;
+  outline: none !important;
   overflow: visible;
   transition:
     background var(--duration-normal) var(--ease-in-out),
@@ -354,6 +353,16 @@ mat-icon svg,
   box-shadow: none !important;
 }
 
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper,
+.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-text-field-wrapper {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.mat-mdc-select-trigger {
+  outline: none !important;
+}
+
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
   min-height: 48px;
   padding-top: var(--space-sm);
@@ -365,12 +374,6 @@ mat-icon svg,
   overflow: visible;
 }
 
-.app-search-field--compact .mat-mdc-form-field-infix,
-.select-field--compact .mat-mdc-form-field-infix {
-  padding-top: var(--space-xs);
-  padding-bottom: var(--space-sm);
-}
-
 .mat-mdc-form-field textarea.mat-mdc-input-element {
   padding-top: calc(var(--space-sm) + 2px) !important;
 }
@@ -378,7 +381,7 @@ mat-icon svg,
 .mat-mdc-text-field-wrapper.mdc-text-field--filled:hover,
 .mat-mdc-text-field-wrapper.mdc-text-field--filled:focus-within {
   background: var(--mat-field-bg-focus) !important;
-  box-shadow: var(--shadow-input-focus) !important;
+  box-shadow: none !important;
 }
 
 .mat-mdc-select-panel {
@@ -576,10 +579,6 @@ mat-icon svg,
   color: var(--color-on-surface) !important;
 }
 
-.form-field.is-invalid .mat-mdc-form-field .mat-mdc-text-field-wrapper {
-  border-color: var(--color-danger) !important;
-}
-
 .form-field.is-invalid .mat-mdc-form-field .mat-mdc-select-arrow {
   color: var(--color-danger) !important;
 }
@@ -604,9 +603,9 @@ $filter-control-height: var(--btn-height-md); // 2.75rem = 44px
   color: var(--color-muted);
 }
 
-// Compact form field infix for both search and select
-.app-search-field--compact .mat-mdc-form-field-infix,
-.select-field--compact .mat-mdc-form-field-infix {
+// Compact form field infix for filters only
+:is(.filters-bar, .user-filters, .posts-filters) .app-search-field--compact .mat-mdc-form-field-infix,
+:is(.filters-bar, .user-filters, .posts-filters) .select-field--compact .mat-mdc-form-field-infix {
   min-height: $filter-control-height;
   height: $filter-control-height;
   padding-block: 0;
@@ -617,8 +616,8 @@ $filter-control-height: var(--btn-height-md); // 2.75rem = 44px
 }
 
 // Force the outer text-field-wrapper to the same height
-.app-search-field--compact .mat-mdc-text-field-wrapper,
-.select-field--compact .mat-mdc-text-field-wrapper {
+:is(.filters-bar, .user-filters, .posts-filters) .app-search-field--compact .mat-mdc-text-field-wrapper,
+:is(.filters-bar, .user-filters, .posts-filters) .select-field--compact .mat-mdc-text-field-wrapper {
   height: $filter-control-height !important;
   min-height: $filter-control-height !important;
   padding-block: 0 !important;

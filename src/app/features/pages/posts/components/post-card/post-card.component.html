@@ -20,18 +20,25 @@
     </button>
 
     <div class="post-card__heading">
-      <button
-        type="button"
-        class="post-card__author ellipsis-expand-parent"
-        (click)="onAuthorClick()"
-        [attr.aria-label]="'postCard.viewAuthorAria' | appTranslate: { name: authorName }"
-        title="{{ postModel?.title }}"
-      >
-        <h3 class="post-card__title ellipsis-expand">{{ postModel?.title }}</h3>
-        <span class="post-card__subtitle ellipsis-expand">
+      <div class="post-card__author">
+        <h3
+          class="post-card__title ellipsis-expand"
+          appOverflowReveal
+          [appOverflowReveal]="postModel?.title ?? ''"
+          [attr.title]="postModel?.title"
+        >
+          {{ postModel?.title }}
+        </h3>
+        <span
+          class="post-card__subtitle ellipsis-expand"
+          appOverflowReveal
+          [appOverflowReveal]="
+            'postCard.sharedBy' | appTranslate: { name: authorName }
+          "
+        >
           {{ 'postCard.sharedBy' | appTranslate: { name: authorName } }}
         </span>
-      </button>
+      </div>
     </div>
 
     @if (allowManage()) {

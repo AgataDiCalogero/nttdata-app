@@ -93,7 +93,9 @@
                   <textarea
                     class="form-textarea"
                     formControlName="body"
-                    rows="3"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="2"
+                    [cdkAutosizeMaxRows]="6"
                     placeholder="{{ 'postComments.editPlaceholder' | appTranslate }}"
                     [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
                   ></textarea>

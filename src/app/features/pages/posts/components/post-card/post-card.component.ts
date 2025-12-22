@@ -6,13 +6,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
+import { OverflowRevealDirective } from '@app/shared/directives/overflow-reveal.directive';
 
 import type { Post } from '@/app/shared/models/post';
 
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatCardModule, ButtonComponent, TranslatePipe],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatCardModule,
+    ButtonComponent,
+    OverflowRevealDirective,
+    TranslatePipe,
+  ],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

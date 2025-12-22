@@ -10,6 +10,7 @@ import { StatusBadgeComponent } from '@app/shared/ui/status-badge/status-badge.c
 
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { User } from '@/app/shared/models/user';
+import { OverflowRevealDirective } from '@/app/shared/directives/overflow-reveal.directive';
 import { DeviceTypeService } from '@/app/shared/services/device-type/device-type.service';
 
 @Component({
@@ -24,6 +25,7 @@ import { DeviceTypeService } from '@/app/shared/services/device-type/device-type
     ButtonComponent,
     MatIconModule,
     StatusBadgeComponent,
+    OverflowRevealDirective,
     TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
