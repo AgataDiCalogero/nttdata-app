@@ -178,7 +178,7 @@
 .mat-mdc-form-field .mdc-notched-outline__trailing {
   border-color: var(--mat-field-border) !important;
   border-width: 1px !important;
-  background: var(--mat-field-bg) !important;
+  background: transparent !important;
   transition:
     border-color var(--duration-normal) var(--ease-in-out),
     background var(--duration-normal) var(--ease-in-out);
@@ -278,12 +278,12 @@
 }
 
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
-  background: transparent !important;
+  background: var(--mat-field-bg) !important;
 }
 
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:hover,
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:focus-within {
-  background: transparent !important;
+  background: var(--mat-field-bg-focus) !important;
   box-shadow: none !important;
 }
 
