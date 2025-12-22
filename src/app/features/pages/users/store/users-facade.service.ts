@@ -15,25 +15,36 @@ export class UsersFacadeService {
   private readonly notifications = inject(NotificationsService);
   private readonly i18n = inject(I18nService);
 
-  loadUserById(id: number, errorMessage?: string): Observable<User | null> {
+  loadUserById(
+    id: number,
+    errorMessage?: string,
+    options?: { silent?: boolean },
+  ): Observable<User | null> {
     const resolvedErrorMessage = errorMessage ?? this.i18n.translate('userDetail.unableToLoadUser');
-    return this.usersApi.getById(id).pipe(
+    return this.usersApi.getById(id, { skipGlobalError: options?.silent === true }).pipe(
       catchError((err) => {
-        this.notifications.showHttpError(err, resolvedErrorMessage);
+        this.notifications.showHttpError(err, resolvedErrorMessage, options);
         return of(null as User | null);
       }),
     );
   }
 
-  loadPostsForUser(userId: number, perPage: number, errorMessage?: string): Observable<Post[]> {
+  loadPostsForUser(
+    userId: number,
+    perPage: number,
+    errorMessage?: string,
+    options?: { silent?: boolean },
+  ): Observable<Post[]> {
     const resolvedErrorMessage =
       errorMessage ?? this.i18n.translate('userDetail.unableToLoadPosts');
-    return this.postsApi.list({ userId, perPage }).pipe(
+    return this.postsApi
+      .list({ userId, perPage }, { skipGlobalError: options?.silent === true })
+      .pipe(
       map((result) => result.items),
       catchError((err) => {
-        this.notifications.showHttpError(err, resolvedErrorMessage);
+        this.notifications.showHttpError(err, resolvedErrorMessage, options);
         return of<Post[]>([]);
       }),
-    );
+      );
   }
 }

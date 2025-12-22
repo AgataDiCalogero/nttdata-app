@@ -189,7 +189,7 @@ export class UserDetail {
   private createUserSignal(): Signal<User | null> {
     const errorMessage = this.i18n.translate('userDetail.unableToLoadUser');
     return toSignal(
-      this.usersFacade.loadUserById(this.userId!, errorMessage).pipe(
+      this.usersFacade.loadUserById(this.userId!, errorMessage, { silent: true }).pipe(
         tap((user) => {
           this.error.set(user ? null : errorMessage);
           this.loading.set(false);
@@ -206,6 +206,7 @@ export class UserDetail {
           this.userId!,
           this.postsFetchLimit,
           this.i18n.translate('userDetail.unableToLoadPosts'),
+          { silent: true },
         )
         .pipe(
           tap(() => {

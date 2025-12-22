@@ -198,8 +198,30 @@
   text-overflow: clip;
 }
 
+.ellipsis-expand:active {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
 .ellipsis-expand-parent:focus-within .ellipsis-expand {
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
+}
+
+.ellipsis-expand-parent:focus .ellipsis-expand {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.ellipsis-expand-parent:active .ellipsis-expand {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.ellipsis-expand-parent {
+  cursor: text;
 }

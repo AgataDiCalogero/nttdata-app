@@ -9,7 +9,7 @@
               <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
                 {{ initials(user) }}
               </div>
-              <div class="user-card__title-wrapper">
+              <div class="user-card__title-wrapper ellipsis-expand-parent" tabindex="0">
                 <mat-card-title
                   class="ellipsis-expand"
                   tabindex="0"
@@ -51,15 +51,15 @@
 
           <mat-card-content>
             <div class="user-card__meta">
-              <div class="user-card__meta-item">
+              <div class="user-card__meta-item ellipsis-expand-parent" tabindex="0">
                 <mat-icon svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
                 <span class="ellipsis-expand" tabindex="0" [attr.title]="user.email">{{
                   user.email
                 }}</span>
               </div>
-              <div class="user-card__meta-item">
+              <div class="user-card__meta-item ellipsis-expand-parent" tabindex="0">
                 <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>
-                <span>{{ getGenderLabel(user.gender) }}</span>
+                <span class="ellipsis-expand" tabindex="0">{{ getGenderLabel(user.gender) }}</span>
               </div>
             </div>
           </mat-card-content>

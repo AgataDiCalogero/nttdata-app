@@ -39,6 +39,7 @@
     width: 100%;
     max-width: 52rem;
     margin-inline: auto;
+    min-width: 0;
   }
 }
 
@@ -196,6 +197,15 @@
     display: grid;
     gap: var(--space-md);
     grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  &__grid app-post-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   &-empty {

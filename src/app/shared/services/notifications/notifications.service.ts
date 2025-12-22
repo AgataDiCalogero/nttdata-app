@@ -21,14 +21,16 @@ export class NotificationsService {
     this.toast.show('success', message);
   }
 
-  showHttpError(error: unknown, fallback: string): string {
+  showHttpError(error: unknown, fallback: string, options?: { silent?: boolean }): string {
     const mapped = mapHttpError(error);
     const fallbackMessage = this.i18n.translate(fallback);
     const message =
       mapped.kind === 'unknown'
         ? fallbackMessage
         : this.i18n.translate(mapped.messageKey) || fallbackMessage;
-    this.toast.show('error', message);
+    if (!options?.silent) {
+      this.toast.show('error', message);
+    }
     return message;
   }
 }

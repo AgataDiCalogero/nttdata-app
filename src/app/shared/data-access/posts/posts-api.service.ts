@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, type Observable } from 'rxjs';
 
@@ -27,6 +27,7 @@ import type {
   UpdatePost,
   UpdateComment,
 } from '@/app/shared/models/post';
+import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/http-context-tokens';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {
@@ -40,6 +41,7 @@ export class PostsApiService {
       userId?: number;
       title?: string;
     } = {},
+    options?: { skipGlobalError?: boolean },
   ): Observable<ListResponse<Post>> {
     let httpParams = new HttpParams();
     const { page, perPage, userId, title } = params;
@@ -47,8 +49,11 @@ export class PostsApiService {
     if (perPage != null) httpParams = httpParams.set('per_page', String(perPage));
     if (userId != null) httpParams = httpParams.set('user_id', String(userId));
     if (title != null && title !== '') httpParams = httpParams.set('title', title);
+    const context = options?.skipGlobalError
+      ? new HttpContext().set(SKIP_GLOBAL_ERROR, true)
+      : undefined;
     return this.http
-      .get<PostDto[]>(this.base, { params: httpParams, observe: 'response' })
+      .get<PostDto[]>(this.base, { params: httpParams, observe: 'response', context })
       .pipe(map((resp) => mapPaginatedResponse(resp, mapPostDto)));
   }
 

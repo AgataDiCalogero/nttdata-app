@@ -26,18 +26,6 @@
       <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
         <div class="user-detail-alert-content">
           <p>{{ error() }}</p>
-          <div class="user-detail-alert-actions">
-            <a
-              routerLink="/users"
-              appButton
-              variant="ghost"
-              size="sm"
-              [attr.aria-label]="'userDetail.backToList' | appTranslate"
-            >
-              <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
-              <span class="btn__label">{{ 'userDetail.backToList' | appTranslate }}</span>
-            </a>
-          </div>
         </div>
       </app-alert>
     } @else if (user(); as detail) {
@@ -60,7 +48,7 @@
                 {{ detail.name || ('users.unnamed' | appTranslate) }}
               </h2>
               <div class="user-detail-card__meta">
-                <div class="user-detail-card__meta-item">
+                <div class="user-detail-card__meta-item ellipsis-expand-parent" tabindex="0">
                   <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
                   <a
                     [href]="'mailto:' + detail.email"
@@ -70,13 +58,13 @@
                     detail.email
                   }}</a>
                 </div>
-                <div class="user-detail-card__meta-item">
+                <div class="user-detail-card__meta-item ellipsis-expand-parent" tabindex="0">
                   <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
-                  <span>{{ genderLabel() }}</span>
+                  <span class="ellipsis-expand" tabindex="0">{{ genderLabel() }}</span>
                 </div>
-                <div class="user-detail-card__meta-item">
+                <div class="user-detail-card__meta-item ellipsis-expand-parent" tabindex="0">
                   <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
-                  <span>
+                  <span class="ellipsis-expand" tabindex="0">
                     {{ posts().length }}
                     {{
                       posts().length === 1
@@ -85,9 +73,9 @@
                     }}
                   </span>
                 </div>
-                <div class="user-detail-card__meta-item">
+                <div class="user-detail-card__meta-item ellipsis-expand-parent" tabindex="0">
                   <lucide-icon [img]="Circle" aria-hidden="true"></lucide-icon>
-                  <span>{{ statusLabel() }}</span>
+                  <span class="ellipsis-expand" tabindex="0">{{ statusLabel() }}</span>
                 </div>
               </div>
             </div>
