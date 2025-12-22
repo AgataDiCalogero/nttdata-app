@@ -184,3 +184,22 @@
     justify-content: center;
   }
 }
+// Shared text truncation with focus-to-expand behavior.
+.ellipsis-expand {
+  display: inline-block;
+  max-width: 100%;
+  @include text-truncate;
+}
+
+.ellipsis-expand:focus,
+.ellipsis-expand:focus-visible {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.ellipsis-expand-parent:focus-within .ellipsis-expand {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}

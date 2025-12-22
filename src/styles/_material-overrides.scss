@@ -207,6 +207,11 @@
   overflow: visible;
 }
 
+.app-search-field--compact .mdc-notched-outline__notch,
+.select-field--compact .mdc-notched-outline__notch {
+  padding-inline: 0.8rem;
+}
+
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
@@ -348,8 +353,8 @@ mat-icon svg,
 
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
   min-height: 48px;
-  padding-top: calc(var(--space-sm) + 0.35rem);
-  padding-bottom: var(--space-xs);
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
   padding-inline: var(--space-md);
   display: flex;
   align-items: center;
@@ -359,8 +364,8 @@ mat-icon svg,
 
 .app-search-field--compact .mat-mdc-form-field-infix,
 .select-field--compact .mat-mdc-form-field-infix {
-  padding-top: calc(var(--space-sm) + 0.2rem);
-  padding-bottom: var(--space-2xs);
+  padding-top: var(--space-xs);
+  padding-bottom: var(--space-sm);
 }
 
 .mat-mdc-form-field textarea.mat-mdc-input-element {

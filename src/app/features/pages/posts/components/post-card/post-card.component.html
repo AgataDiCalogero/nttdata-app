@@ -19,7 +19,7 @@
       </span>
     </button>
 
-    <div class="post-card__heading">
+    <div class="post-card__heading ellipsis-expand-parent">
       <button
         type="button"
         class="post-card__author"
@@ -27,8 +27,8 @@
         [attr.aria-label]="'postCard.viewAuthorAria' | appTranslate: { name: authorName }"
         title="{{ postModel?.title }}"
       >
-        <h3 class="post-card__title">{{ postModel?.title }}</h3>
-        <span class="post-card__subtitle">
+        <h3 class="post-card__title ellipsis-expand">{{ postModel?.title }}</h3>
+        <span class="post-card__subtitle ellipsis-expand">
           {{ 'postCard.sharedBy' | appTranslate: { name: authorName } }}
         </span>
       </button>

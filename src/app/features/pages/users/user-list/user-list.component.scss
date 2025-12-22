@@ -100,6 +100,10 @@
   @include mixins.text-truncate;
 }
 
+.user-card__meta-item:focus-within {
+  align-items: flex-start;
+}
+
 .user-card__delete-mobile {
   display: none;
 }

@@ -52,7 +52,11 @@
               }}
             </div>
             <div class="user-detail-card__info">
-              <h2 class="user-detail-card__name" [attr.title]="detail.name || ('users.unnamed' | appTranslate)">
+              <h2
+                class="user-detail-card__name ellipsis-expand"
+                tabindex="0"
+                [attr.title]="detail.name || ('users.unnamed' | appTranslate)"
+              >
                 {{ detail.name || ('users.unnamed' | appTranslate) }}
               </h2>
               <div class="user-detail-card__meta">
@@ -60,7 +64,7 @@
                   <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
                   <a
                     [href]="'mailto:' + detail.email"
-                    class="user-detail-card__email-link"
+                    class="user-detail-card__email-link ellipsis-expand"
                     [attr.title]="detail.email"
                   >{{
                     detail.email
