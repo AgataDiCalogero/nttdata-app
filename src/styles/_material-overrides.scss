@@ -10,6 +10,7 @@
   --mat-field-border: rgba(148, 163, 184, 0.32);
   --mat-field-border-hover: rgba(249, 115, 22, 0.45);
   --mat-field-border-focus: var(--color-accent);
+  --mat-field-text: #ffffff;
   --mat-field-label: rgba(255, 255, 255, 0.72);
   --mat-field-placeholder: rgba(255, 255, 255, 0.5);
   --mat-field-helper: rgba(255, 255, 255, 0.62);
@@ -40,11 +41,14 @@
   --mat-field-border: rgba(15, 23, 42, 0.14);
   --mat-field-border-hover: rgba(249, 115, 22, 0.42);
   --mat-field-border-focus: var(--color-accent);
+  --mat-field-text: #111827;
   --mat-field-label: rgba(8, 18, 27, 0.72);
   --mat-field-placeholder: rgba(8, 18, 27, 0.48);
   --mat-field-helper: rgba(8, 18, 27, 0.62);
   --mat-field-disabled-bg: rgba(15, 23, 42, 0.08);
   --mat-field-disabled-text: rgba(8, 18, 27, 0.4);
+  --mat-field-placeholder: color-mix(in srgb, #0f172a 60%, transparent);
+  --mat-field-label: color-mix(in srgb, #0f172a 85%, transparent);
 
   --mat-option-hover-bg: color-mix(in srgb, var(--color-accent) 16%, transparent);
   --mat-option-active-bg: color-mix(in srgb, var(--color-accent) 28%, transparent);
@@ -59,6 +63,30 @@
 
   --mat-menu-bg: var(--color-surface-solid);
   --mat-menu-border: var(--color-border);
+
+  // Direct overrides for input/select text - FORCE dark text in light theme
+  .mat-mdc-input-element,
+  .mat-mdc-select-value,
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-trigger,
+  .mat-mdc-select-min-line,
+  input.mat-mdc-input-element {
+    color: #111827 !important;
+  }
+
+  .mat-mdc-select-arrow svg {
+    fill: #111827 !important;
+  }
+
+  .mat-mdc-input-element::placeholder,
+  input::placeholder {
+    color: rgba(17, 24, 39, 0.5) !important;
+  }
+
+  .mdc-floating-label,
+  .mat-mdc-floating-label {
+    color: rgba(17, 24, 39, 0.7) !important;
+  }
 }
 
 .app-navbar.mat-toolbar {
@@ -153,7 +181,10 @@
 .mat-mdc-form-field .mdc-notched-outline__trailing {
   border-color: var(--mat-field-border) !important;
   border-width: 1px !important;
-  transition: border-color var(--duration-normal) var(--ease-in-out);
+  background: var(--mat-field-bg) !important;
+  transition:
+    border-color var(--duration-normal) var(--ease-in-out),
+    background var(--duration-normal) var(--ease-in-out);
 }
 
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
@@ -173,9 +204,11 @@
 .mat-mdc-form-field .mdc-floating-label {
   color: var(--mat-field-label) !important;
   opacity: 1 !important;
+  font-weight: 500 !important;
   transition:
     color var(--duration-normal) var(--ease-in-out),
-    transform var(--duration-normal) var(--ease-in-out);
+    transform var(--duration-normal) var(--ease-in-out),
+    font-weight var(--duration-normal) var(--ease-in-out);
 }
 
 .mat-mdc-form-field.mat-focused .mdc-floating-label {
@@ -187,10 +220,11 @@
 }
 
 .mat-mdc-input-element,
+.mat-mdc-select-value,
 .mat-mdc-select-trigger,
 .mat-mdc-select-arrow,
 .mat-mdc-form-field .mat-mdc-form-field-icon {
-  color: var(--color-on-surface) !important;
+  color: var(--mat-field-text) !important;
 }
 
 .mat-mdc-form-field .mat-mdc-form-field-icon {
@@ -204,7 +238,12 @@
 
 .mat-mdc-input-element::placeholder {
   color: var(--mat-field-placeholder) !important;
-  opacity: 1;
+  opacity: 0.8 !important;
+
+  @supports (color: color-mix(in srgb, var(--mat-field-placeholder) 82%, transparent)) {
+    color: color-mix(in srgb, var(--mat-field-placeholder) 82%, transparent) !important;
+    opacity: 1 !important;
+  }
 }
 
 .mat-mdc-form-field-subscript-wrapper,
@@ -244,12 +283,12 @@
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:hover,
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined:focus-within {
   background: transparent !important;
-  box-shadow: none !important; /* No box-shadow on outlined to prevent double border */
+  box-shadow: none !important;
 }
 
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-  min-height: 56px;
-  padding-block: var(--space-sm);
+  min-height: 48px;
+  padding-block: var(--space-xs);
   padding-inline: var(--space-md);
   display: flex;
   align-items: center;

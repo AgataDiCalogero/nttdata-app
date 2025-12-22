@@ -216,8 +216,8 @@
   },
   "posts": {
     "title": "Posts",
+    "subtitle": "Manage and browse all published posts.",
     "new": "New Post",
-    "summaryHeading": "{{count}} total posts",
     "emptyState": "No posts match your filters yet. Try adjusting the search or refresh the list.",
     "loading": "Loading posts...",
     "error": "Unable to load posts right now. Please try again.",

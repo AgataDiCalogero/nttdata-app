@@ -12,7 +12,9 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
@@ -25,7 +27,15 @@ import { CommentsFacadeService } from '@/app/shared/services/comments/comments-f
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule, ButtonComponent, TranslatePipe],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    ButtonComponent,
+    TranslatePipe,
+  ],
   templateUrl: './comment-form.component.html',
   styleUrls: ['./comment-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

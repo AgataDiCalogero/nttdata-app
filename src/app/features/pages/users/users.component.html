@@ -26,6 +26,7 @@
         [perPage]="perPage()"
         (searchChange)="onSearch($event)"
         (perPageChange)="onPerPageChange($event)"
+        (reset)="onResetFilters()"
       ></app-user-filters>
 
       <div class="app-results-summary" aria-live="polite">

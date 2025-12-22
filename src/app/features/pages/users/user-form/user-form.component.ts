@@ -10,7 +10,9 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 import { AutoFocusDirective } from '@app/shared/directives/auto-focus.directive';
 import { I18nService } from '@app/shared/i18n/i18n.service';
@@ -36,6 +38,8 @@ const getStatusCode = (error: unknown): number | undefined => {
   imports: [
     ReactiveFormsModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
     ButtonComponent,
     AlertComponent,
     SelectComponent,

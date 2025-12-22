@@ -24,6 +24,7 @@ export interface UsersService {
     pushUrl?: boolean;
   }): void;
   onSearch(value: string): void;
+  resetFilters(): void;
   toggleSort(field: SortField): void;
   setPage(page: number): void;
   setPerPage(perPage: number): void;

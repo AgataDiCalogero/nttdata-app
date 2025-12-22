@@ -15,34 +15,28 @@
     </app-alert>
   }
 
-  <form
-    class="form form-dialog__body user-form__form"
-    [formGroup]="form"
-    (ngSubmit)="submit()"
-    novalidate
-  >
+  <form class="form form-dialog__body user-form__form" [formGroup]="form" (ngSubmit)="submit()">
     <div
       class="form-field"
       [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
     >
-      <label class="form-label" for="name">{{ 'userForm.fields.name' | appTranslate }}</label>
-      <input
-        class="form-input"
-        id="name"
-        type="text"
-        formControlName="name"
-        placeholder="{{ 'userForm.placeholders.name' | appTranslate }}"
-        appAutoFocus
-        [attr.aria-invalid]="
-          form.controls.name.invalid && form.controls.name.touched ? 'true' : null
-        "
-        [attr.aria-describedby]="
-          form.controls.name.invalid && form.controls.name.touched ? 'name-error' : null
-        "
-      />
-      @if (form.controls.name.touched && form.controls.name.invalid) {
-        <p class="field-error" id="name-error">{{ 'userForm.errors.name' | appTranslate }}</p>
-      }
+      <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+        <mat-label>{{ 'userForm.fields.name' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="{{ 'userForm.placeholders.name' | appTranslate }}"
+          appAutoFocus
+          [attr.aria-invalid]="
+            form.controls.name.invalid && form.controls.name.touched ? 'true' : null
+          "
+        />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <mat-error>{{ 'userForm.errors.name' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
     </div>
 
     <div
@@ -51,49 +45,50 @@
         (form.controls.email.touched && form.controls.email.invalid) || emailError()
       "
     >
-      <label class="form-label" for="email">{{ 'userForm.fields.email' | appTranslate }}</label>
-      <input
-        class="form-input"
-        id="email"
-        type="email"
-        formControlName="email"
-        placeholder="{{ 'userForm.placeholders.email' | appTranslate }}"
-        [attr.aria-invalid]="
-          form.controls.email.invalid && form.controls.email.touched ? 'true' : null
-        "
-        [attr.aria-describedby]="emailDescribedBy"
-      />
-      @if (form.controls.email.touched && form.controls.email.invalid) {
-        <p class="field-error" id="email-error">{{ 'userForm.errors.email' | appTranslate }}</p>
-      }
-      @if (emailError()) {
-        <p class="field-error" id="email-server-error">{{ emailError() }}</p>
-      }
+      <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+        <mat-label>{{ 'userForm.fields.email' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="{{ 'userForm.placeholders.email' | appTranslate }}"
+          [attr.aria-invalid]="
+            form.controls.email.invalid && form.controls.email.touched ? 'true' : null
+          "
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <mat-error>{{ 'userForm.errors.email' | appTranslate }}</mat-error>
+        }
+        @if (emailError()) {
+          <mat-error>{{ emailError() }}</mat-error>
+        }
+      </mat-form-field>
     </div>
 
     <div
       class="form-field"
       [class.is-invalid]="form.controls.gender.touched && form.controls.gender.invalid"
     >
-      <label class="form-label" for="gender">{{ 'userForm.fields.gender' | appTranslate }}</label>
       <app-select
         id="gender"
         [control]="form.controls.gender"
+        [label]="'userForm.fields.gender' | appTranslate"
         [options]="[
           { value: 'male', label: ('common.gender.male' | appTranslate) },
           { value: 'female', label: ('common.gender.female' | appTranslate) },
         ]"
       ></app-select>
       @if (form.controls.gender.touched && form.controls.gender.invalid) {
-        <p class="field-error">{{ 'userForm.errors.gender' | appTranslate }}</p>
+        <mat-error>{{ 'userForm.errors.gender' | appTranslate }}</mat-error>
       }
     </div>
 
     <div class="form-field">
-      <label class="form-label" for="status">{{ 'userForm.fields.status' | appTranslate }}</label>
       <app-select
         id="status"
         [control]="form.controls.status"
+        [label]="'userForm.fields.status' | appTranslate"
         [options]="[
           { value: 'active', label: ('common.status.active' | appTranslate) },
           { value: 'inactive', label: ('common.status.inactive' | appTranslate) },

@@ -216,8 +216,8 @@
   },
   "posts": {
     "title": "Post",
+    "subtitle": "Gestisci e sfoglia tutti i post pubblicati.",
     "new": "Nuovo post",
-    "summaryHeading": "{{count}} post totali",
     "emptyState": "Nessun post corrisponde ai filtri. Prova ad aggiornare la ricerca.",
     "loading": "Caricamento post...",
     "error": "Impossibile caricare i post in questo momento. Riprova.",

@@ -3,9 +3,7 @@
     <header class="posts-page__header app-page__header">
       <div class="app-page__heading">
         <h1 class="app-page__title">{{ 'posts.title' | appTranslate }}</h1>
-        <p class="app-page__meta">
-          {{ 'posts.summaryHeading' | appTranslate: { count: totalPosts() } }}
-        </p>
+        <p class="app-subtitle">{{ 'posts.subtitle' | appTranslate }}</p>
       </div>
       <button
         appButton

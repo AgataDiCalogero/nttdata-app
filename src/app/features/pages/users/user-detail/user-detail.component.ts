@@ -22,6 +22,7 @@ import {
   MessageSquare,
   ArrowLeft,
   FileText,
+  Circle,
 } from 'lucide-angular';
 import { tap } from 'rxjs';
 
@@ -79,6 +80,7 @@ export class UserDetail {
   readonly MessageSquare = MessageSquare;
   readonly ArrowLeft = ArrowLeft;
   readonly FileText = FileText;
+  readonly Circle = Circle;
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
@@ -117,6 +119,14 @@ export class UserDetail {
       return name;
     }
     return this.i18n.translate('userDetail.title');
+  });
+
+  readonly statusLabel = computed(() => {
+    const status = this.user()?.status;
+    if (status === 'active') {
+      return this.i18n.translate('common.status.active');
+    }
+    return this.i18n.translate('common.status.inactive');
   });
 
   constructor() {

@@ -13,10 +13,6 @@
       </a>
     </nav>
 
-    <header class="user-detail__header">
-      <h1 class="user-detail__title">{{ pageTitle() }}</h1>
-    </header>
-
     @if (loading()) {
       <output class="app-progress" aria-live="polite">
         <mat-progress-bar
@@ -80,6 +76,10 @@
                         : ('userDetail.postsCountPlural' | appTranslate)
                     }}
                   </span>
+                </div>
+                <div class="user-detail-card__meta-item">
+                  <lucide-icon [img]="Circle" aria-hidden="true"></lucide-icon>
+                  <span>{{ statusLabel() }}</span>
                 </div>
               </div>
             </div>

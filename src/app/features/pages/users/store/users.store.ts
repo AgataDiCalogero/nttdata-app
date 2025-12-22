@@ -127,6 +127,20 @@ export const UsersStoreAdapter = signalStore(
     const ensurePage = (value: number | undefined): number =>
       normalizePage(value, pagination.defaultPage);
 
+    const resetFilters = () => {
+      patchState(store, {
+        page: pagination.defaultPage,
+        perPage: pagination.defaultPerPage,
+        searchTerm: '',
+      });
+      loadUsers({
+        page: pagination.defaultPage,
+        perPage: pagination.defaultPerPage,
+        searchTerm: '',
+        pushUrl: true,
+      });
+    };
+
     const loadUsers = (options: LoadUsersOptions = {}) => {
       const pushUrl = options.pushUrl ?? true;
       const currentPerPage = ensurePerPage(store.perPage());
@@ -444,6 +458,7 @@ export const UsersStoreAdapter = signalStore(
       setDeleting(userId: number | null) {
         patchState(store, { deletingId: userId });
       },
+      resetFilters,
       onSearch: (value: string) => {
         const sanitizedTerm = typeof value === 'string' ? value.trim() : '';
         if (sanitizedTerm === store.searchTerm().trim()) {

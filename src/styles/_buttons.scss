@@ -135,6 +135,16 @@
   gap: inherit;
 }
 
+.btn mat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  line-height: 1;
+  margin: 0;
+  vertical-align: middle;
+}
+
 .btn__label {
   display: inline;
 }

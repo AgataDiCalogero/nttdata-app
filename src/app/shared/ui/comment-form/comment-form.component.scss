@@ -11,9 +11,6 @@
   width: 100%;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// NAME & EMAIL ROW - Flexbox with proper wrapping
-// ═══════════════════════════════════════════════════════════════════════════
 .comment-form__grid {
   display: flex;
   flex-direction: column;
@@ -24,23 +21,23 @@
   & .form-field {
     flex: 1 1 100%;
     min-width: 0;
+    width: 100%;
   }
 
-  // On larger screens: side by side with equal widths
-  @media (min-width: 30rem) {
+  // On larger screens (dialog 40rem): side by side with equal widths
+  @media (min-width: 26rem) {
     flex-direction: row;
     gap: var(--space-md);
+    flex-wrap: nowrap;
 
     & .form-field {
-      flex: 1 1 0;
+      flex: 1 1 50%;
       min-width: 0;
+      max-width: 50%;
     }
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TEXTAREA - Compact and auto-expanding
-// ═══════════════════════════════════════════════════════════════════════════
 .comment-form .form-field {
   min-width: 0;
 }

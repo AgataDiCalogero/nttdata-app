@@ -38,4 +38,29 @@ body.light-theme {
 
   @include mat.color-variants-backwards-compatibility($light-theme);
   @include mat.all-component-colors($light-theme);
+
+  /* Force filled inputs/labels in light theme to stronger contrast */
+  .mat-mdc-form-field {
+    --mdc-outlined-text-field-label-text-color: color-mix(in srgb, #0f172a 92%, transparent);
+    --mdc-outlined-text-field-input-text-color: color-mix(in srgb, #0f172a 96%, transparent);
+    --mdc-outlined-text-field-caret-color: var(--color-on-surface, #0f172a);
+    --mdc-outlined-text-field-outline-color: color-mix(in srgb, var(--color-border) 70%, transparent);
+    --mdc-outlined-text-field-hover-outline-color: color-mix(in srgb, var(--color-border) 90%, transparent);
+    --mdc-outlined-text-field-focus-outline-color: var(--color-accent);
+    --mdc-outlined-text-field-disabled-input-text-color: color-mix(
+      in srgb,
+      #0f172a 55%,
+      transparent
+    );
+    --mdc-outlined-text-field-disabled-outline-color: color-mix(
+      in srgb,
+      var(--color-border) 35%,
+      transparent
+    );
+    --mdc-outlined-text-field-disabled-label-text-color: color-mix(
+      in srgb,
+      #0f172a 60%,
+      transparent
+    );
+  }
 }

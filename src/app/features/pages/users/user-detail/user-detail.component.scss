@@ -111,8 +111,8 @@
 
   &__meta-item {
     display: flex;
-    align-items: center;
-    gap: var(--space-sm);
+    align-items: flex-start; // Better baseline alignment
+    gap: var(--space-md);
     font-size: var(--font-size-sm);
     color: color-mix(in srgb, var(--color-on-surface) 64%, transparent);
     min-width: 0;
@@ -123,6 +123,7 @@
       width: 1rem;
       height: 1rem;
       opacity: 0.64;
+      margin-top: 0.2em; // Align with text baseline
     }
 
     span,

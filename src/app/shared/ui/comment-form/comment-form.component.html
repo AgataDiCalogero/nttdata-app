@@ -9,56 +9,46 @@
       class="form-field"
       [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
     >
-      <label class="form-label" for="comment-name">{{
-        'commentForm.fields.name' | appTranslate
-      }}</label>
-      <input
-        class="form-input"
-        id="comment-name"
-        type="text"
-        formControlName="name"
-        [placeholder]="'commentForm.placeholders.name' | appTranslate"
-        [attr.aria-invalid]="
-          form.controls.name.invalid && form.controls.name.touched ? 'true' : null
-        "
-        [attr.aria-describedby]="
-          form.controls.name.invalid && form.controls.name.touched ? 'comment-name-error' : null
-        "
-        required
-      />
-      @if (form.controls.name.touched && form.controls.name.invalid) {
-        <p class="field-error" id="comment-name-error">
-          {{ 'commentForm.errors.name' | appTranslate }}
-        </p>
-      }
+      <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+        <mat-label>{{ 'commentForm.fields.name' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="comment-name"
+          type="text"
+          formControlName="name"
+          [placeholder]="'commentForm.placeholders.name' | appTranslate"
+          [attr.aria-invalid]="
+            form.controls.name.invalid && form.controls.name.touched ? 'true' : null
+          "
+          required
+        />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <mat-error>{{ 'commentForm.errors.name' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
     </div>
 
     <div
       class="form-field"
       [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid"
     >
-      <label class="form-label" for="comment-email">{{
-        'commentForm.fields.email' | appTranslate
-      }}</label>
-      <input
-        class="form-input"
-        id="comment-email"
-        type="email"
-        formControlName="email"
-        [placeholder]="'commentForm.placeholders.email' | appTranslate"
-        [attr.aria-invalid]="
-          form.controls.email.invalid && form.controls.email.touched ? 'true' : null
-        "
-        [attr.aria-describedby]="
-          form.controls.email.invalid && form.controls.email.touched ? 'comment-email-error' : null
-        "
-        required
-      />
-      @if (form.controls.email.touched && form.controls.email.invalid) {
-        <p class="field-error" id="comment-email-error">
-          {{ 'commentForm.errors.email' | appTranslate }}
-        </p>
-      }
+      <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+        <mat-label>{{ 'commentForm.fields.email' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="comment-email"
+          type="email"
+          formControlName="email"
+          [placeholder]="'commentForm.placeholders.email' | appTranslate"
+          [attr.aria-invalid]="
+            form.controls.email.invalid && form.controls.email.touched ? 'true' : null
+          "
+          required
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <mat-error>{{ 'commentForm.errors.email' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
     </div>
   </div>
 
@@ -66,28 +56,25 @@
     class="form-field"
     [class.is-invalid]="form.controls.body.touched && form.controls.body.invalid"
   >
-    <label class="form-label" for="comment-body">{{
-      'commentForm.fields.body' | appTranslate
-    }}</label>
-    <textarea
-      class="form-textarea"
-      id="comment-body"
-      formControlName="body"
-      rows="2"
-      [placeholder]="placeholderText()"
-      [attr.aria-invalid]="form.controls.body.invalid && form.controls.body.touched ? 'true' : null"
-      [attr.aria-describedby]="bodyDescribedBy"
-      maxlength="500"
-      required
-    ></textarea>
-    <div class="field-hint">
-      <span id="comment-body-hint">{{ bodyLength }}/500</span>
+    <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+      <mat-label>{{ 'commentForm.fields.body' | appTranslate }}</mat-label>
+      <textarea
+        matInput
+        id="comment-body"
+        formControlName="body"
+        rows="2"
+        [placeholder]="placeholderText()"
+        [attr.aria-invalid]="
+          form.controls.body.invalid && form.controls.body.touched ? 'true' : null
+        "
+        maxlength="500"
+        required
+      ></textarea>
+      <mat-hint align="end">{{ bodyLength }}/500</mat-hint>
       @if (form.controls.body.touched && form.controls.body.invalid) {
-        <p class="field-error" id="comment-body-error">
-          {{ 'commentForm.errors.body' | appTranslate }}
-        </p>
+        <mat-error>{{ 'commentForm.errors.body' | appTranslate }}</mat-error>
       }
-    </div>
+    </mat-form-field>
   </div>
 
   <div class="comment-form__actions">

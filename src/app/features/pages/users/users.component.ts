@@ -181,4 +181,8 @@ export class Users {
   clearError(): void {
     this.usersService.loadUsers();
   }
+
+  onResetFilters(): void {
+    this.usersService.resetFilters();
+  }
 }
