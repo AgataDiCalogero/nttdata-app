@@ -23,6 +23,7 @@ import {
   ArrowLeft,
   FileText,
   Circle,
+  ExternalLink,
 } from 'lucide-angular';
 import { tap } from 'rxjs';
 
@@ -81,6 +82,7 @@ export class UserDetail {
   readonly ArrowLeft = ArrowLeft;
   readonly FileText = FileText;
   readonly Circle = Circle;
+  readonly ExternalLink = ExternalLink;
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);

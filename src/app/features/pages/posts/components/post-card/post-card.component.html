@@ -19,10 +19,10 @@
       </span>
     </button>
 
-    <div class="post-card__heading ellipsis-expand-parent" tabindex="0">
+    <div class="post-card__heading">
       <button
         type="button"
-        class="post-card__author"
+        class="post-card__author ellipsis-expand-parent"
         (click)="onAuthorClick()"
         [attr.aria-label]="'postCard.viewAuthorAria' | appTranslate: { name: authorName }"
         title="{{ postModel?.title }}"

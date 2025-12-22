@@ -55,6 +55,7 @@
 .user-card__title-wrapper {
   flex: 1;
   min-width: 0;
+  max-width: 100%;
 
   mat-card-title {
     display: block;
@@ -99,6 +100,7 @@
   color: color-mix(in srgb, var(--color-on-surface) 90%, transparent);
   font-size: 0.95rem;
   min-width: 0;
+  max-width: 100%;
 }
 
 .user-card__meta-item span {

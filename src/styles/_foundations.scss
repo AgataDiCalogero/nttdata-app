@@ -188,6 +188,7 @@
 .ellipsis-expand {
   display: inline-block;
   max-width: 100%;
+  min-width: 0;
   @include text-truncate;
 }
 
@@ -224,4 +225,20 @@
 
 .ellipsis-expand-parent {
   cursor: text;
+}
+
+button.ellipsis-expand-parent {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.ellipsis-expand-parent:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }

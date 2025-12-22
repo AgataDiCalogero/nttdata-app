@@ -48,15 +48,22 @@
                 {{ detail.name || ('users.unnamed' | appTranslate) }}
               </h2>
               <div class="user-detail-card__meta">
-                <div class="user-detail-card__meta-item ellipsis-expand-parent" tabindex="0">
+                <div class="user-detail-card__meta-item">
                   <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
-                  <a
-                    [href]="'mailto:' + detail.email"
-                    class="user-detail-card__email-link ellipsis-expand"
+                  <button
+                    type="button"
+                    class="user-detail-card__email-button ellipsis-expand-parent"
                     [attr.title]="detail.email"
-                  >{{
-                    detail.email
-                  }}</a>
+                  >
+                    <span class="ellipsis-expand">{{ detail.email }}</span>
+                  </button>
+                  <a
+                    class="user-detail-card__email-action"
+                    [href]="'mailto:' + detail.email"
+                    [attr.aria-label]="detail.email"
+                  >
+                    <lucide-icon [img]="ExternalLink" aria-hidden="true"></lucide-icon>
+                  </a>
                 </div>
                 <div class="user-detail-card__meta-item ellipsis-expand-parent" tabindex="0">
                   <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>

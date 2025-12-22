@@ -108,11 +108,13 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
+    min-width: 0;
     .toolbar-menu-trigger {
       margin-left: auto;
       display: inline-flex;
       align-items: center;
       gap: var(--space-2xs);
+      min-width: 0;
 
       app-appearance-switcher {
         display: inline-flex;
@@ -227,6 +229,19 @@
   @media (max-width: 40rem) {
     .brand__label {
       font-size: clamp(1rem, 5vw, 1.25rem);
+    }
+
+    .controls {
+      gap: var(--space-xs);
+    }
+
+    .toolbar-menu-trigger {
+      gap: var(--space-xs);
+    }
+
+    .toolbar-menu-trigger .logout-btn {
+      padding-inline: var(--space-sm);
+      min-height: 2.25rem;
     }
   }
 }

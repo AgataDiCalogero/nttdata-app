@@ -9,15 +9,17 @@
               <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
                 {{ initials(user) }}
               </div>
-              <div class="user-card__title-wrapper ellipsis-expand-parent" tabindex="0">
+              <button
+                type="button"
+                class="user-card__title-wrapper ellipsis-expand-parent"
+              >
                 <mat-card-title
                   class="ellipsis-expand"
-                  tabindex="0"
                   [attr.title]="user.name || ('users.unnamed' | appTranslate)"
                 >
                   {{ user.name || ('users.unnamed' | appTranslate) }}
                 </mat-card-title>
-              </div>
+              </button>
               <app-status-badge
                 [status]="user.status"
                 [ariaLabel]="
@@ -51,16 +53,16 @@
 
           <mat-card-content>
             <div class="user-card__meta">
-              <div class="user-card__meta-item ellipsis-expand-parent" tabindex="0">
+              <button type="button" class="user-card__meta-item ellipsis-expand-parent">
                 <mat-icon svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
-                <span class="ellipsis-expand" tabindex="0" [attr.title]="user.email">{{
+                <span class="ellipsis-expand" [attr.title]="user.email">{{
                   user.email
                 }}</span>
-              </div>
-              <div class="user-card__meta-item ellipsis-expand-parent" tabindex="0">
+              </button>
+              <button type="button" class="user-card__meta-item ellipsis-expand-parent">
                 <mat-icon svgIcon="lucide:user" aria-hidden="true"></mat-icon>
-                <span class="ellipsis-expand" tabindex="0">{{ getGenderLabel(user.gender) }}</span>
-              </div>
+                <span class="ellipsis-expand">{{ getGenderLabel(user.gender) }}</span>
+              </button>
             </div>
           </mat-card-content>
 
