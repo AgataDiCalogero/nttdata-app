@@ -1,6 +1,6 @@
 :root {
   --btn-secondary-border-hover: var(--border-mix-60);
-  --btn-ghost-background-hover: transparent;
+  --btn-ghost-background-hover: var(--accent-hover);
 }
 @supports (color: color-mix(in srgb, var(--color-border) 70%, transparent)) {
   :root {

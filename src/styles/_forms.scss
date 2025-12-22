@@ -58,9 +58,9 @@
   .form-input,
   .form-select,
   .form-textarea,
-  .form-field input:not([type='checkbox']):not([type='radio']),
-  .form-field select,
-  .form-field textarea
+  .form-field input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element),
+  .form-field select:not(.mat-mdc-input-element),
+  .form-field textarea:not(.mat-mdc-input-element)
 ) {
   width: 100%;
   font: inherit;
@@ -106,11 +106,18 @@
     .form-input,
     .form-select,
     .form-textarea,
-    input:not([type='checkbox']):not([type='radio']),
-    select,
-    textarea
+    input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element),
+    select:not(.mat-mdc-input-element),
+    textarea:not(.mat-mdc-input-element)
   ),
-:is(.form-input, .form-select, .form-textarea, input, select, textarea)[aria-invalid='true'] {
+:is(
+    .form-input,
+    .form-select,
+    .form-textarea,
+    input:not(.mat-mdc-input-element),
+    select:not(.mat-mdc-input-element),
+    textarea:not(.mat-mdc-input-element)
+  )[aria-invalid='true'] {
   border-color: var(--color-danger-border);
 
   @supports (color: color-mix(in srgb, var(--color-danger) 65%, transparent)) {

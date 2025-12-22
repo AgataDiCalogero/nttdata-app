@@ -136,6 +136,9 @@
 
 .mat-mdc-form-field {
   --mdc-theme-error: var(--color-danger) !important;
+  --mdc-outlined-text-field-outline-width: 1px;
+  --mdc-outlined-text-field-hover-outline-width: 1px;
+  --mdc-outlined-text-field-focus-outline-width: 1px;
   --mat-form-field-error-text-color: var(--color-danger) !important;
   --mat-form-field-outlined-outline-color: var(--mat-field-border) !important;
   --mat-form-field-outlined-hover-outline-color: var(--mat-field-border-hover) !important;
@@ -184,6 +187,10 @@
     background var(--duration-normal) var(--ease-in-out);
 }
 
+.mat-mdc-form-field .mdc-notched-outline__notch {
+  padding-inline: 0.5rem;
+}
+
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
@@ -202,6 +209,8 @@
   color: var(--mat-field-label) !important;
   opacity: 1 !important;
   font-weight: 500 !important;
+  line-height: 1.2;
+  padding-inline: 0.25rem;
   transition:
     color var(--duration-normal) var(--ease-in-out),
     transform var(--duration-normal) var(--ease-in-out),
@@ -221,6 +230,13 @@
 .mat-mdc-select-value-text,
 .mat-mdc-select-min-line {
   color: var(--mat-field-text) !important;
+}
+
+.mat-mdc-input-element {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .mat-mdc-select-placeholder {
@@ -271,6 +287,9 @@
 .mat-mdc-text-field-wrapper.mdc-text-field {
   background: var(--mat-field-bg) !important;
   border-radius: var(--radius-input) !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: visible;
   transition:
     background var(--duration-normal) var(--ease-in-out),
     box-shadow var(--duration-normal) var(--ease-in-out);
