@@ -24,9 +24,10 @@
         [showCreate]="false"
         [perPageOptions]="perPageOptionsMutable()"
         [perPage]="perPage()"
+        [searchTerm]="usersService.searchTerm()"
         (searchChange)="onSearch($event)"
         (perPageChange)="onPerPageChange($event)"
-        (reset)="onResetFilters()"
+        (resetFilters)="onResetFilters()"
       ></app-user-filters>
 
       <div class="app-results-summary" aria-live="polite">

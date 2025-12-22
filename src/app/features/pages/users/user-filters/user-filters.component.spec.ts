@@ -8,7 +8,10 @@ import { I18nService } from '@app/shared/i18n/i18n.service';
 
 import { UserFiltersComponent } from './user-filters.component';
 
-type WithPerPageControl = UserFiltersComponent & { perPageControl: FormControl<string> };
+type WithControls = UserFiltersComponent & {
+  perPageControl: FormControl<string>;
+  searchControl: FormControl<string>;
+};
 
 describe('UserFiltersComponent', () => {
   let component: UserFiltersComponent;
@@ -17,9 +20,13 @@ describe('UserFiltersComponent', () => {
 
   beforeEach(async () => {
     i18nSpy = jasmine.createSpyObj('I18nService', ['translate']);
-    i18nSpy.translate.and.callFake((_k: string, params?: Record<string, unknown>) =>
-      (params?.value ?? '').toString(),
-    );
+    i18nSpy.translate.and.callFake((_k: string, params?: Record<string, unknown>) => {
+      const val = params?.['value'];
+      if (typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') {
+        return String(val);
+      }
+      return '';
+    });
 
     await TestBed.configureTestingModule({
       imports: [UserFiltersComponent],
@@ -52,7 +59,14 @@ describe('UserFiltersComponent', () => {
     fixture.componentRef.setInput('perPage', 20);
     fixture.detectChanges();
 
-    expect((component as WithPerPageControl).perPageControl.value).toBe('20');
+    expect((component as WithControls).perPageControl.value).toBe('20');
+  });
+
+  it('sincronizza il FormControl quando cambia l’input searchTerm', () => {
+    fixture.componentRef.setInput('searchTerm', 'bob');
+    fixture.detectChanges();
+
+    expect((component as WithControls).searchControl.value).toBe('bob');
   });
 
   it('emette perPageChange convertendo la stringa in numero', () => {
@@ -68,6 +82,14 @@ describe('UserFiltersComponent', () => {
     component.create.subscribe(spy);
 
     component.onCreate();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('emette resetFilters quando il pulsante viene cliccato', () => {
+    const spy = jasmine.createSpy('reset');
+    component.resetFilters.subscribe(spy);
+
+    component.onReset();
     expect(spy).toHaveBeenCalled();
   });
 });

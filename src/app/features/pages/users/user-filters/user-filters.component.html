@@ -3,6 +3,7 @@
     <app-search-bar
       size="compact"
       [id]="searchId"
+      [control]="searchControl"
       [placeholder]="'users.filters.searchPlaceholder' | appTranslate"
       [label]="'users.filters.searchLabel' | appTranslate"
       (debounced)="onDebounced($event)"

@@ -84,7 +84,7 @@ export const UsersStoreAdapter = signalStore(
       return store
         .ids()
         .map((id) => entities[id])
-        .filter((user): user is User => Boolean(user))
+        .filter((user): user is User => user !== undefined)
         .sort((a, b) => {
           const av = getValue(a);
           const bv = getValue(b);
