@@ -134,9 +134,9 @@
 
 .mat-mdc-form-field {
   --mdc-theme-error: var(--color-danger) !important;
-  --mdc-outlined-text-field-outline-width: 1px;
-  --mdc-outlined-text-field-hover-outline-width: 1px;
-  --mdc-outlined-text-field-focus-outline-width: 1px;
+  --mat-form-field-outlined-outline-width: 1px;
+  --mat-form-field-outlined-focus-outline-width: 1px;
+  --mat-form-field-outlined-container-shape: var(--radius-input);
   --mdc-outlined-text-field-label-text-size: var(--font-size-sm);
   --mdc-outlined-text-field-floating-label-text-size: var(--font-size-sm);
   --mat-form-field-error-text-color: var(--color-danger) !important;
@@ -185,17 +185,6 @@
   line-height: 1.2;
 }
 
-.mat-mdc-form-field .mdc-notched-outline__leading,
-.mat-mdc-form-field .mdc-notched-outline__notch,
-.mat-mdc-form-field .mdc-notched-outline__trailing {
-  border-color: var(--mat-field-border) !important;
-  border-width: 1px !important;
-  background: transparent !important;
-  transition:
-    border-color var(--duration-normal) var(--ease-in-out),
-    background var(--duration-normal) var(--ease-in-out);
-}
-
 .mat-mdc-form-field .mdc-notched-outline {
   overflow: visible;
 }
@@ -208,20 +197,6 @@
 .app-search-field--compact .mdc-notched-outline__notch,
 .select-field--compact .mdc-notched-outline__notch {
   padding-inline: 0.8rem;
-}
-
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
-.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: var(--mat-field-border-focus) !important;
-  box-shadow: none !important;
-}
-
-.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__leading,
-.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__notch,
-.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__trailing {
-  border-color: var(--color-danger) !important;
-  box-shadow: none !important;
 }
 
 .mat-mdc-form-field .mdc-floating-label {
@@ -582,11 +557,11 @@ mat-icon svg,
 .form-field.is-invalid .mat-mdc-form-field .mat-mdc-select-arrow {
   color: var(--color-danger) !important;
 }
-
-.form-field.is-invalid .mat-mdc-form-field .mdc-notched-outline__leading,
-.form-field.is-invalid .mat-mdc-form-field .mdc-notched-outline__notch,
-.form-field.is-invalid .mat-mdc-form-field .mdc-notched-outline__trailing {
-  border-color: var(--color-danger) !important;
+.form-field.is-invalid .mat-mdc-form-field {
+  --mat-form-field-outlined-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-hover-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-error-outline-color: var(--color-danger) !important;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

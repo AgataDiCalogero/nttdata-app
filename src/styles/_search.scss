@@ -25,7 +25,7 @@
     }
 }
 
-.app-search__input {
+.app-search__input:not(.mat-mdc-input-element):not(.mat-input-element) {
   width: 100%;
   min-width: 0;
   padding: var(--space-sm) var(--space-md);

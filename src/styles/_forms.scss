@@ -278,12 +278,19 @@
     .form-input,
     .form-select,
     .form-textarea,
-    input:not([type='checkbox']):not([type='radio']),
-    select,
-    textarea
+    input:not([type='checkbox']):not([type='radio']):not(.mat-mdc-input-element),
+    select:not(.mat-mdc-input-element),
+    textarea:not(.mat-mdc-input-element)
   ),
 .form-dialog
-  :is(.form-input, .form-select, .form-textarea, input, select, textarea)[aria-invalid='true'] {
+  :is(
+    .form-input,
+    .form-select,
+    .form-textarea,
+    input:not(.mat-mdc-input-element),
+    select:not(.mat-mdc-input-element),
+    textarea:not(.mat-mdc-input-element)
+  )[aria-invalid='true'] {
   box-shadow: none;
   border-color: var(--color-danger);
 }
