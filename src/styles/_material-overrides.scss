@@ -178,6 +178,15 @@
   --mat-select-invalid-arrow-color: var(--color-danger) !important;
 }
 
+.mat-mdc-select-trigger {
+  display: flex;
+  align-items: center;
+}
+
+.mat-mdc-select-value {
+  line-height: 1.2;
+}
+
 .mat-mdc-form-field .mdc-notched-outline__leading,
 .mat-mdc-form-field .mdc-notched-outline__notch,
 .mat-mdc-form-field .mdc-notched-outline__trailing {
