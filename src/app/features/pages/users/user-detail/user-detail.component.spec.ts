@@ -118,7 +118,7 @@ describe('UserDetailComponent', () => {
     fixture.detectChanges();
     tick();
 
-    expect(usersApiSpy.getById).toHaveBeenCalledWith(1);
+    expect(usersApiSpy.getById).toHaveBeenCalledWith(1, { skipGlobalError: true });
     expect(postsApiSpy.list).toHaveBeenCalled();
     expect(component.user()).toEqual(mockUser);
     expect(component.posts()).toEqual(mockPosts);
@@ -180,6 +180,7 @@ describe('UserDetailComponent', () => {
     expect(notificationsSpy.showHttpError).toHaveBeenCalledWith(
       jasmine.any(Error),
       'userDetail.unableToLoadPosts',
+      { silent: true },
     );
   }));
 });

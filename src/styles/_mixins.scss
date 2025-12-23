@@ -275,8 +275,11 @@
   height: var(--btn-height-sm, 2.5rem);
   padding-inline: var(--space-md);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-mix-60);
-  background: color-mix(in srgb, var(--color-surface-solid) 82%, transparent);
+  border: 1px solid var(--toolbar-control-border, var(--border-mix-60));
+  background: var(
+    --toolbar-control-bg,
+    color-mix(in srgb, var(--color-surface-solid) 82%, transparent)
+  );
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -292,14 +295,29 @@
 
   &:hover,
   &:focus-visible {
-    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-solid));
-    border-color: color-mix(in srgb, var(--color-accent) 55%, var(--border-mix-60));
-    box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+    background: var(
+      --toolbar-control-hover-bg,
+      color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-solid))
+    );
+    border-color: var(
+      --toolbar-control-hover-border,
+      color-mix(in srgb, var(--color-accent) 55%, var(--border-mix-60))
+    );
+    box-shadow: var(
+      --toolbar-control-hover-shadow,
+      var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12))
+    );
   }
 
   &:active {
-    background: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface-solid));
-    border-color: color-mix(in srgb, var(--color-accent) 60%, var(--border-mix-60));
+    background: var(
+      --toolbar-control-active-bg,
+      color-mix(in srgb, var(--color-accent) 16%, var(--color-surface-solid))
+    );
+    border-color: var(
+      --toolbar-control-active-border,
+      color-mix(in srgb, var(--color-accent) 60%, var(--border-mix-60))
+    );
   }
 
   lucide-icon,

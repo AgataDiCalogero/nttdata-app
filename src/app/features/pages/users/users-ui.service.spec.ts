@@ -90,7 +90,7 @@ describe('UsersUiService', () => {
     closed$.next('success');
 
     expect(notifications.showSuccess).toHaveBeenCalledWith('users.create.success');
-    expect(mockStore.loadUsers).toHaveBeenCalledWith({ pushUrl: false });
+    expect(mockStore.loadUsers).toHaveBeenCalledWith({ pushUrl: false, forceReload: true });
     expect(overlays.release).toHaveBeenCalledWith('user-form');
     expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
       'user-form',
@@ -108,7 +108,7 @@ describe('UsersUiService', () => {
     closed$.next('success');
 
     expect(notifications.showSuccess).toHaveBeenCalledWith('users.update.success');
-    expect(mockStore.loadUsers).toHaveBeenCalledWith({ pushUrl: false });
+    expect(mockStore.loadUsers).toHaveBeenCalledWith({ pushUrl: false, forceReload: true });
     expect(overlays.release).toHaveBeenCalledWith('user-form');
     expect(overlayCoordinator.coordinate).toHaveBeenCalledWith(
       'user-form',

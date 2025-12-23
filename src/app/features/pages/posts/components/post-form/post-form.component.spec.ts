@@ -93,9 +93,13 @@ describe('PostForm', () => {
     title = 'New title',
     body = 'This body content is intentionally longer than twenty characters',
   ): void => {
+    usersLookup.setUsers([mockUser]);
+    component['userIdControl'].enable({ emitEvent: false });
     component['userIdControl'].setValue(mockUser.id);
     component['titleControl'].setValue(`  ${title}  `);
     component['bodyControl'].setValue(body);
+    component.form.updateValueAndValidity({ emitEvent: false });
+    fixture.detectChanges();
   };
 
   it('defaults to create mode and seeds prefetched users', () => {
@@ -124,23 +128,34 @@ describe('PostForm', () => {
     });
   });
 
-  it('blocks submission when the author is missing', () => {
+  it('allows submission when editing with a missing author', fakeAsync(() => {
     const missingAuthorId = 12345;
     const postWithMissingAuthor: Post = {
       ...mockPost,
       user_id: missingAuthorId,
     };
+    const updatedPost: Post = {
+      ...postWithMissingAuthor,
+      title: 'Updated title',
+      body: 'Updated body that also satisfies validation',
+    };
 
     buildModule({ post: postWithMissingAuthor, users: [mockUser] });
-    component['titleControl'].setValue('Updated title');
-    component['bodyControl'].setValue('Updated body that also satisfies validation');
+    component['titleControl'].setValue(updatedPost.title);
+    component['bodyControl'].setValue(updatedPost.body);
     component['userIdControl'].setValue(missingAuthorId);
+    postsApi.update.and.returnValue(of(updatedPost));
 
     component.submit();
+    tick();
 
-    expect(postsApi.update).not.toHaveBeenCalled();
-    expect(dialogRef.close).not.toHaveBeenCalled();
-  });
+    expect(postsApi.update).toHaveBeenCalledWith(postWithMissingAuthor.id, {
+      user_id: missingAuthorId,
+      title: updatedPost.title,
+      body: updatedPost.body,
+    });
+    expect(dialogRef.close).toHaveBeenCalledWith({ status: 'updated', post: updatedPost });
+  }));
 
   it('calls the create API and closes with the created post', fakeAsync(() => {
     const createdPost: Post = {

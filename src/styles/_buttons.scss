@@ -262,23 +262,6 @@
   }
 }
 
-body.light-theme .btn--ghost,
-.light-theme .btn--ghost {
-  color: #0f172a;
-  border-color: rgba(15, 23, 42, 0.2);
-
-  &:hover {
-    background: color-mix(in srgb, #0f172a 16%, #ffffff);
-    border-color: rgba(15, 23, 42, 0.32);
-    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.08);
-  }
-
-  &:active {
-    background: color-mix(in srgb, #0f172a 22%, #ffffff);
-    border-color: rgba(15, 23, 42, 0.4);
-  }
-}
-
 /* Light theme variant for secondary (used by Edit/View comments) */
 body.light-theme .btn--secondary,
 .light-theme .btn--secondary {

@@ -102,17 +102,6 @@
                   <div class="post-comments__edit-actions">
                     <button
                       appButton
-                      variant="primary"
-                      size="sm"
-                      type="submit"
-                      [loading]="submittingEdit()"
-                      [attr.aria-label]="'postComments.editSave' | appTranslate"
-                    >
-                      <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
-                      <span class="btn__label">{{ 'postComments.editSave' | appTranslate }}</span>
-                    </button>
-                    <button
-                      appButton
                       variant="ghost"
                       size="sm"
                       type="button"
@@ -121,6 +110,18 @@
                     >
                       <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
                       <span class="btn__label">{{ 'postComments.editCancel' | appTranslate }}</span>
+                    </button>
+
+                    <button
+                      appButton
+                      variant="primary"
+                      size="sm"
+                      type="submit"
+                      [loading]="submittingEdit()"
+                      [attr.aria-label]="'postComments.editSave' | appTranslate"
+                    >
+                      <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+                      <span class="btn__label">{{ 'postComments.editSave' | appTranslate }}</span>
                     </button>
                   </div>
                   @if (editError()) {

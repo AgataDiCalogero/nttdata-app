@@ -8,7 +8,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -86,6 +86,9 @@ export class PostForm {
     Validators.required,
     Validators.min(1),
   ]);
+  private readonly userIdValue = toSignal(this.userIdControl.valueChanges, {
+    initialValue: this.userIdControl.value,
+  });
   private readonly userIdValidator: ValidatorFn = (control) => {
     const value = control.value;
     if (!value || typeof value !== 'number' || value <= 0) {
@@ -143,7 +146,7 @@ export class PostForm {
   });
 
   readonly hasValidAuthor = computed(() => {
-    const value = this.userIdControl.value;
+    const value = this.userIdValue();
     if (typeof value === 'number' && value > 0) {
       return this.userExists(value) || this.matchesEditableAuthor(value);
     }
