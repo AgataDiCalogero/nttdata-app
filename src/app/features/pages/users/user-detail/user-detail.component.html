@@ -40,49 +40,33 @@
               }}
             </div>
             <div class="user-detail-card__info">
-              <h2
-                class="user-detail-card__name ellipsis-expand"
-                appOverflowReveal
-                [appOverflowReveal]="detail.name || ('users.unnamed' | appTranslate)"
-                [attr.title]="detail.name || ('users.unnamed' | appTranslate)"
-              >
+              <h2 class="user-detail-card__name">
                 {{ detail.name || ('users.unnamed' | appTranslate) }}
               </h2>
-              <div class="user-detail-card__meta">
-                <div class="user-detail-card__meta-item">
-                  <lucide-icon [img]="Mail" aria-hidden="true"></lucide-icon>
-                  <span
-                    class="user-detail-card__email-text ellipsis-expand"
-                    appOverflowReveal
-                    [appOverflowReveal]="detail.email"
-                    [attr.title]="detail.email"
-                  >
-                    {{ detail.email }}
-                  </span>
-                </div>
-                <div class="user-detail-card__meta-item">
-                  <lucide-icon [img]="UserIcon" aria-hidden="true"></lucide-icon>
-                  <span
-                    class="ellipsis-expand"
-                    appOverflowReveal
-                    [appOverflowReveal]="genderLabel()"
-                  >
+                <div class="user-detail-card__meta">
+                  <div class="user-detail-card__meta-item meta-line">
+                    <lucide-icon class="meta-line__icon" [img]="Mail" aria-hidden="true"></lucide-icon>
+                    <span class="meta-line__content">
+                      {{ detail.email }}
+                    </span>
+                  </div>
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="UserIcon"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
                     {{ genderLabel() }}
                   </span>
                 </div>
-                <div class="user-detail-card__meta-item">
-                  <lucide-icon [img]="MessageSquare" aria-hidden="true"></lucide-icon>
-                  <span
-                    class="ellipsis-expand"
-                    appOverflowReveal
-                    [appOverflowReveal]="
-                      posts().length +
-                      ' ' +
-                      (posts().length === 1
-                        ? ('userDetail.postsCountSingle' | appTranslate)
-                        : ('userDetail.postsCountPlural' | appTranslate))
-                    "
-                  >
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="MessageSquare"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
                     {{ posts().length }}
                     {{
                       posts().length === 1
@@ -91,13 +75,9 @@
                     }}
                   </span>
                 </div>
-                <div class="user-detail-card__meta-item">
-                  <lucide-icon [img]="Circle" aria-hidden="true"></lucide-icon>
-                  <span
-                    class="ellipsis-expand"
-                    appOverflowReveal
-                    [appOverflowReveal]="statusLabel()"
-                  >
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon class="meta-line__icon" [img]="Circle" aria-hidden="true"></lucide-icon>
+                  <span class="meta-line__content">
                     {{ statusLabel() }}
                   </span>
                 </div>

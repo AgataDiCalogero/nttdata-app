@@ -22,6 +22,7 @@ export interface UsersService {
     perPage?: number;
     searchTerm?: string;
     pushUrl?: boolean;
+    forceReload?: boolean;
   }): void;
   onSearch(value: string): void;
   resetFilters(): void;

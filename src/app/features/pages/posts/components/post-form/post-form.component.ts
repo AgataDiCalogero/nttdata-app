@@ -91,10 +91,7 @@ export class PostForm {
     if (!value || typeof value !== 'number' || value <= 0) {
       return { required: true };
     }
-    if (this.users().some((user) => user.id === value)) {
-      return null;
-    }
-    return { missingAuthor: true };
+    return null;
   };
   private readonly titleControl = this.fb.nonNullable.control('', [
     Validators.required,
@@ -147,11 +144,11 @@ export class PostForm {
 
   readonly hasValidAuthor = computed(() => {
     const value = this.userIdControl.value;
-    return (
-      typeof value === 'number' &&
-      value > 0 &&
-      this.users().some((user) => user.id === value)
-    );
+    if (typeof value === 'number' && value > 0) {
+      return this.userExists(value) || this.matchesEditableAuthor(value);
+    }
+    const fallback = this.editablePost()?.user_id;
+    return typeof fallback === 'number' && fallback > 0;
   });
 
   constructor() {
@@ -216,12 +213,8 @@ export class PostForm {
   }
 
   get isMissingAuthor(): boolean {
-    const post = this.editablePost();
-    if (!post) {
-      return false;
-    }
     const value = this.userIdControl.value;
-    return value === post.user_id && !this.hasValidAuthor();
+    return this.matchesEditableAuthor(value) && !this.userExists(value);
   }
 
   get titleInvalid(): boolean {
@@ -242,7 +235,7 @@ export class PostForm {
     }
 
     const payload: CreatePost = {
-      user_id: this.userIdControl.value,
+      user_id: this.resolveAuthorId(),
       title: this.titleControl.value.trim(),
       body: this.bodyControl.value.trim(),
     };
@@ -286,5 +279,26 @@ export class PostForm {
 
   cancel(): void {
     this.dialogRef.close('cancel');
+  }
+
+  private userExists(value: number): boolean {
+    return this.users().some((user) => user.id === value);
+  }
+
+  private matchesEditableAuthor(value: number): boolean {
+    const post = this.editablePost();
+    return !!post && post.user_id === value;
+  }
+
+  private resolveAuthorId(): number {
+    const value = this.userIdControl.value;
+    if (typeof value === 'number' && value > 0) {
+      return value;
+    }
+    const fallback = this.editablePost()?.user_id;
+    if (typeof fallback === 'number' && fallback > 0) {
+      return fallback;
+    }
+    return 0;
   }
 }

@@ -26,7 +26,12 @@
       (resetFilters)="resetFilters.emit()"
     ></app-posts-filters>
 
-    <div class="app-results-summary app-results-summary--spaced" aria-live="polite" role="status">
+    <div
+      *ngIf="resultsSummary()"
+      class="app-results-summary app-results-summary--spaced"
+      aria-live="polite"
+      role="status"
+    >
       {{ resultsSummary() }}
     </div>
 

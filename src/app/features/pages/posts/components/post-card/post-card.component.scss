@@ -79,12 +79,16 @@
   font-weight: 600;
   line-height: 1.4;
   max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .post-card__subtitle {
   font-size: 0.85rem;
   color: color-mix(in srgb, var(--color-on-surface) 88%, transparent);
   max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .post-card__manage {

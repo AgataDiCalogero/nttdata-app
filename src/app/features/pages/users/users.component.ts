@@ -89,7 +89,7 @@ export class Users {
     const visible = this.visibleUsersCount();
     const total = this.totalUsersCount();
     if (total === 0) {
-      return this.i18n.translate('users.summary.empty');
+      return '';
     }
     const formattedVisible = this.numberFormatter.format(visible);
     const formattedTotal = this.numberFormatter.format(total);

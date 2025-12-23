@@ -30,7 +30,7 @@
         (resetFilters)="onResetFilters()"
       ></app-user-filters>
 
-      <div class="app-results-summary" aria-live="polite">
+      <div *ngIf="usersSummary()" class="app-results-summary" aria-live="polite">
         {{ usersSummary() }}
       </div>
 

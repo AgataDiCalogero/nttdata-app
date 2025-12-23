@@ -45,6 +45,7 @@ interface LoadUsersOptions {
   perPage?: number;
   searchTerm?: string;
   pushUrl?: boolean;
+  forceReload?: boolean;
 }
 
 interface UsersLoadCriteria {
@@ -147,6 +148,7 @@ export const UsersStoreAdapter = signalStore(
       const targetPerPage = ensurePerPage(options.perPage ?? currentPerPage);
       const targetPage = ensurePage(options.page ?? store.page());
       const term = (options.searchTerm ?? store.searchTerm()).trim();
+      const forceReload = options.forceReload ?? false;
 
       const currentCriteria = criteriaSignal();
       const currentError = store.error();
@@ -156,16 +158,19 @@ export const UsersStoreAdapter = signalStore(
         currentCriteria.perPage === targetPerPage &&
         currentCriteria.searchTerm === term;
 
-      if (sameCriteria && currentError === null) {
+      if (!forceReload && sameCriteria && currentError === null) {
         return;
       }
+
+      const shouldForceReload = sameCriteria || forceReload;
+      const reloadValue = shouldForceReload ? ++reloadToken : reloadToken;
 
       criteriaSignal.set({
         page: targetPage,
         perPage: targetPerPage,
         searchTerm: term,
         pushUrl,
-        reload: sameCriteria ? ++reloadToken : reloadToken,
+        reload: reloadValue,
       });
     };
 

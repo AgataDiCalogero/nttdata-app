@@ -74,7 +74,7 @@ export class PostsViewComponent {
     const visible = this.posts().length;
     const total = this.totalPosts();
     if (!total) {
-      return this.i18n.translate('posts.emptyState');
+      return '';
     }
     const formattedVisible = this.numberFormatter.format(visible);
     const formattedTotal = this.numberFormatter.format(total);

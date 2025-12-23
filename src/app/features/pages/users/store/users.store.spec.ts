@@ -106,6 +106,17 @@ describe('UsersStoreAdapter', () => {
     );
   }));
 
+  it('loadUsers con forceReload ignora la cache e ricarica con gli stessi criteri', fakeAsync(() => {
+    const store = TestBed.inject(usersServiceInjectionToken);
+    tick();
+    usersApi.list.calls.reset();
+
+    store.loadUsers({ forceReload: true, pushUrl: false });
+    tick();
+
+    expect(usersApi.list).toHaveBeenCalled();
+  }));
+
   it('toggleSort inverte la direzione quando il campo è lo stesso', () => {
     const store = TestBed.inject(usersServiceInjectionToken);
     const initialDir = store.sortState().dir;

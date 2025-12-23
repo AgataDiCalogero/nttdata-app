@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
-import { OverflowRevealDirective } from '@app/shared/directives/overflow-reveal.directive';
 
 import type { Post } from '@/app/shared/models/post';
 
@@ -18,7 +17,6 @@ import type { Post } from '@/app/shared/models/post';
     MatIconModule,
     MatCardModule,
     ButtonComponent,
-    OverflowRevealDirective,
     TranslatePipe,
   ],
   templateUrl: './post-card.component.html',

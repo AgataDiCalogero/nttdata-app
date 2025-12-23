@@ -39,7 +39,6 @@ import {
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { OverflowRevealDirective } from '@/app/shared/directives/overflow-reveal.directive';
 import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
@@ -55,7 +54,6 @@ import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
     LucideAngularModule,
     MatCardModule,
     MatProgressBarModule,
-    OverflowRevealDirective,
     TranslatePipe,
   ],
   templateUrl: './user-detail.component.html',

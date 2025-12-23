@@ -42,7 +42,7 @@ export class UsersUiService {
       releaseOverlay();
       if (result === 'success') {
         this.notifications.showSuccess(this.i18n.translate('users.create.success'));
-        this.usersStore.loadUsers({ pushUrl: false });
+        this.usersStore.loadUsers({ pushUrl: false, forceReload: true });
       }
     });
   }
@@ -69,7 +69,7 @@ export class UsersUiService {
             releaseOverlay();
             if (result === 'success') {
               this.notifications.showSuccess(this.i18n.translate('users.update.success'));
-              this.usersStore.loadUsers({ pushUrl: false });
+              this.usersStore.loadUsers({ pushUrl: false, forceReload: true });
             }
           });
         },
@@ -94,7 +94,7 @@ export class UsersUiService {
           tap({
             next: () => {
               this.notifications.showSuccess(this.i18n.translate('users.delete.success'));
-              this.usersStore.loadUsers({ pushUrl: false });
+              this.usersStore.loadUsers({ pushUrl: false, forceReload: true });
             },
             error: (err) => {
               console.error('Delete failed:', err);
