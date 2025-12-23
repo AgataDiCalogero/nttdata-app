@@ -23,7 +23,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import type { Comment, CreateComment } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 
 @Component({
   selector: 'app-comment-form',

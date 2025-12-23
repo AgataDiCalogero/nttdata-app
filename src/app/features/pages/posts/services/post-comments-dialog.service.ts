@@ -6,7 +6,7 @@ import { take } from 'rxjs';
 import { PostCommentsDialogComponent } from '@/app/features/pages/posts/components/post-comments-dialog/post-comments-dialog.component';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { OverlayKey, UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
 

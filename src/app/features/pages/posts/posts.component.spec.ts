@@ -8,10 +8,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Post } from '@/app/shared/models/post';
 
-import { PostsUiService } from './posts-ui.service';
+import { PostsUiService } from './services/posts-ui.service';
 import { Posts } from './posts.component';
 import { PostCommentsDialogService } from './services/post-comments-dialog.service';
-import { PostsFiltersService } from './store/posts-filters.service';
+import { PostsFiltersService } from './services/posts-filters.service';
 import { postsServiceInjectionToken } from './store/posts.inject';
 
 describe('PostsComponent', () => {

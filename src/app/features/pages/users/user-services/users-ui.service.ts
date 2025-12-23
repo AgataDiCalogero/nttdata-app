@@ -15,8 +15,8 @@ import {
 } from '@/app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 
-import { injectUsersService } from './store/users.inject';
-import { UserForm } from './user-form/user-form.component';
+import { injectUsersService } from '../store/users.inject';
+import { UserForm } from '../user-form/user-form.component';
 
 @Injectable()
 export class UsersUiService {

@@ -25,8 +25,8 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
-import { LoginFacadeService } from './services/login-facade.service';
-import { LoginUiService } from './services/login-ui.service';
+import { LoginFacadeService } from './services/login-facade.service/login-facade.service';
+import { LoginUiService } from './services/login-ui.service/login-ui.service';
 
 type MinLengthError = { requiredLength: number };
 

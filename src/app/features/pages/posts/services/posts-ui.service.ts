@@ -13,8 +13,8 @@ import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 
-import { PostForm } from './components/post-form/post-form.component';
-import { injectPostsService } from './store/posts.inject';
+import { PostForm } from '../components/post-form/post-form.component';
+import { injectPostsService } from '../store/posts.inject';
 
 type DialogResult = { status: 'created' | 'updated'; post?: Post };
 type PostFormDialogData = { users: User[]; post?: Post };

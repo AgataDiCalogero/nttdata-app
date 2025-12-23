@@ -22,7 +22,7 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { Comment as ModelComment } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@/app/shared/ui/button/button.component';

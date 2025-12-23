@@ -26,7 +26,7 @@ import type { SortField } from './store/users.service';
 import { UserFiltersComponent } from './user-filters/user-filters.component';
 import { UserListSkeletonComponent } from './user-list/user-list-skeleton.component';
 import { UserListComponent } from './user-list/user-list.component';
-import { UsersUiService } from './users-ui.service';
+import { UsersUiService } from './user-services/users-ui.service';
 
 @Component({
   standalone: true,

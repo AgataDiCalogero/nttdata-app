@@ -14,7 +14,7 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
-import { I18nService, type Locale } from './i18n.service';
+import { I18nService, type Locale } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-language-switcher',

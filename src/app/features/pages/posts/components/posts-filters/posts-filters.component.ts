@@ -10,7 +10,7 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { SearchBarComponent } from '@app/shared/ui/search/search-bar.component';
 import { SelectComponent } from '@app/shared/ui/select/select.component';
 
-import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
+import type { PostsFiltersFormGroup } from '../../services/posts-filters.service';
 
 @Component({
   standalone: true,

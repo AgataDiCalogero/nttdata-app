@@ -19,7 +19,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { LucideAngularModule, Menu } from 'lucide-angular';
 import { filter } from 'rxjs';
 
-import { LanguageSwitcherComponent } from '@app/shared/i18n/language-switcher.component';
+import { LanguageSwitcherComponent } from '@/app/shared/ui/language-switcher/language-switcher.component';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';

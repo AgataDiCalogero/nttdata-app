@@ -39,7 +39,7 @@ import {
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
 @Component({

@@ -19,12 +19,12 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { AlertComponent } from '@app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
-import { PostCardSkeletonComponent } from '@app/shared/ui/skeletons/post-card-skeleton.component';
 
+import { PostCardSkeletonComponent } from '@/app/features/pages/posts/components/post-card/post-card-skeleton/post-card-skeleton.component';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
 
-import type { PostsFiltersFormGroup } from '../../store/posts-filters.service';
+import type { PostsFiltersFormGroup } from '../../services/posts-filters.service';
 import { PostsFiltersComponent } from '../posts-filters/posts-filters.component';
 import { PostsListComponent } from '../posts-list/posts-list.component';
 

@@ -13,11 +13,11 @@ import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.servic
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { QueryCacheService } from '@/app/shared/services/query-cache/query-cache.service';
 
-import { PostsFiltersService } from './posts-filters.service';
+import { PostsFiltersService } from '../services/posts-filters.service';
 import { POSTS_STORE_CONFIG } from './posts-store.config';
 import { PostsStoreAdapter } from './posts.store';
 

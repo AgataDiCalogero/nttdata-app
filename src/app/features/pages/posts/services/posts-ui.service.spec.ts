@@ -10,7 +10,7 @@ import { NotificationsService } from '@app/shared/services/notifications/notific
 import { DialogOverlayCoordinator } from '@app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 
 import { PostsUiService } from './posts-ui.service';
-import { postsServiceInjectionToken } from './store/posts.inject';
+import { postsServiceInjectionToken } from '../store/posts.inject';
 
 describe('PostsUiService', () => {
   let service: PostsUiService;

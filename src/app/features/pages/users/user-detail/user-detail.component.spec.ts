@@ -25,7 +25,7 @@ import { UsersApiService } from '@/app/shared/data-access/users/users-api.servic
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
-import { CommentsFacadeService } from '@/app/shared/services/comments/comments-facade.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import { UserDetail } from './user-detail.component';
@@ -164,7 +164,9 @@ describe('UserDetailComponent', () => {
 
     const post = mockPosts[0];
     component.handleViewComments(post);
-    expect(commentsDialogSpy.open).toHaveBeenCalledWith(post, mockUser.name, { allowManage: false });
+    expect(commentsDialogSpy.open).toHaveBeenCalledWith(post, mockUser.name, {
+      allowManage: false,
+    });
   });
 
   it('should clear postsLoading and keep UI stable when posts fail to load', fakeAsync(() => {
