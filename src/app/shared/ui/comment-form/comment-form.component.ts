@@ -108,6 +108,15 @@ export class CommentFormComponent {
           this.toast.show('success', this.i18n.translate('commentForm.toastSuccess'));
           this.submitError.set(null);
           this.form.reset();
+          this.form.markAsUntouched();
+          this.form.markAsPristine();
+          for (const control of Object.values(this.form.controls)) {
+            control.markAsUntouched();
+            control.markAsPristine();
+            control.setErrors(null);
+            control.updateValueAndValidity({ emitEvent: false });
+          }
+          this.form.updateValueAndValidity({ emitEvent: false });
         },
         error: (err) => {
           this.submitting.set(false);

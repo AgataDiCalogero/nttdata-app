@@ -74,7 +74,13 @@ describe('PostForm', () => {
             post: dialogData.post ?? null,
           },
         },
-        { provide: I18nService, useValue: { translate: (key: string) => key } },
+        {
+          provide: I18nService,
+          useValue: {
+            translate: (key: string, params?: Record<string, string | number>) =>
+              params ? `${key}:${JSON.stringify(params)}` : key,
+          },
+        },
       ],
     });
     fixture = TestBed.createComponent(PostForm);
@@ -101,11 +107,39 @@ describe('PostForm', () => {
     expect(usersLookup.seed).toHaveBeenCalledWith([mockUser]);
   });
 
-  it('requests ensureUserInCache when the editing user is missing', () => {
-    buildModule({ post: mockPost, users: [] });
+  it('adds a fallback option when the editing author is not in the cached list', () => {
+    const missingAuthorId = 999;
+    const postWithMissingAuthor: Post = {
+      ...mockPost,
+      user_id: missingAuthorId,
+    };
 
-    expect(component.isEdit()).toBeTrue();
-    expect(usersLookup.ensureUserInCache).toHaveBeenCalledWith(mockPost.user_id);
+    buildModule({ post: postWithMissingAuthor, users: [mockUser] });
+    const options = component.userOptions();
+
+    expect(options.length).toBeGreaterThan(0);
+    expect(options[0]).toEqual({
+      value: missingAuthorId,
+      label: `postForm.missingAuthor:${JSON.stringify({ id: missingAuthorId })}`,
+    });
+  });
+
+  it('blocks submission when the author is missing', () => {
+    const missingAuthorId = 12345;
+    const postWithMissingAuthor: Post = {
+      ...mockPost,
+      user_id: missingAuthorId,
+    };
+
+    buildModule({ post: postWithMissingAuthor, users: [mockUser] });
+    component['titleControl'].setValue('Updated title');
+    component['bodyControl'].setValue('Updated body that also satisfies validation');
+    component['userIdControl'].setValue(missingAuthorId);
+
+    component.submit();
+
+    expect(postsApi.update).not.toHaveBeenCalled();
+    expect(dialogRef.close).not.toHaveBeenCalled();
   });
 
   it('calls the create API and closes with the created post', fakeAsync(() => {

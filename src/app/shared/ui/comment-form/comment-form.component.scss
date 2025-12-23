@@ -35,6 +35,8 @@
       min-width: 0;
       max-width: 50%;
     }
+
+    margin-bottom: var(--space-md);
   }
 }
 
@@ -70,6 +72,52 @@
     background: var(--mat-field-bg-hover);
     outline: none;
   }
+}
+
+:host ::ng-deep :is(.mat-mdc-form-field, .mat-form-field-infix) {
+  transition: transform 0.15s ease;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid.ng-untouched {
+  --mat-form-field-outlined-outline-color: var(--mat-field-border) !important;
+  --mat-form-field-outlined-hover-outline-color: var(--mat-field-border-hover) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--mat-field-border-focus) !important;
+  --mat-form-field-outlined-error-outline-color: var(--mat-field-border) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid:not(.ng-touched) .mdc-floating-label,
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid:not(.ng-touched) .mdc-floating-label--float-above {
+  color: var(--mat-field-label) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid {
+  --mat-form-field-outlined-outline-color: var(--mat-field-border) !important;
+  --mat-form-field-outlined-hover-outline-color: var(--mat-field-border-hover) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--mat-field-border-focus) !important;
+  --mat-form-field-outlined-error-outline-color: var(--mat-field-border) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.comment-form__field-invalid.mat-form-field-invalid {
+  --mat-form-field-outlined-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-hover-outline-color: color-mix(
+    in srgb,
+    var(--color-danger) 70%,
+    transparent
+  ) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-error-outline-color: var(--color-danger) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.comment-form__field-invalid.mat-form-field-invalid
+  .mdc-floating-label,
+:host ::ng-deep .mat-mdc-form-field.comment-form__field-invalid.mat-form-field-invalid
+  .mdc-floating-label--float-above {
+  color: var(--color-danger) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid.ng-touched .mdc-floating-label,
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid.ng-touched .mdc-floating-label--float-above {
+  color: var(--color-danger) !important;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

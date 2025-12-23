@@ -34,6 +34,12 @@
   width: 100%;
 }
 
+.post-form__missing-author {
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  line-height: 1.2;
+}
+
 .post-form__field--textarea textarea {
   min-height: 12rem;
   resize: vertical;

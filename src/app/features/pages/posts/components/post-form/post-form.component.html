@@ -48,6 +48,14 @@
         }
         @if (userIdInvalid) {
           <mat-error>{{ 'postForm.errors.author' | appTranslate }}</mat-error>
+        } @else if (isMissingAuthor) {
+          <mat-hint class="post-form__missing-author">
+            {{
+              'postForm.missingAuthor' | appTranslate: {
+                id: form.controls.userId.value
+              }
+            }}
+          </mat-hint>
         }
       </app-select>
     </div>
@@ -118,7 +126,9 @@
         variant="primary"
         type="submit"
         [loading]="submitting()"
-        [disabled]="submitting() || !users().length || loadingUsers()"
+        [disabled]="
+          submitting() || !users().length || loadingUsers() || !hasValidAuthor()
+        "
         [attr.aria-label]="submitLabel()"
       >
         @if (isEdit()) {

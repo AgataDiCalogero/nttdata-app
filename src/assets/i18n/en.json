@@ -293,7 +293,8 @@
       "create": "Create",
       "update": "Save changes",
       "saving": "Saving…"
-    }
+    },
+    "missingAuthor": "Unknown author (ID {{id}})"
   },
   "postComments": {
     "loading": "Loading comments...",

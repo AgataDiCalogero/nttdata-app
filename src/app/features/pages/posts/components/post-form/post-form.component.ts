@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -86,6 +86,16 @@ export class PostForm {
     Validators.required,
     Validators.min(1),
   ]);
+  private readonly userIdValidator: ValidatorFn = (control) => {
+    const value = control.value;
+    if (!value || typeof value !== 'number' || value <= 0) {
+      return { required: true };
+    }
+    if (this.users().some((user) => user.id === value)) {
+      return null;
+    }
+    return { missingAuthor: true };
+  };
   private readonly titleControl = this.fb.nonNullable.control('', [
     Validators.required,
     Validators.minLength(5),
@@ -120,12 +130,29 @@ export class PostForm {
     return this.i18n.translate('postForm.buttons.create');
   });
 
-  readonly userOptions = computed(() =>
-    this.users().map((user) => ({
+  readonly userOptions = computed(() => {
+    const options = this.users().map((user) => ({
       value: user.id,
       label: `${user.name} (ID ${user.id})`,
-    })),
-  );
+    }));
+    const post = this.editablePost();
+    if (post?.user_id && !options.some((option) => Number(option.value) === post.user_id)) {
+      options.unshift({
+        value: post.user_id,
+        label: this.i18n.translate('postForm.missingAuthor', { id: post.user_id }),
+      });
+    }
+    return options;
+  });
+
+  readonly hasValidAuthor = computed(() => {
+    const value = this.userIdControl.value;
+    return (
+      typeof value === 'number' &&
+      value > 0 &&
+      this.users().some((user) => user.id === value)
+    );
+  });
 
   constructor() {
     const prefetchedUsers = this.dialogData?.users ?? [];
@@ -133,6 +160,7 @@ export class PostForm {
       this.usersLookup.seed(prefetchedUsers);
     }
 
+    this.userIdControl.addValidators(this.userIdValidator);
     this.loadUsers();
 
     const post = this.editablePost();
@@ -142,16 +170,8 @@ export class PostForm {
         title: post.title,
         body: post.body,
       });
-
-      if (!this.users().some((user) => user.id === post.user_id)) {
-        this.usersLookup
-          .ensureUserInCache(post.user_id)
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe({
-            error: () => {},
-          });
-      }
     }
+
 
     effect(() => {
       const disableUser = this.submitting() || this.loadingUsers() || this.users().length === 0;
@@ -160,6 +180,7 @@ export class PostForm {
       } else if (!disableUser && this.userIdControl.disabled) {
         this.userIdControl.enable({ emitEvent: false });
       }
+      this.userIdControl.updateValueAndValidity({ emitEvent: false });
     });
 
     effect(() => {
@@ -173,6 +194,7 @@ export class PostForm {
         }
       }
     });
+
   }
 
   private loadUsers(force = false): void {
@@ -193,6 +215,15 @@ export class PostForm {
     return control.touched && control.invalid;
   }
 
+  get isMissingAuthor(): boolean {
+    const post = this.editablePost();
+    if (!post) {
+      return false;
+    }
+    const value = this.userIdControl.value;
+    return value === post.user_id && !this.hasValidAuthor();
+  }
+
   get titleInvalid(): boolean {
     const control = this.titleControl;
     return control.touched && control.invalid;
@@ -204,8 +235,9 @@ export class PostForm {
   }
 
   submit(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.hasValidAuthor()) {
       this.form.markAllAsTouched();
+      this.userIdControl.markAsTouched();
       return;
     }
 

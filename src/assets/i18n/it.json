@@ -293,7 +293,8 @@
       "create": "Crea",
       "update": "Salva modifiche",
       "saving": "Salvataggio…"
-    }
+    },
+    "missingAuthor": "Autore sconosciuto (ID {{id}})"
   },
   "postComments": {
     "loading": "Caricamento commenti...",
