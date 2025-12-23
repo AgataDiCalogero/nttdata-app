@@ -17,7 +17,6 @@ $dark-theme: mat.m2-define-dark-theme(
 );
 
 body.dark-theme {
-  @include mat.color-variants-backwards-compatibility($dark-theme);
   @include mat.all-component-themes($dark-theme);
 }
 
@@ -36,6 +35,5 @@ body.light-theme {
     )
   );
 
-  @include mat.color-variants-backwards-compatibility($light-theme);
   @include mat.all-component-themes($light-theme);
 }

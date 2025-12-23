@@ -62,7 +62,7 @@
       "deleting": "Deleting…",
       "comments": "Comments",
       "commentsWithCount": "Comments ({{count}})",
-      "viewComments": "View comments",
+      "viewComments": "Comments",
       "hideComments": "Hide comments",
       "cancel": "Cancel",
       "retry": "Retry",
@@ -261,7 +261,6 @@
   },
   "postCard": {
     "sharedBy": "Shared by {{name}}",
-    "viewComments": "View comments",
     "viewAuthorAria": "View author {{name}}",
     "editAria": "Edit post {{title}}",
     "deleteAria": "Delete post {{title}}",
