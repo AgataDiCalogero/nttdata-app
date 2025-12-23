@@ -173,7 +173,6 @@
 .user-filters {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
   align-items: stretch;
   background: var(--surface-mix-90);
   border: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
@@ -186,6 +185,11 @@
     flex-wrap: wrap;
     align-items: flex-end;
   }
+}
+
+.posts-filters,
+.user-filters {
+  gap: var(--space-sm);
 }
 
 .form-dialog {

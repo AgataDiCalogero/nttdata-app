@@ -195,8 +195,6 @@
     color-mix(in srgb, var(--color-accent) 65%, transparent),
     color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
   );
-  --shadow-toast: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-toast-hover: 0 6px 16px rgba(0, 0, 0, 0.2);
   --shadow-avatar-accent: 0 6px 18px rgba(249, 115, 22, 0.25);
 }
 .light-theme {
@@ -295,9 +293,6 @@
   --color-success-border: rgba(34, 197, 94, 0.3);
   --color-success-text-dark: #166534;
   --color-success-text-light: #14532d;
-
-  --comment-bg: rgba(249, 165, 76, 0.06);
-  --comment-border: rgba(249, 115, 22, 0.12);
 
   --color-warning: #d97706;
   --color-warning-bg: rgba(245, 158, 11, 0.08);
