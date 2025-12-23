@@ -12,6 +12,7 @@ npm-debug.log
 yarn-error.log
 
 # Generated
+audit-logs
 .npm-cache/
 .home/
 .cache/
