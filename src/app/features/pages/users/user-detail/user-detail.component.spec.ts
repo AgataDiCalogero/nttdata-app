@@ -164,7 +164,7 @@ describe('UserDetailComponent', () => {
 
     const post = mockPosts[0];
     component.handleViewComments(post);
-    expect(commentsDialogSpy.open).toHaveBeenCalledWith(post, mockUser.name);
+    expect(commentsDialogSpy.open).toHaveBeenCalledWith(post, mockUser.name, { allowManage: false });
   });
 
   it('should clear postsLoading and keep UI stable when posts fail to load', fakeAsync(() => {

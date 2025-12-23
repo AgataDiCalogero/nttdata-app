@@ -30,6 +30,7 @@
         [postId]="data.post.id"
         [comments]="comments()"
         [loading]="loading()"
+        [allowManage]="allowManage()"
         (commentCreated)="onCommentCreated($event)"
         (commentUpdated)="onCommentUpdated($event)"
         (commentDeleted)="onCommentDeleted($event)"

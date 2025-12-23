@@ -19,11 +19,11 @@ export class PostCommentsDialogService {
   private readonly destroyRef = inject(DestroyRef);
   private readonly commentsFacade = inject(CommentsFacadeService);
 
-  open(post: Post, authorName?: string | null): void {
+  open(post: Post, authorName?: string | null, options?: { allowManage?: boolean }): void {
     this.commentsFacade.toggleComments(post.id);
     const config = this.dialogLayouts.form({
       ariaLabel: this.i18n.translate('postComments.dialogAria', { title: post.title }),
-      data: { post, authorName },
+      data: { post, authorName, allowManage: options?.allowManage },
       panelVariant: 'sheet',
       mobile: {
         maxHeight: '90vh',

@@ -16,6 +16,7 @@ import { PostCommentsComponent } from '../post-comments/post-comments.component'
 interface PostCommentsDialogData {
   post: Post;
   authorName?: string | null;
+  allowManage?: boolean;
 }
 
 @Component({
@@ -55,6 +56,7 @@ export class PostCommentsDialogComponent {
   );
 
   readonly labelText = computed(() => this.i18n.translate('postComments.dialogLabel'));
+  readonly allowManage = computed(() => this.data.allowManage ?? true);
 
   close(): void {
     this.dialogRef.close();

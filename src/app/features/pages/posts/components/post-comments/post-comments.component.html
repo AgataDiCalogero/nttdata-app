@@ -31,56 +31,58 @@
                 </span>
                 <span class="post-comments__email">{{ comment.email }}</span>
               </div>
-              <div class="post-comments__item-actions">
-                @if (editingId() !== comment.id) {
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    [iconOnly]="true"
-                    (click)="startEdit(comment)"
-                    [attr.aria-label]="
-                      'postComments.editAria' | appTranslate: { name: comment.name }
-                    "
-                    title="{{ 'postComments.editAria' | appTranslate: { name: comment.name } }}"
-                  >
-                    <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
-                  </button>
-                  <button
-                    appButton
-                    variant="danger"
-                    size="sm"
-                    type="button"
-                    [iconOnly]="true"
-                    (click)="deleteComment(comment)"
-                    [disabled]="deletingId() === comment.id"
-                    [attr.aria-label]="
-                      'postComments.deleteAria' | appTranslate: { name: comment.name }
-                    "
-                    title="{{ 'postComments.deleteAria' | appTranslate: { name: comment.name } }}"
-                  >
-                    <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
-                  </button>
-                } @else {
-                  <button
-                    appButton
-                    variant="ghost"
-                    size="sm"
-                    type="button"
-                    [iconOnly]="true"
-                    (click)="cancelEdit()"
-                    [attr.aria-label]="
-                      'postComments.cancelEditAria' | appTranslate: { name: comment.name }
-                    "
-                    title="{{
-                      'postComments.cancelEditAria' | appTranslate: { name: comment.name }
-                    }}"
-                  >
-                    <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
-                  </button>
-                }
-              </div>
+              @if (allowManage()) {
+                <div class="post-comments__item-actions">
+                  @if (editingId() !== comment.id) {
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [iconOnly]="true"
+                      (click)="startEdit(comment)"
+                      [attr.aria-label]="
+                        'postComments.editAria' | appTranslate: { name: comment.name }
+                      "
+                      title="{{ 'postComments.editAria' | appTranslate: { name: comment.name } }}"
+                    >
+                      <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
+                    </button>
+                    <button
+                      appButton
+                      variant="danger"
+                      size="sm"
+                      type="button"
+                      [iconOnly]="true"
+                      (click)="deleteComment(comment)"
+                      [disabled]="deletingId() === comment.id"
+                      [attr.aria-label]="
+                        'postComments.deleteAria' | appTranslate: { name: comment.name }
+                      "
+                      title="{{ 'postComments.deleteAria' | appTranslate: { name: comment.name } }}"
+                    >
+                      <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+                    </button>
+                  } @else {
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [iconOnly]="true"
+                      (click)="cancelEdit()"
+                      [attr.aria-label]="
+                        'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                      "
+                      title="{{
+                        'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                      }}"
+                    >
+                      <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+                    </button>
+                  }
+                </div>
+              }
             </header>
 
             <div class="post-comments__body">

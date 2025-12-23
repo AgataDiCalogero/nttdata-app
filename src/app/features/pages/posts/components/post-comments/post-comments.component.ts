@@ -57,6 +57,7 @@ export class PostCommentsComponent {
   readonly comments = input<ModelComment[]>([]);
   readonly loading = input(false);
   readonly postId = input.required<number>();
+  readonly allowManage = input(true);
 
   readonly commentCreated = output<ModelComment>();
   readonly commentUpdated = output<ModelComment>();
@@ -72,6 +73,9 @@ export class PostCommentsComponent {
   private readonly dialog = inject(Dialog);
   readonly deletingId = signal<number | null>(null);
   deleteComment(comment: ModelComment): void {
+    if (!this.allowManage()) {
+      return;
+    }
     const data: DeleteConfirmData = {
       title: this.i18n.translate('postComments.deleteConfirm.title'),
       message: this.i18n.translate('postComments.deleteConfirm.message'),
@@ -144,6 +148,9 @@ export class PostCommentsComponent {
   }
 
   startEdit(comment: ModelComment): void {
+    if (!this.allowManage()) {
+      return;
+    }
     this.editingId.set(comment.id);
     this.editError.set(null);
     this.editForm.reset({ body: comment.body });
@@ -156,6 +163,9 @@ export class PostCommentsComponent {
   }
 
   saveEdit(comment: ModelComment): void {
+    if (!this.allowManage()) {
+      return;
+    }
     if (this.editForm.invalid || this.submittingEdit()) {
       this.editForm.markAllAsTouched();
       return;

@@ -175,7 +175,7 @@ export class UserDetail {
 
   handleViewComments(post: Post): void {
     const authorName = this.user()?.name ?? null;
-    this.commentsDialog.open(post, authorName);
+    this.commentsDialog.open(post, authorName, { allowManage: false });
   }
 
   private resolveUserId(): number | null {
