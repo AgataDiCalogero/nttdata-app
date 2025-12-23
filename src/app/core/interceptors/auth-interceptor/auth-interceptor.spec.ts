@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { authInterceptor } from './auth-interceptor';
-import { AuthService } from '../auth/auth-service/auth.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
 
 describe('authInterceptor', () => {
   let auth: { token: () => string | null };

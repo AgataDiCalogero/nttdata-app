@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 
-import { AuthService } from './auth-service/auth.service';
+import { AuthService } from '../auth-service/auth.service';
 
 export const authRedirectGuard: CanMatchFn = () => {
   const platformId = inject(PLATFORM_ID);

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, map, catchError, of } from 'rxjs';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
-import { TokenValidationService } from '@/app/core/auth/token-validation.service';
+import { TokenValidationService } from '@/app/core/auth/auth-token-validation/token-validation.service';
 
 export interface LoginResult {
   success: boolean;

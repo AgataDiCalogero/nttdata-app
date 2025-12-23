@@ -27,7 +27,7 @@ import type {
   UpdatePost,
   UpdateComment,
 } from '@/app/shared/models/post';
-import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/http-context-tokens';
+import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/error.interceptor/http-context-tokens';
 
 @Injectable({ providedIn: 'root' })
 export class PostsApiService {

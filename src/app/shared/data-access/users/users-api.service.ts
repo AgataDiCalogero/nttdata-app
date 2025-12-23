@@ -13,7 +13,7 @@ import {
 import type { ListResponse } from '@/app/shared/models/list-response';
 import { mapPaginatedResponse } from '@/app/shared/models/list-response.util';
 import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
-import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/http-context-tokens';
+import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/error.interceptor/http-context-tokens';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
@@ -70,9 +70,7 @@ export class UsersApiService {
     const context = options?.skipGlobalError
       ? new HttpContext().set(SKIP_GLOBAL_ERROR, true)
       : undefined;
-    return this.http
-      .get<UserDto>(`${this.base}/${id}`, { context })
-      .pipe(map(mapUserDto));
+    return this.http.get<UserDto>(`${this.base}/${id}`, { context }).pipe(map(mapUserDto));
   }
 
   create(payload: CreateUser): Observable<User> {

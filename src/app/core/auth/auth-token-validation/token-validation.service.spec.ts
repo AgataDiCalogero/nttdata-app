@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { I18nService } from '@app/shared/i18n/i18n.service';
 
 import { TokenValidationService } from './token-validation.service';
-import { SKIP_GLOBAL_ERROR } from '../interceptors/http-context-tokens';
+import { SKIP_GLOBAL_ERROR } from '../../interceptors/error.interceptor/http-context-tokens';
 
 describe('TokenValidationService', () => {
   let service: TokenValidationService;

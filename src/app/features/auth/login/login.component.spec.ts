@@ -13,7 +13,7 @@ import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import {
   TokenValidationService,
   type TokenValidationResult,
-} from '@/app/core/auth/token-validation.service';
+} from '@/app/core/auth/auth-token-validation/token-validation.service';
 
 import { Login } from './login.component';
 

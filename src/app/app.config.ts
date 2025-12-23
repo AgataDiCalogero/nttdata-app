@@ -12,9 +12,9 @@ import {
 } from '@angular/router';
 
 import { routes } from './app.routes';
-import { apiPrefixInterceptor } from './core/interceptors/api-prefix.interceptor';
-import { authInterceptor } from './core/interceptors/auth-interceptor';
-import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { apiPrefixInterceptor } from './core/interceptors/api-prefix.interceptor/api-prefix.interceptor';
+import { authInterceptor } from './core/interceptors/auth-interceptor/auth-interceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor/error.interceptor';
 import { providePaginationConfig } from './shared/config/pagination.config';
 
 export const appConfig: ApplicationConfig = {

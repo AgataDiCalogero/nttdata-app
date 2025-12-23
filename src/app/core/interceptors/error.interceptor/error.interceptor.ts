@@ -14,7 +14,7 @@ import { ToastService } from '@app/shared/ui/toast/toast.service';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
 
 import { SKIP_GLOBAL_ERROR } from './http-context-tokens';
-import { AuthService } from '../auth/auth-service/auth.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
 
 const MAX_RATE_LIMIT_RETRIES = 1;
 const SKIP_GLOBAL_ERROR_HEADER = 'X-Skip-Global-Error';

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Route, Router, UrlSegment, UrlTree } from '@angular/router';
 
 import { authRedirectGuard } from './auth-redirect.guard';
-import { AuthService } from './auth-service/auth.service';
+import { AuthService } from '../auth-service/auth.service';
 
 describe('authRedirectGuard', () => {
   let router: jasmine.SpyObj<Router>;

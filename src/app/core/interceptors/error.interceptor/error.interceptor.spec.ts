@@ -17,7 +17,7 @@ import { ToastService } from '@app/shared/ui/toast/toast.service';
 
 import { errorInterceptor } from './error.interceptor';
 import { SKIP_GLOBAL_ERROR } from './http-context-tokens';
-import { AuthService } from '../auth/auth-service/auth.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
 
 describe('errorInterceptor', () => {
   let mockRouter: jasmine.SpyObj<Router>;

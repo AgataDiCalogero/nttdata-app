@@ -11,7 +11,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { mapHttpError, type UiError } from '@app/shared/utils/error-mapper';
 
-import { SKIP_GLOBAL_ERROR } from '../interceptors/http-context-tokens';
+import { SKIP_GLOBAL_ERROR } from '../../interceptors/error.interceptor/http-context-tokens';
 
 export type TokenValidationErrorCode =
   | 'empty'
