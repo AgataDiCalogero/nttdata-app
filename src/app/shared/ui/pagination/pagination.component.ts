@@ -17,7 +17,6 @@ import { ButtonComponent } from '@app/shared/ui/button/button.component';
   standalone: true,
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss'],
   imports: [CommonModule, MatIconModule, ButtonComponent, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -29,12 +28,12 @@ export class PaginationComponent {
   readonly pageCount = this.pageCountSignal;
   readonly ariaLabel = input<string>('');
 
-  @Input('page')
+  @Input()
   set pageInput(value: number) {
     this.pageSignal.set(Number.isFinite(value) ? Math.max(1, value) : 1);
   }
 
-  @Input('pageCount')
+  @Input()
   set pageCountInput(value: number) {
     this.pageCountSignal.set(Number.isFinite(value) ? Math.max(1, value) : 1);
   }
