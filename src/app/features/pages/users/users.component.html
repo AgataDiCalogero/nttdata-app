@@ -37,7 +37,11 @@
       @if (loading()) {
         <div class="users-loader" aria-live="polite">
           <output class="app-progress users-page__loader" aria-live="polite">
-            <mat-progress-bar mode="indeterminate" color="accent" class="app-progress-bar"></mat-progress-bar>
+            <mat-progress-bar
+              mode="indeterminate"
+              color="accent"
+              class="app-progress-bar"
+            ></mat-progress-bar>
             <span class="app-progress__text">{{ 'users.loading' | appTranslate }}</span>
           </output>
           <div class="users-skeletons" aria-hidden="true">

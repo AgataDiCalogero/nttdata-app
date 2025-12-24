@@ -29,6 +29,7 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { PostCardComponent } from '@/app/features/pages/posts/components/post-card/post-card.component';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { PostCommentsDialogService } from '@/app/features/pages/posts/services/post-comments-dialog.service';
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import {
@@ -39,7 +40,6 @@ import {
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 
 @Component({

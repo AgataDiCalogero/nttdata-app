@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
@@ -13,13 +14,12 @@ import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.servic
 import { UsersApiService } from '@/app/shared/data-access/users/users-api.service';
 import type { Comment, Post } from '@/app/shared/models/post';
 import type { User } from '@/app/shared/models/user';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { QueryCacheService } from '@/app/shared/services/query-cache/query-cache.service';
 
-import { PostsFiltersService } from '../services/posts-filters.service';
 import { POSTS_STORE_CONFIG } from './posts-store.config';
 import { PostsStoreAdapter } from './posts.store';
+import { PostsFiltersService } from '../services/posts-filters.service';
 
 describe('PostsStoreAdapter', () => {
   let postsApi: jasmine.SpyObj<PostsApiService>;

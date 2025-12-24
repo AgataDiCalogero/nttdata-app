@@ -3,10 +3,10 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { take } from 'rxjs';
 
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { PostCommentsDialogComponent } from '@/app/features/pages/posts/components/post-comments-dialog/post-comments-dialog.component';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Post } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { ResponsiveDialogService } from '@/app/shared/services/dialog/responsive-dialog.service';
 import { OverlayKey, UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
 

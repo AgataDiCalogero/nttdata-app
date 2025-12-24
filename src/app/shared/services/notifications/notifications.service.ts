@@ -28,7 +28,7 @@ export class NotificationsService {
       mapped.kind === 'unknown'
         ? fallbackMessage
         : this.i18n.translate(mapped.messageKey) || fallbackMessage;
-    if (!options?.silent) {
+    if (options?.silent !== true) {
       this.toast.show('error', message);
     }
     return message;

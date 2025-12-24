@@ -111,13 +111,13 @@
     textarea:not(.mat-mdc-input-element)
   ),
 :is(
-    .form-input,
-    .form-select,
-    .form-textarea,
-    input:not(.mat-mdc-input-element),
-    select:not(.mat-mdc-input-element),
-    textarea:not(.mat-mdc-input-element)
-  )[aria-invalid='true'] {
+  .form-input,
+  .form-select,
+  .form-textarea,
+  input:not(.mat-mdc-input-element),
+  select:not(.mat-mdc-input-element),
+  textarea:not(.mat-mdc-input-element)
+)[aria-invalid='true'] {
   border-color: var(--color-danger-border);
 
   @supports (color: color-mix(in srgb, var(--color-danger) 65%, transparent)) {

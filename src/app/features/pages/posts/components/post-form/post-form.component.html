@@ -51,9 +51,11 @@
         } @else if (isMissingAuthor) {
           <mat-hint class="post-form__missing-author">
             {{
-              'postForm.missingAuthor' | appTranslate: {
-                id: form.controls.userId.value
-              }
+              'postForm.missingAuthor'
+                | appTranslate
+                  : {
+                      id: form.controls.userId.value,
+                    }
             }}
           </mat-hint>
         }
@@ -126,9 +128,7 @@
         variant="primary"
         type="submit"
         [loading]="submitting()"
-        [disabled]="
-          submitting() || !users().length || loadingUsers() || !hasValidAuthor()
-        "
+        [disabled]="submitting() || !users().length || loadingUsers() || !hasValidAuthor()"
         [attr.aria-label]="submitLabel()"
       >
         @if (isEdit()) {

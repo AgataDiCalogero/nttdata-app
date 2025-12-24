@@ -90,8 +90,8 @@ export class PostForm {
     initialValue: this.userIdControl.value,
   });
   private readonly userIdValidator: ValidatorFn = (control) => {
-    const value = control.value;
-    if (!value || typeof value !== 'number' || value <= 0) {
+    const value = control.value as number | null;
+    if (typeof value !== 'number' || value <= 0) {
       return { required: true };
     }
     return null;
@@ -136,10 +136,15 @@ export class PostForm {
       label: `${user.name} (ID ${user.id})`,
     }));
     const post = this.editablePost();
-    if (post?.user_id && !options.some((option) => Number(option.value) === post.user_id)) {
+    const missingAuthorId = typeof post?.user_id === 'number' ? post.user_id : null;
+    if (
+      missingAuthorId !== null &&
+      missingAuthorId > 0 &&
+      !options.some((option) => Number(option.value) === missingAuthorId)
+    ) {
       options.unshift({
-        value: post.user_id,
-        label: this.i18n.translate('postForm.missingAuthor', { id: post.user_id }),
+        value: missingAuthorId,
+        label: this.i18n.translate('postForm.missingAuthor', { id: missingAuthorId }),
       });
     }
     return options;
@@ -172,7 +177,6 @@ export class PostForm {
       });
     }
 
-
     effect(() => {
       const disableUser = this.submitting() || this.loadingUsers() || this.users().length === 0;
       if (disableUser && this.userIdControl.enabled) {
@@ -194,7 +198,6 @@ export class PostForm {
         }
       }
     });
-
   }
 
   private loadUsers(force = false): void {
@@ -217,6 +220,9 @@ export class PostForm {
 
   get isMissingAuthor(): boolean {
     const value = this.userIdControl.value;
+    if (typeof value !== 'number') {
+      return false;
+    }
     return this.matchesEditableAuthor(value) && !this.userExists(value);
   }
 

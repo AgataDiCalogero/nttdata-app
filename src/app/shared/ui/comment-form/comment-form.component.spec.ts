@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { Comment } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { ToastService } from '@/app/shared/ui/toast/toast.service';
 
 import { CommentFormComponent } from './comment-form.component';

@@ -27,7 +27,10 @@ function lineAt(index) {
   let high = lineStarts.length - 1;
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
-    if (lineStarts[mid] <= index && (mid === lineStarts.length - 1 || lineStarts[mid + 1] > index)) {
+    if (
+      lineStarts[mid] <= index &&
+      (mid === lineStarts.length - 1 || lineStarts[mid + 1] > index)
+    ) {
       return mid + 1;
     }
     if (lineStarts[mid] > index) {

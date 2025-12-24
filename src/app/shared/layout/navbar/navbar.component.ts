@@ -19,13 +19,13 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { LucideAngularModule, Menu } from 'lucide-angular';
 import { filter } from 'rxjs';
 
-import { LanguageSwitcherComponent } from '@/app/shared/ui/language-switcher/language-switcher.component';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { LucideMatIconService } from '@app/shared/icons/lucide-mat-icon.service';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 
 import { AuthService } from '@/app/core/auth/auth-service/auth.service';
 import { ThemeService } from '@/app/shared/services/theme/theme.service';
+import { LanguageSwitcherComponent } from '@/app/shared/ui/language-switcher/language-switcher.component';
 
 import { AppearanceSwitcherComponent } from '../appearance-switcher/appearance-switcher.component';
 

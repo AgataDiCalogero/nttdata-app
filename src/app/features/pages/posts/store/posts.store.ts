@@ -15,6 +15,7 @@ import {
   throwError,
 } from 'rxjs';
 
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import {
   DEFAULT_PAGINATION_CONFIG,
   PAGINATION_CONFIG,
@@ -24,14 +25,13 @@ import { PostsApiService } from '@/app/shared/data-access/posts/posts-api.servic
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import type { PaginationMeta } from '@/app/shared/models/pagination';
 import type { Post, PostFilters, QueryCriteria } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 import { QueryCacheService } from '@/app/shared/services/query-cache/query-cache.service';
 import { UsersLookupService } from '@/app/shared/services/users/users-lookup.service';
 import { normalizePage } from '@/app/shared/utils/pagination-utils';
 
-import { PostsFiltersService } from '../services/posts-filters.service';
 import { POSTS_STORE_CONFIG } from './posts-store.config';
+import { PostsFiltersService } from '../services/posts-filters.service';
 import type { PostsService } from '../services/posts.service';
 
 interface PostsState {

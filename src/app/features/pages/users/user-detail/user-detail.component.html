@@ -43,13 +43,17 @@
               <h2 class="user-detail-card__name">
                 {{ detail.name || ('users.unnamed' | appTranslate) }}
               </h2>
-                <div class="user-detail-card__meta">
-                  <div class="user-detail-card__meta-item meta-line">
-                    <lucide-icon class="meta-line__icon" [img]="Mail" aria-hidden="true"></lucide-icon>
-                    <span class="meta-line__content">
-                      {{ detail.email }}
-                    </span>
-                  </div>
+              <div class="user-detail-card__meta">
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="Mail"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
+                    {{ detail.email }}
+                  </span>
+                </div>
                 <div class="user-detail-card__meta-item meta-line">
                   <lucide-icon
                     class="meta-line__icon"
@@ -76,7 +80,11 @@
                   </span>
                 </div>
                 <div class="user-detail-card__meta-item meta-line">
-                  <lucide-icon class="meta-line__icon" [img]="Circle" aria-hidden="true"></lucide-icon>
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="Circle"
+                    aria-hidden="true"
+                  ></lucide-icon>
                   <span class="meta-line__content">
                     {{ statusLabel() }}
                   </span>

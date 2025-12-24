@@ -579,7 +579,9 @@ $filter-control-height: var(--btn-height-md); // 2.75rem = 44px
 }
 
 // Compact form field infix for filters only
-:is(.filters-bar, .user-filters, .posts-filters) .app-search-field--compact .mat-mdc-form-field-infix,
+:is(.filters-bar, .user-filters, .posts-filters)
+  .app-search-field--compact
+  .mat-mdc-form-field-infix,
 :is(.filters-bar, .user-filters, .posts-filters) .select-field--compact .mat-mdc-form-field-infix {
   min-height: $filter-control-height;
   height: $filter-control-height;
@@ -591,8 +593,12 @@ $filter-control-height: var(--btn-height-md); // 2.75rem = 44px
 }
 
 // Force the outer text-field-wrapper to the same height
-:is(.filters-bar, .user-filters, .posts-filters) .app-search-field--compact .mat-mdc-text-field-wrapper,
-:is(.filters-bar, .user-filters, .posts-filters) .select-field--compact .mat-mdc-text-field-wrapper {
+:is(.filters-bar, .user-filters, .posts-filters)
+  .app-search-field--compact
+  .mat-mdc-text-field-wrapper,
+:is(.filters-bar, .user-filters, .posts-filters)
+  .select-field--compact
+  .mat-mdc-text-field-wrapper {
   height: $filter-control-height !important;
   min-height: $filter-control-height !important;
   padding-block: 0 !important;

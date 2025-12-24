@@ -2,6 +2,7 @@ import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, shareReplay, tap, type Observable } from 'rxjs';
 
+import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/error.interceptor/http-context-tokens';
 import {
   type CreateUserDto,
   type UpdateUserDto,
@@ -13,7 +14,6 @@ import {
 import type { ListResponse } from '@/app/shared/models/list-response';
 import { mapPaginatedResponse } from '@/app/shared/models/list-response.util';
 import type { User, CreateUser, UpdateUser } from '@/app/shared/models/user';
-import { SKIP_GLOBAL_ERROR } from '@/app/core/interceptors/error.interceptor/http-context-tokens';
 
 @Injectable({ providedIn: 'root' })
 export class UsersApiService {
@@ -67,9 +67,10 @@ export class UsersApiService {
   }
 
   getById(id: number, options?: { skipGlobalError?: boolean }): Observable<User> {
-    const context = options?.skipGlobalError
-      ? new HttpContext().set(SKIP_GLOBAL_ERROR, true)
-      : undefined;
+    const context =
+      options?.skipGlobalError === true
+        ? new HttpContext().set(SKIP_GLOBAL_ERROR, true)
+        : undefined;
     return this.http.get<UserDto>(`${this.base}/${id}`, { context }).pipe(map(mapUserDto));
   }
 

@@ -46,20 +46,28 @@
           </mat-card-header>
 
           <mat-card-content>
-              <div class="user-card__meta">
-                <div class="user-card__meta-item meta-line">
-                  <mat-icon class="meta-line__icon" svgIcon="lucide:mail" aria-hidden="true"></mat-icon>
-                  <span class="meta-line__content">
-                    {{ user.email }}
-                  </span>
-                </div>
-                <div class="user-card__meta-item meta-line">
-                  <mat-icon class="meta-line__icon" svgIcon="lucide:user" aria-hidden="true"></mat-icon>
-                  <span class="meta-line__content">
-                    {{ getGenderLabel(user.gender) }}
-                  </span>
-                </div>
+            <div class="user-card__meta">
+              <div class="user-card__meta-item meta-line">
+                <mat-icon
+                  class="meta-line__icon"
+                  svgIcon="lucide:mail"
+                  aria-hidden="true"
+                ></mat-icon>
+                <span class="meta-line__content">
+                  {{ user.email }}
+                </span>
               </div>
+              <div class="user-card__meta-item meta-line">
+                <mat-icon
+                  class="meta-line__icon"
+                  svgIcon="lucide:user"
+                  aria-hidden="true"
+                ></mat-icon>
+                <span class="meta-line__content">
+                  {{ getGenderLabel(user.gender) }}
+                </span>
+              </div>
+            </div>
           </mat-card-content>
 
           <mat-card-actions align="end">

@@ -13,7 +13,9 @@
         appearance="outline"
         color="accent"
         [floatLabel]="'always'"
-        [class.comment-form__field-invalid]="form.controls.name.touched && form.controls.name.invalid"
+        [class.comment-form__field-invalid]="
+          form.controls.name.touched && form.controls.name.invalid
+        "
       >
         <mat-label>{{ 'commentForm.fields.name' | appTranslate }}</mat-label>
         <input
@@ -41,7 +43,9 @@
         appearance="outline"
         color="accent"
         [floatLabel]="'always'"
-        [class.comment-form__field-invalid]="form.controls.email.touched && form.controls.email.invalid"
+        [class.comment-form__field-invalid]="
+          form.controls.email.touched && form.controls.email.invalid
+        "
       >
         <mat-label>{{ 'commentForm.fields.email' | appTranslate }}</mat-label>
         <input

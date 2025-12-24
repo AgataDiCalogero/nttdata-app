@@ -26,8 +26,7 @@ for (const result of payload.results || []) {
   }
 }
 
-const sortByCount = (entries) =>
-  [...entries].sort((a, b) => b[1] - a[1]).slice(0, 10);
+const sortByCount = (entries) => [...entries].sort((a, b) => b[1] - a[1]).slice(0, 10);
 
 console.log('Top 10 rules by warning count:');
 console.table(sortByCount(ruleCounts));

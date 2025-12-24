@@ -17,6 +17,7 @@ import {
 } from 'lucide-angular';
 import { of, throwError } from 'rxjs';
 
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { PostCommentsDialogService } from '@/app/features/pages/posts/services/post-comments-dialog.service';
 import { UsersFacadeService } from '@/app/features/pages/users/store/users-facade.service';
 import { CommentsCacheService } from '@/app/shared/data-access/comments/comments-cache.service';
@@ -25,7 +26,6 @@ import { UsersApiService } from '@/app/shared/data-access/users/users-api.servic
 import { I18nService } from '@/app/shared/i18n/i18n.service';
 import { Post } from '@/app/shared/models/post';
 import { User } from '@/app/shared/models/user';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { NotificationsService } from '@/app/shared/services/notifications/notifications.service';
 
 import { UserDetail } from './user-detail.component';

@@ -40,11 +40,11 @@ export class UsersFacadeService {
     return this.postsApi
       .list({ userId, perPage }, { skipGlobalError: options?.silent === true })
       .pipe(
-      map((result) => result.items),
-      catchError((err) => {
-        this.notifications.showHttpError(err, resolvedErrorMessage, options);
-        return of<Post[]>([]);
-      }),
+        map((result) => result.items),
+        catchError((err) => {
+          this.notifications.showHttpError(err, resolvedErrorMessage, options);
+          return of<Post[]>([]);
+        }),
       );
   }
 }

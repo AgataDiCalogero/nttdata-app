@@ -12,13 +12,7 @@ import type { Post } from '@/app/shared/models/post';
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatCardModule,
-    ButtonComponent,
-    TranslatePipe,
-  ],
+  imports: [CommonModule, MatIconModule, MatCardModule, ButtonComponent, TranslatePipe],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

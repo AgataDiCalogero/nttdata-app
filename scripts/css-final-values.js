@@ -10,9 +10,7 @@ const conflictsPath = conflictsIndex >= 0 ? args[conflictsIndex + 1] : null;
 const asJson = args.includes('--json');
 
 if (!cssPath) {
-  console.error(
-    'Usage: node scripts/css-final-values.js <css-file> [--conflicts <json>] [--json]',
-  );
+  console.error('Usage: node scripts/css-final-values.js <css-file> [--conflicts <json>] [--json]');
   process.exit(1);
 }
 
@@ -41,7 +39,10 @@ function lineAt(index) {
   let high = lineStarts.length - 1;
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
-    if (lineStarts[mid] <= index && (mid === lineStarts.length - 1 || lineStarts[mid + 1] > index)) {
+    if (
+      lineStarts[mid] <= index &&
+      (mid === lineStarts.length - 1 || lineStarts[mid + 1] > index)
+    ) {
       return mid + 1;
     }
     if (lineStarts[mid] > index) {
@@ -362,7 +363,5 @@ console.log('Selector | Property | Value | Offset');
 console.log('--- | --- | --- | ---');
 results.forEach((entry) => {
   const selectorLabel = entry.context ? `${entry.context} | ${entry.selector}` : entry.selector;
-  console.log(
-    `${selectorLabel} | ${entry.property} | ${entry.value} | ${entry.offset}`,
-  );
+  console.log(`${selectorLabel} | ${entry.property} | ${entry.value} | ${entry.offset}`);
 });

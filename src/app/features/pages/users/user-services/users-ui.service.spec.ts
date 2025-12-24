@@ -11,8 +11,8 @@ import { NotificationsService } from '@app/shared/services/notifications/notific
 import { DialogOverlayCoordinator } from '@app/shared/services/ui-overlay/dialog-overlay-coordinator.service';
 import { UiOverlayService } from '@app/shared/services/ui-overlay/ui-overlay.service';
 
-import { usersServiceInjectionToken } from '../store/users.inject';
 import { UsersUiService } from './users-ui.service';
+import { usersServiceInjectionToken } from '../store/users.inject';
 
 describe('UsersUiService', () => {
   let service: UsersUiService;

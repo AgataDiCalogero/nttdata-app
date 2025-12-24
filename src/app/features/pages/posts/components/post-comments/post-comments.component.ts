@@ -1,4 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -10,7 +11,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { TextFieldModule } from '@angular/cdk/text-field';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,9 +20,9 @@ import { tap, take } from 'rxjs';
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 
+import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import type { DeleteConfirmData } from '@/app/shared/models/dialog';
 import type { Comment as ModelComment } from '@/app/shared/models/post';
-import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
 import { UiOverlayService } from '@/app/shared/services/ui-overlay/ui-overlay.service';
 import { AlertComponent } from '@/app/shared/ui/alert/alert.component';
 import { ButtonComponent } from '@/app/shared/ui/button/button.component';

@@ -1,3 +1,4 @@
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -10,7 +11,6 @@ import {
   effect,
   computed,
 } from '@angular/core';
-import { TextFieldModule } from '@angular/cdk/text-field';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,8 +22,8 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { ToastService } from '@app/shared/ui/toast/toast.service';
 
-import type { Comment, CreateComment } from '@/app/shared/models/post';
 import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
+import type { Comment, CreateComment } from '@/app/shared/models/post';
 
 @Component({
   selector: 'app-comment-form',

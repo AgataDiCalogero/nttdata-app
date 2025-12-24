@@ -8,8 +8,8 @@ import { TranslatePipe } from '@app/shared/i18n/translate.pipe';
 import { ButtonComponent } from '@app/shared/ui/button/button.component';
 import { CommentFormComponent } from '@app/shared/ui/comment-form/comment-form.component';
 
-import type { Comment, Post } from '@/app/shared/models/post';
 import { CommentsFacadeService } from '@/app/features/pages/posts/components/post-comments/post-comments-facade/comments-facade.service';
+import type { Comment, Post } from '@/app/shared/models/post';
 
 import { PostCommentsComponent } from '../post-comments/post-comments.component';
 
