@@ -102,6 +102,12 @@ L’app non gestisce registrazioni: l’utente inserisce manualmente il token Go
 5. Nella sezione **Post**, filtri per titolo/autore, gestisci paginazione e crei/modifichi/elimini post tramite dialog validati.
 6. Per uscire, usa l’icona utente/logout nell’header; il token viene rimosso e verrai riportato al login.
 
+## Lingue, temi e modalità di lettura
+
+- **Italiano/English**: la `LanguageSwitcherComponent` usa `I18nService` per offrire traduzioni in italiano e inglese (`assets/i18n/it.json`, `assets/i18n/en.json`), memorizzando la lingua preferita nel `localStorage` e aggiornando `document.documentElement.lang`.
+- **Temi light/dark**: `ThemeService` gestisce preferenze (`light`, `dark`, `system`) e applica le classi `light-theme`/`dark-theme` al `body`, aggiornando `document.documentElement.dataset.theme` e ascoltando `prefers-color-scheme` quando la preferenza è `system`.
+- **Modalità di lettura**: lo stesso servizio può accendere/spegnere la classe `reading-mode`, mantenendo il flag in `localStorage` per tornare alla vista a contrasto ridotto.
+
 ## Troubleshooting
 
 - **EPERM su Windows durante `npm ci`**: chiudi processi `node/ng serve`, disattiva antivirus che blocca `.node`, elimina `node_modules` e reinstalla.
