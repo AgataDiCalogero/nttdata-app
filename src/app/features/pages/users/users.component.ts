@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
@@ -35,6 +36,7 @@ import { UsersUiService } from './user-services/users-ui.service';
     CommonModule,
     RouterModule,
     MatIconModule,
+    MatProgressBarModule,
     LucideAngularModule,
     MatProgressSpinnerModule,
     MatCardModule,
@@ -84,7 +86,7 @@ export class Users {
   readonly totalUsersCount = computed(() => this.pagination()?.total ?? this.visibleUsersCount());
   readonly usersSummary = computed(() => {
     if (this.loading()) {
-      return this.i18n.translate('users.summary.loading');
+      return '';
     }
     const visible = this.visibleUsersCount();
     const total = this.totalUsersCount();

@@ -28,12 +28,12 @@ export class PaginationComponent {
   readonly pageCount = this.pageCountSignal;
   readonly ariaLabel = input<string>('');
 
-  @Input()
+  @Input('page')
   set pageInput(value: number) {
     this.pageSignal.set(Number.isFinite(value) ? Math.max(1, value) : 1);
   }
 
-  @Input()
+  @Input('pageCount')
   set pageCountInput(value: number) {
     this.pageCountSignal.set(Number.isFinite(value) ? Math.max(1, value) : 1);
   }

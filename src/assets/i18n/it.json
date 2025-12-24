@@ -121,6 +121,7 @@
     "title": "Utenti",
     "new": "Nuovo utente",
     "subtitle": "Gestisci e consulta tutti gli utenti registrati",
+    "loading": "Caricamento utenti...",
     "filters": {
       "searchLabel": "Cerca utenti per nome o email",
       "searchPlaceholder": "Cerca per nome o email...",

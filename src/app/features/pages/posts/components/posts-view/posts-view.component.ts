@@ -69,7 +69,7 @@ export class PostsViewComponent {
   readonly userLookup = input.required<Record<number, string>>();
   readonly resultsSummary = computed(() => {
     if (this.loading()) {
-      return this.i18n.translate('posts.loading');
+      return '';
     }
     const visible = this.posts().length;
     const total = this.totalPosts();

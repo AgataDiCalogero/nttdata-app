@@ -121,6 +121,7 @@
     "title": "Users",
     "new": "New User",
     "subtitle": "Manage and view all registered users",
+    "loading": "Loading users...",
     "filters": {
       "searchLabel": "Search users by name or email",
       "searchPlaceholder": "Search by name or email...",
