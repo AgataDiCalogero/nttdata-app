@@ -4,15 +4,15 @@ nttdata-app è un esercizio realizzato per il percorso start2impact e NTT DATA c
 
 ## Requisiti funzionali implementati
 
-| Funzionalità | Stato | Evidenza |
-| --- | --- | --- |
-| Login con token GoRest e validazione | ✅ Implementato | `LoginComponent` con form reattivo e token validato da `LoginFacade` con alert e gestione errori |
-| Lista utenti con ricerca, ordinamento, paginazione e CRUD | ✅ Implementato | `UsersComponent` e `UsersStore` con segnali dedicati, paginazione, sorting, modali di creazione/modifica |
-| Dettaglio utente con post e commenti | ✅ Implementato | `UserDetailComponent` carica utente e post, `CommentFormComponent` gestisce l’aggiunta di commenti |
-| Lista post con filtri e operazioni CRUD | ✅ Implementato | `PostsComponent` con segnali per filtri, paginazione e `PostsUiService` per creare/modificare/cancellare |
-| Autenticazione globale delle rotte | ✅ Implementato | `AuthGuard`, `AuthRedirectGuard` e rotte lazy protette (users/posts/login standalone) |
-| Logout con cancellazione token | ✅ Implementato | `AuthService.logout()` cancella token da `sessionStorage` e resetta stato |
-| Test unitari e copertura | ✅ Implementato (≥ 80%) | `karma.conf.cjs` + `npm test --watch=false --browsers=ChromeHeadless` con report coverage 80,48% statements |
+| Funzionalità                                              | Stato                   | Evidenza                                                                                                    |
+| --------------------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Login con token GoRest e validazione                      | ✅ Implementato         | `LoginComponent` con form reattivo e token validato da `LoginFacade` con alert e gestione errori            |
+| Lista utenti con ricerca, ordinamento, paginazione e CRUD | ✅ Implementato         | `UsersComponent` e `UsersStore` con segnali dedicati, paginazione, sorting, modali di creazione/modifica    |
+| Dettaglio utente con post e commenti                      | ✅ Implementato         | `UserDetailComponent` carica utente e post, `CommentFormComponent` gestisce l’aggiunta di commenti          |
+| Lista post con filtri e operazioni CRUD                   | ✅ Implementato         | `PostsComponent` con segnali per filtri, paginazione e `PostsUiService` per creare/modificare/cancellare    |
+| Autenticazione globale delle rotte                        | ✅ Implementato         | `AuthGuard`, `AuthRedirectGuard` e rotte lazy protette (users/posts/login standalone)                       |
+| Logout con cancellazione token                            | ✅ Implementato         | `AuthService.logout()` cancella token da `sessionStorage` e resetta stato                                   |
+| Test unitari e copertura                                  | ✅ Implementato (≥ 80%) | `karma.conf.cjs` + `npm test --watch=false --browsers=ChromeHeadless` con report coverage 80,48% statements |
 
 ## Tech stack e librerie
 
@@ -108,7 +108,7 @@ L’app non gestisce registrazioni: l’utente inserisce manualmente il token Go
 - **Token GoRest invalido**: verifica di avere il token corretto con permessi adeguati; gli errori 401 forzano il logout.
 - **Coverage sotto il 60%**: aggiorna i test ed esegui `npm run test:ci`; controlla i file coperti nel report `coverage/nttdata-app/index.html`.
 
-## Definition of Done (Checklist per il valutatore)
+## Definition of Done
 
 - [x] `npm ci` installa le dipendenze senza errori.
 - [x] `npm start` avvia l’app su `localhost:4200`.
