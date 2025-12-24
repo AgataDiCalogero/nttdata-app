@@ -1,9 +1,5 @@
 @use '../../../../styles/mixins' as mixins;
 
-// ═══════════════════════════════════════════════════════════════════════════
-// COMMENT FORM - Facebook-style mobile-first redesign
-// ═══════════════════════════════════════════════════════════════════════════
-
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -17,14 +13,12 @@
   gap: var(--space-sm);
   width: 100%;
 
-  // Each field takes full width on mobile
   & .form-field {
     flex: 1 1 100%;
     min-width: 0;
     width: 100%;
   }
 
-  // On larger screens (dialog 40rem): side by side with equal widths
   @media (min-width: 26rem) {
     flex-direction: row;
     gap: var(--space-md);
@@ -48,13 +42,10 @@
   min-height: 2.5rem;
   max-height: 12rem;
   resize: vertical;
-  field-sizing: content; // Modern auto-sizing (Chrome 123+, Edge 123+)
+  field-sizing: content;
   transition: height 0.15s ease;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// INPUT STYLES
-// ═══════════════════════════════════════════════════════════════════════════
 .comment-form :is(.form-input, .form-textarea) {
   background: var(--mat-field-bg);
   border: 1px solid var(--mat-field-border);
@@ -130,9 +121,6 @@
   color: var(--color-danger) !important;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ERROR MESSAGES
-// ═══════════════════════════════════════════════════════════════════════════
 .comment-form .field-error {
   line-height: 1.4;
   margin-bottom: 0;
@@ -150,9 +138,6 @@
   margin-top: var(--space-2xs);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// SUBMIT BUTTON
-// ═══════════════════════════════════════════════════════════════════════════
 .comment-form__actions {
   display: flex;
   justify-content: flex-end;

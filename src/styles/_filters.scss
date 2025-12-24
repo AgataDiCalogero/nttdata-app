@@ -34,7 +34,6 @@
   margin-left: auto;
 }
 
-// Force Reset button to match the height of the form fields exactly
 .filters-bar__actions button[appButton] {
   min-height: var(--btn-height-md);
   height: var(--btn-height-md);
@@ -49,7 +48,6 @@
   min-height: var(--btn-height-md);
 }
 
-// Desktop: row layout with space-between
 @media (min-width: 60rem) {
   .filters-bar,
   .posts-filters,
@@ -106,7 +104,6 @@
   }
 }
 
-// Mobile: clean stacked column layout
 @media (max-width: 48rem) {
   .filters-bar,
   .posts-filters,

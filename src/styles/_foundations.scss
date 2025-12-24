@@ -64,7 +64,6 @@
   gap: var(--space-lg);
 }
 
-/* Standard page heading wrapper: title + subtitle/meta */
 .app-page__heading {
   text-align: left;
   @include flex-column(var(--space-xxs), flex-start);
@@ -127,7 +126,6 @@
   gap: var(--space-lg);
 }
 
-/* Visually hidden but accessible content */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -165,7 +163,6 @@
     align-items: stretch;
   }
 
-  /* Center standard headings on small screens */
   :where(h1, .app-page__title, .app-page-title) {
     text-align: center;
   }
@@ -175,7 +172,6 @@
     text-align: center;
   }
 
-  /* CTA buttons in page headers stretch on mobile */
   .app-page__header button[appButton],
   .app-page__header a[appButton],
   [data-app-header='true'] button[appButton],

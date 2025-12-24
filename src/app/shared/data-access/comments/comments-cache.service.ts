@@ -21,10 +21,6 @@ export class CommentsCacheService {
 
   constructor(private readonly postsApi: PostsApiService) {}
 
-  /**
-   * Fetch comments for a post, using cache and deduping in-flight requests.
-   * Returns an observable that emits the comments array (or null on error).
-   */
   fetchComments(postId: number): Observable<Comment[] | null> {
     const cached = this.commentsMap.get(postId);
     if (cached && !this.isExpired(this.commentsExpiry, postId)) {
@@ -211,10 +207,6 @@ export class CommentsCacheService {
     }
   }
 
-  /**
-   * Updates the access order for LRU tracking.
-   * Moves the postId to the end of the access order array (most recently used).
-   */
   private updateAccessOrder(postId: number): void {
     const index = this.accessOrder.indexOf(postId);
     if (index > -1) {
@@ -223,9 +215,6 @@ export class CommentsCacheService {
     this.accessOrder.push(postId);
   }
 
-  /**
-   * Evicts the least recently used entries if cache size exceeds MAX_CACHED_POSTS.
-   */
   private evictLRU(): void {
     while (this.commentsMap.size > CommentsCacheService.MAX_CACHED_POSTS) {
       const oldest = this.accessOrder.shift();

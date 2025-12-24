@@ -1,7 +1,5 @@
 @use './mixins' as *;
 
-/* Shared menu/overlay panel styles (appearance switcher, nav menu, etc.) */
-
 @mixin app-menu-panel {
   background: var(--color-surface-solid);
   color: var(--color-on-surface);

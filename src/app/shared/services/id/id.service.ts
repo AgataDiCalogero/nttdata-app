@@ -4,10 +4,6 @@ import { Injectable } from '@angular/core';
 export class IdService {
   readonly counters = new Map<string, number>();
 
-  /**
-   * Return a deterministic incremental id scoped by prefix.
-   * Example: id('search') -> 'search-1', 'search-2', ...
-   */
   next(prefix = 'id'): string {
     const current = this.counters.get(prefix) ?? 0;
     const next = current + 1;
@@ -15,9 +11,6 @@ export class IdService {
     return `${prefix}-${next}`;
   }
 
-  /**
-   * Reset counters (useful in tests)
-   */
   reset(prefix?: string): void {
     if (prefix != null && prefix !== '') {
       this.counters.delete(prefix);

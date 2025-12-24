@@ -25,7 +25,6 @@ import type { PostsFiltersFormGroup } from '../../services/posts-filters.service
     TranslatePipe,
   ],
   templateUrl: './posts-filters.component.html',
-  styleUrls: ['./posts-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostsFiltersComponent {

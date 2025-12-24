@@ -1,6 +1,5 @@
 @use './mixins' as mixins;
 
-/* Shared search control */
 .app-search-field {
   position: relative;
   flex: 1 1 100%;
@@ -42,7 +41,6 @@
   }
 }
 
-/* Size variants */
 .app-search--compact {
   max-width: 24rem;
 }
@@ -51,13 +49,11 @@
   max-width: 40rem;
 }
 
-/* New variants */
 .app-search--small {
   max-width: 16rem;
 }
 
 .app-search--full {
-  /* full-width input that grows to its container (useful for list pages) */
   max-width: none;
   width: 100%;
 }

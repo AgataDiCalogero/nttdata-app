@@ -564,21 +564,14 @@ mat-icon svg,
   --mat-form-field-outlined-error-outline-color: var(--color-danger) !important;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// SEARCH & SELECT COMPACT FIELD OVERRIDES (used in filters)
-// ═══════════════════════════════════════════════════════════════════════════
+$filter-control-height: var(--btn-height-md);
 
-// Shared height for all compact fields and filter buttons
-$filter-control-height: var(--btn-height-md); // 2.75rem = 44px
-
-// Search field icon (now inside infix, not prefix)
 .app-search-field .app-search__icon {
   flex-shrink: 0;
   margin-right: var(--space-xs);
   color: var(--color-muted);
 }
 
-// Compact form field infix for filters only
 :is(.filters-bar, .user-filters, .posts-filters)
   .app-search-field--compact
   .mat-mdc-form-field-infix,
@@ -592,7 +585,6 @@ $filter-control-height: var(--btn-height-md); // 2.75rem = 44px
   gap: var(--space-xs);
 }
 
-// Force the outer text-field-wrapper to the same height
 :is(.filters-bar, .user-filters, .posts-filters)
   .app-search-field--compact
   .mat-mdc-text-field-wrapper,
@@ -604,14 +596,12 @@ $filter-control-height: var(--btn-height-md); // 2.75rem = 44px
   padding-block: 0 !important;
 }
 
-// Hide subscript wrapper in filter contexts (no hints/errors needed)
 .filters-bar .mat-mdc-form-field-subscript-wrapper,
 .user-filters .mat-mdc-form-field-subscript-wrapper,
 .posts-filters .mat-mdc-form-field-subscript-wrapper {
   display: none !important;
 }
 
-/* Material button icons (moved from _buttons.scss) */
 .btn--primary mat-icon {
   color: var(--color-on-accent) !important;
 }
@@ -627,7 +617,6 @@ body.light-theme .btn--secondary mat-icon {
   color: var(--color-danger) !important;
 }
 
-/* Material progress overrides moved from _states.scss */
 .app-progress-bar .mdc-linear-progress__bar-inner {
   border-color: var(--color-accent) !important;
 }
@@ -636,7 +625,6 @@ body.light-theme .btn--secondary mat-icon {
   background-color: color-mix(in srgb, var(--color-accent) 14%, transparent) !important;
 }
 
-/* Dialog overlay overrides moved from _dialog.scss */
 .cdk-overlay-container {
   position: fixed;
   inset: 0;

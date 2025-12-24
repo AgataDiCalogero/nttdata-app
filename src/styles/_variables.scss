@@ -106,19 +106,15 @@
   --alpha-white-60: rgba(255, 255, 255, 0.6);
   --alpha-white-94: rgba(255, 255, 255, 0.94);
 
-  /* Overlays and dialogs */
   --overlay-backdrop-soft: rgba(2, 6, 23, 0.6);
   --overlay-backdrop-default: rgba(2, 6, 23, 0.75);
   --overlay-backdrop-strong: rgba(2, 6, 23, 0.9);
-  /* Dialog surface slightly translucent (95% opaque) to improve readability */
   --dialog-surface: color-mix(in srgb, var(--color-surface-solid) 95%, transparent);
   --dialog-border: var(--color-border);
 
-  /* Semantic alpha variants */
   --alpha-info-15: rgba(59, 130, 246, 0.15);
   --alpha-success-12: rgba(34, 197, 94, 0.12);
 
-  /* Focus ring contrast for inverse surfaces */
   --focus-ring-contrast: #ffffff;
 
   --btn-height-sm: 2.5rem;
@@ -192,7 +188,6 @@
   --reading-dark-border: rgba(255, 255, 255, 0.04);
   --reading-dark-surface-backdrop: rgba(255, 255, 255, 0.02);
 
-  /* Toasts / avatars */
   --gradient-success-soft: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
   --gradient-error-soft: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
   --gradient-info-soft: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
@@ -276,10 +271,8 @@
   --skeleton-tint-02: rgba(249, 165, 76, 0.05);
   --skeleton-tint-04: rgba(249, 165, 76, 0.1);
 
-  /* Overlays and dialogs (light theme overrides) */
   --overlay-backdrop-soft: rgba(2, 6, 23, 0.45);
   --overlay-backdrop-strong: rgba(2, 6, 23, 0.6);
-  /* Light dialogs also use a 95% opaque surface for consistency */
   --dialog-surface: color-mix(in srgb, var(--color-surface-solid) 95%, transparent);
   --dialog-border: var(--color-border);
   --alpha-info-15: rgba(59, 130, 246, 0.18);

@@ -15,9 +15,6 @@
   gap: var(--space-lg);
 }
 
-/* Padding handled by .form-dialog; host has no extra padding to avoid overflow */
-
-/* Ensure all fields have uniform width and never overflow the dialog */
 .user-form__form .form-field,
 .user-form__form .form-input,
 .user-form__form .form-select,

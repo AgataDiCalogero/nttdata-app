@@ -19,13 +19,6 @@ export class LoginFacadeService {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  /**
-   * Orchestrates the complete login flow:
-   * 1. Validates token via TokenValidationService
-   * 2. Sets token via AuthService if valid
-   * 3. Navigates to /users
-   * 4. Returns result with success/error info
-   */
   login(token: string): Observable<LoginResult> {
     const normalized = token.trim();
 

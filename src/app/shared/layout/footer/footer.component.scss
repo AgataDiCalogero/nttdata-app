@@ -2,12 +2,10 @@
 
 .app-footer {
   margin-top: auto;
-  // Reduced padding for a more compact, desktop-friendly height
   padding-block: var(--space-lg);
   position: relative;
   z-index: var(--z-sticky);
 
-  // Theme-aware palette: distinct from navbar but unified with background
   background: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--color-bg) 92%, var(--color-accent) 8%),
@@ -17,7 +15,6 @@
   transition: all 0.3s var(--ease-in-out);
 
   .app-footer__divider {
-    // Hidden in favor of a clean top border on the footer itself
     display: none;
   }
 }
@@ -36,7 +33,6 @@
   gap: var(--space-sm);
   margin: 0;
   font-size: var(--font-size-sm);
-  // Line-height normalized for perfect flex centering
   line-height: 1;
   color: var(--color-muted);
 
@@ -44,7 +40,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    // Scaled for high visibility
     font-size: 1.15rem;
     width: 1.15rem;
     height: 1.15rem;
@@ -75,7 +70,6 @@
   letter-spacing: var(--letter-spacing-wide);
 }
 
-// Special theme adjustments
 :host-context(body.light-theme) {
   .app-footer {
     background: linear-gradient(

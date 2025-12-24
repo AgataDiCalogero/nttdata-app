@@ -9,10 +9,6 @@
     justify-content: space-between;
     flex-wrap: wrap;
   }
-
-  /* Title/subtitle typography provided by global .app-page__title and .app-subtitle */
-
-  /* Header CTA uses shared appButton styles */
 }
 
 .users-container {
@@ -68,8 +64,6 @@
   gap: 2rem;
 }
 
-/* Rely on shared .app-pagination styles */
-
 .users-empty mat-card-content {
   display: grid;
   gap: 1rem;
@@ -91,8 +85,4 @@
   button {
     text-transform: none;
   }
-}
-
-@media (max-width: 48rem) {
-  /* .app-pagination responsive handled by shared styles */
 }

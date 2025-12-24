@@ -1,6 +1,5 @@
 @use './mixins' as mixins;
 
-/* Shared pagination layout */
 .app-pagination {
   display: flex;
   justify-content: center;
@@ -9,7 +8,6 @@
   flex-wrap: wrap;
   margin-top: var(--space-lg);
 
-  /* Ensure mobile tap targets stay ~44px even with size="sm" */
   .btn {
     min-height: var(--btn-height-md);
   }
