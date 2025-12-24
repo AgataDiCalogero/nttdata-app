@@ -90,6 +90,13 @@
   --alpha-border: rgba(55, 65, 81, 0.5);
   --alpha-focus: rgba(249, 115, 22, 0.3);
   --skeleton-tint: rgba(255, 255, 255, 0.04);
+  --skeleton-card-bg: color-mix(in srgb, var(--color-on-surface) 8%, var(--color-surface));
+  --skeleton-card-border: color-mix(in srgb, var(--color-on-surface) 12%, var(--color-border));
+  --skeleton-element-bg: color-mix(in srgb, var(--color-on-surface) 4%, var(--color-surface));
+  --skeleton-highlight: rgba(255, 255, 255, 0.32);
+  --skeleton-highlight-soft: rgba(255, 255, 255, 0.16);
+  --app-card-bg: var(--skeleton-card-bg);
+  --app-border-color: var(--skeleton-card-border);
   --alpha-white-0: rgba(255, 255, 255, 0);
   --alpha-white-08: rgba(255, 255, 255, 0.08);
   --alpha-white-15: rgba(255, 255, 255, 0.15);
@@ -278,6 +285,14 @@
   --alpha-info-15: rgba(59, 130, 246, 0.18);
   --alpha-success-12: rgba(34, 197, 94, 0.14);
   --focus-ring-contrast: #111827;
+
+  --skeleton-card-bg: color-mix(in srgb, var(--color-on-surface) 12%, var(--color-surface));
+  --skeleton-card-border: color-mix(in srgb, var(--color-on-surface) 20%, var(--color-border));
+  --skeleton-element-bg: color-mix(in srgb, var(--color-on-surface) 6%, var(--color-surface));
+  --skeleton-highlight: rgba(17, 24, 39, 0.22);
+  --skeleton-highlight-soft: rgba(17, 24, 39, 0.12);
+  --app-card-bg: var(--skeleton-card-bg);
+  --app-border-color: var(--skeleton-card-border);
 
   --color-danger: #dc2626;
   --color-danger-dark: #b91c1c;

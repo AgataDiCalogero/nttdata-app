@@ -36,8 +36,13 @@
 
       @if (loading()) {
         <div class="users-loader" aria-live="polite">
-          <app-user-list-skeleton></app-user-list-skeleton>
-          <span class="sr-only">{{ 'users.loader' | appTranslate }}</span>
+          <output class="app-progress users-page__loader" aria-live="polite">
+            <mat-progress-bar mode="indeterminate" color="accent" class="app-progress-bar"></mat-progress-bar>
+            <span class="app-progress__text">{{ 'users.loading' | appTranslate }}</span>
+          </output>
+          <div class="users-skeletons" aria-hidden="true">
+            <app-user-list-skeleton></app-user-list-skeleton>
+          </div>
         </div>
       } @else {
         @if (error(); as err) {
