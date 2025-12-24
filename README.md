@@ -1,109 +1,117 @@
-# NTT DATA Angular App
+# nttdata-app – Applicazione Angular 20
 
-Single-page Angular application that integrates with the public GoREST API to manage users, posts, and comments. The project showcases token-based authentication, protected routes, CRUD workflows, accessibility-first templates, theming, and i18n-ready UI built with Angular standalone components and signals.
+nttdata-app è un esercizio realizzato per il percorso start2impact e NTT DATA che mette in mostra una single-page application Angular 20 (SSR opzionale) completa di autenticazione via token GoRest e gestione di utenti, post e commenti. La UI è protetta da guardie, lo stato è gestito con signals/store personalizzati e l’intera comunicazione è orchestrata da servizi dedicati.
 
-## Stack & Architettura
+## Requisiti funzionali implementati
 
-- Angular 20 standalone con SSR tramite `@angular/ssr`.
-- Store basati su `@ngrx/signals` per utenti e post (paginazione, filtri, cache locali).
-- Interceptor HTTP: prefisso base URL, header Bearer automatico, gestione errori con toast e logout su 401.
-- Struttura cartelle: `core/` (auth, guard, interceptor), `shared/` (UI kit, servizi comuni, modelli), `features/` (login, users, posts), `styles/` (design system SCSS).
-- Theming/i18n/accessibilità integrati a livello di componenti standalone e servizi condivisi.
+| Funzionalità | Stato | Evidenza |
+| --- | --- | --- |
+| Login con token GoRest e validazione | ✅ Implementato | `LoginComponent` con form reattivo e token validato da `LoginFacade` con alert e gestione errori |
+| Lista utenti con ricerca, ordinamento, paginazione e CRUD | ✅ Implementato | `UsersComponent` e `UsersStore` con segnali dedicati, paginazione, sorting, modali di creazione/modifica |
+| Dettaglio utente con post e commenti | ✅ Implementato | `UserDetailComponent` carica utente e post, `CommentFormComponent` gestisce l’aggiunta di commenti |
+| Lista post con filtri e operazioni CRUD | ✅ Implementato | `PostsComponent` con segnali per filtri, paginazione e `PostsUiService` per creare/modificare/cancellare |
+| Autenticazione globale delle rotte | ✅ Implementato | `AuthGuard`, `AuthRedirectGuard` e rotte lazy protette (users/posts/login standalone) |
+| Logout con cancellazione token | ✅ Implementato | `AuthService.logout()` cancella token da `sessionStorage` e resetta stato |
+| Test unitari e copertura | ✅ Implementato (≥ 80%) | `karma.conf.cjs` + `npm test --watch=false --browsers=ChromeHeadless` con report coverage 80,48% statements |
 
-## Requisiti
+## Tech stack e librerie
 
-- Node.js 20+
-- npm 10+
-- GoREST personal access token from <https://gorest.co.in/consumer/login>
+- Angular 20 + Angular Material 20 per struttura e componenti UI.
+- `@ngrx/signals` per lo stato reattivo di utenti/post e derivazioni con signals.
+- RxJS 7.8 per stream e side effect.
+- Express 5 opzionale per SSR con Angular Universal (build server-side).
+- ESLint/Angular ESLint con regole custom (es. divieto di MatDialog diretto, pattern `app-select`).
+- Prettier per formattazione coerente.
+- Karma + Jasmine per test e coverage.
 
-## Setup & Development
+## Setup locale e comandi
+
+### Prerequisiti
+
+1. Node.js ≥ 20 e npm ≥ 10 (`node -v`, `npm -v`).
+2. Token personale GoRest con scope di lettura/scrittura.
+
+### Installazione
 
 ```bash
-npm install
+npm ci
+```
+
+### Sviluppo
+
+```bash
 npm start
 ```
 
-1. Navigate to <http://localhost:4200>.
-2. Paste your personal access token on the login screen (session-scoped storage keeps it active until the tab closes).
-3. Use the top-right language/theme controls to switch locales (EN/IT) or light/dark/system modes.
+Apri `http://localhost:4200` e inserisci il token nella pagina di login.
 
-### Autenticazione
+### Build di produzione
 
-- Come ottenere il token: autenticati su <https://gorest.co.in/consumer/login> e copia il personal access token.
-- Dove inserirlo: campo token nella pagina di login (dialog di help disponibile).
-- Dove viene salvato: `sessionStorage` (con migrazione da `localStorage` legacy). Nessuna opzione “remember me” per scelta progettuale; chiudendo il browser la sessione si perde.
-- Come viene usato: `auth-interceptor` aggiunge `Authorization: Bearer ...`, `authGuard` protegge le rotte, `error.interceptor` intercetta 401 → `AuthService.logout()` + redirect a `/login`.
+```bash
+npm run build:ci
+```
 
-## Funzionalità principali
+Genera l’app compilata in `dist/nttdata-app`.
 
-- Lista utenti: ricerca per nome/email, sort, paginazione, creazione/modifica/eliminazione, dettaglio utente.
-- Dettaglio utente: stato attivo/inattivo, post dell’utente, commenti con cache e gestione CRUD.
-- Lista post: filtri per titolo/autore, paginazione, commenti espandibili, crea/modifica/elimina post.
-- UI condivisa: navbar con toggle lingua/tema/logout, toast e alert, skeleton loader, dialog di conferma.
+### SSR (opzionale)
 
-### Key npm scripts
+```bash
+node dist/nttdata-app/server/server.mjs
+```
 
-| Command                                   | Purpose                                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------ |
-| `npm run start`                           | Serve the app locally with live reload                                         |
-| `npm run build` / `npm run build:ci`      | Production build (differing configs)                                           |
-| `npm run test` / `npm run test:ci`        | Karma + Jasmine unit tests (watch/headless)                                    |
-| `npm run lint` / `npm run lint:fix`       | ESLint with strict rules (import order, template a11y, no stray `console.log`) |
-| `npm run format` / `npm run format:check` | Prettier formatting (write/check)                                              |
+Serve l’app con Express (Angular Universal).
 
-### Lint baseline & rollout policy
+### Test & coverage
 
-- `npm run lint` executes `ng lint` with no `--max-warnings`, but it will refuse to run if the shell is still WSL (see `scripts/ensure-windows-shell.js`).
-- `npm run lint:ci` runs `ng lint --max-warnings 319` so the CI gate is predictable; the limit is the verified Windows baseline (zero errors, 319 warnings).
-- Don’t lower the `max-warnings` until `npm run lint` reports fewer than the current threshold in two consecutive runs. After the drop is confirmed, reduce the limit in small steps (e.g., 10 warnings per sprint) so the team can remediate the highlighted rules without rebasing on a moving target.
+```bash
+npm test               # modalità watch
+npm run test:ci        # headless con ChromeHeadless
+```
 
-### Testing strategy
+Il report si trova in `coverage/nttdata-app`. Per la consegna è richiesta una copertura ≥ 60% (ultimo run: 80,48% statements). Apri `coverage/lcov-report/index.html` per dettagli.
 
-- **Unit/component**: `npm run test:ci` esegue Karma/Jasmine in headless Chrome con coverage (target ≥60%). Copre auth/interceptor, servizi API, store signal, UI service e componenti principali (card/list/form).
+### Linting & formattazione
 
-## Architecture & Documentation
+```bash
+npm run lint
+npm run lint:ci
+npm run lint:fix       # opzionale
+npm run format
+npm run format:check
+```
 
-- **State management**: Feature-level signal stores (`UsersStoreAdapter`, `PostsStoreAdapter`) keep normalized entity maps, pagination, and optimistic updates predictable.
-- **HTTP interceptors**: API prefixing, auth header injection, and toast-backed error handling (401 logout, 429 retry/backoff).
-- **Caching**: Lightweight in-memory caches for users and per-post comments (with TTL-based eviction) to avoid GoREST 429s.
+## Configurazione autenticazione
 
-## Theming, Accessibility & i18n
+L’app non gestisce registrazioni: l’utente inserisce manualmente il token GoRest nel form di login. `AuthService` memorizza il token in `sessionStorage` e `AuthInterceptor` lo allega a ogni richiesta con `Authorization: Bearer <token>`. Gli errori 401 vengono intercettati da `ErrorInterceptor`, che forza il logout e mostra un messaggio contestuale. Non committare mai il token nel repository.
 
-- **Theme switcher**: Accessible menu with Light/Dark/System presets, reading mode toggle, and persisted CSS tokens (`data-theme`) for consistent styling.
-- **Language switcher**: EN/IT toggles in the navbar update translated strings via a minimal `I18nService` plus JSON dictionaries in `src/assets/i18n/`.
-- **UX polish**: Debounced searches, skeleton loaders, empty/error states with retry CTAs, confirmation dialogs on destructive flows, and template-level a11y linting.
+## Architettura e organizzazione
 
-## CI & Git hygiene
+- `src/features`: moduli per `auth`, `users`, `posts` con rotte, componenti, store e servizi dedicati.
+- `src/shared`: componenti riutilizzabili (bottoni, selettori, toast, alert, responsive dialog) e helper UI.
+- `src/core`: interceptors (`ApiPrefixInterceptor`, `AuthInterceptor`, `ErrorInterceptor`), services cross-cutting e configurazioni globali (`app.config.ts`).
+- Routing con lazy load (`users.routes.ts`, `posts.routes.ts`) e guardie (`authGuard`, `authRedirectGuard`).
+- State management con store personalizzati basati su `@ngrx/signals` (users/posts store includono segnali per ricerca, filtraggio e pagination).
+- UI Material incapsulata in wrapper per rispettare regole di design e lint (es. `ResponsiveDialogService`).
 
-GitHub Actions (`.github/workflows/ci.yml`) runs lint → unit tests → build on every push/PR. Local git hooks have been removed to keep commits lightweight—run `npm run lint && npm run test:ci` before pushing if you want the same fast feedback locally.
+## Guida all’uso
 
-## Configuration
+1. Installa dipendenze (`npm ci`) e avvia l’app (`npm start`).
+2. Nel login, inserisci il token GoRest e premi “Login”. Se il token è errato, viene mostrato un messaggio localizzato con focus automatico sul campo.
+3. Accedi alla sezione **Utenti** tramite la navigazione, usa la barra di ricerca per filtrare per nome/email, cambia pagina o `perPage` e crea un nuovo utente con il dialog.
+4. Cliccando su un utente, visualizzi i dettagli, i suoi post e i commenti; puoi aggiungere commenti dal form dedicato.
+5. Nella sezione **Post**, filtri per titolo/autore, gestisci paginazione e crei/modifichi/elimini post tramite dialog validati.
+6. Per uscire, usa l’icona utente/logout nell’header; il token viene rimosso e verrai riportato al login.
 
-API base URLs live in `src/environments/*.ts`. Interceptors automatically prefix relative paths with the configured base URL and attach the Bearer token when available.
+## Troubleshooting
 
-## Scelte progettuali
+- **EPERM su Windows durante `npm ci`**: chiudi processi `node/ng serve`, disattiva antivirus che blocca `.node`, elimina `node_modules` e reinstalla.
+- **Token GoRest invalido**: verifica di avere il token corretto con permessi adeguati; gli errori 401 forzano il logout.
+- **Coverage sotto il 60%**: aggiorna i test ed esegui `npm run test:ci`; controlla i file coperti nel report `coverage/nttdata-app/index.html`.
 
-- `@ngrx/signals` al posto di NgRx classico per ridurre boilerplate e mantenere segnali reattivi vicini ai componenti standalone.
-- Sessione in `sessionStorage`: persistenza limitata alla scheda/browser per evitare token dimenticati; invalidata centralmente su 401 via interceptor.
-- Design system SCSS modulare: variables/tokens, mixin condivisi, temi light/dark e partial specifici per pattern UI (bottoni, form, pagination, skeleton). Card/avatar condivisi tramite mixin `app-surface-card` e `app-avatar-gradient` riusati da UserCard/PostCard.
-- SSR presente ma non focus primario: rotte protette renderizzate lato server senza chiamate API, con fetch delegato al browser dopo l’hydration.
+## Definition of Done (Checklist per il valutatore)
 
-## Style governance
-
-I layer globali sono congelati nel documento `STYLE_LAYERS.md`: ci sono i token (solo CSS vars), il partial unico per gli override MDC (e overlay), e la baseline numerica con il conteggio dei `!important`/`.mat-mdc-`/`.cdk-overlay-` che servono a capire se stiamo migliorando. Qualsiasi modifica ai layer o ai Material overrides deve seguire i checkpoint di Milestone 0–6 (vedi il documento) e aggiornare i contatori `rg` indicati lì.
-Prima di modificare `src/styles/_tokens.scss`, esegui `npm run check:token-selectors` per bloccare automaticamente qualsiasi selettore `.mat-`/`.mdc-`/`.cdk-` introdotto accidentalmente nei token.
-
-## Guardrails & smoke tests
-
-- **Guardrails (automated)**
-  1. `npm run check:token-selectors` – tokens must not contain `.mat-/.mdc-/.cdk-` selectors or Material `!important` rules.
-  2. `npm run check:no-logs` – ensure no `.log` files are tracked in git (lint guard against noisy commits).
-  3. `npm run check:empty-dirs` – fail if any directory under `src/app` is empty, preventing stale scaffolding.
-  4. `npm run check:guards` – convenience meta script that runs all three.
-
-- **Smoke tests (manual/regression)**
-  1. Open the user creation/edit dialog and confirm `body.dataset.uiOverlayKey` becomes `user-form`, then closes to `null`, ensuring overlay lifecycle/`DialogOverlayCoordinator` wiring works.
-  2. Trigger the post creation dialog and the delete confirmation; verify `app-dialog-size-*` classes plus `panelClass` states match the layout rules in `_dialog.scss`.
-  3. Resize the filters bar (desktop vs mobile) and check that `filters-bar__controls` changes between row and column, and `filters-bar__actions` buttons stretch to 100% width on small screens.
-  4. Toggle light/dark theme (and optionally reading mode) via the UI switcher and confirm `body` classes (`light-theme`/`dark-theme`) follow the signals coming from `ThemeService`.
-  5. Open the login token-help dialog and ensure the overlay key becomes `token-help-dialog` while it is open and removes itself on close (keeping `UiOverlayService` state consistent).
+- [x] `npm ci` installa le dipendenze senza errori.
+- [x] `npm start` avvia l’app su `localhost:4200`.
+- [x] `npm test` e `npm run test:ci` eseguono i test e generano coverage ≥ 60%.
+- [x] `npm run lint` non produce errori (warnings consentiti solo se documentati).
+- [x] `npm run build:ci` genera correttamente `dist/nttdata-app`.
