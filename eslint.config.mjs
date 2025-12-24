@@ -89,6 +89,7 @@ export default [
       'dist/**',
       'coverage/**',
       '.angular/**',
+      'audit-logs/**',
       '**/vite/**',
       '**/*.min.js',
     ],
