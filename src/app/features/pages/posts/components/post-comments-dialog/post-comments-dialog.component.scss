@@ -1,0 +1,108 @@
+.post-comments-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  width: 100%;
+  max-width: 30rem;
+  max-height: min(90vh, 50rem);
+  background: var(--color-surface-solid);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.post-comments-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-comments-dialog__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.post-comments-dialog__title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-comments-dialog__subtitle {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.post-comments-dialog__close {
+  flex-shrink: 0;
+  padding: var(--space-xs);
+  border-radius: var(--radius-full);
+}
+
+.post-comments-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.post-comments-dialog__comments {
+  flex: 1 1 auto;
+  min-height: 8rem;
+  overflow-y: auto;
+  padding: var(--space-xs) var(--space-2xs);
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 0.375rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-muted);
+    border-radius: var(--radius-full);
+    opacity: 0.5;
+  }
+}
+
+.post-comments-dialog__composer {
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+@media (min-width: 48rem) {
+  .post-comments-dialog {
+    max-width: 40rem;
+    padding: var(--space-lg);
+  }
+
+  .post-comments-dialog__comments {
+    min-height: 15rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .post-comments-dialog {
+    padding: var(--space-sm);
+    max-width: calc(100vw - 2 * var(--space-sm));
+  }
+}

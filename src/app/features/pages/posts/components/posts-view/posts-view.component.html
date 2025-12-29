@@ -1,0 +1,117 @@
+<section class="posts-page" data-app-page="true">
+  <div class="posts-container app-container app-container--full app-container--flush">
+    <header class="posts-page__header app-page__header">
+      <div class="app-page__heading">
+        <h1 class="app-page__title">{{ 'posts.title' | appTranslate }}</h1>
+        <p class="app-subtitle">{{ 'posts.subtitle' | appTranslate }}</p>
+      </div>
+      <button
+        appButton
+        variant="primary"
+        type="button"
+        (click)="createPost.emit()"
+        [attr.aria-label]="'common.actions.newPost' | appTranslate"
+      >
+        <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.newPost' | appTranslate }}</span>
+      </button>
+    </header>
+
+    <app-posts-filters
+      [searchForm]="searchForm()"
+      [userOptions]="userOptions()"
+      [perPageControl]="perPageControl"
+      [perPageOptions]="perPageSelectOptions()"
+      (perPageChange)="changePerPage.emit($event)"
+      (resetFilters)="resetFilters.emit()"
+    ></app-posts-filters>
+
+    <div
+      *ngIf="resultsSummary()"
+      class="app-results-summary app-results-summary--spaced"
+      aria-live="polite"
+      role="status"
+    >
+      {{ resultsSummary() }}
+    </div>
+
+    @if (error()) {
+      <app-alert variant="error" class="posts-page__alert" aria-live="assertive">
+        <p class="posts-page__alert-text">{{ error() || ('posts.error' | appTranslate) }}</p>
+        @if (posts().length > 0) {
+          <p class="posts-page__alert-note">{{ 'posts.staleData' | appTranslate }}</p>
+        }
+        <button
+          appButton
+          variant="ghost"
+          type="button"
+          (click)="retry.emit()"
+          [attr.aria-label]="'common.actions.retry' | appTranslate"
+        >
+          <mat-icon svgIcon="lucide:rotate-cw" aria-hidden="true"></mat-icon>
+          <span class="btn__label">{{ 'common.actions.retry' | appTranslate }}</span>
+        </button>
+      </app-alert>
+    }
+
+    @if (loading()) {
+      <output class="app-progress posts-page__loader" aria-live="polite">
+        <mat-progress-bar
+          mode="indeterminate"
+          color="accent"
+          class="app-progress-bar"
+        ></mat-progress-bar>
+        <span class="app-progress__text">{{ 'posts.loading' | appTranslate }}</span>
+      </output>
+      <div class="posts-skeletons" aria-hidden="true">
+        <app-post-card-skeleton></app-post-card-skeleton>
+        <app-post-card-skeleton></app-post-card-skeleton>
+        <app-post-card-skeleton></app-post-card-skeleton>
+      </div>
+    }
+
+    @if (!loading() && !error() && posts().length === 0) {
+      <mat-card class="posts-empty" appearance="outlined">
+        <mat-icon
+          svgIcon="lucide:file-text"
+          class="posts-empty__icon"
+          aria-hidden="true"
+        ></mat-icon>
+        <p class="posts-empty__text">{{ 'posts.emptyState' | appTranslate }}</p>
+        <button
+          appButton
+          variant="primary"
+          type="button"
+          (click)="createPost.emit()"
+          [attr.aria-label]="'common.actions.newPost' | appTranslate"
+        >
+          <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+          <span class="btn__label">{{ 'common.actions.newPost' | appTranslate }}</span>
+        </button>
+      </mat-card>
+    }
+
+    @if (!loading() && posts().length > 0) {
+      <app-posts-list
+        [posts]="posts()"
+        [commentsCountMap]="commentsCountMap()"
+        [deletingId]="deletingId()"
+        [userLookup]="userLookup()"
+        (deletePost)="deletePost.emit($event)"
+        (editPost)="editPost.emit($event)"
+        (viewAuthor)="viewAuthor.emit($event)"
+        (viewComments)="onViewComments($event)"
+      ></app-posts-list>
+    }
+
+    @if (hasPagination()) {
+      <app-pagination
+        [page]="currentPage()"
+        [pageCount]="totalPages()"
+        (pageChange)="changePage.emit($event)"
+      >
+        <!-- per-page select moved into the filters component -->
+      </app-pagination>
+    }
+  </div>
+</section>

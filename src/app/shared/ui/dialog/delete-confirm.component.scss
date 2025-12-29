@@ -1,0 +1,38 @@
+@use '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+.delete-confirm {
+  display: block;
+}
+
+.delete-confirm__actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-confirm__actions button {
+  min-width: 160px;
+}
+
+@media (max-width: 40rem) {
+  .form-dialog__header {
+    text-align: center;
+    align-items: center;
+  }
+
+  .delete-confirm__actions {
+    flex-direction: column-reverse;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+
+  .delete-confirm__actions button {
+    width: 100%;
+    min-width: auto;
+  }
+}

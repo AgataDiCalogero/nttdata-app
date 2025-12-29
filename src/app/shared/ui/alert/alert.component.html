@@ -1,0 +1,31 @@
+<div class="alert__content">
+  <div class="alert__icon" aria-hidden="true">
+    <ng-content select="[alert-icon]"></ng-content>
+  </div>
+  <div class="alert__body">
+    <ng-content></ng-content>
+  </div>
+  @if (dismissible()) {
+    <button
+      type="button"
+      class="alert__dismiss"
+      (click)="onDismiss()"
+      [attr.aria-label]="'common.actions.dismissAlert' | appTranslate"
+      [title]="'common.actions.dismissAlert' | appTranslate"
+    >
+      <span class="sr-only">{{ 'common.actions.dismissAlert' | appTranslate }}</span>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <line x1="5" y1="5" x2="15" y2="15"></line>
+        <line x1="15" y1="5" x2="5" y2="15"></line>
+      </svg>
+    </button>
+  }
+</div>

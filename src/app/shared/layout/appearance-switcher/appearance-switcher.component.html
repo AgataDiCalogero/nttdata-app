@@ -1,0 +1,88 @@
+<div
+  class="appearance-switcher"
+  [attr.data-open]="menuOpen()"
+  appClickOutside
+  (appClickOutside)="onDocumentClick()"
+  appEscapeKey
+  (appEscapeKey)="onEscape()"
+>
+  <button
+    appButton
+    variant="ghost"
+    size="sm"
+    type="button"
+    class="appearance-switcher__trigger"
+    id="appearance-switcher-trigger"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
+    aria-haspopup="true"
+    aria-controls="appearance-switcher-menu"
+    [attr.aria-label]="'appearance.openMenuAria' | appTranslate"
+  >
+    <lucide-icon [img]="currentIcon()" aria-hidden="true"></lucide-icon>
+  </button>
+
+  @if (menuOpen()) {
+    <div
+      class="appearance-switcher__panel"
+      id="appearance-switcher-menu"
+      role="menu"
+      aria-labelledby="appearance-switcher-trigger"
+    >
+      <div class="appearance-switcher__section">
+        <button
+          type="button"
+          class="appearance-option"
+          role="menuitemradio"
+          [attr.aria-checked]="isLightPreference() ? 'true' : 'false'"
+          [class.appearance-option--active]="isLightPreference()"
+          (click)="setPreference('light')"
+        >
+          <span class="appearance-option__icon" aria-hidden="true">
+            <lucide-icon [img]="Sun"></lucide-icon>
+          </span>
+          <span class="appearance-option__label">{{ 'appearance.light' | appTranslate }}</span>
+        </button>
+
+        <button
+          type="button"
+          class="appearance-option"
+          role="menuitemradio"
+          [attr.aria-checked]="isDarkPreference() ? 'true' : 'false'"
+          [class.appearance-option--active]="isDarkPreference()"
+          (click)="setPreference('dark')"
+        >
+          <span class="appearance-option__icon" aria-hidden="true">
+            <lucide-icon [img]="Moon"></lucide-icon>
+          </span>
+          <span class="appearance-option__label">{{ 'appearance.dark' | appTranslate }}</span>
+        </button>
+      </div>
+
+      <div class="appearance-switcher__divider"></div>
+
+      <div class="appearance-switcher__section">
+        <div
+          class="appearance-option appearance-option--toggle"
+          role="group"
+          [attr.aria-label]="'appearance.readingMode' | appTranslate"
+        >
+          <span class="appearance-option__icon" aria-hidden="true">
+            <lucide-icon [img]="BookOpenCheck"></lucide-icon>
+          </span>
+          <span class="appearance-option__label">{{
+            'appearance.readingMode' | appTranslate
+          }}</span>
+          <mat-slide-toggle
+            class="appearance-toggle"
+            [attr.aria-label]="'appearance.readingMode' | appTranslate"
+            [checked]="isReadingMode()"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+            (change)="toggleReadingMode()"
+          ></mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+  }
+</div>

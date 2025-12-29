@@ -1,0 +1,47 @@
+<section
+  class="post-comments-dialog"
+  [attr.aria-label]="ariaLabel()"
+  role="dialog"
+  aria-modal="true"
+>
+  <header class="post-comments-dialog__header">
+    <div class="post-comments-dialog__label">
+      <p class="post-comments-dialog__title">{{ data.post.title }}</p>
+      <p class="post-comments-dialog__subtitle">
+        {{ 'postCard.sharedBy' | appTranslate: { name: authorName() } }}
+      </p>
+    </div>
+    <button
+      type="button"
+      class="post-comments-dialog__close"
+      appButton
+      variant="ghost"
+      size="sm"
+      (click)="close()"
+      aria-label="{{ 'postComments.dialogCloseAria' | appTranslate }}"
+    >
+      <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+    </button>
+  </header>
+
+  <div class="post-comments-dialog__body">
+    <div class="post-comments-dialog__comments" aria-live="polite">
+      <app-post-comments
+        [postId]="data.post.id"
+        [comments]="comments()"
+        [loading]="loading()"
+        [allowManage]="allowManage()"
+        (commentCreated)="onCommentCreated($event)"
+        (commentUpdated)="onCommentUpdated($event)"
+        (commentDeleted)="onCommentDeleted($event)"
+      ></app-post-comments>
+    </div>
+    <div class="post-comments-dialog__composer">
+      <app-comment-form
+        [postId]="data.post.id"
+        [placeholder]="labelText()"
+        (created)="onCommentCreated($event)"
+      ></app-comment-form>
+    </div>
+  </div>
+</section>

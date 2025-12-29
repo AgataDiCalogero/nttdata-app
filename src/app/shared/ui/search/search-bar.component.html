@@ -1,0 +1,39 @@
+<mat-form-field
+  class="app-search-field"
+  appearance="outline"
+  color="accent"
+  [floatLabel]="'always'"
+  subscriptSizing="dynamic"
+  [class.app-search-field--wide]="isWide()"
+  [class.app-search-field--compact]="isCompact()"
+  [class.app-search-field--small]="isSmall()"
+  [class.app-search-field--full]="isFull()"
+>
+  <mat-label>{{ labelText() }}</mat-label>
+
+  @if (control(); as ctrl) {
+    <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
+    <input
+      matInput
+      type="search"
+      class="app-search__input"
+      [placeholder]="placeholder()"
+      [attr.aria-label]="labelText()"
+      [id]="inputId()"
+      [formControl]="ctrl"
+      [appDebounceInput]="debounceTime()"
+      (debounced)="onDebounced($event)"
+    />
+  } @else {
+    <lucide-icon [img]="Search" class="app-search__icon" aria-hidden="true"></lucide-icon>
+    <input
+      matInput
+      type="search"
+      class="app-search__input"
+      [placeholder]="placeholder()"
+      [attr.aria-label]="labelText()"
+      [appDebounceInput]="debounceTime()"
+      (debounced)="onDebounced($event)"
+    />
+  }
+</mat-form-field>

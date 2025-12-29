@@ -1,0 +1,62 @@
+.status-badge {
+  --status-color: var(--color-danger);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: calc(var(--space-2xs) + 1px) var(--space-sm);
+  border-radius: 999px;
+  border: 1px solid var(--status-color);
+  color: var(--status-color);
+  background-color: rgba(0, 0, 0, 0.02);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+  line-height: 1;
+  @supports (color: color-mix(in srgb, var(--status-color) 14%, transparent)) {
+    background-color: color-mix(in srgb, var(--status-color) 14%, transparent);
+  }
+
+  .status-badge__icon {
+    color: inherit;
+  }
+}
+
+.status-badge--clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--status-color);
+    outline-offset: 2px;
+  }
+}
+
+.status-badge__icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-badge__label {
+  line-height: 1;
+}
+
+.status-badge--active {
+  --status-color: var(--color-success);
+}
+
+.status-badge--inactive {
+  --status-color: var(--color-danger);
+}

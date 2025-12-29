@@ -1,0 +1,148 @@
+<section class="form-dialog user-form">
+  <header class="form-dialog__header">
+    <h2 class="form-dialog__title">
+      @if (isEdit()) {
+        {{ 'userForm.titleEdit' | appTranslate }}
+      } @else {
+        {{ 'userForm.titleNew' | appTranslate }}
+      }
+    </h2>
+    <p class="form-dialog__subtitle">
+      @if (isEdit()) {
+        {{ 'userForm.subtitleEdit' | appTranslate }}
+      } @else {
+        {{ 'userForm.subtitleNew' | appTranslate }}
+      }
+    </p>
+  </header>
+
+  @if (loadError(); as error) {
+    <app-alert variant="error" [dismissible]="true" (dismissed)="loadError.set(null)">
+      {{ error }}
+    </app-alert>
+  }
+
+  <form class="form form-dialog__body user-form__form" [formGroup]="form" (ngSubmit)="submit()">
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
+    >
+      <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+        <mat-label>{{ 'userForm.fields.name' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="{{ 'userForm.placeholders.name' | appTranslate }}"
+          appAutoFocus
+          [attr.aria-invalid]="
+            form.controls.name.invalid && form.controls.name.touched ? 'true' : null
+          "
+        />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <mat-error>{{ 'userForm.errors.name' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div
+      class="form-field"
+      [class.is-invalid]="
+        (form.controls.email.touched && form.controls.email.invalid) || emailError()
+      "
+    >
+      <mat-form-field appearance="outline" color="accent" [floatLabel]="'always'">
+        <mat-label>{{ 'userForm.fields.email' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="{{ 'userForm.placeholders.email' | appTranslate }}"
+          [attr.aria-invalid]="
+            form.controls.email.invalid && form.controls.email.touched ? 'true' : null
+          "
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <mat-error>{{ 'userForm.errors.email' | appTranslate }}</mat-error>
+        }
+        @if (emailError()) {
+          <mat-error>{{ emailError() }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.gender.touched && form.controls.gender.invalid"
+    >
+      <app-select
+        id="gender"
+        [control]="form.controls.gender"
+        [label]="'userForm.fields.gender' | appTranslate"
+        [options]="[
+          { value: 'male', label: ('common.gender.male' | appTranslate) },
+          { value: 'female', label: ('common.gender.female' | appTranslate) },
+        ]"
+      ></app-select>
+      @if (form.controls.gender.touched && form.controls.gender.invalid) {
+        <mat-error>{{ 'userForm.errors.gender' | appTranslate }}</mat-error>
+      }
+    </div>
+
+    <div class="form-field">
+      <app-select
+        id="status"
+        [control]="form.controls.status"
+        [label]="'userForm.fields.status' | appTranslate"
+        [options]="[
+          { value: 'active', label: ('common.status.active' | appTranslate) },
+          { value: 'inactive', label: ('common.status.inactive' | appTranslate) },
+        ]"
+      ></app-select>
+    </div>
+
+    <div class="form-actions form-dialog__actions">
+      <button
+        appButton
+        variant="ghost"
+        type="button"
+        (click)="cancel()"
+        [disabled]="submitting()"
+        [attr.aria-label]="'common.actions.cancel' | appTranslate"
+      >
+        <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.cancel' | appTranslate }}</span>
+      </button>
+
+      <button
+        appButton
+        variant="primary"
+        type="submit"
+        [loading]="submitting()"
+        [disabled]="form.invalid || submitting()"
+        [attr.aria-label]="
+          isEdit()
+            ? ('userForm.buttons.update' | appTranslate)
+            : ('userForm.buttons.create' | appTranslate)
+        "
+      >
+        @if (isEdit()) {
+          <mat-icon svgIcon="lucide:save" aria-hidden="true"></mat-icon>
+        } @else {
+          <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+        }
+        <span class="btn__label">
+          @if (submitting()) {
+            {{ 'userForm.buttons.saving' | appTranslate }}
+          } @else if (isEdit()) {
+            {{ 'userForm.buttons.update' | appTranslate }}
+          } @else {
+            {{ 'userForm.buttons.create' | appTranslate }}
+          }
+        </span>
+      </button>
+    </div>
+  </form>
+</section>

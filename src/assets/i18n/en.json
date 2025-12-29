@@ -1,0 +1,374 @@
+{
+  "app": {
+    "name": "NTT Data App"
+  },
+  "a11y": {
+    "skipToMain": "Skip to main content"
+  },
+  "nav": {
+    "users": "Users",
+    "posts": "Posts",
+    "logout": "Logout",
+    "ariaMain": "Main navigation",
+    "ariaQuick": "Quick navigation"
+  },
+  "language": {
+    "label": "Language",
+    "menuAria": "Select language"
+  },
+  "appearance": {
+    "openMenuAria": "Open appearance settings",
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "readingMode": "Reading mode"
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Enter your access token to continue.",
+    "tokenLabel": "Access token",
+    "tokenPlaceholder": "Paste your access token",
+    "submit": "Sign in",
+    "help": "Lost your token?",
+    "errors": {
+      "required": "Access token is required.",
+      "minLength": "Access token must be at least {{count}} characters.",
+      "invalidOrExpired": "The provided token is invalid or expired. Generate a new token from the GoRest dashboard.",
+      "invalid": "The provided token could not be validated. Please paste a valid token.",
+      "rateLimited": "Too many requests. Please wait a moment and try again.",
+      "rateLimitedRetryIn": "Too many requests. Try again in {{seconds}}s.",
+      "network": "Network error. Check your connection.",
+      "unableToVerify": "Unable to verify the token right now. Please try again."
+    }
+  },
+  "tokenHelp": {
+    "title": "Lost your token?",
+    "subtitle": "No worries! Generate a new one from the GoRest dashboard with these quick steps.",
+    "steps": {
+      "1": "Visit the official GoRest site and sign in with your account.",
+      "2a": "Select",
+      "2b": "in the dashboard to create a new personal token.",
+      "3": "Copy the generated token and paste it into the \"Access token\" field on this page."
+    },
+    "step2Highlight": "Get Your Access Token",
+    "open": "Open GoRest",
+    "close": "Got it",
+    "closeAria": "Close the token help message"
+  },
+  "common": {
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleting": "Deleting…",
+      "comments": "Comments",
+      "commentsWithCount": "Comments ({{count}})",
+      "viewComments": "Comments",
+      "hideComments": "Hide comments",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "create": "Create",
+      "update": "Update",
+      "saving": "Saving…",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "open": "Open",
+      "close": "Close",
+      "backToUsers": "Back to users",
+      "backToList": "Back to list",
+      "newPost": "New Post",
+      "newUser": "New User",
+      "gotIt": "Got it",
+      "reset": "Reset",
+      "dismissAlert": "Dismiss alert"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "aria": {
+        "activeUser": "Active user",
+        "inactiveUser": "Inactive user"
+      }
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "unspecified": "Not specified"
+    },
+    "placeholders": {
+      "searchUsers": "Search by name or email...",
+      "searchUsersLabel": "Search users by name or email",
+      "postTitle": "Post title",
+      "postBody": "Describe your idea or report",
+      "comment": "Share your thoughts...",
+      "commentName": "Your name",
+      "commentEmail": "name@email.com",
+      "fullName": "Enter full name",
+      "email": "user@example.com"
+    },
+    "errors": {
+      "unknown": "Something went wrong. Please try again.",
+      "networkUnavailable": "Network unavailable. Check your connection and retry.",
+      "sessionExpired": "Your session expired. Please sign in again.",
+      "forbidden": "You do not have permission to perform this action.",
+      "validation": "Some fields are invalid. Please review the form and try again.",
+      "rateLimit": "Too many requests. Please wait a moment and try again.",
+      "unexpected": "Unexpected error. Please try again later.",
+      "rateLimitRetrying": "Too many requests. Retrying in {{seconds}}s.",
+      "actionFailed": "Unable to complete this action right now. Please retry."
+    }
+  },
+  "users": {
+    "title": "Users",
+    "new": "New User",
+    "subtitle": "Manage and view all registered users",
+    "loading": "Loading users...",
+    "filters": {
+      "searchLabel": "Search users by name or email",
+      "searchPlaceholder": "Search by name or email...",
+      "perPage": "Users per page",
+      "perPageOption": "{{value}} / page",
+      "createAria": "Create new user"
+    },
+    "summary": {
+      "loading": "Loading users...",
+      "empty": "No users found",
+      "single": "{{total}} user",
+      "all": "{{total}} users",
+      "partial": "Showing {{visible}} of {{total}} users"
+    },
+    "loader": "Loading users…",
+    "errorRetry": "Retry",
+    "emptyState": "No users found.",
+    "unnamed": "Unnamed user",
+    "sortButtonLabel": "Sort {{label}} {{direction}}",
+    "loadingAria": "Loading users",
+    "delete": {
+      "title": "Delete User",
+      "message": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel",
+      "deleting": "Deleting...",
+      "error": "Unable to delete user right now. Please try again.",
+      "success": "User deleted"
+    },
+    "create": {
+      "success": "User created",
+      "ariaLabel": "New user"
+    },
+    "update": {
+      "success": "User updated",
+      "ariaLabel": "Edit user"
+    }
+  },
+  "userList": {
+    "heading": "Users list",
+    "viewAria": "View user details",
+    "deleteAria": "Delete user"
+  },
+  "userForm": {
+    "titleNew": "New User",
+    "titleEdit": "Edit User",
+    "subtitleNew": "Add a new user to the registry.",
+    "subtitleEdit": "Update user details and status.",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "gender": "Gender",
+      "status": "Status"
+    },
+    "placeholders": {
+      "name": "Enter full name",
+      "email": "user@example.com"
+    },
+    "errors": {
+      "name": "Please enter at least 2 characters.",
+      "email": "Invalid email address.",
+      "emailInUse": "Email already in use or invalid.",
+      "gender": "Please select a gender."
+    },
+    "submitErrors": {
+      "rateLimit": "Too many requests. Please try again shortly.",
+      "saveFailed": "An error occurred while saving. Please try again."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
+      "saving": "Saving…"
+    }
+  },
+  "userDetail": {
+    "title": "User details",
+    "back": "Back to users",
+    "loading": "Loading user details...",
+    "backToList": "Back to list",
+    "avatarFallback": "User",
+    "genderFallback": "Not specified",
+    "postsTitle": "Posts from {{name}}",
+    "postsSubtitle": "Posts by this user.",
+    "postsLoading": "Loading posts...",
+    "postsEmpty": "No posts published yet.",
+    "postsCountSingle": "post shared",
+    "postsCountPlural": "posts shared",
+    "invalidUserId": "Invalid user ID",
+    "unableToLoadComments": "Unable to load comments",
+    "unableToUpdateStatus": "Unable to update user status",
+    "unableToUpdateStatusRetry": "Unable to update user status. Please try again.",
+    "unableToLoadUser": "Unable to load user details",
+    "unableToLoadPosts": "Unable to load user posts"
+  },
+  "posts": {
+    "title": "Posts",
+    "subtitle": "Manage and browse all published posts.",
+    "new": "New Post",
+    "emptyState": "No posts match your filters yet. Try adjusting the search or refresh the list.",
+    "loading": "Loading posts...",
+    "error": "Unable to load posts right now. Please try again.",
+    "loadError": "Unable to load posts",
+    "loadUsersError": "Unable to load users list",
+    "authorUnavailable": "Author not available for this post",
+    "staleData": "Showing previously loaded posts (may be outdated).",
+    "summary": {
+      "all": "{{total}} posts",
+      "partial": "Showing {{visible}} of {{total}} posts"
+    },
+    "create": {
+      "ariaLabel": "New post",
+      "success": "Post created"
+    },
+    "update": {
+      "ariaLabel": "Edit post {{title}}",
+      "success": "Post updated"
+    },
+    "delete": {
+      "title": "Delete Post",
+      "message": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel",
+      "deleting": "Deleting...",
+      "error": "Unable to delete post right now. Please try again.",
+      "success": "Post deleted"
+    }
+  },
+  "postsFilters": {
+    "searchPlaceholder": "Search by title",
+    "searchLabel": "Search posts by title",
+    "author": "Filter by author",
+    "authorAria": "Filter posts by author",
+    "authorAll": "All authors",
+    "perPage": "Posts per page",
+    "perPageAria": "Change posts per page",
+    "reset": "Reset"
+  },
+  "postCard": {
+    "sharedBy": "Shared by {{name}}",
+    "viewAuthorAria": "View author {{name}}",
+    "editAria": "Edit post {{title}}",
+    "deleteAria": "Delete post {{title}}",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "unknownAuthor": "Unknown author"
+  },
+  "postForm": {
+    "titleNew": "Create a new post",
+    "titleEdit": "Edit post",
+    "subtitleNew": "Share ideas or reports to help improve the city.",
+    "subtitleEdit": "Update the title, author, or content of this post.",
+    "loadingUsers": "Loading users...",
+    "selectAuthor": "Select an author",
+    "fields": {
+      "author": "Author",
+      "title": "Title",
+      "content": "Content"
+    },
+    "errors": {
+      "author": "Please select a valid author.",
+      "title": "Title must be at least 5 characters long.",
+      "body": "Please describe the post with at least 20 characters.",
+      "rateLimit": "Too many requests. Please try again shortly.",
+      "saveFailed": "Unable to save the post. Please try again."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Save changes",
+      "saving": "Saving…"
+    },
+    "missingAuthor": "Unknown author (ID {{id}})"
+  },
+  "postComments": {
+    "loading": "Loading comments...",
+    "empty": "No comments yet",
+    "composerPlaceholder": "Write a comment...",
+    "dialogLabel": "Leave a comment...",
+    "dialogAria": "Comments for {{title}}",
+    "dialogCloseAria": "Close comments overlay",
+    "anonymous": "Anonymous",
+    "editPlaceholder": "Update your comment",
+    "editSave": "Save",
+    "editCancel": "Cancel",
+    "editError": "Comment content is not valid. Please revise and try again.",
+    "editAria": "Edit comment from {{name}}",
+    "deleteAria": "Delete comment from {{name}}",
+    "cancelEditAria": "Cancel editing comment from {{name}}",
+    "deleteConfirm": {
+      "title": "Delete comment",
+      "message": "Are you sure you want to delete this comment? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "inProgress": "Deleting...",
+      "errorMessage": "Unable to delete comment right now."
+    },
+    "toast": {
+      "updated": "Comment updated successfully",
+      "updateFailed": "Unable to update the comment. Please try again.",
+      "deleted": "Comment deleted successfully"
+    },
+    "errors": {
+      "rateLimit": "Too many requests. Please try again later.",
+      "editInvalid": "The comment must clarify the edit."
+    }
+  },
+  "commentForm": {
+    "aria": "Add comment",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "body": "Comment"
+    },
+    "placeholders": {
+      "name": "Your name",
+      "email": "name@email.com",
+      "body": "Share your thoughts..."
+    },
+    "errors": {
+      "name": "Please enter at least 2 characters.",
+      "email": "Please provide a valid email address.",
+      "body": "The comment must contain at least 10 characters."
+    },
+    "buttons": {
+      "submit": "Send",
+      "submitting": "Sending…"
+    },
+    "submitErrors": {
+      "validation": "Comment data not valid. Please review the fields.",
+      "rateLimit": "Too many requests. Please try again shortly.",
+      "publishFailed": "Unable to publish the comment. Please retry."
+    },
+    "toastSuccess": "Comment posted successfully"
+  },
+  "toast": {
+    "dismissAria": "Dismiss notification"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {{page}} of {{total}}",
+    "ariaPrev": "Go to previous page",
+    "ariaNext": "Go to next page",
+    "ariaLabel": "Pagination"
+  },
+  "footer": {
+    "builtBy": "Built by"
+  }
+}

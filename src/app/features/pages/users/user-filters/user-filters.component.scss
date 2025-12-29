@@ -1,0 +1,16 @@
+.user-filters__per-page {
+  min-width: 7rem;
+}
+
+@media (max-width: 60rem) {
+  .user-filters .filters-bar__actions {
+    flex: 1 1 100%;
+    width: 100%;
+    margin-left: 0;
+    justify-content: stretch;
+  }
+
+  .user-filters .filters-bar__actions button[appButton] {
+    width: 100%;
+  }
+}

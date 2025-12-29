@@ -1,0 +1,88 @@
+.users-page {
+  padding-inline: 0;
+  color: var(--mat-sys-on-surface, #1d1b20);
+
+  &__header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+.users-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.users-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.users-page__loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.users-skeletons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+}
+
+.users-error__content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  mat-icon {
+    color: var(--mat-sys-error, #b3261e);
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.users-error__actions {
+  margin-top: 0.5rem;
+}
+
+.users-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.users-empty mat-card-content {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  text-align: center;
+
+  mat-icon {
+    font-size: 2rem;
+    color: var(--color-on-surface);
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  mat-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  button {
+    text-transform: none;
+  }
+}

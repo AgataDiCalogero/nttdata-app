@@ -1,0 +1,187 @@
+@use './styles/variables' as *;
+@use './styles/tokens' as *;
+@use './styles/material-overrides';
+@use './styles/mixins' as *;
+@use './styles/buttons';
+@use './styles/forms';
+@use './styles/filters';
+@use './styles/states';
+@use './styles/skeleton';
+@use './styles/appearance';
+@use './styles/menu';
+@use './styles/material-theme';
+@use './styles/search';
+@use './styles/pagination';
+@use './styles/foundations';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: calc(var(--app-navbar-offset) + env(safe-area-inset-top, 0px));
+}
+
+body {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg) 0%,
+    var(--color-bg-secondary) 50%,
+    var(--color-bg) 100%
+  );
+  color: var(--color-on-primary);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+body.reading-mode {
+  --reading-highlight: var(--reading-highlight-color);
+  --reading-border: var(--reading-border-color);
+  --reading-shadow: var(--reading-shadow-elevation);
+  --focus-ring: var(--reading-focus-ring-color);
+  --focus-ring-mix: var(--reading-focus-ring-mix-color);
+  --accent-hover: var(--reading-accent-hover-color);
+  --surface-backdrop: var(--reading-surface-backdrop-color);
+  background:
+    var(--reading-gradient-top),
+    linear-gradient(140deg, var(--color-bg) 0%, var(--color-bg-secondary) 60%, var(--color-bg) 100%);
+  color: var(--color-on-surface);
+}
+
+body.light-theme.reading-mode {
+  --color-primary: var(--reading-light-color-primary);
+  --color-on-primary: var(--reading-light-color-on-primary);
+  --color-bg: var(--reading-light-bg);
+  --color-bg-secondary: var(--reading-light-bg-secondary);
+  --color-surface: var(--reading-light-surface);
+  --color-surface-solid: var(--reading-light-surface-solid);
+  --color-on-surface: var(--reading-light-on-surface);
+  --color-border: var(--reading-border);
+  --color-muted: var(--reading-light-muted);
+  --shadow: var(--reading-light-shadow);
+}
+
+body.dark-theme.reading-mode {
+  --color-primary: var(--reading-dark-color-primary);
+  --color-on-primary: var(--reading-dark-color-on-primary);
+  --color-bg: var(--reading-dark-bg);
+  --color-bg-secondary: var(--reading-dark-bg-secondary);
+  --color-surface: var(--reading-dark-surface);
+  --color-surface-solid: var(--reading-dark-surface-solid);
+  --color-on-surface: var(--reading-dark-on-surface);
+  --color-border: var(--reading-dark-border);
+  --color-muted: var(--reading-dark-muted);
+  --shadow: var(--reading-dark-shadow);
+  --surface-backdrop: var(--reading-dark-surface-backdrop);
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+body::before {
+  top: 5rem;
+  right: 5rem;
+  width: 16rem;
+  height: 16rem;
+  background: var(--color-accent);
+  opacity: 0.2;
+}
+
+body::after {
+  bottom: 5rem;
+  left: 5rem;
+  width: 24rem;
+  height: 24rem;
+  background: var(--color-accent-dark);
+  opacity: 0.15;
+}
+
+body.reading-mode::before {
+  background: var(--reading-glow-primary);
+  opacity: 0.3;
+}
+
+body.reading-mode::after {
+  background: var(--reading-glow-secondary);
+  opacity: 0.28;
+}
+
+body.light-theme::before {
+  opacity: 0.3;
+}
+
+body.light-theme::after {
+  opacity: 0.25;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+body.ui-overlay-blocked .app-navbar .controls {
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+body.ui-overlay-blocked .app-navbar app-appearance-switcher,
+body.ui-overlay-blocked .app-navbar .logout-btn {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+body.ui-overlay-blocked .app-navbar .logout-btn {
+  opacity: 0.5;
+}

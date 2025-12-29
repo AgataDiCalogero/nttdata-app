@@ -1,0 +1,36 @@
+<nav
+  class="app-pagination"
+  [attr.aria-label]="ariaLabel() || ('pagination.ariaLabel' | appTranslate)"
+>
+  <button
+    appButton
+    variant="ghost"
+    type="button"
+    (click)="prev()"
+    [disabled]="!canPrev()"
+    [attr.aria-label]="'pagination.ariaPrev' | appTranslate"
+    [attr.aria-disabled]="!canPrev() ? 'true' : null"
+  >
+    <mat-icon svgIcon="lucide:chevron-left" aria-hidden="true"></mat-icon>
+    <span class="btn__label">{{ 'pagination.previous' | appTranslate }}</span>
+  </button>
+
+  <output class="app-pagination__info" aria-live="polite">
+    {{ 'pagination.pageInfo' | appTranslate: { page: page(), total: pageCount() } }}
+  </output>
+
+  <button
+    appButton
+    variant="ghost"
+    type="button"
+    (click)="next()"
+    [disabled]="!canNext()"
+    [attr.aria-label]="'pagination.ariaNext' | appTranslate"
+    [attr.aria-disabled]="!canNext() ? 'true' : null"
+  >
+    <span class="btn__label">{{ 'pagination.next' | appTranslate }}</span>
+    <mat-icon svgIcon="lucide:chevron-right" aria-hidden="true"></mat-icon>
+  </button>
+
+  <ng-content select="[pagination-extra]"></ng-content>
+</nav>

@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.posts-list {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 60rem) {
+  .posts-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.post-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.post-wrapper > app-post-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.post-wrapper mat-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}

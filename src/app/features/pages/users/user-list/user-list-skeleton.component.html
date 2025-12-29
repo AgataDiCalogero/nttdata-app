@@ -1,0 +1,15 @@
+<output
+  class="user-skeleton-list"
+  aria-live="polite"
+  [attr.aria-label]="'users.loadingAria' | appTranslate"
+>
+  @for (placeholder of placeholders; track trackByIndex($index)) {
+    <div class="user-skeleton-card">
+      <div class="user-skeleton-avatar" aria-hidden="true"></div>
+      <div class="user-skeleton-content" aria-hidden="true">
+        <div class="user-skeleton-line user-skeleton-line--title"></div>
+        <div class="user-skeleton-line user-skeleton-line--subtitle"></div>
+      </div>
+    </div>
+  }
+</output>

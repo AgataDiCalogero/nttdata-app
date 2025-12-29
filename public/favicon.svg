@@ -1,0 +1,15 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="url(#faviconGradient)"/>
+  <path d="M8 10 L8 22 L10 22 L10 14 L13 22 L15 22 L15 10 L13 10 L13 18 L10 10 Z" fill="white" fill-opacity="0.95"/>
+  <path d="M16 10 L16 12 L18 12 L18 22 L20 22 L20 12 L22 12 L22 10 Z" fill="white" fill-opacity="0.95"/>
+  <path d="M22 10 L22 12 L24 12 L24 22 L26 22 L26 12 L28 12 L28 10 Z" fill="white" fill-opacity="0.95"/>
+  <circle cx="26" cy="8.5" r="2" fill="#fbbf24" fill-opacity="0.85"/>
+</svg>

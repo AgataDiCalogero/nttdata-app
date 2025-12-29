@@ -1,0 +1,52 @@
+<mat-form-field
+  class="select-field"
+  [class.select-field--compact]="variant() === 'compact'"
+  appearance="outline"
+  color="accent"
+  [floatLabel]="'always'"
+  subscriptSizing="dynamic"
+>
+  @if (label()) {
+    <mat-label>{{ label() }}</mat-label>
+  }
+
+  @if (control(); as ctrl) {
+    <mat-select
+      [id]="resolvedId()"
+      [formControl]="ctrl"
+      [placeholder]="placeholder()"
+      [required]="required()"
+      [attr.aria-label]="ariaLabel() || label() || placeholder() || 'Select option'"
+      [attr.aria-describedby]="ariaDescribedBy() || null"
+      (selectionChange)="onSelectionChange($event.value)"
+      panelClass="app-select-panel"
+    >
+      @if (placeholder() && showPlaceholder()) {
+        <mat-option [value]="''" disabled>{{ placeholder() }}</mat-option>
+      }
+      @for (option of options(); track option.value) {
+        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      }
+    </mat-select>
+    <ng-content></ng-content>
+  } @else {
+    <mat-select
+      [id]="resolvedId()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [attr.aria-label]="ariaLabel() || label() || placeholder() || 'Select option'"
+      [attr.aria-describedby]="ariaDescribedBy() || null"
+      (selectionChange)="onSelectionChange($event.value)"
+      panelClass="app-select-panel"
+    >
+      @if (placeholder() && showPlaceholder()) {
+        <mat-option [value]="''" disabled>{{ placeholder() }}</mat-option>
+      }
+      @for (option of options(); track option.value) {
+        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      }
+    </mat-select>
+    <ng-content></ng-content>
+  }
+</mat-form-field>

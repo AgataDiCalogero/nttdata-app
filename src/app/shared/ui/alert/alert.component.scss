@@ -1,0 +1,124 @@
+@use '../../../../styles/mixins';
+
+.alert {
+  display: flex;
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid transparent;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  @include mixins.radius('md');
+  @include mixins.transition-group((opacity, transform));
+}
+
+.alert__content {
+  @include mixins.flex-row(var(--space-sm));
+  align-items: flex-start;
+  width: 100%;
+}
+
+.alert__icon {
+  flex-shrink: 0;
+  @include mixins.flex-center;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+}
+
+.alert__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert__dismiss {
+  flex-shrink: 0;
+  @include mixins.flex-center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: var(--space-xs);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  opacity: 0.7;
+  @include mixins.radius('xs');
+  @include mixins.transition-group((opacity, background));
+
+  &:hover {
+    opacity: 1;
+    background: var(--alpha-overlay-light);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    opacity: 1;
+  }
+}
+
+.alert--info {
+  background: var(--color-info-bg);
+  border-color: var(--color-info-border);
+  color: var(--color-info-text-dark);
+
+  .alert__icon {
+    color: var(--color-info);
+  }
+}
+
+.light-theme .alert--info {
+  background: var(--color-info-bg);
+  color: var(--color-info-text-light);
+}
+
+.alert--success {
+  background: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text-dark);
+
+  .alert__icon {
+    color: var(--color-success-light);
+  }
+}
+
+.light-theme .alert--success {
+  background: var(--color-success-bg);
+  color: var(--color-success-text-light);
+}
+
+.alert--warning {
+  background: var(--color-warning-bg);
+  border-color: var(--color-warning-border);
+  color: var(--color-warning-text-dark);
+
+  .alert__icon {
+    color: var(--color-warning);
+  }
+}
+
+.light-theme .alert--warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text-light);
+}
+
+.alert--error {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger-text-dark);
+
+  .alert__icon {
+    color: var(--color-danger);
+  }
+}
+
+.light-theme .alert--error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text-light);
+}
+
+.alert--dismissible {
+  .alert__content {
+    padding-right: var(--space-xs);
+  }
+}

@@ -1,0 +1,19 @@
+<section class="posts-list-section" aria-labelledby="posts-list-heading" role="region">
+  <h2 id="posts-list-heading" class="sr-only">Elenco post</h2>
+  <ul class="posts-list" role="list">
+    @for (post of posts(); track trackPostById($index, post)) {
+      <li class="post-wrapper" role="listitem">
+        <app-post-card
+          [post]="post"
+          [isDeleting]="isDeleting(post.id)"
+          [commentsPreviewCount]="commentsCountMap()[post.id]"
+          (delete)="deletePost.emit(post)"
+          (edit)="onEditPost(post)"
+          (viewAuthor)="onViewAuthor(post)"
+          (viewComments)="viewComments.emit(post)"
+          [authorName]="authorName(post)"
+        ></app-post-card>
+      </li>
+    }
+  </ul>
+</section>

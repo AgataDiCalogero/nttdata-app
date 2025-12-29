@@ -1,0 +1,209 @@
+@use '../../../../../styles/mixins' as *;
+
+.user-detail-page {
+  display: block;
+  padding-block: var(--space-md) var(--space-2xl);
+  padding-inline: var(--app-page-gutter);
+}
+
+.user-detail {
+  max-width: 72rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: var(--space-xs);
+  }
+
+  &__header {
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-sm);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-on-surface);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+    min-width: 0;
+  }
+}
+
+.user-detail-card {
+  width: 100%;
+
+  &__layout {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 4rem;
+    height: 4rem;
+    min-width: 4rem;
+    border-radius: 50%;
+    color: var(--color-on-accent);
+    font-weight: var(--font-weight-bold);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-accent-soft);
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: left;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-on-surface);
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  &__email-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm) var(--space-lg);
+    margin-top: 0;
+  }
+
+  &__meta-item {
+    min-width: 0;
+  }
+
+  @media (max-width: 30rem) {
+    padding: var(--space-lg);
+
+    &__layout {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    &__info {
+      align-items: center;
+      width: 100%;
+    }
+
+    &__meta {
+      justify-items: start;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    &__meta {
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    }
+  }
+}
+
+.user-posts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-on-surface);
+    line-height: var(--line-height-tight);
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: color-mix(in srgb, var(--color-on-surface) 56%, transparent);
+  }
+
+  &__grid {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  &__grid app-post-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  &-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-2xl) var(--space-md);
+    text-align: center;
+    color: color-mix(in srgb, var(--color-on-surface) 64%, transparent);
+
+    &__icon {
+      opacity: 0.5;
+      color: color-mix(in srgb, var(--color-on-surface) 40%, transparent);
+    }
+
+    &__text {
+      margin: 0;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+}
+
+.user-detail-alert-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  p {
+    margin: 0;
+  }
+}
+
+.user-detail-alert-actions {
+  display: flex;
+  gap: var(--space-sm);
+}

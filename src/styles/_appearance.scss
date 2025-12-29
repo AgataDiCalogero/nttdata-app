@@ -1,0 +1,15 @@
+.appearance-switcher__trigger {
+  background: var(--gradient-accent-ambient);
+  border-color: var(--alpha-accent-18);
+  box-shadow: var(--shadow-accent-ambient);
+}
+
+.appearance-option__icon {
+  background: var(--alpha-accent-08);
+  color: var(--color-accent);
+}
+
+.appearance-option--active {
+  background: var(--gradient-accent-active);
+  border-color: var(--alpha-accent-40);
+}

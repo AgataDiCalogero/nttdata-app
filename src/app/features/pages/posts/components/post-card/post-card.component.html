@@ -1,0 +1,112 @@
+@let postModel = post();
+@let deleting = isDeleting();
+@let authorName = author();
+
+<mat-card class="post-card" [class.post-card--deleting]="deleting">
+  @if (deleting) {
+    <div class="post-card__overlay" aria-hidden="true"></div>
+  }
+  <div class="post-card__header">
+    <button
+      type="button"
+      class="post-card__avatar-button"
+      (click)="onAuthorClick()"
+      [attr.aria-label]="'postCard.viewAuthorAria' | appTranslate: { name: authorName }"
+      title="{{ 'postCard.viewAuthorAria' | appTranslate: { name: authorName } }}"
+    >
+      <span class="post-card__avatar" aria-hidden="true">
+        {{ authorName.charAt(0).toUpperCase() }}
+      </span>
+    </button>
+
+    <div class="post-card__heading">
+      <div class="post-card__author">
+        <h3 class="post-card__title">
+          {{ postModel?.title }}
+        </h3>
+        <span class="post-card__subtitle">
+          {{ 'postCard.sharedBy' | appTranslate: { name: authorName } }}
+        </span>
+      </div>
+    </div>
+
+    @if (allowManage()) {
+      <div class="post-card__manage">
+        <button
+          appButton
+          variant="danger"
+          size="sm"
+          type="button"
+          [iconOnly]="true"
+          (click)="delete.emit()"
+          class="post-card__icon-button"
+          [disabled]="deleting"
+          [attr.aria-label]="
+            'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' }
+          "
+          title="{{ 'postCard.deleteAria' | appTranslate: { title: postModel?.title ?? '' } }}"
+        >
+          <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+
+  <mat-card-content class="post-card__content">
+    <p class="post-card__body" [id]="bodyId()">
+      @if (!isExpanded && shouldTruncate()) {
+        {{ previewText() }}
+      } @else {
+        {{ postModel?.body }}
+      }
+    </p>
+
+    @if (shouldTruncate()) {
+      <button
+        appButton
+        variant="ghost"
+        size="sm"
+        type="button"
+        class="post-card__toggle"
+        (click)="toggleExpansion()"
+        [attr.aria-expanded]="isExpanded"
+        [attr.aria-controls]="bodyId()"
+      >
+        {{
+          isExpanded ? ('postCard.showLess' | appTranslate) : ('postCard.showMore' | appTranslate)
+        }}
+      </button>
+    }
+  </mat-card-content>
+
+  <mat-card-actions align="start" class="post-card__actions">
+    @if (allowManage()) {
+      <button
+        appButton
+        variant="secondary"
+        size="sm"
+        type="button"
+        (click)="onEditClick()"
+        [attr.aria-label]="'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' }"
+        title="{{ 'postCard.editAria' | appTranslate: { title: postModel?.title ?? '' } }}"
+      >
+        <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.edit' | appTranslate }}</span>
+      </button>
+    }
+
+    <button
+      appButton
+      variant="primary"
+      size="sm"
+      type="button"
+      (click)="onViewComments()"
+      class="post-card__comments-toggle"
+      [attr.aria-label]="'postCard.viewComments' | appTranslate"
+    >
+      <mat-icon svgIcon="lucide:message-square" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'common.actions.viewComments' | appTranslate }}</span>
+      <span class="post-card__comment-count" aria-hidden="true">({{ commentCount }})</span>
+    </button>
+  </mat-card-actions>
+</mat-card>

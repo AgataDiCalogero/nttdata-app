@@ -1,0 +1,138 @@
+@use '../../../../../styles/mixins' as mixins;
+
+.user-list-section {
+  width: 100%;
+}
+
+.user-list {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.user-list__item {
+  list-style: none;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.user-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--mat-card-bg, color-mix(in srgb, var(--color-surface-solid) 82%, transparent));
+  border: 1px solid var(--mat-card-border, rgba(148, 163, 184, 0.25));
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
+  transition:
+    transform var(--duration-normal) var(--ease-in-out),
+    box-shadow var(--duration-normal) var(--ease-in-out);
+}
+
+.user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-accent-soft);
+}
+
+.user-card__heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.user-card__title-wrapper {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.user-card__heading app-status-badge,
+.user-card__heading .user-card__delete-desktop,
+.user-card__heading .user-card__delete-mobile {
+  flex-shrink: 0;
+}
+
+.user-card__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 68%, transparent),
+    color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
+  );
+  color: var(--color-on-accent);
+  box-shadow: 0 8px 18px rgba(249, 115, 22, 0.28);
+}
+
+.user-card__meta {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.user-card__meta-item {
+  min-width: 0;
+}
+
+.user-card__delete-mobile {
+  display: none;
+}
+
+.user-card__delete-desktop {
+  display: inline-flex;
+}
+
+.user-card__delete-mobile mat-icon,
+.user-card__delete-desktop mat-icon,
+.user-card__delete-icon {
+  color: var(--color-danger);
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+@media (max-width: 48rem) {
+  .user-card__delete-mobile {
+    display: inline-flex;
+  }
+
+  .user-card__delete-desktop {
+    display: none;
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@include mixins.tablet-up {
+  .user-list {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+}

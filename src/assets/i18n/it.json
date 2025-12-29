@@ -1,0 +1,375 @@
+{
+  "app": {
+    "name": "NTT Data App"
+  },
+  "a11y": {
+    "skipToMain": "Vai al contenuto principale"
+  },
+  "nav": {
+    "users": "Utenti",
+    "posts": "Post",
+    "logout": "Esci",
+    "ariaMain": "Navigazione principale",
+    "ariaQuick": "Navigazione rapida"
+  },
+  "language": {
+    "label": "Lingua",
+    "menuAria": "Seleziona la lingua"
+  },
+  "appearance": {
+    "openMenuAria": "Apri impostazioni aspetto",
+    "light": "Tema chiaro",
+    "dark": "Tema scuro",
+    "readingMode": "Modalità lettura"
+  },
+  "login": {
+    "title": "Bentornato/a",
+    "subtitle": "Inserisci il tuo token di accesso per continuare.",
+    "tokenLabel": "Token di accesso",
+    "tokenPlaceholder": "Incolla il tuo access token",
+    "submit": "Accedi",
+    "help": "Hai perso il token?",
+    "errors": {
+      "required": "Il token di accesso è obbligatorio.",
+      "minLength": "Il token di accesso deve contenere almeno {{count}} caratteri.",
+      "invalidOrExpired": "Il token fornito non è valido o è scaduto. Generane uno nuovo dal dashboard di GoRest.",
+      "invalid": "Non è stato possibile validare il token. Incolla un token valido.",
+      "rateLimited": "Troppe richieste. Attendi un momento e riprova.",
+      "rateLimitedRetryIn": "Troppe richieste. Riprova tra {{seconds}}s.",
+      "network": "Errore di rete. Controlla la connessione.",
+      "unableToVerify": "Impossibile verificare il token in questo momento. Riprova."
+    }
+  },
+  "tokenHelp": {
+    "title": "Hai perso il token?",
+    "subtitle": "Nessun problema! Generane uno nuovo dal dashboard di GoRest seguendo questi passaggi.",
+    "steps": {
+      "1": "Visita il sito ufficiale di GoRest ed esegui l'accesso con il tuo account.",
+      "2a": "Seleziona",
+      "2b": "nel dashboard per creare un nuovo token personale.",
+      "3": "Copia il token generato e incollalo nel campo \"Token di accesso\" di questa pagina."
+    },
+    "step2Highlight": "Ottieni il tuo token di accesso",
+    "open": "Apri GoRest",
+    "close": "Ho capito",
+    "closeAria": "Chiudi l'aiuto sul token"
+  },
+  "common": {
+    "actions": {
+      "view": "Visualizza",
+      "edit": "Modifica",
+      "delete": "Elimina",
+      "deleting": "Eliminazione…",
+      "comments": "Commenti",
+      "commentsWithCount": "Commenti ({{count}})",
+      "viewComments": "Commenti",
+      "hideComments": "Nascondi commenti",
+      "cancel": "Annulla",
+      "retry": "Riprova",
+      "create": "Crea",
+      "update": "Aggiorna",
+      "saving": "Salvataggio…",
+      "showMore": "Mostra altro",
+      "showLess": "Mostra meno",
+      "open": "Apri",
+      "close": "Chiudi",
+      "backToUsers": "Torna agli utenti",
+      "backToList": "Torna all'elenco",
+      "newPost": "Nuovo post",
+      "newUser": "Nuovo utente",
+      "gotIt": "Ho capito",
+      "reset": "Reimposta",
+      "dismissAlert": "Chiudi avviso"
+    },
+    "status": {
+      "active": "Attivo",
+      "inactive": "Inattivo",
+      "aria": {
+        "activeUser": "Utente attivo",
+        "inactiveUser": "Utente inattivo"
+      }
+    },
+    "gender": {
+      "male": "Maschio",
+      "female": "Femmina",
+      "unspecified": "Non specificato"
+    },
+    "placeholders": {
+      "searchUsers": "Cerca per nome o email...",
+      "searchUsersLabel": "Cerca utenti per nome o email",
+      "postTitle": "Titolo del post",
+      "postBody": "Descrivi la tua idea o segnalazione",
+      "comment": "Condividi i tuoi pensieri...",
+      "commentName": "Il tuo nome",
+      "commentEmail": "nome@email.com",
+      "fullName": "Inserisci il nome completo",
+      "email": "utente@example.com"
+    },
+    "errors": {
+      "unknown": "Qualcosa è andato storto. Riprova.",
+      "networkUnavailable": "Rete non disponibile. Controlla la connessione e riprova.",
+      "sessionExpired": "Sessione scaduta. Effettua di nuovo l'accesso.",
+      "forbidden": "Non hai i permessi per eseguire questa azione.",
+      "validation": "Alcuni campi non sono validi. Controlla il form e riprova.",
+      "rateLimit": "Troppe richieste. Attendi un momento e riprova.",
+      "unexpected": "Errore inatteso. Riprova più tardi.",
+      "rateLimitRetrying": "Troppe richieste. Nuovo tentativo tra {{seconds}}s.",
+      "actionFailed": "Impossibile completare l'azione in questo momento. Riprova."
+    }
+  },
+  "users": {
+    "title": "Utenti",
+    "new": "Nuovo utente",
+    "subtitle": "Gestisci e consulta tutti gli utenti registrati",
+    "loading": "Caricamento utenti...",
+    "filters": {
+      "searchLabel": "Cerca utenti per nome o email",
+      "searchPlaceholder": "Cerca per nome o email...",
+      "perPage": "Utenti per pagina",
+      "perPageOption": "{{value}} / pagina",
+      "createAria": "Crea un nuovo utente"
+    },
+    "summary": {
+      "loading": "Caricamento utenti...",
+      "empty": "Nessun utente trovato",
+      "single": "{{total}} utente",
+      "all": "{{total}} utenti",
+      "partial": "Mostrati {{visible}} di {{total}} utenti"
+    },
+    "loader": "Caricamento utenti…",
+    "errorRetry": "Riprova",
+    "emptyState": "Nessun utente trovato.",
+    "unnamed": "Utente senza nome",
+    "sortButtonLabel": "Ordina {{label}} {{direction}}",
+    "loadingAria": "Caricamento utenti",
+    "delete": {
+      "title": "Elimina utente",
+      "message": "Sei sicuro di voler eliminare {{name}}? Questa azione non può essere annullata.",
+      "confirm": "Elimina",
+      "cancel": "Annulla",
+      "deleting": "Eliminazione...",
+      "error": "Impossibile eliminare l'utente in questo momento. Riprova.",
+      "success": "Utente eliminato"
+    },
+    "create": {
+      "success": "Utente creato",
+      "ariaLabel": "Nuovo utente"
+    },
+    "update": {
+      "success": "Utente aggiornato",
+      "ariaLabel": "Modifica utente"
+    }
+  },
+  "userList": {
+    "heading": "Elenco utenti",
+    "viewAria": "Visualizza i dettagli utente",
+    "deleteAria": "Elimina utente"
+  },
+  "userForm": {
+    "titleNew": "Nuovo utente",
+    "titleEdit": "Modifica utente",
+    "subtitleNew": "Aggiungi un nuovo utente al registro.",
+    "subtitleEdit": "Aggiorna i dettagli e lo stato dell'utente.",
+    "fields": {
+      "name": "Nome",
+      "email": "Email",
+      "gender": "Genere",
+      "status": "Stato"
+    },
+    "placeholders": {
+      "name": "Inserisci il nome completo",
+      "email": "utente@example.com"
+    },
+    "errors": {
+      "name": "Inserisci almeno 2 caratteri.",
+      "email": "Indirizzo email non valido.",
+      "emailInUse": "Email già in uso o non valida.",
+      "gender": "Seleziona un genere."
+    },
+    "submitErrors": {
+      "rateLimit": "Troppe richieste. Riprova tra poco.",
+      "saveFailed": "Si è verificato un errore durante il salvataggio. Riprova."
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "create": "Crea",
+      "update": "Aggiorna",
+      "saving": "Salvataggio…"
+    }
+  },
+  "userDetail": {
+    "title": "Dettagli utente",
+    "back": "Torna agli utenti",
+    "loading": "Caricamento dettagli utente...",
+    "backToList": "Torna all'elenco",
+    "avatarFallback": "Utente",
+    "genderFallback": "Non specificato",
+    "postsTitle": "Post di {{name}}",
+    "postsSubtitle": "Post di questo utente.",
+    "postsLoading": "Caricamento post...",
+    "postsEmpty": "Ancora nessun post pubblicato.",
+    "postsCountSingle": "post pubblicato",
+    "postsCountPlural": "post pubblicati",
+    "invalidUserId": "ID utente non valido",
+    "unableToLoadComments": "Impossibile caricare i commenti",
+    "unableToUpdateStatus": "Impossibile aggiornare lo stato dell'utente",
+    "unableToUpdateStatusRetry": "Impossibile aggiornare lo stato dell'utente. Riprova.",
+    "unableToLoadUser": "Impossibile caricare i dettagli dell'utente",
+    "unableToLoadPosts": "Impossibile caricare i post dell'utente"
+  },
+  "posts": {
+    "title": "Post",
+    "subtitle": "Gestisci e sfoglia tutti i post pubblicati.",
+    "new": "Nuovo post",
+    "emptyState": "Nessun post corrisponde ai filtri. Prova ad aggiornare la ricerca.",
+    "loading": "Caricamento post...",
+    "error": "Impossibile caricare i post in questo momento. Riprova.",
+    "loadError": "Impossibile caricare i post",
+    "loadUsersError": "Impossibile caricare l'elenco utenti",
+    "authorUnavailable": "Autore non disponibile per questo post",
+    "staleData": "Stai vedendo dati non aggiornati.",
+    "summary": {
+      "all": "{{total}} post",
+      "partial": "Mostrati {{visible}} di {{total}} post"
+    },
+    "create": {
+      "ariaLabel": "Nuovo post",
+      "success": "Post creato"
+    },
+    "update": {
+      "ariaLabel": "Modifica post {{title}}",
+      "success": "Post aggiornato"
+    },
+    "delete": {
+      "title": "Elimina post",
+      "message": "Sei sicuro di voler eliminare \"{{title}}\"? Questa azione non può essere annullata.",
+      "confirm": "Elimina",
+      "cancel": "Annulla",
+      "deleting": "Eliminazione...",
+      "error": "Impossibile eliminare il post in questo momento. Riprova.",
+      "success": "Post eliminato"
+    }
+  },
+  "postsFilters": {
+    "searchPlaceholder": "Cerca per titolo",
+    "searchLabel": "Cerca post per titolo",
+    "author": "Filtra per autore",
+    "authorAria": "Filtra i post per autore",
+    "authorAll": "Tutti gli autori",
+    "perPage": "Post per pagina",
+    "perPageAria": "Cambia i post per pagina",
+    "reset": "Reimposta"
+  },
+  "postCard": {
+    "sharedBy": "Pubblicato da {{name}}",
+    "viewComments": "Leggi commenti",
+    "viewAuthorAria": "Visualizza autore {{name}}",
+    "editAria": "Modifica il post {{title}}",
+    "deleteAria": "Elimina il post {{title}}",
+    "showMore": "Mostra altro",
+    "showLess": "Mostra meno",
+    "unknownAuthor": "Autore sconosciuto"
+  },
+  "postForm": {
+    "titleNew": "Crea un nuovo post",
+    "titleEdit": "Modifica post",
+    "subtitleNew": "Condividi idee o segnalazioni per migliorare la città.",
+    "subtitleEdit": "Aggiorna il titolo, l'autore o il contenuto di questo post.",
+    "loadingUsers": "Caricamento utenti...",
+    "selectAuthor": "Seleziona un autore",
+    "fields": {
+      "author": "Autore",
+      "title": "Titolo",
+      "content": "Contenuto"
+    },
+    "errors": {
+      "author": "Seleziona un autore valido.",
+      "title": "Il titolo deve contenere almeno 5 caratteri.",
+      "body": "Descrivi il post con almeno 20 caratteri.",
+      "rateLimit": "Troppe richieste. Riprova tra poco.",
+      "saveFailed": "Impossibile salvare il post. Riprova."
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "create": "Crea",
+      "update": "Salva modifiche",
+      "saving": "Salvataggio…"
+    },
+    "missingAuthor": "Autore sconosciuto (ID {{id}})"
+  },
+  "postComments": {
+    "loading": "Caricamento commenti...",
+    "empty": "Non ci sono commenti",
+    "composerPlaceholder": "Scrivi un commento...",
+    "dialogLabel": "Lascia un commento...",
+    "dialogAria": "Sezione commenti per {{title}}",
+    "dialogCloseAria": "Chiudi la finestra dei commenti",
+    "anonymous": "Anonimo",
+    "editPlaceholder": "Aggiorna il tuo commento",
+    "editSave": "Salva",
+    "editCancel": "Annulla",
+    "editError": "Il contenuto non è valido. Modificalo e riprova.",
+    "editAria": "Modifica il commento di {{name}}",
+    "deleteAria": "Elimina il commento di {{name}}",
+    "cancelEditAria": "Annulla la modifica del commento di {{name}}",
+    "deleteConfirm": {
+      "title": "Elimina commento",
+      "message": "Sei sicuro di voler eliminare questo commento? Questa azione non può essere annullata.",
+      "cancel": "Annulla",
+      "confirm": "Elimina",
+      "inProgress": "Eliminazione...",
+      "errorMessage": "Impossibile eliminare il commento in questo momento."
+    },
+    "toast": {
+      "updated": "Commento aggiornato con successo",
+      "updateFailed": "Impossibile aggiornare il commento. Riprova.",
+      "deleted": "Commento eliminato con successo"
+    },
+    "errors": {
+      "rateLimit": "Troppe richieste. Riprova più tardi.",
+      "editInvalid": "Il commento deve chiarire la modifica."
+    }
+  },
+  "commentForm": {
+    "aria": "Aggiungi commento",
+    "fields": {
+      "name": "Nome",
+      "email": "Email",
+      "body": "Commento"
+    },
+    "placeholders": {
+      "name": "Il tuo nome",
+      "email": "nome@email.com",
+      "body": "Condividi i tuoi pensieri..."
+    },
+    "errors": {
+      "name": "Inserisci almeno 2 caratteri.",
+      "email": "Fornisci un indirizzo email valido.",
+      "body": "Il commento deve contenere almeno 10 caratteri."
+    },
+    "buttons": {
+      "submit": "Invia",
+      "submitting": "Invio…"
+    },
+    "submitErrors": {
+      "validation": "I dati del commento non sono validi. Controlla i campi.",
+      "rateLimit": "Troppe richieste. Riprova tra poco.",
+      "publishFailed": "Impossibile pubblicare il commento. Riprova."
+    },
+    "toastSuccess": "Commento pubblicato con successo"
+  },
+  "toast": {
+    "dismissAria": "Chiudi notifica"
+  },
+  "pagination": {
+    "previous": "Precedente",
+    "next": "Successiva",
+    "pageInfo": "Pagina {{page}} di {{total}}",
+    "ariaPrev": "Vai alla pagina precedente",
+    "ariaNext": "Vai alla pagina successiva",
+    "ariaLabel": "Paginazione"
+  },
+  "footer": {
+    "builtBy": "Creato da"
+  }
+}

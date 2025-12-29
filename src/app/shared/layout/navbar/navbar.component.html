@@ -1,0 +1,131 @@
+<header>
+  <mat-toolbar class="app-navbar" color="primary">
+    <a class="brand" routerLink="/" (click)="closeMenu()">
+      <img
+        ngSrc="assets/logo.svg"
+        alt="NTT Data"
+        class="brand__logo"
+        width="40"
+        height="40"
+        priority
+      />
+      <span class="brand__label">{{ 'app.name' | appTranslate }}</span>
+    </a>
+
+    @if (!isLoginRoute()) {
+      <nav class="nav-links" role="navigation" [attr.aria-label]="'nav.ariaMain' | appTranslate">
+        @if (!isMobile() && isLogged()) {
+          <a
+            appButton
+            variant="ghost"
+            routerLink="/users"
+            routerLinkActive="active"
+            [class.active]="isRouteActive('/users')"
+            [attr.aria-current]="ariaCurrent('/users')"
+            (click)="closeMenu()"
+          >
+            <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+            <span>{{ 'nav.users' | appTranslate }}</span>
+          </a>
+          <a
+            appButton
+            variant="ghost"
+            routerLink="/posts"
+            routerLinkActive="active"
+            [class.active]="isRouteActive('/posts')"
+            [attr.aria-current]="ariaCurrent('/posts')"
+            (click)="closeMenu()"
+          >
+            <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+            <span>{{ 'nav.posts' | appTranslate }}</span>
+          </a>
+        }
+      </nav>
+    }
+
+    <span class="spacer" aria-hidden="true"></span>
+
+    <div class="controls">
+      <div class="toolbar-menu-trigger">
+        <app-language-switcher
+          [attr.aria-label]="'language.menuAria' | appTranslate"
+        ></app-language-switcher>
+        <app-appearance-switcher
+          aria-haspopup="true"
+          [attr.aria-label]="'appearance.openMenuAria' | appTranslate"
+        ></app-appearance-switcher>
+
+        @if (!isLoginRoute() && isLogged()) {
+          <button
+            appButton
+            variant="ghost"
+            size="sm"
+            type="button"
+            class="logout-btn"
+            [attr.aria-label]="'nav.logout' | appTranslate"
+            (click)="logout()"
+          >
+            <mat-icon svgIcon="lucide:log-out" aria-hidden="true"></mat-icon>
+            <span class="logout-text sr-only">{{ 'nav.logout' | appTranslate }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </mat-toolbar>
+</header>
+
+<!-- Floating hamburger menu - only on mobile, only when logged, never on login -->
+@if (!isLoginRoute() && isLogged() && isMobile()) {
+  <button
+    appButton
+    [iconOnly]="true"
+    variant="secondary"
+    class="floating-menu-trigger"
+    type="button"
+    [attr.aria-label]="'common.actions.open' | appTranslate"
+    [title]="'common.actions.open' | appTranslate"
+    [matMenuTriggerFor]="navMenu"
+    [attr.aria-controls]="navMenu?.panelId"
+    [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
+    (menuOpened)="onMenuOpened()"
+    (menuClosed)="onMenuClosed()"
+  >
+    <span class="sr-only">{{ 'common.actions.open' | appTranslate }}</span>
+    <lucide-icon [img]="Menu" aria-hidden="true"></lucide-icon>
+  </button>
+}
+
+<mat-menu
+  #navMenu="matMenu"
+  class="mobile-nav-panel"
+  [yPosition]="isMobile() ? 'above' : 'below'"
+  xPosition="before"
+  [overlapTrigger]="false"
+  [attr.aria-label]="'nav.ariaQuick' | appTranslate"
+  [attr.role]="'menu'"
+>
+  @if (!isLoginRoute() && isLogged()) {
+    <button
+      mat-menu-item
+      role="menuitem"
+      routerLink="/users"
+      routerLinkActive="active"
+      [class.active]="isRouteActive('/users')"
+      (click)="closeMenu()"
+    >
+      <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+      <span>{{ 'nav.users' | appTranslate }}</span>
+    </button>
+    <button
+      mat-menu-item
+      role="menuitem"
+      routerLink="/posts"
+      routerLinkActive="active"
+      [class.active]="isRouteActive('/posts')"
+      (click)="closeMenu()"
+    >
+      <mat-icon svgIcon="lucide:posts" aria-hidden="true"></mat-icon>
+      <span>{{ 'nav.posts' | appTranslate }}</span>
+    </button>
+  }
+</mat-menu>

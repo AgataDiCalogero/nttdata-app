@@ -1,0 +1,111 @@
+<section class="user-list-section" aria-labelledby="users-list-heading" role="region">
+  <h2 id="users-list-heading" class="sr-only">{{ 'userList.heading' | appTranslate }}</h2>
+  <ul class="user-list" role="list">
+    @for (user of items(); track trackById($index, user)) {
+      <li role="listitem" class="user-list__item">
+        <mat-card class="user-card">
+          <mat-card-header>
+            <div class="user-card__heading">
+              <div mat-card-avatar class="user-card__avatar" aria-hidden="true">
+                {{ initials(user) }}
+              </div>
+              <div class="user-card__title-wrapper">
+                <mat-card-title>
+                  {{ user.name || ('users.unnamed' | appTranslate) }}
+                </mat-card-title>
+              </div>
+              <app-status-badge
+                [status]="user.status"
+                [ariaLabel]="
+                  user.status === 'active'
+                    ? ('common.status.aria.activeUser' | appTranslate)
+                    : ('common.status.aria.inactiveUser' | appTranslate)
+                "
+                [clickable]="true"
+                (statusChange)="onStatusChange(user, $event)"
+              ></app-status-badge>
+              @if (isMobile()) {
+                <button
+                  appButton
+                  variant="danger"
+                  [iconOnly]="true"
+                  class="user-card__delete-mobile"
+                  (click)="onDelete(user, $event)"
+                  [attr.aria-label]="'userList.deleteAria' | appTranslate"
+                  title="{{ 'userList.deleteAria' | appTranslate }}"
+                >
+                  <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
+                  <mat-icon
+                    svgIcon="lucide:trash-2"
+                    class="user-card__delete-icon"
+                    aria-hidden="true"
+                  ></mat-icon>
+                </button>
+              }
+            </div>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="user-card__meta">
+              <div class="user-card__meta-item meta-line">
+                <mat-icon
+                  class="meta-line__icon"
+                  svgIcon="lucide:mail"
+                  aria-hidden="true"
+                ></mat-icon>
+                <span class="meta-line__content">
+                  {{ user.email }}
+                </span>
+              </div>
+              <div class="user-card__meta-item meta-line">
+                <mat-icon
+                  class="meta-line__icon"
+                  svgIcon="lucide:user"
+                  aria-hidden="true"
+                ></mat-icon>
+                <span class="meta-line__content">
+                  {{ getGenderLabel(user.gender) }}
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button
+              appButton
+              variant="ghost"
+              type="button"
+              [routerLink]="['/users', user.id]"
+              [attr.aria-label]="'userList.viewAria' | appTranslate"
+            >
+              <mat-icon svgIcon="lucide:eye" aria-hidden="true"></mat-icon>
+              <span class="btn__label">{{ 'common.actions.view' | appTranslate }}</span>
+            </button>
+            <button appButton variant="secondary" (click)="onEdit(user, $event)">
+              <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
+              <span class="btn__label">{{ 'common.actions.edit' | appTranslate }}</span>
+            </button>
+            @if (!isMobile()) {
+              <button
+                appButton
+                variant="danger"
+                [iconOnly]="true"
+                class="user-card__delete-desktop"
+                (click)="onDelete(user, $event)"
+                [attr.aria-label]="'userList.deleteAria' | appTranslate"
+                title="{{ 'userList.deleteAria' | appTranslate }}"
+              >
+                <span class="sr-only">{{ 'userList.deleteAria' | appTranslate }}</span>
+                <mat-icon
+                  svgIcon="lucide:trash-2"
+                  class="user-card__delete-icon"
+                  aria-hidden="true"
+                ></mat-icon>
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      </li>
+    }
+  </ul>
+</section>

@@ -1,0 +1,12 @@
+<a class="sr-only sr-only--focusable" href="#main-content">{{
+  'a11y.skipToMain' | appTranslate
+}}</a>
+<app-navbar></app-navbar>
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" color="accent" class="app-loader"></mat-progress-bar>
+}
+<main class="app-content" id="main-content">
+  <router-outlet />
+</main>
+<app-toast></app-toast>
+<app-footer></app-footer>

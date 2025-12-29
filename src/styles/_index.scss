@@ -1,0 +1,15 @@
+// Design system SCSS:
+// - variables/tokens: palette, spacing, typography, semantic tokens
+// - mixins: helper comuni e pattern condivisi (card, avatar, layout)
+// - appearance: temi light/dark e variazioni
+// - buttons/forms/navbar/pagination/skeleton/states: pattern UI globali
+@forward 'variables';
+@forward 'tokens';
+@forward 'mixins';
+@forward 'appearance';
+@forward 'buttons';
+@forward 'forms';
+@forward 'navbar';
+@forward 'pagination';
+@forward 'skeleton';
+@forward 'states';

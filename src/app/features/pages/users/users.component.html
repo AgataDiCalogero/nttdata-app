@@ -1,0 +1,109 @@
+@if (isChildRouteActive()) {
+  <router-outlet></router-outlet>
+} @else {
+  <section class="users-page" data-app-page="true">
+    <div class="users-container app-container app-container--full app-container--flush">
+      <header class="users-page__header app-page__header">
+        <div class="app-page__heading">
+          <h1 class="app-page__title">{{ 'users.title' | appTranslate }}</h1>
+          <p class="app-subtitle">{{ 'users.subtitle' | appTranslate }}</p>
+        </div>
+        <button
+          appButton
+          variant="primary"
+          type="button"
+          (click)="openNewUserModal()"
+          [attr.aria-label]="'users.filters.createAria' | appTranslate"
+        >
+          <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+          <span class="btn__label">{{ 'users.new' | appTranslate }}</span>
+        </button>
+      </header>
+
+      <app-user-filters
+        [showCreate]="false"
+        [perPageOptions]="perPageOptionsMutable()"
+        [perPage]="perPage()"
+        [searchTerm]="usersService.searchTerm()"
+        (searchChange)="onSearch($event)"
+        (perPageChange)="onPerPageChange($event)"
+        (resetFilters)="onResetFilters()"
+      ></app-user-filters>
+
+      <div *ngIf="usersSummary()" class="app-results-summary" aria-live="polite">
+        {{ usersSummary() }}
+      </div>
+
+      @if (loading()) {
+        <div class="users-loader" aria-live="polite">
+          <output class="app-progress users-page__loader" aria-live="polite">
+            <mat-progress-bar
+              mode="indeterminate"
+              color="accent"
+              class="app-progress-bar"
+            ></mat-progress-bar>
+            <span class="app-progress__text">{{ 'users.loading' | appTranslate }}</span>
+          </output>
+          <div class="users-skeletons" aria-hidden="true">
+            <app-user-list-skeleton></app-user-list-skeleton>
+          </div>
+        </div>
+      } @else {
+        @if (error(); as err) {
+          <app-alert variant="error" [dismissible]="true" (dismissed)="clearError()">
+            <div class="users-error__content">
+              <mat-icon svgIcon="lucide:alert-circle" aria-hidden="true"></mat-icon>
+              <p>{{ err }}</p>
+            </div>
+            <div class="users-error__actions">
+              <button
+                appButton
+                variant="ghost"
+                type="button"
+                (click)="clearError()"
+                [disabled]="loading()"
+              >
+                <mat-icon svgIcon="lucide:rotate-cw" aria-hidden="true"></mat-icon>
+                <span class="btn__label">{{ 'common.actions.retry' | appTranslate }}</span>
+              </button>
+            </div>
+          </app-alert>
+        } @else {
+          @if (users().length > 0) {
+            <div class="users-list-wrapper">
+              <app-user-list
+                [items]="users()"
+                (edit)="openEditUserModal($event)"
+                (delete)="onDelete($event)"
+                (statusChange)="onStatusChange($event)"
+              ></app-user-list>
+
+              <app-pagination
+                [page]="page()"
+                [pageCount]="pagination()?.pages ?? 1"
+                (pageChange)="onPageChange($event)"
+              />
+            </div>
+          } @else {
+            <mat-card class="users-empty" appearance="outlined">
+              <mat-card-content>
+                <mat-icon svgIcon="lucide:users" aria-hidden="true"></mat-icon>
+                <p>{{ 'users.emptyState' | appTranslate }}</p>
+                <button
+                  appButton
+                  variant="primary"
+                  type="button"
+                  (click)="openNewUserModal()"
+                  [attr.aria-label]="'users.filters.createAria' | appTranslate"
+                >
+                  <mat-icon svgIcon="lucide:plus" aria-hidden="true"></mat-icon>
+                  <span class="btn__label">{{ 'users.new' | appTranslate }}</span>
+                </button>
+              </mat-card-content>
+            </mat-card>
+          }
+        }
+      }
+    </div>
+  </section>
+}

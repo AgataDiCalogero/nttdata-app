@@ -1,0 +1,116 @@
+.state {
+  --state-bg: var(--state-surface-bg);
+  --state-border: var(--state-surface-border);
+  --state-color: var(--color-on-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  color: var(--state-color);
+  background: var(--state-bg);
+  border: 1px solid var(--state-border);
+
+  p {
+    margin: 0;
+  }
+}
+
+.state--inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+.state__title {
+  font-weight: 600;
+  margin: 0;
+}
+
+.state__actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.state--error {
+  --state-bg: var(--state-error-bg);
+  --state-color: var(--color-danger-text-dark);
+  background: var(--state-error-bg);
+  border: 1px solid var(--state-error-border);
+
+  @supports (background: color-mix(in srgb, var(--color-danger) 15%, transparent)) {
+    background: color-mix(in srgb, var(--color-danger) 15%, transparent);
+  }
+
+  @supports (color: color-mix(in srgb, var(--color-danger) 24%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--color-danger) 24%, transparent);
+  }
+}
+
+.state--loading {
+  --state-bg: var(--state-loading-bg);
+  --state-color: var(--color-muted);
+  background: var(--state-loading-bg);
+  border: 1px solid var(--state-loading-border);
+
+  @supports (background: color-mix(in srgb, var(--color-accent) 14%, transparent)) {
+    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  }
+
+  @supports (color: color-mix(in srgb, var(--color-accent) 18%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+  }
+}
+
+.state--empty {
+  --state-bg: var(--state-empty-bg);
+  --state-color: var(--color-muted);
+  background: var(--state-empty-bg);
+  border-style: dashed;
+
+  @supports (background: color-mix(in srgb, var(--color-muted) 18%, transparent)) {
+    background: color-mix(in srgb, var(--color-muted) 18%, transparent);
+  }
+}
+
+.state--success {
+  --state-bg: var(--state-success-bg);
+  --state-color: var(--color-success-text-dark);
+  background: var(--state-success-bg);
+  border: 1px solid var(--state-success-border);
+
+  @supports (background: color-mix(in srgb, var(--color-success) 18%, transparent)) {
+    background: color-mix(in srgb, var(--color-success) 18%, transparent);
+  }
+
+  @supports (color: color-mix(in srgb, var(--color-success) 22%, transparent)) {
+    border: 1px solid color-mix(in srgb, var(--color-success) 22%, transparent);
+  }
+}
+
+.state--compact {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  gap: var(--space-xs);
+}
+
+.app-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.app-progress-bar {
+  width: min(22rem, 100%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.app-progress__text {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  text-align: center;
+}

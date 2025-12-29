@@ -1,0 +1,140 @@
+<section class="user-detail-page" data-app-page="true">
+  <div class="user-detail">
+    <nav class="user-detail__nav">
+      <a
+        routerLink="/users"
+        appButton
+        variant="ghost"
+        class="user-detail__back-link"
+        [attr.aria-label]="'common.actions.backToUsers' | appTranslate"
+      >
+        <lucide-icon [img]="ArrowLeft" aria-hidden="true"></lucide-icon>
+        <span class="btn__label">{{ 'common.actions.backToUsers' | appTranslate }}</span>
+      </a>
+    </nav>
+
+    @if (loading()) {
+      <output class="app-progress" aria-live="polite">
+        <mat-progress-bar
+          mode="indeterminate"
+          color="accent"
+          class="app-progress-bar"
+        ></mat-progress-bar>
+        <span class="app-progress__text">{{ 'userDetail.loading' | appTranslate }}</span>
+      </output>
+    } @else if (error()) {
+      <app-alert variant="error" [dismissible]="true" (dismissed)="error.set(null)">
+        <div class="user-detail-alert-content">
+          <p>{{ error() }}</p>
+        </div>
+      </app-alert>
+    } @else if (user(); as detail) {
+      <div class="user-detail__content">
+        <mat-card class="user-detail-card" appearance="outlined">
+          <div class="user-detail-card__layout">
+            <div class="user-detail-card__avatar" aria-hidden="true">
+              {{
+                (detail.name || ('userDetail.avatarFallback' | appTranslate))
+                  .slice(0, 2)
+                  .toUpperCase()
+              }}
+            </div>
+            <div class="user-detail-card__info">
+              <h2 class="user-detail-card__name">
+                {{ detail.name || ('users.unnamed' | appTranslate) }}
+              </h2>
+              <div class="user-detail-card__meta">
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="Mail"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
+                    {{ detail.email }}
+                  </span>
+                </div>
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="UserIcon"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
+                    {{ genderLabel() }}
+                  </span>
+                </div>
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="MessageSquare"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
+                    {{ posts().length }}
+                    {{
+                      posts().length === 1
+                        ? ('userDetail.postsCountSingle' | appTranslate)
+                        : ('userDetail.postsCountPlural' | appTranslate)
+                    }}
+                  </span>
+                </div>
+                <div class="user-detail-card__meta-item meta-line">
+                  <lucide-icon
+                    class="meta-line__icon"
+                    [img]="Circle"
+                    aria-hidden="true"
+                  ></lucide-icon>
+                  <span class="meta-line__content">
+                    {{ statusLabel() }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+
+        <section class="user-posts" aria-labelledby="user-posts-title">
+          <header class="user-posts__header">
+            <h2 id="user-posts-title" class="user-posts__title">
+              {{ 'posts.title' | appTranslate }}
+            </h2>
+          </header>
+
+          @if (postsLoading()) {
+            <output class="app-progress user-posts__loader" aria-live="polite">
+              <mat-progress-bar
+                mode="indeterminate"
+                color="accent"
+                class="app-progress-bar"
+              ></mat-progress-bar>
+              <span class="app-progress__text">{{ 'userDetail.postsLoading' | appTranslate }}</span>
+            </output>
+          } @else if (posts().length === 0) {
+            <div class="user-posts-empty">
+              <lucide-icon
+                [img]="MessageSquare"
+                [size]="48"
+                class="user-posts-empty__icon"
+                aria-hidden="true"
+              ></lucide-icon>
+              <p class="user-posts-empty__text">{{ 'userDetail.postsEmpty' | appTranslate }}</p>
+            </div>
+          } @else {
+            <div class="user-posts__grid">
+              @for (post of posts(); track trackPostId($index, post)) {
+                <app-post-card
+                  [post]="post"
+                  [allowManage]="false"
+                  [commentsPreviewCount]="commentsCount()[post.id]"
+                  [authorName]="detail.name"
+                  (viewComments)="handleViewComments(post)"
+                ></app-post-card>
+              }
+            </div>
+          }
+        </section>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,83 @@
+<section class="login-page" data-app-page="true">
+  <div class="login-container app-container">
+    <mat-card class="login-card">
+      <div class="login-card__icon">
+        <mat-icon svgIcon="lucide:lock" aria-hidden="true"></mat-icon>
+      </div>
+      <h1 class="login-card__title">{{ 'login.title' | appTranslate }}</h1>
+      <p class="login-card__subtitle">{{ 'login.subtitle' | appTranslate }}</p>
+
+      @if (submissionMessage()) {
+        <app-alert
+          #formAlert
+          variant="error"
+          class="login-page__alert"
+          [id]="formErrorId"
+          tabindex="-1"
+        >
+          {{ submissionMessage() }}
+        </app-alert>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="login-form">
+        @let tokenError = tokenErrorMessage();
+
+        <div class="login-field">
+          <label class="login-field__label" for="access-token">{{
+            'login.tokenLabel' | appTranslate
+          }}</label>
+          <div
+            class="login-field__control"
+            [class.login-field__control--invalid]="showTokenInvalidState()"
+          >
+            <input
+              id="access-token"
+              #tokenInput
+              class="login-field__input"
+              type="password"
+              formControlName="token"
+              autocomplete="off"
+              [placeholder]="'login.tokenPlaceholder' | appTranslate"
+              [attr.aria-invalid]="showTokenInvalidState() ? 'true' : null"
+              [attr.aria-describedby]="tokenDescribedBy()"
+            />
+            <mat-icon svgIcon="lucide:key" aria-hidden="true"></mat-icon>
+          </div>
+          @if (tokenError) {
+            <p class="login-field__error" [id]="tokenErrorId">{{ tokenError }}</p>
+          }
+        </div>
+
+        <!-- Global submission messages are shown via ToastService to avoid duplicate UIs -->
+
+        <div class="login-actions">
+          <button
+            appButton
+            variant="primary"
+            type="submit"
+            class="login-actions__submit"
+            [loading]="loading()"
+            [disabled]="loading() || form.invalid"
+            [attr.aria-label]="'login.submit' | appTranslate"
+          >
+            <mat-icon svgIcon="lucide:log-in" aria-hidden="true"></mat-icon>
+            <span class="btn__label">{{ 'login.submit' | appTranslate }}</span>
+          </button>
+
+          <button
+            appButton
+            variant="ghost"
+            type="button"
+            class="login-actions__help"
+            (click)="openTokenHelp()"
+            [disabled]="loading()"
+            [attr.aria-label]="'login.help' | appTranslate"
+          >
+            <mat-icon svgIcon="lucide:info" aria-hidden="true"></mat-icon>
+            <span class="btn__label">{{ 'login.help' | appTranslate }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</section>

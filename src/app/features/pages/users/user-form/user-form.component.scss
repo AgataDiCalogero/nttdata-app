@@ -1,0 +1,27 @@
+@use '../../../../../styles/mixins' as mixins;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+}
+
+.user-form {
+  width: 100%;
+}
+
+.user-form__form {
+  gap: var(--space-lg);
+}
+
+.user-form__form .form-field,
+.user-form__form .form-input,
+.user-form__form .form-select,
+.user-form__form .form-textarea,
+.user-form__form .select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: block;
+}

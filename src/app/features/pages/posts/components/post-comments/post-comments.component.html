@@ -1,0 +1,146 @@
+<section class="post-comments">
+  <div class="post-comments__list-area">
+    @if (loading()) {
+      <output class="app-progress" aria-live="polite">
+        <mat-progress-bar
+          mode="indeterminate"
+          color="accent"
+          class="app-progress-bar"
+        ></mat-progress-bar>
+        <span class="app-progress__text">{{ 'postComments.loading' | appTranslate }}</span>
+      </output>
+    }
+
+    @if (!loading() && comments().length === 0) {
+      <app-alert variant="info">
+        <div class="post-comments-empty">
+          <p>{{ 'postComments.empty' | appTranslate }}</p>
+        </div>
+      </app-alert>
+    } @else if (comments().length > 0) {
+      <div class="post-comments__list post-comments__scrollable">
+        @for (comment of comments(); track trackByCommentId($index, comment)) {
+          <div class="post-comments__item">
+            <header class="post-comments__item-header">
+              <div class="post-comments__avatar" aria-hidden="true">
+                {{ comment.name.charAt(0).toUpperCase() }}
+              </div>
+              <div class="post-comments__meta">
+                <span class="post-comments__author">
+                  {{ comment.name || ('postComments.anonymous' | appTranslate) }}
+                </span>
+                <span class="post-comments__email">{{ comment.email }}</span>
+              </div>
+              @if (allowManage()) {
+                <div class="post-comments__item-actions">
+                  @if (editingId() !== comment.id) {
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [iconOnly]="true"
+                      (click)="startEdit(comment)"
+                      [attr.aria-label]="
+                        'postComments.editAria' | appTranslate: { name: comment.name }
+                      "
+                      title="{{ 'postComments.editAria' | appTranslate: { name: comment.name } }}"
+                    >
+                      <mat-icon svgIcon="lucide:pencil" aria-hidden="true"></mat-icon>
+                    </button>
+                    <button
+                      appButton
+                      variant="danger"
+                      size="sm"
+                      type="button"
+                      [iconOnly]="true"
+                      (click)="deleteComment(comment)"
+                      [disabled]="deletingId() === comment.id"
+                      [attr.aria-label]="
+                        'postComments.deleteAria' | appTranslate: { name: comment.name }
+                      "
+                      title="{{ 'postComments.deleteAria' | appTranslate: { name: comment.name } }}"
+                    >
+                      <mat-icon svgIcon="lucide:trash-2" aria-hidden="true"></mat-icon>
+                    </button>
+                  } @else {
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [iconOnly]="true"
+                      (click)="cancelEdit()"
+                      [attr.aria-label]="
+                        'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                      "
+                      title="{{
+                        'postComments.cancelEditAria' | appTranslate: { name: comment.name }
+                      }}"
+                    >
+                      <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+                    </button>
+                  }
+                </div>
+              }
+            </header>
+
+            <div class="post-comments__body">
+              @if (editingId() === comment.id) {
+                <form
+                  class="post-comments__edit-form"
+                  [formGroup]="editForm"
+                  (ngSubmit)="saveEdit(comment)"
+                >
+                  <textarea
+                    class="form-textarea"
+                    formControlName="body"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="2"
+                    [cdkAutosizeMaxRows]="6"
+                    placeholder="{{ 'postComments.editPlaceholder' | appTranslate }}"
+                    [attr.aria-invalid]="editForm.controls.body.invalid ? 'true' : null"
+                  ></textarea>
+                  <div class="post-comments__edit-actions">
+                    <button
+                      appButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      (click)="cancelEdit()"
+                      [attr.aria-label]="'postComments.editCancel' | appTranslate"
+                    >
+                      <mat-icon svgIcon="lucide:x" aria-hidden="true"></mat-icon>
+                      <span class="btn__label">{{ 'postComments.editCancel' | appTranslate }}</span>
+                    </button>
+
+                    <button
+                      appButton
+                      variant="primary"
+                      size="sm"
+                      type="submit"
+                      [loading]="submittingEdit()"
+                      [attr.aria-label]="'postComments.editSave' | appTranslate"
+                    >
+                      <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+                      <span class="btn__label">{{ 'postComments.editSave' | appTranslate }}</span>
+                    </button>
+                  </div>
+                  @if (editError()) {
+                    <app-alert variant="error" padding="compact">
+                      {{ editError() || ('postComments.editError' | appTranslate) }}
+                    </app-alert>
+                  }
+                </form>
+              } @else {
+                <p class="post-comments__text">
+                  {{ comment.body }}
+                </p>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>

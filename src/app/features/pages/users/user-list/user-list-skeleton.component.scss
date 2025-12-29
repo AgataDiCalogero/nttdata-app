@@ -1,0 +1,83 @@
+.user-skeleton-list {
+  display: grid;
+  width: 100%;
+  max-width: 100%;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  grid-auto-rows: minmax(0, auto);
+}
+
+@media (min-width: 48rem) {
+  .user-skeleton-list {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+}
+
+.user-skeleton-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-border-color);
+  box-shadow:
+    inset 0 0 0 1px var(--app-border-color),
+    0 18px 30px color-mix(in srgb, var(--color-on-surface) 8%, transparent 72%);
+  overflow: hidden;
+}
+
+.user-skeleton-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-element-bg),
+    var(--skeleton-highlight-soft),
+    var(--skeleton-highlight),
+    var(--skeleton-highlight-soft),
+    var(--skeleton-element-bg)
+  );
+  background-size: 200% 100%;
+  animation: app-skeleton-shine 1.6s linear infinite;
+}
+
+.user-skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-skeleton-line {
+  height: 0.8rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-element-bg),
+    var(--skeleton-highlight-soft),
+    var(--skeleton-highlight),
+    var(--skeleton-highlight-soft),
+    var(--skeleton-element-bg)
+  );
+  background-size: 200% 100%;
+  animation: app-skeleton-shine 1.6s linear infinite;
+}
+
+.user-skeleton-line--title {
+  width: 40%;
+}
+
+.user-skeleton-line--subtitle {
+  width: 60%;
+}
+
+@keyframes app-skeleton-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

@@ -1,0 +1,344 @@
+@use 'sass:meta';
+@use 'sass:list';
+
+@mixin flex-row($gap: var(--space-md), $align: center, $justify: flex-start) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
+@mixin flex-column($gap: var(--space-md), $align: stretch) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin flex-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $gap;
+}
+
+@mixin button-group($gap: var(--space-sm), $justify: flex-end, $wrap: wrap, $align: center) {
+  display: flex;
+  gap: $gap;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+  align-items: $align;
+}
+
+@mixin container($max-width: var(--layout-max-width), $padding-inline: var(--layout-gutter)) {
+  width: min(100%, $max-width);
+  margin-inline: auto;
+  padding-inline: $padding-inline;
+}
+
+@mixin grid-stack($min-width: 17.5rem, $gap: var(--space-lg)) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap;
+
+  > * {
+    flex: 1 1 $min-width;
+    min-width: $min-width;
+  }
+}
+
+@mixin surface-card($padding: var(--space-lg)) {
+  background: var(--color-surface);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: $padding;
+  box-shadow: var(--shadow);
+}
+
+@mixin app-card($padding: var(--space-md), $radius: 'lg', $shadow-level: 'md') {
+  background: var(--color-surface);
+  border: 0.0625rem solid var(--color-border);
+  padding: $padding;
+  @include radius($radius);
+  @include shadow($shadow-level);
+}
+
+@mixin app-surface-card(
+  $padding: var(--space-md),
+  $background: var(--mat-card-bg, color-mix(in srgb, var(--color-surface-solid) 82%, transparent)),
+  $border: var(--mat-card-border, rgba(148, 163, 184, 0.25)),
+  $radius: var(--radius-card),
+  $shadow: var(--shadow-lg)
+) {
+  background: var(--color-surface-solid);
+  border: 1px solid var(--color-border);
+  background: $background;
+  border-color: $border;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: $padding;
+  transition:
+    transform var(--duration-normal) var(--ease-in-out),
+    box-shadow var(--duration-normal) var(--ease-in-out);
+}
+
+@mixin app-avatar-gradient(
+  $size: 3rem,
+  $start: color-mix(in srgb, var(--color-accent) 68%, transparent),
+  $end: color-mix(in srgb, var(--color-accent-dark) 82%, transparent)
+) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--color-accent);
+  background: linear-gradient(135deg, $start, $end);
+  color: var(--color-on-accent);
+  box-shadow: 0 8px 18px rgba(249, 115, 22, 0.28);
+}
+
+@mixin flex-grow() {
+  flex: 1 1 auto;
+}
+
+@mixin focus-ring($color: var(--focus-ring)) {
+  outline: 0.125rem solid $color;
+  outline-offset: 0.125rem;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin mobile {
+  @media (max-width: 40rem) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 40.063rem) and (max-width: 64rem) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 64.063rem) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: 40.063rem) {
+    @content;
+  }
+}
+
+@mixin desktop-wide {
+  @media (min-width: 80.063rem) {
+    @content;
+  }
+}
+
+@mixin until-tablet {
+  @media (max-width: 64rem) {
+    @content;
+  }
+}
+
+@mixin smooth-transition($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
+  $transitions: ();
+
+  @if meta.type-of($properties) != 'list' {
+    $properties: ($properties);
+  }
+
+  @each $property in $properties {
+    $transitions: list.append(
+      $transitions,
+      '#{$property} #{$duration} #{$timing} #{$delay}',
+      comma
+    );
+  }
+
+  & {
+    transition: $transitions;
+  }
+}
+
+@mixin transition-group($properties: all, $duration: 0.2s, $timing: ease, $delay: 0s) {
+  @include smooth-transition($properties, $duration, $timing, $delay);
+}
+
+@mixin glassmorphism($blur: 10px) {
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+  border: 0.0625rem solid var(--color-border);
+}
+
+@mixin shadow($level: 'md') {
+  $shadow-token: null;
+
+  @if $level == 'xs' {
+    $shadow-token: var(--shadow-xs);
+  } @else if $level == 'sm' {
+    $shadow-token: var(--shadow-sm);
+  } @else if $level == 'md' {
+    $shadow-token: var(--shadow-md);
+  } @else if $level == 'lg' {
+    $shadow-token: var(--shadow-lg);
+  } @else if $level == 'xl' {
+    $shadow-token: var(--shadow-xl);
+  } @else if $level == '2xl' {
+    $shadow-token: var(--shadow-2xl);
+  } @else if $level == 'accent' {
+    $shadow-token: var(--shadow-accent);
+  } @else if $level == 'accent-lg' {
+    $shadow-token: var(--shadow-accent-lg);
+  } @else if $level == 'none' {
+    $shadow-token: var(--shadow-none);
+  }
+
+  @if $shadow-token != null {
+    box-shadow: $shadow-token;
+  }
+}
+
+@mixin radius($size: 'md') {
+  $radius-token: null;
+
+  @if $size == 'xs' {
+    $radius-token: var(--radius-xs);
+  } @else if $size == 'sm' {
+    $radius-token: var(--radius-sm);
+  } @else if $size == 'md' {
+    $radius-token: var(--radius-md);
+  } @else if $size == 'lg' {
+    $radius-token: var(--radius-lg);
+  } @else if $size == 'xl' {
+    $radius-token: var(--radius-xl);
+  } @else if $size == '2xl' {
+    $radius-token: var(--radius-2xl);
+  } @else if $size == 'full' {
+    $radius-token: var(--radius-full);
+  } @else if $size == 'none' {
+    $radius-token: var(--radius-none);
+  }
+
+  @if $radius-token != null {
+    border-radius: $radius-token;
+  }
+}
+
+@mixin button-primary {
+  background: var(--gradient-primary);
+  color: var(--color-on-accent);
+  border: 0.0625rem solid var(--border-accent-emphasis);
+  box-shadow: var(--shadow-button-primary);
+
+  &:hover {
+    box-shadow: var(--shadow-button-primary-hover);
+  }
+
+  &:focus-visible {
+    box-shadow: var(--shadow-button-primary-focus);
+  }
+}
+
+@mixin button-secondary {
+  background: rgba(31, 41, 55, 0.7);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border-color: var(--border-mix-60);
+  color: var(--color-on-surface);
+
+  &:hover {
+    background: rgba(31, 41, 55, 0.85);
+    background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+    border-color: var(--btn-secondary-border-hover);
+  }
+
+  &:focus-visible {
+    border-color: var(--focus-ring);
+    box-shadow: var(--shadow-focus);
+  }
+}
+
+@mixin toolbar-control {
+  min-width: 3.5rem;
+  height: var(--btn-height-sm, 2.5rem);
+  padding-inline: var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--toolbar-control-border, var(--border-mix-60));
+  background: var(
+    --toolbar-control-bg,
+    color-mix(in srgb, var(--color-surface-solid) 82%, transparent)
+  );
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  color: var(--color-on-surface);
+  box-shadow: var(--shadow-sm, 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18));
+  line-height: 1;
+  transition:
+    background var(--duration-normal) var(--ease-in-out),
+    border-color var(--duration-normal) var(--ease-in-out),
+    box-shadow var(--duration-normal) var(--ease-in-out),
+    color var(--duration-normal) var(--ease-in-out);
+
+  &:hover,
+  &:focus-visible {
+    background: var(
+      --toolbar-control-hover-bg,
+      color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-solid))
+    );
+    border-color: var(
+      --toolbar-control-hover-border,
+      color-mix(in srgb, var(--color-accent) 55%, var(--border-mix-60))
+    );
+    box-shadow: var(
+      --toolbar-control-hover-shadow,
+      var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12))
+    );
+  }
+
+  &:active {
+    background: var(
+      --toolbar-control-active-bg,
+      color-mix(in srgb, var(--color-accent) 16%, var(--color-surface-solid))
+    );
+    border-color: var(
+      --toolbar-control-active-border,
+      color-mix(in srgb, var(--color-accent) 60%, var(--border-mix-60))
+    );
+  }
+
+  lucide-icon,
+  mat-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  lucide-icon svg,
+  mat-icon svg {
+    display: block;
+  }
+}
+
+@mixin toolbar-control-open {
+  background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface-solid));
+  border-color: color-mix(in srgb, var(--color-accent) 65%, var(--border-mix-60));
+  box-shadow: var(--shadow-accent-soft, 0 0.5rem 1.5rem rgba(249, 115, 22, 0.12));
+  color: var(--color-on-surface);
+}

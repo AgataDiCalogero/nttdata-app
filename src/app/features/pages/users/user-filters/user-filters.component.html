@@ -1,0 +1,41 @@
+<div class="user-filters">
+  <div class="filters-bar__controls">
+    <app-search-bar
+      size="compact"
+      [id]="searchId"
+      [control]="searchControl"
+      [placeholder]="'users.filters.searchPlaceholder' | appTranslate"
+      [label]="'users.filters.searchLabel' | appTranslate"
+      (debounced)="onDebounced($event)"
+    />
+
+    <app-select
+      class="user-filters__per-page"
+      variant="compact"
+      [id]="perPageSelectId"
+      [control]="perPageControl"
+      [options]="perPageSelectOptions()"
+      [showPlaceholder]="false"
+      [label]="'users.filters.perPage' | appTranslate"
+      [ariaLabel]="'users.filters.perPage' | appTranslate"
+      (selectionChange)="onPerPageSelected($event)"
+    ></app-select>
+    <div class="filters-bar__actions">
+      @if (showCreate()) {
+        <button
+          appButton
+          variant="primary"
+          (click)="onCreate()"
+          [attr.aria-label]="'users.filters.createAria' | appTranslate"
+        >
+          <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
+          <span class="btn__label">{{ 'common.actions.newUser' | appTranslate }}</span>
+        </button>
+      }
+      <button appButton variant="ghost" type="button" (click)="onReset()">
+        <mat-icon svgIcon="lucide:rotate-ccw" aria-hidden="true"></mat-icon>
+        <span class="btn__label">{{ 'common.actions.reset' | appTranslate }}</span>
+      </button>
+    </div>
+  </div>
+</div>

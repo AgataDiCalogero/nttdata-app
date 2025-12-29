@@ -1,0 +1,155 @@
+@use '../../../../styles/mixins' as mixins;
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.comment-form__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+
+  & .form-field {
+    flex: 1 1 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 26rem) {
+    flex-direction: row;
+    gap: var(--space-md);
+    flex-wrap: nowrap;
+
+    & .form-field {
+      flex: 1 1 50%;
+      min-width: 0;
+      max-width: 50%;
+    }
+
+    margin-bottom: var(--space-md);
+  }
+}
+
+.comment-form .form-field {
+  min-width: 0;
+}
+
+.comment-form .form-textarea {
+  min-height: 2.5rem;
+  max-height: 12rem;
+  resize: vertical;
+  field-sizing: content;
+  transition: height 0.15s ease;
+}
+
+.comment-form :is(.form-input, .form-textarea) {
+  background: var(--mat-field-bg);
+  border: 1px solid var(--mat-field-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+
+  &::placeholder {
+    color: var(--color-muted);
+  }
+
+  &:focus-visible {
+    border-color: var(--mat-field-border-focus);
+    box-shadow: var(--shadow-focus);
+    background: var(--mat-field-bg-hover);
+    outline: none;
+  }
+}
+
+:host ::ng-deep :is(.mat-mdc-form-field, .mat-form-field-infix) {
+  transition: transform 0.15s ease;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid.ng-untouched {
+  --mat-form-field-outlined-outline-color: var(--mat-field-border) !important;
+  --mat-form-field-outlined-hover-outline-color: var(--mat-field-border-hover) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--mat-field-border-focus) !important;
+  --mat-form-field-outlined-error-outline-color: var(--mat-field-border) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid:not(.ng-touched) .mdc-floating-label,
+:host
+  ::ng-deep
+  .mat-mdc-form-field.mat-form-field-invalid:not(.ng-touched)
+  .mdc-floating-label--float-above {
+  color: var(--mat-field-label) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid {
+  --mat-form-field-outlined-outline-color: var(--mat-field-border) !important;
+  --mat-form-field-outlined-hover-outline-color: var(--mat-field-border-hover) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--mat-field-border-focus) !important;
+  --mat-form-field-outlined-error-outline-color: var(--mat-field-border) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.comment-form__field-invalid.mat-form-field-invalid {
+  --mat-form-field-outlined-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-hover-outline-color: color-mix(
+    in srgb,
+    var(--color-danger) 70%,
+    transparent
+  ) !important;
+  --mat-form-field-outlined-focus-outline-color: var(--color-danger) !important;
+  --mat-form-field-outlined-error-outline-color: var(--color-danger) !important;
+}
+
+:host
+  ::ng-deep
+  .mat-mdc-form-field.comment-form__field-invalid.mat-form-field-invalid
+  .mdc-floating-label,
+:host
+  ::ng-deep
+  .mat-mdc-form-field.comment-form__field-invalid.mat-form-field-invalid
+  .mdc-floating-label--float-above {
+  color: var(--color-danger) !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid.ng-touched .mdc-floating-label,
+:host
+  ::ng-deep
+  .mat-mdc-form-field.mat-form-field-invalid.ng-touched
+  .mdc-floating-label--float-above {
+  color: var(--color-danger) !important;
+}
+
+.comment-form .field-error {
+  line-height: 1.4;
+  margin-bottom: 0;
+  word-break: break-word;
+  font-size: var(--font-size-xs);
+}
+
+.comment-form .field-hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  margin-top: var(--space-2xs);
+}
+
+.comment-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+
+  > button {
+    min-height: var(--btn-height-sm);
+    padding-inline: var(--space-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

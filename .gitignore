@@ -1,0 +1,54 @@
+# --- Build / compiled output ---
+dist/
+out-tsc/
+tmp/
+.tmp-node/
+bazel-out/
+
+# --- Node / package managers ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Angular CLI cache ---
+.angular/
+
+# --- Test / coverage outputs ---
+coverage/
+test-results/
+*.log
+testem.log
+libpeerconnection.log
+latest-test-run.log
+test-ci.log
+test-*.log
+
+# --- Local caches / tooling ---
+audit-logs/
+.npm-cache/
+.home/
+.cache/
+.codesight/
+.sass-cache/
+connect.lock
+
+# --- GitHub workflow/config ---
+.github/
+
+# --- IDEs and editors ---
+.idea/
+.project
+.classpath
+.settings/
+.c9/
+*.launch
+*.sublime-workspace
+.history/
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Typescript legacy ---
+typings/

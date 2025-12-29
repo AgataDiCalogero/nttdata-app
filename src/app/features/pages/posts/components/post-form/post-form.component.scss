@@ -1,0 +1,46 @@
+@use '../../../../../../styles/mixins' as mixins;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+}
+
+.post-form {
+  width: 100%;
+}
+
+.post-form__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.post-form__error-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: flex-start;
+
+  p {
+    margin: 0;
+  }
+}
+
+.post-form__field {
+  width: 100%;
+}
+
+.post-form__missing-author {
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  line-height: 1.2;
+}
+
+.post-form__field--textarea textarea {
+  min-height: 12rem;
+  resize: vertical;
+}

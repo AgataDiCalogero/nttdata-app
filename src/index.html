@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>NTT Data App</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+    <link rel="alternate icon" type="image/x-icon" href="assets/logo.svg" />
+    <link rel="apple-touch-icon" href="assets/logo.svg" />
+  </head>
+  <body>
+    <script>
+      (function () {
+        try {
+          let theme = localStorage.getItem('preferred-theme');
+          if (!theme) {
+            const prefersLight =
+              globalThis.matchMedia &&
+              globalThis.matchMedia('(prefers-color-scheme: light)').matches;
+            theme = prefersLight ? 'light' : 'dark';
+          }
+          const reading = localStorage.getItem('reading-mode') === 'true';
+          const body = document.body;
+          body.classList.toggle('light-theme', theme === 'light');
+          body.classList.toggle('dark-theme', theme === 'dark');
+          body.classList.toggle('reading-mode', !!reading);
+        } catch (e) {}
+      })();
+    </script>
+    <app-root></app-root>
+  </body>
+</html>

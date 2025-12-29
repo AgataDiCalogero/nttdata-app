@@ -1,0 +1,60 @@
+<section class="token-help">
+  <header class="token-help__header">
+    <h2 class="token-help__title">{{ 'tokenHelp.title' | appTranslate }}</h2>
+    <p class="token-help__subtitle">
+      {{ 'tokenHelp.subtitle' | appTranslate }}
+    </p>
+  </header>
+
+  <ol class="token-help__steps">
+    <li>
+      <span class="token-help__stepnum">1</span>
+      <div class="token-help__text">
+        {{ 'tokenHelp.steps.1' | appTranslate }}
+      </div>
+    </li>
+    <li>
+      <span class="token-help__stepnum">2</span>
+      <div class="token-help__text">
+        {{ 'tokenHelp.steps.2a' | appTranslate }}
+        <strong>{{ 'tokenHelp.step2Highlight' | appTranslate }}</strong>
+        {{ 'tokenHelp.steps.2b' | appTranslate }}
+      </div>
+    </li>
+    <li>
+      <span class="token-help__stepnum">3</span>
+      <div class="token-help__text">
+        {{ 'tokenHelp.steps.3' | appTranslate }}
+      </div>
+    </li>
+  </ol>
+
+  <footer class="token-help__footer">
+    <a
+      appButton
+      variant="outline"
+      size="lg"
+      class="token-help__btn token-help__btn--outline"
+      [href]="gorestUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+      [attr.aria-label]="'tokenHelp.open' | appTranslate"
+    >
+      <mat-icon svgIcon="lucide:external-link" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'tokenHelp.open' | appTranslate }}</span>
+    </a>
+
+    <button
+      appButton
+      variant="primary"
+      size="lg"
+      class="token-help__btn token-help__btn--primary"
+      type="button"
+      (click)="close()"
+      [attr.aria-label]="'tokenHelp.closeAria' | appTranslate"
+    >
+      <mat-icon svgIcon="lucide:check" aria-hidden="true"></mat-icon>
+      <span class="btn__label">{{ 'tokenHelp.close' | appTranslate }}</span>
+    </button>
+  </footer>
+</section>

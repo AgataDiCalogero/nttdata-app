@@ -1,0 +1,43 @@
+<div
+  class="locale-switcher"
+  [attr.data-open]="menuOpen()"
+  appClickOutside
+  (appClickOutside)="onDocumentClick()"
+  appEscapeKey
+  (appEscapeKey)="onEscape()"
+>
+  <button
+    appButton
+    variant="ghost"
+    size="sm"
+    type="button"
+    class="locale-switcher__trigger"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="menuOpen() ? 'true' : 'false'"
+    [attr.aria-label]="label()"
+  >
+    <span>{{ locale() | uppercase }}</span>
+  </button>
+
+  @if (menuOpen()) {
+    <div
+      class="locale-switcher__panel"
+      role="menu"
+      [attr.aria-label]="'language.menuAria' | appTranslate"
+    >
+      @for (lang of locales; track lang) {
+        <button
+          type="button"
+          role="menuitem"
+          class="locale-switcher__option"
+          [class.locale-switcher__option--active]="locale() === lang"
+          (click)="setLocale(lang)"
+          [attr.aria-pressed]="locale() === lang ? 'true' : 'false'"
+          title="{{ lang | uppercase }}"
+        >
+          <span>{{ lang | uppercase }}</span>
+        </button>
+      }
+    </div>
+  }
+</div>

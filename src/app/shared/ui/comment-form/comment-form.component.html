@@ -1,0 +1,125 @@
+<form
+  class="comment-form form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  [attr.aria-label]="'commentForm.aria' | appTranslate"
+>
+  <div class="comment-form__grid">
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
+    >
+      <mat-form-field
+        appearance="outline"
+        color="accent"
+        [floatLabel]="'always'"
+        [class.comment-form__field-invalid]="
+          form.controls.name.touched && form.controls.name.invalid
+        "
+      >
+        <mat-label>{{ 'commentForm.fields.name' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="comment-name"
+          type="text"
+          formControlName="name"
+          [placeholder]="'commentForm.placeholders.name' | appTranslate"
+          [attr.aria-invalid]="
+            form.controls.name.invalid && form.controls.name.touched ? 'true' : null
+          "
+          required
+        />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <mat-error>{{ 'commentForm.errors.name' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div
+      class="form-field"
+      [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid"
+    >
+      <mat-form-field
+        appearance="outline"
+        color="accent"
+        [floatLabel]="'always'"
+        [class.comment-form__field-invalid]="
+          form.controls.email.touched && form.controls.email.invalid
+        "
+      >
+        <mat-label>{{ 'commentForm.fields.email' | appTranslate }}</mat-label>
+        <input
+          matInput
+          id="comment-email"
+          type="email"
+          formControlName="email"
+          [placeholder]="'commentForm.placeholders.email' | appTranslate"
+          [attr.aria-invalid]="
+            form.controls.email.invalid && form.controls.email.touched ? 'true' : null
+          "
+          required
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <mat-error>{{ 'commentForm.errors.email' | appTranslate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div
+    class="form-field"
+    [class.is-invalid]="form.controls.body.touched && form.controls.body.invalid"
+  >
+    <mat-form-field
+      appearance="outline"
+      color="accent"
+      [floatLabel]="'always'"
+      [class.comment-form__field-invalid]="form.controls.body.touched && form.controls.body.invalid"
+    >
+      <mat-label>{{ 'commentForm.fields.body' | appTranslate }}</mat-label>
+      <textarea
+        matInput
+        id="comment-body"
+        formControlName="body"
+        cdkTextareaAutosize
+        [cdkAutosizeMinRows]="2"
+        [cdkAutosizeMaxRows]="6"
+        [placeholder]="placeholderText()"
+        [attr.aria-invalid]="
+          form.controls.body.invalid && form.controls.body.touched ? 'true' : null
+        "
+        maxlength="500"
+        required
+      ></textarea>
+      <mat-hint align="end">{{ bodyLength }}/500</mat-hint>
+      @if (form.controls.body.touched && form.controls.body.invalid) {
+        <mat-error>{{ 'commentForm.errors.body' | appTranslate }}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="comment-form__actions">
+    <button
+      appButton
+      variant="primary"
+      type="submit"
+      [disabled]="submitting()"
+      [loading]="submitting()"
+      class="comment-form__submit"
+      [attr.aria-label]="
+        submitting()
+          ? ('commentForm.buttons.submitting' | appTranslate)
+          : ('commentForm.buttons.submit' | appTranslate)
+      "
+    >
+      <mat-icon svgIcon="lucide:send" aria-hidden="true"></mat-icon>
+      <span class="btn__label">
+        {{
+          submitting()
+            ? ('commentForm.buttons.submitting' | appTranslate)
+            : ('commentForm.buttons.submit' | appTranslate)
+        }}
+      </span>
+    </button>
+  </div>
+</form>
