@@ -16,7 +16,7 @@ import {
 import { DeleteConfirmComponent } from '@/app/shared/ui/dialog/delete-confirm.component';
 
 import { injectUsersService } from '../store/users.inject';
-import { UserForm } from '../user-form/user-form.component';
+import { UserForm } from '../user-components/user-form/user-form.component';
 
 @Injectable()
 export class UsersUiService {

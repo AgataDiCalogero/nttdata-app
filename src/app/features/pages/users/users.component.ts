@@ -24,9 +24,9 @@ import type { User } from '@/app/shared/models/user';
 
 import { provideUsersService, injectUsersService } from './store/users.inject';
 import type { SortField } from './store/users.service';
-import { UserFiltersComponent } from './user-filters/user-filters.component';
-import { UserListSkeletonComponent } from './user-list/user-list-skeleton.component';
-import { UserListComponent } from './user-list/user-list.component';
+import { UserFiltersComponent } from './user-components/user-filters/user-filters.component';
+import { UserListSkeletonComponent } from './user-components/user-list/user-list-skeleton.component';
+import { UserListComponent } from './user-components/user-list/user-list.component';
 import { UsersUiService } from './user-services/users-ui.service';
 
 @Component({
